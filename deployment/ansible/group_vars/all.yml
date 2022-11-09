@@ -1,0 +1,371 @@
+---
+
+project: vio
+deployment_env: demo
+azure_subscription_id: 0df9d49b-a078-4c4b-90fd-80dae8300df6
+
+# Resource group
+resource_group_name: "{{ project }}-rg-{{ deployment_env }}"
+
+# Storage Account
+storage_account_name: "{{ project }}storageaccount{{ deployment_env }}"
+
+# Postgres
+postgres_server_name: "{{ project }}-postgres-{{ deployment_env }}"
+postgres_database_name: vio
+postgres_admin_username: "{{ lookup('env', 'POSTGRES_USERNAME') }}"
+postgres_admin_password: "{{ lookup('env', 'POSTGRES_PASSWORD') }}"
+postgres_firewall_rules:
+  - rule_name: open_bar
+    start_ip_address: 0.0.0.0
+    end_ip_address: 255.255.255.255
+postgres_iothub_schema: iothub
+
+# Function App
+function_app_name: "{{ project }}-function-app-{{ deployment_env }}"
+function_name: telemetry_saver
+
+# Event Grid
+event_grid_system_topic_name: "{{ project }}-system-topic-{{ deployment_env }}"
+event_grid_subscription_name: "{{ project }}-system-topic-subscription-{{ deployment_env }}"
+
+# Gitlab container registry
+registry_url: registry.gitlab.com
+registry_username: "{{ lookup('env', 'REGISTRY_USERNAME') }}"
+registry_password: "{{ lookup('env', 'REGISTRY_PASSWORD') }}"
+
+# IoT Hub
+iot_hub_name: "{{ project }}-iothub-{{ deployment_env }}"
+device_connection_string: "{{ lookup('env', 'CONNECTION_STRING') }}"
+devices:
+
+  - name: "vio-device-raspberrypi-1-{{ deployment_env }}"
+    modules_template_name: "modules_vio_device_raspberrypi_1_{{ deployment_env }}.json"
+    local_storage_name: blob-storage-raspberry-1
+    cloud_storage_name: blob-storage-raspberry-1
+    modules:
+      mongodb:
+        image: registry.gitlab.com/octo-technology/les-bg-de-la-data/s-s-all/tribu/tribu-augi/asset/vio_edge/mongodb_raspberrypi
+        version: rpi-0.7.0
+        ports: 27017:27017
+      model_serving:
+        image: registry.gitlab.com/octo-technology/les-bg-de-la-data/s-s-all/tribu/tribu-augi/asset/vio_edge/tflite_serving_raspberrypi
+        version: rpi-0.7.0
+        ports: 8501:8501
+        privileged: true
+      ui:
+        image: registry.gitlab.com/octo-technology/les-bg-de-la-data/s-s-all/tribu/tribu-augi/asset/vio_edge/ui_raspberrypi
+        version: rpi-0.7.0
+        ports: 8080:80
+      supervisor:
+        image: registry.gitlab.com/octo-technology/les-bg-de-la-data/s-s-all/tribu/tribu-augi/asset/vio_edge/supervisor_raspberrypi
+        version: rpi-0.7.0
+        ports: 8000:8000
+        # device specific to pi-camera
+        device: /dev/vchiq
+        # volume /opt/vc specific to pi-camera
+        volumes:
+          - /opt/vc:/opt/vc
+          - /home/pi/Desktop/vio_edge/supervisor/data/storage:/supervisor/data/storage
+        privileged: true
+        envs:
+          API_CONFIG: edge-lite
+          AZURE_CONTAINER_NAME: blob-storage-raspberry-1
+          AZURE_STORAGE_CONNECTION_STRING: DefaultEndpointsProtocol=http;BlobEndpoint=http://blob_storage:11002/localblobrpi1;AccountName=localblobrpi1;AccountKey=zynPekJoW5LpnRomyTn1aA==;
+      blob_storage:
+        image: mcr.microsoft.com/azure-blob-storage
+        version: latest
+        ports: 11002:11002
+        volumes:
+          - /srv/containerdata:/blobroot
+        envs:
+          LOCAL_STORAGE_ACCOUNT_NAME: localblobrpi1
+          LOCAL_STORAGE_ACCOUNT_KEY: zynPekJoW5LpnRomyTn1aA==
+
+  - name: "vio-device-raspberrypi-2-{{ deployment_env }}"
+    modules_template_name: "modules_vio_device_raspberrypi_2_{{ deployment_env }}.json"
+    local_storage_name: blob-storage-raspberry-2
+    cloud_storage_name: blob-storage-raspberry-2
+    modules:
+      mongodb:
+        image: registry.gitlab.com/octo-technology/les-bg-de-la-data/s-s-all/tribu/tribu-augi/asset/vio_edge/mongodb_raspberrypi
+        version: rpi-0.7.0
+        ports: 27017:27017
+      model_serving:
+        image: registry.gitlab.com/octo-technology/les-bg-de-la-data/s-s-all/tribu/tribu-augi/asset/vio_edge/tflite_serving_raspberrypi
+        version: rpi-0.7.0
+        ports: 8501:8501
+        privileged: true
+      ui:
+        image: registry.gitlab.com/octo-technology/les-bg-de-la-data/s-s-all/tribu/tribu-augi/asset/vio_edge/ui_raspberrypi
+        version: rpi-0.7.0
+        ports: 8080:80
+      supervisor:
+        image: registry.gitlab.com/octo-technology/les-bg-de-la-data/s-s-all/tribu/tribu-augi/asset/vio_edge/supervisor_raspberrypi
+        version: rpi-0.7.0
+        ports: 8000:8000
+        # device specific to pi-camera
+        device: /dev/vchiq
+        # volume /opt/vc specific to pi-camera
+        volumes:
+          - /opt/vc:/opt/vc
+          - /home/pi/Desktop/vio_edge/supervisor/data/storage:/supervisor/data/storage
+        envs:
+          API_CONFIG: edge-lite
+          AZURE_CONTAINER_NAME: blob-storage-raspberry-2
+          AZURE_STORAGE_CONNECTION_STRING: DefaultEndpointsProtocol=http;BlobEndpoint=http://blob_storage:11002/localblobrpi2;AccountName=localblobrpi2;AccountKey=fMkmWvOzHiawjg1MkEZN3Q==;
+        privileged: true
+      blob_storage:
+        image: mcr.microsoft.com/azure-blob-storage
+        version: latest
+        ports: 11002:11002
+        volumes:
+          - /srv/containerdata:/blobroot
+        envs:
+          LOCAL_STORAGE_ACCOUNT_NAME: localblobrpi2
+          LOCAL_STORAGE_ACCOUNT_KEY: fMkmWvOzHiawjg1MkEZN3Q==
+
+#  - name: "vio-device-raspberrypi-3-{{ deployment_env }}"
+#    modules_template_name: "modules_vio_device_raspberrypi_3_{{ deployment_env }}.json"
+#    local_storage_name: blob-storage-raspberry-3
+#    cloud_storage_name: blob-storage-raspberry-3
+#    modules:
+#      model_serving:
+#        image: registry.gitlab.com/octo-technology/les-bg-de-la-data/s-s-all/tribu/tribu-augi/asset/vio_edge/tflite_serving_raspberrypi
+#        version: rpi-0.5.8
+#        ports: 8501:8501
+#        privileged: true
+#      ui:
+#        image: registry.gitlab.com/octo-technology/les-bg-de-la-data/s-s-all/tribu/tribu-augi/asset/vio_edge/ui_raspberrypi
+#        version: rpi-0.5.8
+#        ports: 8080:80
+#      supervisor:
+#        image: registry.gitlab.com/octo-technology/les-bg-de-la-data/s-s-all/tribu/tribu-augi/asset/vio_edge/supervisor_raspberrypi
+#        version: rpi-0.5.8
+#        ports: 8000:8000
+#        # device specific to pi-camera
+#        device: /dev/vchiq
+#        # volume /opt/vc specific to pi-camera
+#        volumes:
+#          - /opt/vc:/opt/vc
+#          - /home/pi/Desktop/vio_edge/supervisor/data/storage:/supervisor/data/storage
+#        envs:
+#          API_CONFIG: edge-lite
+#          AZURE_CONTAINER_NAME: blob-storage-raspberry-3
+#          AZURE_STORAGE_CONNECTION_STRING: DefaultEndpointsProtocol=http;BlobEndpoint=http://blob_storage:11002/localblobrpi3;AccountName=localblobrpi3;AccountKey=ozY9LRW4prgNbkDbCqwLDw==;
+#        privileged: true
+#      blob_storage:
+#        image: mcr.microsoft.com/azure-blob-storage
+#        version: latest
+#        ports: 11002:11002
+#        volumes:
+#          - /srv/containerdata:/blobroot
+#        envs:
+#          LOCAL_STORAGE_ACCOUNT_NAME: localblobrpi3
+#          LOCAL_STORAGE_ACCOUNT_KEY: ozY9LRW4prgNbkDbCqwLDw==
+#
+#  - name: "vio-device-raspberrypi-4-{{ deployment_env }}"
+#    modules_template_name: "modules_vio_device_raspberrypi_4_{{ deployment_env }}.json"
+#    local_storage_name: blob-storage-raspberry-4
+#    cloud_storage_name: blob-storage-raspberry-4
+#    modules:
+#      model_serving:
+#        image: registry.gitlab.com/octo-technology/les-bg-de-la-data/s-s-all/tribu/tribu-augi/asset/vio_edge/tflite_serving_raspberrypi
+#        version: rpi-0.5.8
+#        ports: 8501:8501
+#        privileged: true
+#      ui:
+#        image: registry.gitlab.com/octo-technology/les-bg-de-la-data/s-s-all/tribu/tribu-augi/asset/vio_edge/ui_raspberrypi
+#        version: rpi-0.5.8
+#        ports: 8080:80
+#      supervisor:
+#        image: registry.gitlab.com/octo-technology/les-bg-de-la-data/s-s-all/tribu/tribu-augi/asset/vio_edge/supervisor_raspberrypi
+#        version: rpi-0.5.8
+#        ports: 8000:8000
+#        # device specific to pi-camera
+#        device: /dev/vchiq
+#        # volume /opt/vc specific to pi-camera
+#        volumes:
+#          - /opt/vc:/opt/vc
+#          - /home/pi/Desktop/vio_edge/supervisor/data/storage:/supervisor/data/storage
+#        envs:
+#          API_CONFIG: edge-lite
+#          AZURE_CONTAINER_NAME: blob-storage-raspberry-4
+#          AZURE_STORAGE_CONNECTION_STRING: DefaultEndpointsProtocol=http;BlobEndpoint=http://blob_storage:11002/localblobrpi4;AccountName=localblobrpi4;AccountKey=uKDdppAwlzztjdr03gbS8Q==;
+#        privileged: true
+#      blob_storage:
+#        image: mcr.microsoft.com/azure-blob-storage
+#        version: latest
+#        ports: 11002:11002
+#        volumes:
+#          - /srv/containerdata:/blobroot
+#        envs:
+#          LOCAL_STORAGE_ACCOUNT_NAME: localblobrpi4
+#          LOCAL_STORAGE_ACCOUNT_KEY: uKDdppAwlzztjdr03gbS8Q==
+#
+#  - name: "vio-device-raspberrypi-5-{{ deployment_env }}"
+#    modules_template_name: "modules_vio_device_raspberrypi_5_{{ deployment_env }}.json"
+#    local_storage_name: blob-storage-raspberry-5
+#    cloud_storage_name: blob-storage-raspberry-5
+#    modules:
+#      model_serving:
+#        image: registry.gitlab.com/octo-technology/les-bg-de-la-data/s-s-all/tribu/tribu-augi/asset/vio_edge/tflite_serving_raspberrypi
+#        version: rpi-0.5.8
+#        ports: 8501:8501
+#        privileged: true
+#      ui:
+#        image: registry.gitlab.com/octo-technology/les-bg-de-la-data/s-s-all/tribu/tribu-augi/asset/vio_edge/ui_raspberrypi
+#        version: rpi-0.5.8
+#        ports: 8080:80
+#      supervisor:
+#        image: registry.gitlab.com/octo-technology/les-bg-de-la-data/s-s-all/tribu/tribu-augi/asset/vio_edge/supervisor_raspberrypi
+#        version: rpi-0.5.8
+#        ports: 8000:8000
+#        # device specific to pi-camera
+#        device: /dev/vchiq
+#        # volume /opt/vc specific to pi-camera
+#        volumes:
+#          - /opt/vc:/opt/vc
+#          - /home/pi/Desktop/vio_edge/supervisor/data/storage:/supervisor/data/storage
+#        envs:
+#          API_CONFIG: edge-lite
+#          AZURE_CONTAINER_NAME: blob-storage-raspberry-5
+#          AZURE_STORAGE_CONNECTION_STRING: DefaultEndpointsProtocol=http;BlobEndpoint=http://blob_storage:11002/localblobrpi5;AccountName=localblobrpi5;AccountKey=zV1y1m0u9NSylfz0ezGSYQ==;
+#        privileged: true
+#      blob_storage:
+#        image: mcr.microsoft.com/azure-blob-storage
+#        version: latest
+#        ports: 11002:11002
+#        volumes:
+#          - /srv/containerdata:/blobroot
+#        envs:
+#          LOCAL_STORAGE_ACCOUNT_NAME: localblobrpi5
+#          LOCAL_STORAGE_ACCOUNT_KEY: zV1y1m0u9NSylfz0ezGSYQ==
+#
+#  - name: "vio-device-raspberrypi-6-{{ deployment_env }}"
+#    modules_template_name: "modules_vio_device_raspberrypi_6_{{ deployment_env }}.json"
+#    local_storage_name: blob-storage-raspberry-6
+#    cloud_storage_name: blob-storage-raspberry-6
+#    modules:
+#      model_serving:
+#        image: registry.gitlab.com/octo-technology/les-bg-de-la-data/s-s-all/tribu/tribu-augi/asset/vio_edge/tflite_serving_raspberrypi
+#        version: rpi-0.5.8
+#        ports: 8501:8501
+#        privileged: true
+#      ui:
+#        image: registry.gitlab.com/octo-technology/les-bg-de-la-data/s-s-all/tribu/tribu-augi/asset/vio_edge/ui_raspberrypi
+#        version: rpi-0.5.8
+#        ports: 8080:80
+#      supervisor:
+#        image: registry.gitlab.com/octo-technology/les-bg-de-la-data/s-s-all/tribu/tribu-augi/asset/vio_edge/supervisor_raspberrypi
+#        version: rpi-0.5.8
+#        ports: 8000:8000
+#        # device specific to pi-camera
+#        device: /dev/vchiq
+#        # volume /opt/vc specific to pi-camera
+#        volumes:
+#          - /opt/vc:/opt/vc
+#          - /home/pi/Desktop/vio_edge/supervisor/data/storage:/supervisor/data/storage
+#        envs:
+#          API_CONFIG: edge-lite
+#          AZURE_CONTAINER_NAME: blob-storage-raspberry-6
+#          AZURE_STORAGE_CONNECTION_STRING: DefaultEndpointsProtocol=http;BlobEndpoint=http://blob_storage:11002/localblobrpi6;AccountName=localblobrpi6;AccountKey=oIYqA/z08DTKt5oc28FI/Q==;
+#        privileged: true
+#      blob_storage:
+#        image: mcr.microsoft.com/azure-blob-storage
+#        version: latest
+#        ports: 11002:11002
+#        volumes:
+#          - /srv/containerdata:/blobroot
+#        envs:
+#          LOCAL_STORAGE_ACCOUNT_NAME: localblobrpi6
+#          LOCAL_STORAGE_ACCOUNT_KEY: oIYqA/z08DTKt5oc28FI/Q==
+#
+#  - name: "vio-device-raspberrypi-7-{{ deployment_env }}"
+#    modules_template_name: "modules_vio_device_raspberrypi_7_{{ deployment_env }}.json"
+#    local_storage_name: blob-storage-raspberry-7
+#    cloud_storage_name: blob-storage-raspberry-7
+#    modules:
+#      model_serving:
+#        image: registry.gitlab.com/octo-technology/les-bg-de-la-data/s-s-all/tribu/tribu-augi/asset/vio_edge/tflite_serving_raspberrypi
+#        version: rpi-0.5.8
+#        ports: 8501:8501
+#        privileged: true
+#      ui:
+#        image: registry.gitlab.com/octo-technology/les-bg-de-la-data/s-s-all/tribu/tribu-augi/asset/vio_edge/ui_raspberrypi
+#        version: rpi-0.5.8
+#        ports: 8080:80
+#      supervisor:
+#        image: registry.gitlab.com/octo-technology/les-bg-de-la-data/s-s-all/tribu/tribu-augi/asset/vio_edge/supervisor_raspberrypi
+#        version: rpi-0.5.8
+#        ports: 8000:8000
+#        # device specific to pi-camera
+#        device: /dev/vchiq
+#        # volume /opt/vc specific to pi-camera
+#        volumes:
+#          - /opt/vc:/opt/vc
+#          - /home/pi/Desktop/vio_edge/supervisor/data/storage:/supervisor/data/storage
+#        envs:
+#          API_CONFIG: edge-lite
+#          AZURE_CONTAINER_NAME: blob-storage-raspberry-7
+#          AZURE_STORAGE_CONNECTION_STRING: DefaultEndpointsProtocol=http;BlobEndpoint=http://blob_storage:11002/localblobrpi7;AccountName=localblobrpi7;AccountKey=VaRo+fqlsmCbOM2KPdqX2g==;
+#        privileged: true
+#      blob_storage:
+#        image: mcr.microsoft.com/azure-blob-storage
+#        version: latest
+#        ports: 11002:11002
+#        volumes:
+#          - /srv/containerdata:/blobroot
+#        envs:
+#          LOCAL_STORAGE_ACCOUNT_NAME: localblobrpi7
+#          LOCAL_STORAGE_ACCOUNT_KEY: VaRo+fqlsmCbOM2KPdqX2g==
+#
+#  - name: "vio-device-raspberrypi-8-{{ deployment_env }}"
+#    modules_template_name: "modules_vio_device_raspberrypi_8_{{ deployment_env }}.json"
+#    local_storage_name: blob-storage-raspberry-8
+#    cloud_storage_name: blob-storage-raspberry-8
+#    modules:
+#      model_serving:
+#        image: registry.gitlab.com/octo-technology/les-bg-de-la-data/s-s-all/tribu/tribu-augi/asset/vio_edge/tflite_serving_raspberrypi
+#        version: rpi-0.5.8
+#        ports: 8501:8501
+#        privileged: true
+#      ui:
+#        image: registry.gitlab.com/octo-technology/les-bg-de-la-data/s-s-all/tribu/tribu-augi/asset/vio_edge/ui_raspberrypi
+#        version: rpi-0.5.8
+#        ports: 8080:80
+#      supervisor:
+#        image: registry.gitlab.com/octo-technology/les-bg-de-la-data/s-s-all/tribu/tribu-augi/asset/vio_edge/supervisor_raspberrypi
+#        version: rpi-0.5.8
+#        ports: 8000:8000
+#        # device specific to pi-camera
+#        device: /dev/vchiq
+#        # volume /opt/vc specific to pi-camera
+#        volumes:
+#          - /opt/vc:/opt/vc
+#          - /home/pi/Desktop/vio_edge/supervisor/data/storage:/supervisor/data/storage
+#        envs:
+#          API_CONFIG: edge-lite
+#          AZURE_CONTAINER_NAME: blob-storage-raspberry-8
+#          AZURE_STORAGE_CONNECTION_STRING: DefaultEndpointsProtocol=http;BlobEndpoint=http://blob_storage:11002/localblobrpi8;AccountName=localblobrpi8;AccountKey=XCsqmlbXzM6upvLljwpd4A==;
+#        privileged: true
+#      blob_storage:
+#        image: mcr.microsoft.com/azure-blob-storage
+#        version: latest
+#        ports: 11002:11002
+#        volumes:
+#          - /srv/containerdata:/blobroot
+#        envs:
+#          LOCAL_STORAGE_ACCOUNT_NAME: localblobrpi8
+#          LOCAL_STORAGE_ACCOUNT_KEY: XCsqmlbXzM6upvLljwpd4A==
+
+# Grafana server
+virtual_network_name: "{{ project }}-grafana-virtual-network-{{ deployment_env }}"
+subnet_name: "{{ project }}-grafana-subnet-{{ deployment_env }}"
+public_ip_name: "{{ project }}-grafana-public-ip-{{ deployment_env }}"
+network_security_group_name: "{{ project }}-grafana-network-security-group-{{ deployment_env }}"
+network_interface_card_name: "{{ project }}-grafana-network-interface-card-{{ deployment_env }}"
+vm_name: grafana
+vm_admin_username: grafvio
+ssh_public_key: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDSlEdG6CsL2fNoK5+Wqq5DPtJTAc+CUdQvsaijKBCsJu0vRFvF/PqoNo34aD8ujkfvWAr+QnwCRArNsfJVVQcj18xtYcsk7HKwLw73t4mBUaUjeRCkRW8tExNvdCjvEwWjErLwRGBXKnroFA0r60WMbvcowbBdGHIqZ4+dq64T9qYPhvNHlnG484RkpEpDh8T9zEZ/IZARYZ4LRxlNlHqq60C8wmKn0/47tNLyo+BIXd3Ku743ch3u3hoYkHr0S+zVme/VhmBxD8DkrJPEsKROZiRK9hILDwSwfCzweHpDYaFcq+LIZlLarPyoEkeTa8WbQDLBMvo4PRdyBqUFEI8ZuYD+D3M6bYBnUdTj16zUyL1KxtRo2n3eCXrnjp9Vn6qM6po09HHnsrXsIbMbsRaBtvoABz6XSZmzUcewrGD/DGEw9AbnBza4iXWwKKZBjxXprUOzHTyp5HRaEZ0TtXmO+aocAOAtgVGw4ap4zea5DC2JcMdhNxquyOfpYJ0qU/AgWe4/rPqTKPURirOVKnwFlkiOMM8by4j92yAMP62KEz+GGOwT9NKnFF8cqj412IIYils3qSGMxA8qBhimiJXW/BDtMtq6TWcUpYtgzMjvXaW/kD/GGRnamimFdShBvrHybkpT8wDxYLPwjlvnQiqXGV6CXHHBLe3NPJM+iDoA5w== baptiste.ojeanson@AMAC02XH5C9JG5M
+ssh_port: 22000

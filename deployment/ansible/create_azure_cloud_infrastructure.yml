@@ -1,0 +1,34 @@
+---
+
+- name: Create Azure storage resources for VIO
+  hosts: localhost
+  connection: local
+  roles:
+    - role: check_env_vars
+      vars:
+        - env_vars: [POSTGRES_USERNAME, POSTGRES_PASSWORD, REGISTRY_USERNAME, REGISTRY_PASSWORD]
+    - role: setup_storage_infrastructure
+    - role: setup_iot_hub
+      vars:
+        - deployment_files_folder: ./roles/setup_iot_hub/files
+    - role: setup_telemetry_saver
+    - role: setup_event_grid
+
+- name: Setup grafana VM
+  hosts: grafana
+  gather_facts: no
+  remote_user: "{{ vm_admin_username }}"
+  roles:
+    - role: setup_grafana_vm
+
+- name: Update grafana security group to disable ssh on port 22 and enable ssh on port 22000
+  hosts: localhost
+  connection: local
+  roles:
+    - role: update_grafana_security_group
+
+- name: Setup grafana dashboard files (provisioning)
+  hosts: grafana
+  remote_user: "{{ vm_admin_username }}"
+  roles:
+    - role: setup_grafana_dashboard

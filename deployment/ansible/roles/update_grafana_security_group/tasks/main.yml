@@ -1,0 +1,11 @@
+- name: Update security group to disable ssh on port 22
+  azure_rm_securitygroup:
+    resource_group: "{{ resource_group_name }}"
+    name: "{{ network_security_group_name }}"
+    rules:
+      - name: SSH 22
+        protocol: Tcp
+        destination_port_range: 22
+        access: Deny
+        priority: 1001
+        direction: Inbound

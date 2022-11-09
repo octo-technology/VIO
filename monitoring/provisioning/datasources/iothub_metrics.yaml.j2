@@ -1,0 +1,12 @@
+apiVersion: 1
+datasources:
+  - name: IotHub Metrics
+    orgId: 1
+    type: yesoreyeram-infinity-datasource
+    access: proxy
+    isDefault: false
+    url: https://management.azure.com/subscriptions/0df9d49b-a078-4c4b-90fd-80dae8300df6/resourceGroups/{{ resource_group_name }}/providers/Microsoft.Devices/IotHubs/{{ iot_hub_name }}/quotaMetrics?api-version=2018-04-01
+    jsonData:
+      httpHeaderName1: 'Authorization'
+    secureJsonData:
+      httpHeaderValue1: 'Bearer {{ azure_bearer_token }}'

@@ -1,0 +1,12 @@
+apiVersion: 1
+datasources:
+  - name: Telemetry Postgres
+    type: postgres
+    url: {{ postgres_server_name }}.postgres.database.azure.com
+    database: {{ postgres_database_name }}
+    user: {{ postgres_admin_username }}@{{ postgres_server_name }}
+    secureJsonData:
+      password: {{ postgres_admin_password }}
+    jsonData:
+      sslmode: "require"
+

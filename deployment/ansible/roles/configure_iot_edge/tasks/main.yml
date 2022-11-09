@@ -1,0 +1,43 @@
+---
+
+- name: Create a directory for blob_storage module on edge
+  become: true
+  ansible.builtin.file:
+    path: /srv/containerdata
+    state: directory
+    mode: '0700'
+    owner: 11000
+    group: 11000
+    recurse: yes
+
+- name: Allow user to read template file
+  become: true
+  file:
+    path: /etc/aziot/config.toml.edge.template
+    mode: o+r
+
+- name: Create IoT Edge config file
+  become: true
+  copy:
+    src: /etc/aziot/config.toml.edge.template
+    dest: /etc/aziot/config.toml
+
+- name: Uncomment the connection block needed
+  become: true
+  replace:
+    path: /etc/aziot/config.toml
+    after: '## Manual provisioning with connection string'
+    before: '## Manual provisioning with symmetric key'
+    regexp: '^# '
+    replace: ''
+
+- name: Replace connection string in config file
+  become: true
+  replace:
+    path: /etc/aziot/config.toml
+    regexp: "^connection_string = .+"
+    replace: "connection_string = \"{{ device_connection_string }}\""
+
+- name: Apply configuration
+  become: true
+  shell: iotedge config apply

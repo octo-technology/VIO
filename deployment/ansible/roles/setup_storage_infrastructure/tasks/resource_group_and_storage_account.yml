@@ -1,0 +1,15 @@
+---
+
+- name: Create project resource group
+  azure.azcollection.azure_rm_resourcegroup:
+    name: "{{ resource_group_name }}"
+    location: francecentral
+    tags:
+      project: "{{ project | upper }}"
+      environment: "{{ deployment_env | upper }}"
+
+- name: Create storage account for binaries and metadata
+  azure.azcollection.azure_rm_storageaccount:
+    name: "{{ storage_account_name }}"
+    resource_group: "{{ resource_group_name }}"
+    account_type: Standard_LRS

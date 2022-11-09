@@ -1,0 +1,18 @@
+---
+
+- name: Create Event Grid system topic with IoT Hub as a producer
+  shell: |
+    az eventgrid system-topic create --name {{ event_grid_system_topic_name }} \
+                                     --resource-group {{ resource_group_name }} \
+                                     --location francecentral \
+                                     --source /subscriptions/{{ azure_subscription_id }}/resourceGroups/{{ resource_group_name }}/providers/Microsoft.Devices/IotHubs/{{ iot_hub_name }} \
+                                     --topic-type Microsoft.Devices.IoTHubs
+
+- name: Configure telemetry_saver to be a consumer of the system topic
+  shell: |
+    az eventgrid system-topic event-subscription create --name {{ event_grid_subscription_name }} \
+                                                        --resource-group {{ resource_group_name }} \
+                                                        --system-topic-name {{ event_grid_system_topic_name }} \
+                                                        --endpoint-type azurefunction \
+                                                        --endpoint /subscriptions/{{ azure_subscription_id }}/resourceGroups/{{ resource_group_name }}/providers/Microsoft.Web/sites/{{ function_app_name }}/functions/{{ function_name }} \
+                                                        --included-event-types Microsoft.Devices.DeviceTelemetry

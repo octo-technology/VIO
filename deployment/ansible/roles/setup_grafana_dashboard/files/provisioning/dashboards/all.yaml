@@ -1,0 +1,4 @@
+- name: 'dashboard provisioning'
+  org_id: 1
+  options:
+    folder: '/var/lib/grafana/dashboards'

@@ -1,0 +1,123 @@
+{
+  "content": {
+    "modulesContent": {
+      "$edgeAgent": {
+        "properties.desired": {
+          "schemaVersion": "1.1",
+          "runtime": {
+            "type": "docker",
+            "settings": {
+              "minDockerVersion": "v1.25",
+              "loggingOptions": "",
+              "registryCredentials": {
+                "Gitlab": {
+                  "address": "{{ registry_url }}",
+                  "username": "{{ registry_username }}",
+                  "password": "{{ registry_password }}"
+                }
+              }
+            }
+          },
+          "systemModules": {
+            "edgeAgent": {
+              "type": "docker",
+              "settings": {
+                "image": "mcr.microsoft.com/azureiotedge-agent:1.1",
+                "createOptions": "{}"
+              }
+            },
+            "edgeHub": {
+              "type": "docker",
+              "status": "running",
+              "restartPolicy": "always",
+              "settings": {
+                "image": "mcr.microsoft.com/azureiotedge-hub:1.1",
+                "createOptions": "{\"HostConfig\":{\"PortBindings\":{\"5671/tcp\":[{\"HostPort\":\"5671\"}],\"8883/tcp\":[{\"HostPort\":\"8883\"}],\"443/tcp\":[{\"HostPort\":\"443\"}]}}}"
+              }
+            }
+          },
+          "modules": {
+{% for module in item.modules %}
+
+{% if "ports" in item.modules[module] %}
+{% set exposed_port, original_port = item.modules[module].ports.split(':') %}
+{% set port_binding = '\\"PortBindings\\":{\\"' + original_port + '/tcp\\":[{\\"HostPort\\":\\"' + exposed_port + '\\"}]}' %}
+{% else %}
+{% set port_binding = '' %}
+{% endif %}
+
+{% if "volumes" in item.modules[module] %}
+{% set binds = '\\"Binds\\":[\\"' + '\\",\\"'.join(item.modules[module].volumes) + '\\"]' + ',' %}
+{% else %}
+{% set binds = '' %}
+{% endif %}
+
+{% if "device" in item.modules[module] %}
+{% set devices = '\\"Devices\\":[{\\"PathOnHost\\":\\"' + item.modules[module].device + '\\",\\"PathInContainer\\":\\"' + item.modules[module].device + '\\",\\"CgroupPermissions\\":\\"mrw\\"}]' + ',' %}
+{% else %}
+{% set devices = '' %}
+{% endif %}
+
+{% if "privileged" in item.modules[module] %}
+{% set privileged = '\\"Privileged\\": true,'  %}
+{% else %}
+{% set privileged = '' %}
+{% endif %}
+
+{% set host_config = '{' + privileged + devices + binds + port_binding + '}' %}
+            "{{ module }}": {
+                "version": "{{ item.modules[module].version }}",
+                "type": "docker",
+                "status": "running",
+                "imagePullPolicy": "on-create",
+                "restartPolicy": "always",
+                "settings": {
+                    "image": "{{ item.modules[module].image }}:{{ item.modules[module].version }}",
+                    "createOptions": "{\"HostConfig\":{{ host_config }}}"
+                },
+                "env": {
+{% if "envs" in item.modules[module] %}
+{% for key,value in item.modules[module].envs.items() %}
+                    "{{ key }}": {"value": "{{ value }}"}{% if not loop.last %},{% endif %}
+{% endfor %}
+{% endif %}
+                }
+          }{% if not loop.last %},{% endif %}
+{% endfor %}
+          }
+        }
+      },
+      "$edgeHub": {
+        "properties.desired": {
+          "schemaVersion": "1.1",
+          "routes": {
+            "upstream": "FROM /messages/* INTO $upstream"
+          },
+          "storeAndForwardConfiguration": {
+            "timeToLiveSecs": 7200
+          }
+        }
+      },
+      "blob_storage": {
+        "properties.desired": {
+          "deviceAutoDeleteProperties": {
+            "deleteOn": true,
+            "deleteAfterMinutes": 1440,
+            "retainWhileUploading": true
+          },
+          "deviceToCloudUploadProperties": {
+            "uploadOn": true,
+            "uploadOrder": "OldestFirst",
+            "cloudStorageConnectionString": "{{ storage_account_connection_string }}",
+            "storageContainersForUpload": {
+              "{{ item.local_storage_name }}": {
+                "target": "{{ item.cloud_storage_name }}"
+              }
+            },
+            "deleteAfterUpload": false
+          }
+        }
+      }
+    }
+  }
+}

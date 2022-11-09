@@ -1,0 +1,34 @@
+version: '3'
+
+services:
+  mongodb:
+    image: registry.gitlab.com/octo-technology/les-bg-de-la-data/s-s-all/tribu/tribu-augi/asset/vio_edge/mongodb_raspberrypi:latest
+    container_name: mongodb
+    ports:
+      - 27017:27017
+
+  model_serving:
+    container_name: model_serving
+    image: registry.gitlab.com/octo-technology/les-bg-de-la-data/s-s-all/tribu/tribu-augi/asset/vio_edge/tflite_serving_raspberrypi:latest
+    environment:
+      - TF_CPP_MIN_VLOG_LEVEL=0
+    ports:
+      - 8501:8501
+    volumes:
+      - ./model_serving:/models
+
+  supervisor:
+    container_name: supervisor
+    image: registry.gitlab.com/octo-technology/les-bg-de-la-data/s-s-all/tribu/tribu-augi/asset/vio_edge/supervisor_raspberrypi:latest
+    privileged: true
+    volumes:
+      - ./supervisor/data/storage:/supervisor/data/storage
+      - /opt/vc:/opt/vc
+    ports:
+      - 8000:8000
+
+  ui:
+    container_name: ui
+    image: registry.gitlab.com/octo-technology/les-bg-de-la-data/s-s-all/tribu/tribu-augi/asset/vio_edge/ui_raspberrypi:latest
+    ports:
+      - 8080:80

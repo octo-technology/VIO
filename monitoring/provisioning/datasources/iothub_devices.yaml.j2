@@ -1,0 +1,12 @@
+apiVersion: 1
+datasources:
+  - name: IotHub
+    orgId: 1
+    type: yesoreyeram-infinity-datasource
+    access: proxy
+    isDefault: false
+    url: https://{{ iot_hub_name }}.azure-devices.net/
+    jsonData:
+      httpHeaderName1: 'Authorization'
+    secureJsonData:
+      httpHeaderValue1: '{{ azure_sas_token_bearer }}'

@@ -1,0 +1,18 @@
+country=FR
+ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
+update_config=1
+
+network={
+   ssid="YOUR-NETWORK-SSID"
+   psk="YOUR-NETWORK-PASSWORD"
+   priority=1
+   id_str="mobil"
+}
+
+#network={
+#   ssid="WIFI_NAME"
+#   psk="WIFI_PASSWORD"
+#   priority=2
+#   id_str="home"
+#}
+

@@ -1,0 +1,10 @@
+---
+
+- name: Setup grafana dashboard files (provisioning)
+  hosts: grafana
+  remote_user: "{{ vm_admin_username }}"
+  roles:
+    - role: check_env_vars
+      vars:
+        - env_vars: [ POSTGRES_USERNAME, POSTGRES_PASSWORD ]
+    - role: setup_grafana_dashboard

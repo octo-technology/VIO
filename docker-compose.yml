@@ -1,0 +1,49 @@
+version: '3'
+
+services:
+  mongodb:
+    image: mongo:5.0.2
+    container_name: mongodb
+    ports:
+      - 27017:27017
+
+  model_serving:
+    container_name: model_serving
+    build:
+      context: tflite_serving
+      dockerfile: Dockerfile
+    environment:
+      - TF_CPP_MIN_VLOG_LEVEL=0
+    ports:
+      - 8501:8501
+    volumes:
+      - ./model_serving:/models
+
+  supervisor:
+    container_name: supervisor
+    build:
+      context: supervisor
+      dockerfile: Dockerfile
+    volumes:
+      - ./supervisor/data/storage:/supervisor/data/storage
+    ports:
+      - 8000:8000
+
+  ui:
+    container_name: ui
+    build:
+      context: ui
+      dockerfile: Dockerfile
+    ports:
+      - 8080:80
+
+  grafana:
+    container_name: grafana
+    image: grafana/grafana:latest
+    ports:
+      - 4000:3000
+    environment:
+      - GF_INSTALL_PLUGINS=yesoreyeram-infinity-datasource
+    volumes:
+      - ./monitoring/dashboards:/var/lib/grafana/dashboards
+      - ./monitoring/provisioning:/etc/grafana/provisioning

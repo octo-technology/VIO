@@ -1,0 +1,50 @@
+{
+  "cameras": {
+    "camera_id3": {
+      "type": "fake",
+      "input_images_folder": "people_dataset",
+      "position": "front",
+      "exposition": 100,
+      "models_graph": {
+        "model_id1": {
+          "metadata": "mobilenet_ssd_v2_coco",
+          "depends_on": [],
+          "class_to_detect": ["person"]
+        }
+      },
+      "camera_rule": {
+        "name": "min_nb_objects_rule",
+        "parameters": {
+          "class_to_detect": ["person"],
+          "min_threshold": 1
+        }
+      }
+    },
+    "camera_id2": {
+      "type": "fake",
+      "input_images_folder": "people_dataset",
+      "position": "front",
+      "exposition": 100,
+      "models_graph": {
+        "model_id1": {
+          "metadata": "mobilenet_ssd_v2_face",
+          "depends_on": [],
+          "class_to_detect": ["face"]
+        }
+      },
+      "camera_rule": {
+        "name": "min_nb_objects_rule",
+        "parameters": {
+          "class_to_detect": ["face"],
+          "min_threshold": 1
+        }
+      }
+    }
+  },
+  "item_rule": {
+    "name": "min_threshold_KO_rule",
+    "parameters": {
+      "threshold": 1
+    }
+  }
+}

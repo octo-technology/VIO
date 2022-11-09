@@ -1,0 +1,28 @@
+{
+  "cameras": {
+    "camera_id3": {
+      "type": "fake",
+      "input_images_folder": "marker_images",
+      "position": "back",
+      "exposition": 100,
+      "models_graph": {
+        "model_id4": {
+          "metadata": "marker_quality_control",
+          "depends_on": []
+        }
+      },
+      "camera_rule": {
+        "name": "expected_label_rule",
+        "parameters": {
+          "expected_label": "OK"
+        }
+      }
+    }
+  },
+  "item_rule": {
+    "name": "min_threshold_KO_rule",
+    "parameters": {
+      "threshold": 1
+    }
+  }
+}

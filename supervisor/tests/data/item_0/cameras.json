@@ -1,0 +1,7 @@
+{
+  "camera_id1": {
+    "type": "camera",
+    "exposition": 100,
+    "position": "right_camera"
+  }
+}

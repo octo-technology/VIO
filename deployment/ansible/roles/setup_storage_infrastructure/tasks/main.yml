@@ -1,0 +1,13 @@
+---
+
+- name: Create resource group and storage account
+  import_tasks: resource_group_and_storage_account.yml
+  tags: resource_group_and_storage_account
+
+- name: Create Postgresql DB
+  import_tasks: postgresql_db.yml
+  tags: postgresql_db
+
+- name: Create Grafana VM
+  import_tasks: grafana_vm.yml
+  tags: grafana_vm

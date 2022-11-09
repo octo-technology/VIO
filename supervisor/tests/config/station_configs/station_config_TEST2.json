@@ -1,0 +1,35 @@
+{
+  "cameras": {
+    "camera_id3": {
+      "type": "fake",
+      "input_images_folder": "fake_item",
+      "position": "front",
+      "exposition": 100,
+      "models_graph": {
+        "model_1": {
+          "metadata": "mobilenet_v1_640x640",
+          "depends_on": [],
+          "class_to_detect": "foo"
+        },
+        "model_2": {
+          "metadata": "inception",
+          "depends_on": [
+            "model_1"
+          ]
+        }
+      },
+      "camera_rule": {
+        "name": "expected_label_rule",
+        "parameters": {
+          "expected_label": "OK"
+        }
+      }
+    }
+  },
+  "item_rule": {
+    "name": "min_threshold_KO_rule",
+    "parameters": {
+      "threshold": 1
+    }
+  }
+}

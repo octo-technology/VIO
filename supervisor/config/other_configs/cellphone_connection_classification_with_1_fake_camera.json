@@ -1,0 +1,28 @@
+{
+  "cameras": {
+    "camera_id3": {
+      "type": "fake",
+      "input_images_folder": "cellphone_dataset",
+      "position": "front",
+      "exposition": 100,
+      "models_graph": {
+        "model_id5": {
+          "metadata": "cellphone_connection_control",
+          "depends_on": []
+        }
+      },
+      "camera_rule": {
+        "name": "expected_label_rule",
+        "parameters": {
+          "expected_label": ["connected"]
+        }
+      }
+    }
+  },
+  "item_rule": {
+    "name": "min_threshold_KO_rule",
+    "parameters": {
+      "threshold": 1
+    }
+  }
+}
