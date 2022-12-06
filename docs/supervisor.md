@@ -1,6 +1,7 @@
 # Le Core: Supervisor
 
 Le supervisor orchestre les étapes suivantes dès qu'il est déclenché :
+
 1. capture d'images
 2. sauvegarde des images
 3. sauvegarde des metadata

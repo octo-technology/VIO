@@ -1,13 +1,14 @@
 # Visual Inspection Orchestrator
 
-Répertoire principal du code de Visual Inspection Orchestrator, une application permettant de vérifier la qualité de produits assemblés sur une chaîne de production industrielle.
+Répertoire principal du code de Visual Inspection Orchestrator, un framework modulaire permettant le déploiement de cas d'usage d'inspection visuelle.
 
+Exemple de Usecase: vérifier la qualité de produits assemblés sur une chaîne de production industrielle.
 
 ## Contexte
 
 ### VIO un framework MLOPS
 
-Le framework VIO a été pensé pour accélérer le déploiement d'un usecase d'inspection visuelle et proposé un cadre sur les différentes briques ques sont:
+Le framework VIO a été pensé pour accélérer le déploiement d'un usecase d'inspection visuelle et proposé un cadre sur les différentes briques du MLOPS que sont:
 
 - La collection de donnée (data gathering)
 - la supervision de modèles (model monitoring)
