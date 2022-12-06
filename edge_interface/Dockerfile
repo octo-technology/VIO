@@ -8,5 +8,5 @@ RUN npm run build
 
 FROM nginx as production-stage
 RUN mkdir /ui
-COPY --from=build-stage /ui/dist /ui
+COPY --from=build-stage /edge_interface/dist /ui
 COPY nginx.conf /etc/nginx/nginx.conf

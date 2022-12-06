@@ -60,7 +60,7 @@ Ces micro-services (ou modules ou applications) sont tous (ou presque) packagés
 
 
 ## Développement
-Cf [README.md](docs/README.md).
+Cf [README.md](./supervisor/README.md).
 
 
 ## La CI Gitlab et le déploiement

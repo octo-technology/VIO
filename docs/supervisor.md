@@ -13,7 +13,7 @@ Le supervisor orchestre les étapes suivantes dès qu'il est déclenché :
 
 ## Développement
 
-Pour faciliter l'installation de l'environnement de développment, un [Makefile](Makefile) automatise les tâches:
+Pour faciliter l'installation de l'environnement de développment, un [Makefile](../supervisor/Makefile) automatise les tâches:
 ```shell
 $ make
 ❓ Use `make <target>'
