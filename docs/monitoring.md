@@ -1,7 +1,5 @@
 # Edge fleet monitoring 
 
-[[_TOC_]]
-
 The monitoring is here to help us monitor our IoTHub Devices and Modules via a Grafana dashboard.
 
 ### Dashboards
@@ -36,6 +34,18 @@ This command returns you a sas token that you need to copy in the field ```httpH
 
 ## Deployment
 
+# Prerequisites
+
+install sshpass,
+    - on mac: 
+    ```
+    brew install hudochenkov/sshpass/sshpass
+    ```
+    - on linux
+    ```
+    apt-get install sshpass
+    ```
+
 ### Deploy the Grafana in Azure
 
 To deploy your Grafana on Azure, launch ``` make deploy-grafana-azure``` 
@@ -52,5 +62,7 @@ To get the public IP address, to you must go to the Azure Portal --> our subscri
 
 To have access to the Grafana, you fill the address bar of your navigator with ```Public IP Adress:Port```.
 Here it's [51.11.242.209:3000](http://51.11.242.209:3000)
+
+
 
 

@@ -5,12 +5,11 @@ theme: readthedocs
 nav:
     - Home: index.md
     - Core: supervisor.md
-    - Deployment:
-        - edge onboarding: edge_deployment.md
-        - cloud infra deployment: cloud_deployment.md
+    - Deployment: deployment.md
     - Model serving: model_serving.md
     - Edge interface: edge_interface.md
     - Monitoring: monitoring.md
     - Contribute:
       - Contribute: CONTRIBUTING.md
       - Organization: ORGANIZATION.md
+      - CICD: CICD.md

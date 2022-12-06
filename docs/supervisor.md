@@ -1,4 +1,4 @@
-# Supervisor
+# Le Core: Supervisor
 
 Le supervisor orchestre les étapes suivantes dès qu'il est déclenché :
 1. capture d'images
@@ -6,10 +6,6 @@ Le supervisor orchestre les étapes suivantes dès qu'il est déclenché :
 3. sauvegarde des metadata
 4. faire l'inférence des modèles sur les images
 6. sauvegarde des résultats
-
-
-## Table des matières
-[[_TOC_]]
 
 ## Développement
 

@@ -1,11 +1,5 @@
 # The V.IO Organizational Manifesto
 
-[[_TOC_]]
-
-## Google Drive folder
-The project has a dedicated Google Drive folder where all resources related to the project are stored: [Google Drive folder](https://drive.google.com/drive/folders/1PGOw3IEn8Nxmm7wns015LFOUjm0c234D)
-
-## Organization principles
 The organization principles of the V.IO project are inspired by selected capabilities of the Accelerate framework,
 originally presented in the book *Accelerate: The Science of Lean Software and DevOps: Building and Scaling High
 Performing Technology Organizations*. The application of these capabilities to the delivery of Machine Learning projects
