@@ -12,5 +12,6 @@ nav:
     - Contribute:
       - Contribute: CONTRIBUTING.md
       - Organization: ORGANIZATION.md
-      - CICD: CICD.md
-      - LICENSE: LICENSE.md
+      - ci-cd: CICD.md
+      - License: LICENSE.md
+      - Authors: AUTHORS.md

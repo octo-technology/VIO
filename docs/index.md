@@ -28,10 +28,10 @@ Voilà un aperçu de la stack d'une implémentation de VIO déployé sur le clou
 Les sous-dossiers du dossier courant, à savoir :
 
 - [le core de l'orchestration](supervisor.md) 
+- [les outils de déploiement](deployment.md)
+- [le monitoring de la flotte](monitoring.md)
 - [l'interface à l'edge](edge_interface.md)
 - [l'instance de serving de modèles](model_serving.md)
-- [le monitoring de la flotte](monitoring.md)
-- [les outils de déploiement](deployment.md)
 
 sont chacun un module, une application, un micro-service indépendant. Chacun d'eux est donc fonctionnel seul (modulo une BD pour supervisor).
 
