@@ -139,7 +139,7 @@ In Terminal, type the following command:
 $ diskutil list
 ```
 You should see something like:
-![diskutil-list-SDCARD](docs/diskutil-list-SDCARD.png)
+![diskutil-list-SDCARD](images/diskutil-list-SDCARD.png)
 In this case `/dev/disk2` is my SD card.
 
 #### Format SD card
@@ -160,7 +160,7 @@ To check if the formatting was successful, use above command again:
 $ diskutil list
 ```
 Look for a disk named `SDCARD` like in the following picture:
-![diskutil-list-SDCARD](docs/diskutil-list-SDCARD.png)
+![diskutil-list-SDCARD](images/diskutil-list-SDCARD.png)
 
 #### Download the Raspbian image
 It exists a lot of Raspbian images able to run on Raspberry. Here is an non exhaustive list:
@@ -194,7 +194,7 @@ To check if the flashing was successful, use above command again:
 $ diskutil list
 ```
 Look for a disk named `SDCARD` like in the following picture:
-![diskutil-list-SDCARD](docs/diskutil-list-SDCARD.png)
+![diskutil-list-SDCARD](images/diskutil-list-SDCARD.png)
 
 
 #### Enable SSH and set WIFI credentials

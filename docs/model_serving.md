@@ -1,3 +1,3 @@
-# Model Serving
+# Model serving
 
-Documentation coming soon...
+documentation coming soon..

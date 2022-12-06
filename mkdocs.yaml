@@ -6,10 +6,11 @@ nav:
     - Home: index.md
     - Core: supervisor.md
     - Deployment: deployment.md
+    - Monitoring: monitoring.md
     - Model serving: model_serving.md
     - Edge interface: edge_interface.md
-    - Monitoring: monitoring.md
     - Contribute:
       - Contribute: CONTRIBUTING.md
       - Organization: ORGANIZATION.md
       - CICD: CICD.md
+      - LICENSE: LICENSE.md
