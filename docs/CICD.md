@@ -1,6 +1,6 @@
 # La CICD
 
-Nous utilisons la CI Gitlab pour l'intégration continue et pour le déploiement continu. Celle-ci est implémentée dans le fichiers [.gitlab-ci.yml](.gitlab-ci.yml).
+Nous utilisons la CI Gitlab pour l'intégration continue et pour le déploiement continu.
 
 La CI est composée de 3 étapes principales (stages) :
 
