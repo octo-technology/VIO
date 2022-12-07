@@ -29,11 +29,11 @@ VIO core has been built following the hexagonal architecture patterns, therefore
 Each sub folders below are indeed a module, an application, an independant micro service. Anyone of them is therefore functional by itself.
 Les sous-dossiers du dossier courant, à savoir :
 
-- [le core de l'orchestration](supervisor.md) 
-- [les outils de déploiement](deployment.md)
-- [le monitoring de la flotte](monitoring.md)
-- [l'interface à l'edge](edge_interface.md)
-- [l'instance de serving de modèles](model_serving.md)
+- [The core](supervisor.md) 
+- [The deployment tools](deployment.md)
+- [The fleet monitoring](monitoring.md)
+- [The edge interface](edge_interface.md)
+- [The model serving](model_serving.md)
 
 All of those modules have been packages inside a dedicated docker images to facilitate their deployment.
 
@@ -52,7 +52,6 @@ To launch the complete stack, you'll need a minima docker install on your machin
 
 To launch the stack you can use the [Makefile](../Makefile) on the root of the repository which define the different target based on the [docker-compose.yml](../docker-compose.yml):
 
-- 
 - run all services (supervisor, model-serving, Mongo DB, UI) : `make services-up`
 - run the core (supervisor) containerized : `make supervisor`
 - run the model serving containerized: `make model_serving`
