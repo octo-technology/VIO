@@ -1,6 +1,6 @@
 # Deployment
 
-## Cloud infrastructure deployment on Azure
+## Cloud - Infrastructure deployment on Azure
 
 This section allows you to create all the Azure infrastructure for VIO:
 - Storage resources (Storage Account + PostgreSQL)
@@ -89,7 +89,7 @@ The following command creates all the Azure IoT infrastructure for VIO.
 $ ansible-playbook ansible/create_azure_cloud_infrastructure.yml -e 'ansible_python_interpreter=<path_to_your_conda_env_python_interpreter>'
 ```
 
-## Deploy Grafana dashboard and data-sources
+## Cloud - Deploy Grafana dashboard and data-sources
 
 To deploy Grafana [dashboard](../monitoring/dashboards) and [data-sources](../monitoring/provisioning), run the following playbook :
 ```shell
@@ -99,7 +99,7 @@ $ ansible-playbook -i ansible/inventory/production.ini ansible/update_grafana_da
 This will copy the files on the Grafana resource deployed in Azure and relaunch the grafana service to take into account the brand uploaded files. 
 
 
-## Raspberry Setup (Raspbian installation)
+## Edge - Raspberry Setup (Raspbian installation)
 The Raspberry can be set up thanks to this [Makefile](Makefile).
 
 First thing first, insert the SD card in your computer to mount it. **Before typing any command**, check that the SD card is effectively mounted on `/dev/disk2`, by typing:
@@ -234,7 +234,7 @@ $ diskutil unmountDisk $(MOUNTING_DIR)
 $ diskutil eject $(MOUNTING_DIR)
 ```
 
-## Install and configure the IoT Edge Agent on RaspberryPI
+## Edge - Install and configure the IoT Edge Agent on RaspberryPI
 
 In order to be managed by Azure IoT Hub, each edge device must install an IoT Edge Agent and _connect_ to the Hub. 
 
