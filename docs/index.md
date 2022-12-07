@@ -6,7 +6,7 @@ Usecase example: Quality check of a product manufactured on an assembly line.
 
 ## Context
 
-### An MLOPS framework
+### MLOPS framework
 
 VIO framework propose a generic code base for each of the following MLOPS features:
 
@@ -18,7 +18,7 @@ VIO framework propose a generic code base for each of the following MLOPS featur
 
  ![vio-mlops](images/vio_mlops.png)
  
-### A modular framework
+### Modular framework
 
 VIO core has been built following the hexagonal architecture patterns, therefore it can be adapted to its production environement constraints (cloud provider, hardware, ML framework...).
 
@@ -43,7 +43,6 @@ Here you can find an implementation of VIO deployed on Azure managing a fleet of
  
  ![vio-architecture-stack](images/vio_azure_stack.png)
 
-
 ## Usage
 
 To launch the complete stack, you'll need a minima docker install on your machine.
@@ -63,7 +62,6 @@ Each of the above target correspond to a command [docker-compose.yml](../docker-
 ```shell
 $ docker-compose up -d --build supervisor
 ```
-
 
 ### Run the stack thanks to docker-compose commands
 
