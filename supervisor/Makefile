@@ -4,10 +4,11 @@ SHELL := /bin/bash
 .SILENT:
 
 .EXPORT_ALL_VARIABLES:
+.DEFAULT_GOAL: help
+
 REPO_DIRECTORY:=$(shell pwd)
 PYTHONPATH:=${PYTHONPATH}:${REPO_DIRECTORY}
 
-.PHONY: help
 help:
 	echo "❓ Use \`make <target>'"
 	grep -E '^\.PHONY: [a-zA-Z0-9_-]+ .*?## .*$$' $(MAKEFILE_LIST) | \
@@ -16,7 +17,7 @@ help:
 
 .PHONY: lint  ## 🐍 Lint Python files to conform to the PEP 8 style guide
 lint:
-	flake8 --exclude venv*
+	flake8 --count --show-source --statistics --exclude venv*
 
 .PHONY: autopep8  ## 🐍 Automatically formats Python code to conform to the PEP 8 style guide
 autopep8:
@@ -26,13 +27,14 @@ autopep8:
 conda_env:
 	conda create --name supervisor python=3.9 -y
 
-.PHONY: dependencies  ## ⏬ Install development dependencies
-dependencies:
+.PHONY: install  ## ⏬ Install development dependencies
+install:
+	python -m pip install --upgrade pip
 	pip install -e .[dev]
+	pip list --outdated
 
 .PHONY: tests  ## ✅ Launch all the tests
-tests:
-	$(MAKE) unit_tests && $(MAKE) integration_tests && $(MAKE) functional_tests
+tests: unit_tests integration_tests functional_tests
 	coverage combine
 
 .PHONY: unit_tests  ## ✅ Launch the unit tests
