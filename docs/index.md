@@ -7,11 +7,11 @@ Usecase example: Quality check of a product manufactured on an assembly line.
 
 ## Features
 
-- [The core](docs/supervisor.md) 
-- [The deployment tools](docs/deployment.md)
-- [The fleet monitoring](docs/monitoring.md)
-- [The edge interface](docs/edge_interface.md)
-- [The model serving](docs/model_serving.md)
+- [The core](supervisor.md) 
+- [The deployment tools](deployment.md)
+- [The fleet monitoring](monitoring.md)
+- [The edge interface](edge_interface.md)
+- [The model serving](model_serving.md)
 
 
 ## Install the framework
@@ -42,10 +42,10 @@ To check all services are up and running you can run the command `docker ps`, yo
 
 Once all services are up and running you can access:
 
-- the swagger of the core API (OrchestratoAPI): http://localhost:8000/docs
-- the swagger of the model serving: http://localhost:8501/docs
-- the monitoring grafana: http://localhost:4000/login
-- the edge interface: http://localhost:8080
+- the swagger of the core API (OrchestratoAPI): [http://localhost:8000/docs](http://localhost:8000/docs)
+- the swagger of the model serving: [http://localhost:8501/docs](http://localhost:8501/docs)
+- the monitoring grafana: [http://localhost:4000/login](http://localhost:4000/login)
+- the edge interface: [http://localhost:8080](http://localhost:8080)
 
 From the edge interface you can load a configuration and run the trigger button that will trigger the Core API and launch the following actions:
 
