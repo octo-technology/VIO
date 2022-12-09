@@ -1,0 +1,20 @@
+site_name: vio
+site_url: https://github.com/octo-technology/VIO
+repo_url: https://github.com/octo-technology/VIO
+theme:
+  name: material
+nav:
+    - Getting Started: index.md
+    - Overview: overview.md
+    - Core: supervisor.md
+    - Deployment: deployment.md
+    - Monitoring: monitoring.md
+    - Model serving: model_serving.md
+    - Edge interface: edge_interface.md
+    - Contribute:
+      - Contribute: CONTRIBUTING.md
+      - Organization: ORGANIZATION.md
+      - CI-CD: CICD.md
+      - Documentation: documentation.md
+      - License: LICENSE.md
+      - Authors: AUTHORS.md

@@ -1,10 +1,9 @@
-# VIO-EDGE
+# Getting Started
 
 Visual Inspection Orchestrator is a modular framework made to ease the deployment of VI usecases.
 
 Usecase example: Quality check of a product manufactured on an assembly line.
 
-VIO full documentation can be found [here](https://octo-technology.github.io/VIO/)
 
 ## Features
 
@@ -14,13 +13,12 @@ VIO full documentation can be found [here](https://octo-technology.github.io/VIO
 - [The edge interface](docs/edge_interface.md)
 - [The model serving](docs/model_serving.md)
 
+
 ## Install the framework
 
-`git clone git@github.com:octo-technology/VIO.git`
+To launch the complete stack, you'll need a minima docker install on your machine.
 
-Prerequisites: 
-- need docker installed
-- need make installed
+`git clone git@github.com:octo-technology/VIO.git`
 
 ## Run the stack
 
@@ -32,11 +30,14 @@ To launch the stack you can use the [Makefile](../Makefile) on the root of the r
 - run the edge interface containerized : `make ui`
 - stop and delete all running services : `make services-down`
 
+Each of the above target correspond to a command [docker-compose.yml](../docker-compose.yml). For example, the target `supervisor` correspond to :
 
-## License
+```shell
+$ docker-compose up -d --build supervisor
+```
 
-VIO is licensed under [Apache 2.0 License](docs/LICENSE.md)
+## Implementation example
 
-## Contributing
-
-Learn more about how to get involved on [CONTRIBUTING.md](docs/CONTRIBUTING.md) guide
+Here you can find an implementation of VIO deployed on Azure managing a fleet of Raspberrys:
+ 
+ ![vio-architecture-stack](images/vio_azure_stack.png)

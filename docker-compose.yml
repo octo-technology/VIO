@@ -32,7 +32,7 @@ services:
   ui:
     container_name: ui
     build:
-      context: ui
+      context: edge_interface
       dockerfile: Dockerfile
     ports:
       - 8080:80

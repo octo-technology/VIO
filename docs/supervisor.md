@@ -1,19 +1,16 @@
-# Supervisor
+# Le Core: Supervisor
 
 Le supervisor orchestre les étapes suivantes dès qu'il est déclenché :
+
 1. capture d'images
 2. sauvegarde des images
 3. sauvegarde des metadata
 4. faire l'inférence des modèles sur les images
 6. sauvegarde des résultats
 
-
-## Table des matières
-[[_TOC_]]
-
 ## Développement
 
-Pour faciliter l'installation de l'environnement de développment, un [Makefile](Makefile) automatise les tâches:
+Pour faciliter l'installation de l'environnement de développment, un [Makefile](../supervisor/Makefile) automatise les tâches:
 ```shell
 $ make
 ❓ Use `make <target>'

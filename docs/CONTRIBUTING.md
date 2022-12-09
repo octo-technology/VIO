@@ -1,6 +1,5 @@
 # Contributing
 
-
 **Contribution rules**
 - The code must be exhaustively tested.
 - Python test package: `pytest` (with possibility to use unittest mocks)
