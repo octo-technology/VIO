@@ -1,4 +1,4 @@
-# ui
+# edge_interface
 
 ## Development setup
 

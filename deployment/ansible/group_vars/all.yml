@@ -53,7 +53,7 @@ devices:
         version: rpi-0.7.0
         ports: 8501:8501
         privileged: true
-      ui:
+      edge_interface:
         image: registry.gitlab.com/octo-technology/les-bg-de-la-data/s-s-all/tribu/tribu-augi/asset/vio_edge/ui_raspberrypi
         version: rpi-0.7.0
         ports: 8080:80
@@ -96,7 +96,7 @@ devices:
         version: rpi-0.7.0
         ports: 8501:8501
         privileged: true
-      ui:
+      edge_interface:
         image: registry.gitlab.com/octo-technology/les-bg-de-la-data/s-s-all/tribu/tribu-augi/asset/vio_edge/ui_raspberrypi
         version: rpi-0.7.0
         ports: 8080:80
@@ -135,7 +135,7 @@ devices:
 #        version: rpi-0.5.8
 #        ports: 8501:8501
 #        privileged: true
-#      ui:
+#      edge_interface:
 #        image: registry.gitlab.com/octo-technology/les-bg-de-la-data/s-s-all/tribu/tribu-augi/asset/vio_edge/ui_raspberrypi
 #        version: rpi-0.5.8
 #        ports: 8080:80
@@ -174,7 +174,7 @@ devices:
 #        version: rpi-0.5.8
 #        ports: 8501:8501
 #        privileged: true
-#      ui:
+#      edge_interface:
 #        image: registry.gitlab.com/octo-technology/les-bg-de-la-data/s-s-all/tribu/tribu-augi/asset/vio_edge/ui_raspberrypi
 #        version: rpi-0.5.8
 #        ports: 8080:80
@@ -213,7 +213,7 @@ devices:
 #        version: rpi-0.5.8
 #        ports: 8501:8501
 #        privileged: true
-#      ui:
+#      edge_interface:
 #        image: registry.gitlab.com/octo-technology/les-bg-de-la-data/s-s-all/tribu/tribu-augi/asset/vio_edge/ui_raspberrypi
 #        version: rpi-0.5.8
 #        ports: 8080:80
@@ -252,7 +252,7 @@ devices:
 #        version: rpi-0.5.8
 #        ports: 8501:8501
 #        privileged: true
-#      ui:
+#      edge_interface:
 #        image: registry.gitlab.com/octo-technology/les-bg-de-la-data/s-s-all/tribu/tribu-augi/asset/vio_edge/ui_raspberrypi
 #        version: rpi-0.5.8
 #        ports: 8080:80
@@ -291,7 +291,7 @@ devices:
 #        version: rpi-0.5.8
 #        ports: 8501:8501
 #        privileged: true
-#      ui:
+#      edge_interface:
 #        image: registry.gitlab.com/octo-technology/les-bg-de-la-data/s-s-all/tribu/tribu-augi/asset/vio_edge/ui_raspberrypi
 #        version: rpi-0.5.8
 #        ports: 8080:80
