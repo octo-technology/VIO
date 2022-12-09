@@ -1,8 +1,10 @@
 # VIO-EDGE
 
-Répertoire principal du code de Visual Inspection Orchestrator, une application permettant de vérifier la qualité de produits assemblés sur une chaîne de production industrielle.
+Visual Inspection Orchestrator is a modular framework made to ease the deployment of VI usecases.
 
-Full documentation can be found [here](https://octo-technology.github.io/VIO/)
+Usecase example: Quality check of a product manufactured on an assembly line.
+
+VIO full documentation can be found [here](https://octo-technology.github.io/VIO/)
 
 ## Features
 
