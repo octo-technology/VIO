@@ -1,3 +1,5 @@
 # Edge interface
 
-documentation coming soon..
+more documentation coming soon..
+
+ ![edge_interface_screenshot](images/edge_interface_screenshot.png)
