@@ -1,9 +1,11 @@
 site_name: vio
 site_url: https://github.com/octo-technology/VIO
 repo_url: https://github.com/octo-technology/VIO
-theme: readthedocs
+theme:
+  name: material
 nav:
-    - Home: index.md
+    - Getting Started: index.md
+    - Overview: overview.md
     - Core: supervisor.md
     - Deployment: deployment.md
     - Monitoring: monitoring.md
@@ -12,6 +14,7 @@ nav:
     - Contribute:
       - Contribute: CONTRIBUTING.md
       - Organization: ORGANIZATION.md
-      - ci-cd: CICD.md
+      - CI-CD: CICD.md
+      - Documentation: documentation.md
       - License: LICENSE.md
       - Authors: AUTHORS.md

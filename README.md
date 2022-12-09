@@ -2,54 +2,39 @@
 
 Répertoire principal du code de Visual Inspection Orchestrator, une application permettant de vérifier la qualité de produits assemblés sur une chaîne de production industrielle.
 
-## Documentation
+Full documentation can be found [here](https://octo-technology.github.io/VIO/)
 
-https://octo-technology.github.io/VIO/
+## Features
 
-to update the documentation
+- [The core](docs/supervisor.md) 
+- [The deployment tools](docs/deployment.md)
+- [The fleet monitoring](docs/monitoring.md)
+- [The edge interface](docs/edge_interface.md)
+- [The model serving](docs/model_serving.md)
 
-To build locally your github pages site
-```shell
-$ mkdocs build
-```
-To test locally your github pages site
-```shell
-$ mkdocs serve
-```
-to push the github pages updates to the dedicated branch gh-deploy
-```shell
-$ mkdocs gh-deploy
-```
+## Install the framework
 
-## Lancer la stack complète avec le Makefile
+`git clone git@github.com:octo-technology/VIO.git`
 
-Pour lancer l'ensemble de la stack, le [Makefile](Makefile) définit des targets, s'appuyant sur le [docker-compose.yml](docker-compose.yml), permettant de :
+Prerequisites: 
+- need docker installed
+- need make installed
 
-- lancer tous les services (supervisor, model-serving, Mongo DB, UI) : `make services-up`
-- lancer le supervisor conteneurisé : `make supervisor`
-- lancer le model-serving conteneurisé : `make model_serving`
-- lancer l'ui conteneurisé : `make ui`
-- arrêter et supprimer tous les services : `make services-down`
+## Run the stack
 
-Chacune des targets précédentes correspond à une commande [docker-compose.yml](docker-compose.yml).
+To launch the stack you can use the [Makefile](../Makefile) on the root of the repository which define the different target based on the [docker-compose.yml](../docker-compose.yml):
 
-Par exemple, la target `supervisor` correspond à :
-
-```shell
-$ docker-compose up -d --build supervisor
-```
+- run all services (supervisor, model-serving, Mongo DB, UI) : `make services-up`
+- run the core (supervisor) containerized : `make supervisor`
+- run the model serving containerized: `make model_serving`
+- run the edge interface containerized : `make ui`
+- stop and delete all running services : `make services-down`
 
 
-## Lancer la stack complète avec des commandes docker-compose
+## License
 
-Un autre moyen de lancer toute la stack en une commande est le suivant :
+VIO is licensed under [Apache 2.0 License](docs/LICENSE.md)
 
-```shell
-$ docker-compose up -d --build
-```
+## Contributing
 
-Celle-ci lance tous les services de la stack définis dans le [docker-compose.yml](docker-compose.yml). On peut ensuite les arrêter tous avec la commande (les containers seront arrêtés et supprimés) :
-
-```shell
-$ docker-compose down
-```
+Learn more about how to get involved on [CONTRIBUTING.md](docs/CONTRIBUTING.md) guide

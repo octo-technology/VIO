@@ -1,4 +1,4 @@
-# The V.IO Organizational Manifesto
+# The Organizational Manifesto
 
 The organization principles of the V.IO project are inspired by selected capabilities of the Accelerate framework,
 originally presented in the book *Accelerate: The Science of Lean Software and DevOps: Building and Scaling High
