@@ -36,10 +36,10 @@ To check all services are up and running you can run the command `docker ps`, yo
 
 Once all services are up and running you can access:
 
-- the swagger of the core API (OrchestratoAPI): http://localhost:8000/docs
-- the swagger of the model serving: http://localhost:8501/docs
-- the monitoring grafana: http://localhost:4000/login
-- the edge interface: http://localhost:8080
+- the swagger of the core API (OrchestratoAPI): [http://localhost:8000/docs](http://localhost:8000/docs)
+- the swagger of the model serving: [http://localhost:8501/docs](http://localhost:8501/docs)
+- the monitoring grafana: [http://localhost:4000/login](http://localhost:4000/login)
+- the edge interface: [http://localhost:8080](http://localhost:8080)
 
 From the edge interface you can load a configuration and run the trigger button that will trigger the Core API and launch the following actions:
 

@@ -20,6 +20,8 @@ To launch the complete stack, you'll need a minima docker install on your machin
 
 `git clone git@github.com:octo-technology/VIO.git`
 
+Note: The VIO docker images will be soon available in a public registry, stay tunned.
+
 ## Run the stack
 
 To launch the stack you can use the [Makefile](../Makefile) on the root of the repository which define the different target based on the [docker-compose.yml](../docker-compose.yml):
