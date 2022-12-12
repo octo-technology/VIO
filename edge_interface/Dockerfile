@@ -1,12 +1,12 @@
 FROM node:12.2.0-alpine as build-stage
 
-WORKDIR /ui
+WORKDIR /edge_interface
 COPY package*.json ./
 RUN npm install
 COPY ./ .
 RUN npm run build
 
 FROM nginx as production-stage
-RUN mkdir /ui
-COPY --from=build-stage /edge_interface/dist /ui
+RUN mkdir /edge_interface
+COPY --from=build-stage /edge_interface/dist /edge_interface
 COPY nginx.conf /etc/nginx/nginx.conf

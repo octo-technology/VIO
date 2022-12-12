@@ -18,9 +18,9 @@ model_serving:
 supervisor:
 	docker-compose up -d --build supervisor
 
-.PHONY: ui ## 📸 Start ui inside a docker container
-ui:
-	docker-compose up -d --build ui
+.PHONY: edge_interface ## 📸 Start ui inside a docker container
+edge_interface:
+	docker-compose up -d --build edge_interface
 
 .PHONY: mongodb ## 📁 Start mongodb inside a docker container
 mongodb:

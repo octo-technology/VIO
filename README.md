@@ -27,11 +27,23 @@ Prerequisites:
 To launch the stack you can use the [Makefile](../Makefile) on the root of the repository which define the different target based on the [docker-compose.yml](../docker-compose.yml):
 
 - run all services (supervisor, model-serving, Mongo DB, UI) : `make services-up`
-- run the core (supervisor) containerized : `make supervisor`
-- run the model serving containerized: `make model_serving`
-- run the edge interface containerized : `make ui`
+
 - stop and delete all running services : `make services-down`
 
+To check all services are up and running you can run the command `docker ps`, you should see something like below:
+
+ ![stack-up-with-docker](docs/images/stack-up-with-docker.png)
+
+Once all services are up and running you can access:
+
+- the swagger of the core API (OrchestratoAPI): [http://localhost:8000/docs](http://localhost:8000/docs)
+- the swagger of the model serving: [http://localhost:8501/docs](http://localhost:8501/docs)
+- the monitoring grafana: [http://localhost:4000/login](http://localhost:4000/login)
+- the edge interface: [http://localhost:8080](http://localhost:8080)
+
+From the edge interface you can load a configuration and run the trigger button that will trigger the Core API and launch the following actions:
+
+ ![vio-architecture-stack](docs/images/supervisor-actions.png)
 
 ## License
 

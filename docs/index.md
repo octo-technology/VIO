@@ -7,11 +7,11 @@ Usecase example: Quality check of a product manufactured on an assembly line.
 
 ## Features
 
-- [The core](docs/supervisor.md) 
-- [The deployment tools](docs/deployment.md)
-- [The fleet monitoring](docs/monitoring.md)
-- [The edge interface](docs/edge_interface.md)
-- [The model serving](docs/model_serving.md)
+- [The core](supervisor.md) 
+- [The deployment tools](deployment.md)
+- [The fleet monitoring](monitoring.md)
+- [The edge interface](edge_interface.md)
+- [The model serving](model_serving.md)
 
 
 ## Install the framework
@@ -19,6 +19,8 @@ Usecase example: Quality check of a product manufactured on an assembly line.
 To launch the complete stack, you'll need a minima docker install on your machine.
 
 `git clone git@github.com:octo-technology/VIO.git`
+
+Note: The VIO docker images will be soon available in a public registry, stay tunned. For now you can download the repository and build the image locally.
 
 ## Run the stack
 
@@ -35,6 +37,21 @@ Each of the above target correspond to a command [docker-compose.yml](../docker-
 ```shell
 $ docker-compose up -d --build supervisor
 ```
+
+To check all services are up and running you can run the command `docker ps`, you should see something like below:
+
+![stack-up-with-docker](images/stack-up-with-docker.png)
+
+Once all services are up and running you can access:
+
+- the swagger of the core API (OrchestratoAPI): [http://localhost:8000/docs](http://localhost:8000/docs)
+- the swagger of the model serving: [http://localhost:8501/docs](http://localhost:8501/docs)
+- the monitoring grafana: [http://localhost:4000/login](http://localhost:4000/login)
+- the edge interface: [http://localhost:8080](http://localhost:8080)
+
+From the edge interface you can load a configuration and run the trigger button that will trigger the Core API and launch the following actions:
+
+ ![vio-architecture-stack](images/supervisor-actions.png)
 
 ## Implementation example
 

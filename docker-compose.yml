@@ -29,8 +29,8 @@ services:
     ports:
       - 8000:8000
 
-  ui:
-    container_name: ui
+  edge_interface:
+    container_name: edge_interface
     build:
       context: edge_interface
       dockerfile: Dockerfile
