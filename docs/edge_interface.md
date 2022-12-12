@@ -6,7 +6,7 @@
 2. Trigger the orchestrator (core)
  ![edge_interface_trigger_screen](images/edge_interface_trigger_screen.png)
 
-3. review the results
+3. Review the results
  ![edge_interface_item_list_screen](images/edge_interface_item_list_screen.png)
  
  

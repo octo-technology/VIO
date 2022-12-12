@@ -20,7 +20,7 @@ To launch the complete stack, you'll need a minima docker install on your machin
 
 `git clone git@github.com:octo-technology/VIO.git`
 
-Note: The VIO docker images will be soon available in a public registry, stay tunned.
+Note: The VIO docker images will be soon available in a public registry, stay tunned. For now you can download the repository and build the image locally.
 
 ## Run the stack
 
