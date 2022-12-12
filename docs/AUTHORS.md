@@ -4,10 +4,10 @@ This AI asset was designed by Accenture Technology in collaboration with Octo Te
 
 Members of the team involved into the development of the asset are:
 
-- [yannick.drant](yannick.drant@octo.com)
-- [karim.sayadi](karim.sayadi@octo.com)
-- [baptiste.ojeanson](baptiste.ojeanson@octo.com)
-- [louison.roger](louison.roger@octo.com)
+- [yannick.drant](mailto:yannick.drant@octo.com)
+- [karim.sayadi](mailto:karim.sayadi@octo.com)
+- [baptiste.ojeanson](mailto:baptiste.ojeanson@octo.com)
+- [louison.roger](mailto:louison.roger@octo.com)
 - sofiene.alouini
 - baptiste.saintot
 
