@@ -56,7 +56,7 @@ class ModelInfos:
             objectness_scores = inventory.models[model_type].get('output').get('objectness_scores')
             number_of_boxes = inventory.models[model_type].get('output').get('number_of_boxes')
             detection_classes = inventory.models[model_type].get('output').get('detection_classes')
-        except(AttributeError):
+        except AttributeError:
             boxes_coordinates = None
             objectness_scores = None
             number_of_boxes = None

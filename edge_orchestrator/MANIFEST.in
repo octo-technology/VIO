@@ -1,0 +1,2 @@
+include edge_orchestrator/logger.cfg
+recursive-include config *.json
