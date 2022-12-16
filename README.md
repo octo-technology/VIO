@@ -1,3 +1,4 @@
+![edge_orchestrator CI](https://github.com/octo-technology/VIO/actions/workflows/edge_orchestrator_ci.yml/badge.svg)![GitHub issues](https://img.shields.io/github/issues/octo-technology/VIO)
 # VIO-EDGE
 
 Visual Inspection Orchestrator is a modular framework made to ease the deployment of VI usecases.
