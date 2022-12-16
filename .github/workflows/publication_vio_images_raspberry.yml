@@ -52,6 +52,9 @@ jobs:
           tags: type=semver,pattern={{major}}.{{minor}}.{{patch}}
           flavor: latest=auto
 
+      - name: Set up Docker Buildx (multi-platform build)
+        uses: docker/setup-buildx-action@v2
+
       - name: Build and push Docker images
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
         with:
