@@ -1,0 +1,35 @@
+name: pages publication in branch gh-pages
+
+# this workflow will trigger the pages-build-deployment workflow that will deploy the branch gh-pages to github pages
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  generate_and_deploy_documentation:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.8
+
+      - name: Install mkdocs
+        run: pip install mkdocs-material
+
+      - name: build documentation in site folder
+        run: mkdocs build
+
+      - name: Deploy site folder to GitHub Pages
+        if: success()
+        uses: crazy-max/ghaction-github-pages@v3
+        with:
+          target_branch: gh-pages
+          build_dir: site
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
