@@ -1,24 +1,48 @@
-name: edge_serving images publication to Github registry
+name: CI edge_interface
+run-name: edge_interface CI on branch >> ${{ github.ref_name }} <<
 
-on: workflow_dispatch
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    paths:
+      - 'edge_interface/**'
 
 env:
   REGISTRY: ghcr.io
 
 jobs:
+  lint_and_test_on_edge_interface:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 12
+
+      - name: Install dependencies
+        run: npm install
+        working-directory: ./edge_interface
+
+      - name: Lint
+        run: npm run lint
+        working-directory: ./edge_interface
+
   build_and_push_images:
     name: Push Docker image to multiple registries
+    needs: lint_and_test_on_edge_interface
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
         include:
-          - dockerfile: ./model_serving/Dockerfile
-            image: ghcr.io/${{ github.repository }}/edge_model_serving
-            context: ./model_serving
-          - dockerfile: ./tflite_serving/Dockerfile
-            image: ghcr.io/${{ github.repository }}/edge_tflite_serving
-            context: ./tflite_serving
+          - dockerfile: ./edge_interface/Dockerfile
+            image: ghcr.io/${{ github.repository }}/edge_interface
+            context: ./edge_interface
     permissions:
       packages: write
       contents: read
@@ -50,6 +74,6 @@ jobs:
         with:
           context: ${{ matrix.context }}
           file: ${{ matrix.dockerfile }}
-          push: true
+          push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}

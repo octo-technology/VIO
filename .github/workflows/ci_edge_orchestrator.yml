@@ -1,18 +1,13 @@
-name: edge_orchestrator CI
+name: CI edge_orchestrator
 run-name: edge_orchestrator CI on branch >> ${{ github.ref_name }} <<
 
 on:
   push:
     branches:
       - main
-    tags:
-      - v[0-9]+.[0-9]+.[0-9]+*
   pull_request:
     paths:
       - 'supervisor/**'
-  release:
-    types:
-      - created
 
 env:
   REGISTRY: ghcr.io
