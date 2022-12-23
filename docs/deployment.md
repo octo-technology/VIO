@@ -109,7 +109,7 @@ $ diskutil list
 
 Checklist before continuing:
 - If the SD card is mount on another disk, edit the Makefile by replacing `MOUNTING_DIR := /dev/disk2` by the disk seen thanks to `diskutil` command.
-- If you flash a Raspbian image **WITHOUT Desktop ONLY** you will need to connect on ssh on the Raspberry. To be able to connect, you need the Raspberry to be in the same local network than your computer. Therefore, setup your WIFI credentials on the Raspberry by editing the [wpa_supplicant.conf.template](wpa_supplicant.conf.template) replacing `ssid="YOUR-NETWORK-SSID"` and `psk="YOUR-NETWORK-PASSWORD"` values.
+- If you flash a Raspbian image **WITHOUT Desktop ONLY** you will need to connect on ssh on the Raspberry. To be able to connect, you need the Raspberry to be in the same local network than your computer. Therefore, setup your WIFI credentials on the Raspberry by editing the [wpa_supplicant.conf.template](https://github.com/octo-technology/VIO/blob/main/deployment/wpa_supplicant.conf.template) replacing `ssid="YOUR-NETWORK-SSID"` and `psk="YOUR-NETWORK-PASSWORD"` values.
 - If you want to flash a Rasbian image with Desktop, edit the Makefile by replacing:
   - `RASPIOS := raspios_lite_armhf` by `raspios_armhf` (Raspbian Desktop) or `raspios_full_armhf` (Raspbian Desktop + recommended Software) and
   - `RASPIOS_IMAGE_NAME := 2021-05-07-raspios-buster-armhf-lite` by an existing image from [here](https://downloads.raspberrypi.org/raspios_armhf/images/) or [here](https://downloads.raspberrypi.org/raspios_full_armhf/images/).
@@ -198,7 +198,7 @@ Look for a disk named `SDCARD` like in the following picture:
 
 
 #### Enable SSH and set WIFI credentials
-Once formatted, to enable *ssh* and set your WIFI credentials, first edit `ssid="YOUR-NETWORK-SSID"` and `psk="YOUR-NETWORK-PASSWORD"` values in the [wpa_supplicant.conf.template](wpa_supplicant.conf.template).
+Once formatted, to enable *ssh* and set your WIFI credentials, first edit `ssid="YOUR-NETWORK-SSID"` and `psk="YOUR-NETWORK-PASSWORD"` values in the [wpa_supplicant.conf.template](https://github.com/octo-technology/VIO/blob/main/deployment/wpa_supplicant.conf.template).
 
 Then, type:
 ```shell

@@ -10,7 +10,7 @@ Le supervisor orchestre les étapes suivantes dès qu'il est déclenché :
 
 ## Développement
 
-Pour faciliter l'installation de l'environnement de développment, un [Makefile](../supervisor/Makefile) automatise les tâches:
+Pour faciliter l'installation de l'environnement de développment, un [Makefile](https://github.com/octo-technology/VIO/blob/main/supervisor/Makefile) automatise les tâches:
 ```shell
 $ make
 ❓ Use `make <target>'
@@ -77,7 +77,7 @@ $ pip install -e ".[dev]"
 
 ### Setuptools "console_scripts" EntryPoints
 
-Dans le fichier [setup.py](./supervisor/setup.py) du supervisor, le bloc `entry_points` suivant est configuré :
+Dans le fichier [setup.py](https://github.com/octo-technology/VIO/blob/main/supervisor/setup.py) du supervisor, le bloc `entry_points` suivant est configuré :
 
 ```python
 setup(
