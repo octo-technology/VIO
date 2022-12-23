@@ -17,7 +17,7 @@ setup(
     description='V.IO - Visual Inspection Orchestrator',
     long_description=long_description,
     long_description_content_type='text/markdown',
-    url='https://gitlab.com/octo-technology/les-bg-de-la-data/s-s-all/tribu/tribu-augi/asset/vio_edge',
+    url='https://github.com/octo-technology/VIO',
     classifiers=[
         'Programming Language :: Python :: 3',
         'License :: OSI Approved :: MIT License',
