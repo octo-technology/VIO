@@ -1,4 +1,4 @@
-name: docs generation
+name: pages build deployment manual
 
 on:
   push:
@@ -20,5 +20,14 @@ jobs:
       - name: Install mkdocs
         run: pip install mkdocs-material
 
-      - name: Generate and deploy documentation to Github
-        run: mkdocs gh-deploy
+      - name: build doc site
+        run: mkdocs build
+
+      - name: Deploy to GitHub Pages
+        if: success()
+        uses: crazy-max/ghaction-github-pages@v3
+        with:
+          target_branch: gh-pages
+          build_dir: public
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
