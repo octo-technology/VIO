@@ -31,15 +31,15 @@ Or via Docker:
 
 ```
 # Build for raspberry 
-docker build --file Dockerfile.raspberrypi --tag registry.gitlab.com/octo-technology/les-bg-de-la-data/s-s-all/tribu/tribu-augi/asset/vio_edge/tflite_serving_raspberry:latest .
+docker build --file Dockerfile.raspberrypi --tag ghcr.io/octo-technology/vio/edge_tflite_serving.raspberrypi:latest .
 # Run
-docker run -p 8501:8501 registry.gitlab.com/octo-technology/les-bg-de-la-data/s-s-all/tribu/tribu-augi/asset/vio_edge/tflite_serving_raspberry:latest
+docker run -p 8501:8501 ghcr.io/octo-technology/vio/edge_tflite_serving.raspberrypi:latest 
 ```
 ```
 # Build for mac
-docker build --file Dockerfile --tag registry.gitlab.com/octo-technology/les-bg-de-la-data/s-s-all/tribu/tribu-augi/asset/vio_edge/tflite_serving:latest .
+docker build --file Dockerfile --tag ghcr.io/octo-technology/vio/edge_tflite_serving:latest .
 # Run for mac
-docker run -p 8501:8501 registry.gitlab.com/octo-technology/les-bg-de-la-data/s-s-all/tribu/tribu-augi/asset/vio_edge/tflite_serving:latest
+docker run -p 8501:8501 ghcr.io/octo-technology/vio/edge_tflite_serving:latest
 ```
 
 You can check that the tflite-server is running by visiting `http://ip:5000/` from any machine, where `ip` is the ip address of the host (`localhost` if querying from the same machine). The docs can be viewed at `http://localhost:5000/docs`
