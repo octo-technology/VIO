@@ -34,7 +34,7 @@ jobs:
         working-directory: ./edge_interface
 
       - name: Lint
-        run: npm lint
+        run: npm run lint
         working-directory: ./edge_interface
 
   build_and_push_images:

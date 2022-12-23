@@ -1,10 +1,11 @@
-name: pages build deployment manual
+name: pages publication in branch gh-pages
+
+# this workflow will trigger the pages-build-deployment workflow that will deploy the branch gh-pages to github pages
 
 on:
   push:
     branches:
       - main
-      - vio-renaming
 
 jobs:
   generate_and_deploy_documentation:
