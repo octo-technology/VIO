@@ -1,4 +1,4 @@
-name: Publication vio images to Github registry
+name: Publication vio images for raspberry to Github registry
 
 on:
   release:
@@ -17,17 +17,17 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - dockerfile: ./edge_interface/Dockerfile
-            image: ghcr.io/${{ github.repository }}/edge_interface
+          - dockerfile: ./edge_interface/Dockerfile.raspberry
+            image: ghcr.io/${{ github.repository }}/edge_interface.raspberry
             context: ./edge_interface
-          - dockerfile: ./supervisor/Dockerfile
-            image: ghcr.io/${{ github.repository }}/edge_orchestrator
+          - dockerfile: ./supervisor/Dockerfile.raspberry
+            image: ghcr.io/${{ github.repository }}/edge_orchestrator.raspberry
             context: ./supervisor
-          - dockerfile: ./model_serving/Dockerfile
-            image: ghcr.io/${{ github.repository }}/edge_model_serving
+          - dockerfile: ./model_serving/Dockerfile.raspberry
+            image: ghcr.io/${{ github.repository }}/edge_model_serving.raspberry
             context: ./model_serving
-          - dockerfile: ./tflite_serving/Dockerfile
-            image: ghcr.io/${{ github.repository }}/edge_tflite_serving
+          - dockerfile: ./tflite_serving/Dockerfile.raspberry
+            image: ghcr.io/${{ github.repository }}/edge_tflite_serving.raspberry
             context: ./tflite_serving
     permissions:
       packages: write
