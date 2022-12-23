@@ -2,32 +2,42 @@
 
 Nous utilisons les workflows de Github Actions pour l'intégration continue et pour le déploiement continu.
 
-Il existe 4 workflows :
+Il existe 5 workflows :
 
-- [edge_interface_ci.yml](https://github.com/octo-technology/VIO/tree/main/.github/workflows/edge_interface_ci.yml) :
+2 workflows de CI:
+
+- [ci_edge_interface.yml](https://github.com/octo-technology/VIO/tree/main/.github/workflows/ci_edge_interface.yml) :
   intégration continue de l'application
   edge_interface décomposée en 2 jobs
     - job `lint_and_test_on_edge_interface` : analyse statique du code JavaScript (pas de tests pour le moment)
     - job `build_and_push_images` : construction de l'image Docker de l'application sans publication dans une registry
-- [edge_orchestrator_ci.yml](https://github.com/octo-technology/VIO/tree/main/.github/workflows/edge_orchestrator_ci.yml) :
+- [ci_edge_orchestrator.yml](https://github.com/octo-technology/VIO/tree/main/.github/workflows/ci_edge_orchestrator.yml) :
   intégration continue de l'application
   edge_orchestrator décomposée en 2 jobs
     - job `lint_and_test_on_edge_orchestrator` : analyse statique du code Python avec Flake8 suivie de l'exécution des
       tests automatisés (unitaires, intégration et fonctionnels) avec le stockage des rapports de tests dans Github
     - job `build_and_push_images` : construction de l'image Docker de l'application sans publication dans une registry
-- [edge_serving_images_publication.yml](https://github.com/octo-technology/VIO/tree/main/.github/workflows/edge_serving_images_publication.yml) :
-  publication des images Docker edge_serving par déclenchement manuel
-    - job `build_and_push_images` : construction des images Docker edge_serving et edge_tflite_serving avec publication
-      des images dans la registry Github
-- [docs_generation.yml](https://github.com/octo-technology/VIO/tree/main/.github/workflows/docs_generation.yml) :
-  génération et déploiment de la documentation
 
 Les deux workflows de CI (edge_[interface|orchestrator]_ci.yml) sont déclenchés sous l'une des conditions suivantes :
 
 - si une merge request comportant des différences est ouverte sur Github
 - si un commit sur la branche master est pushé sur Github
-- si un tag (respectant le versioning sémantique > [SemVer](https://semver.org/lang/fr/)) est pushé sur Github
+
+3 worklows de release:
+
+- [publication_vio_images.yml](https://github.com/octo-technology/VIO/tree/main/.github/workflows/publication_vio_images.yml) :
+  publication des images Docker edge_serving par déclenchement manuel
+    - job `build_and_push_images` : construction des images Docker avec publication des images dans la registry Github
+- [publication_vio_images_raspberry.yml](https://github.com/octo-technology/VIO/tree/main/.github/workflows/publication_vio_images_raspberry.yml) :
+  publication des images Docker edge_serving par déclenchement manuel
+    - job `build_and_push_images` : construction des images Docker spécifique au hardware Raspberry avec publication des images dans la registry Github
+- [publication_pages_gh-pages_branch.yml](https://github.com/octo-technology/VIO/tree/main/.github/workflows/publication_pages_gh-pages_branch.yml) :
+  génération et déploiment de la documentation
+
+Les 3 workflows de release sont déclenchés sous l'une des conditions suivantes :
+
 - si une release est crée depuis Github
+
 
 ////////////////////////////// WIP //////////////////////////////
 
