@@ -21,14 +21,14 @@ jobs:
       - name: Install mkdocs
         run: pip install mkdocs-material
 
-      - name: build doc site
+      - name: build documentation in site folder
         run: mkdocs build
 
-      - name: Deploy to GitHub Pages
+      - name: Deploy site folder to GitHub Pages
         if: success()
         uses: crazy-max/ghaction-github-pages@v3
         with:
           target_branch: gh-pages
-          build_dir: public
+          build_dir: site
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
