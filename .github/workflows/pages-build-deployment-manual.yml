@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - vio-renaming
 
 jobs:
   generate_and_deploy_documentation:
