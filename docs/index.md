@@ -24,7 +24,7 @@ Note: The VIO docker images will be soon available in a public registry, stay tu
 
 ## Run the stack
 
-To launch the stack you can use the [Makefile](../Makefile) on the root of the repository which define the different target based on the [docker-compose.yml](../docker-compose.yml):
+To launch the stack you can use the [Makefile](https://github.com/octo-technology/VIO/blob/main/Makefile) on the root of the repository which define the different target based on the [docker-compose.yml](https://github.com/octo-technology/VIO/blob/main/docker-compose.yml):
 
 - run all services (supervisor, model-serving, Mongo DB, UI) : `make services-up`
 - run the core (supervisor) containerized : `make supervisor`
@@ -32,7 +32,7 @@ To launch the stack you can use the [Makefile](../Makefile) on the root of the r
 - run the edge interface containerized : `make ui`
 - stop and delete all running services : `make services-down`
 
-Each of the above target correspond to a command [docker-compose.yml](../docker-compose.yml). For example, the target `supervisor` correspond to :
+Each of the above target correspond to a command [docker-compose.yml](https://github.com/octo-technology/VIO/blob/main/docker-compose.yml). For example, the target `supervisor` correspond to :
 
 ```shell
 $ docker-compose up -d --build supervisor
