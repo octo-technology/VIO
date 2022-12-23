@@ -46,7 +46,7 @@ def stop_test_container(container: DockerContainer):
 
 @fixture(scope='session')
 def setup_test_mongo_db() -> str:
-    image_name = 'registry.gitlab.com/octo-technology/les-bg-de-la-data/s-s-all/tribu/tribu-augi/asset/vio_edge/mongodb:latest' # noqa
+    image_name = 'ghcr.io/octo-technology/vio/mongodb:latest' # noqa
     connection_url, mongo_db_container = start_test_mongo_db(image_name=image_name)
     yield connection_url
     stop_test_container(mongo_db_container)
@@ -84,7 +84,7 @@ def start_test_tf_serving(image_name: str, starting_log: str, exposed_model_name
 def setup_test_tensorflow_serving(request: SubRequest) -> Generator[str, None, None]:
     host_volume_path = (ROOT_REPOSITORY_PATH / 'model_serving').as_posix()
     container_volume_path = '/models'
-    image_name = 'registry.gitlab.com/octo-technology/les-bg-de-la-data/s-s-all/tribu/tribu-augi/asset/vio_edge/model_serving:latest'  # noqa
+    image_name = 'ghcr.io/octo-technology/vio/edge_model_serving:latest'  # noqa
     starting_log = r'Entering the event loop ...'
     connection_url, tensorflow_serving_container = start_test_tf_serving(image_name=image_name,
                                                                          starting_log=starting_log,
@@ -97,7 +97,7 @@ def setup_test_tensorflow_serving(request: SubRequest) -> Generator[str, None, N
 
 @fixture(scope='session')
 def setup_test_tflite_serving(request: SubRequest) -> Generator[str, None, None]:
-    image_name = 'registry.gitlab.com/octo-technology/les-bg-de-la-data/s-s-all/tribu/tribu-augi/asset/vio_edge/tflite_serving:latest'  # noqa
+    image_name = 'ghcr.io/octo-technology/vio/edge_tflite_serving:latest'  # noqa
     starting_log = r'Uvicorn running on'
     connection_url, tflite_serving_container = start_test_tf_serving(image_name=image_name, starting_log=starting_log,
                                                                      exposed_model_name=request.param,

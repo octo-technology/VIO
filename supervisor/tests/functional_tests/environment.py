@@ -12,9 +12,9 @@ from tests.fixtures.containers import start_test_mongo_db, start_test_tf_serving
 
 def before_all(context: Context):
     context.test_directory = Path(__file__).parent.parent
-    image_name = 'registry.gitlab.com/octo-technology/les-bg-de-la-data/s-s-all/tribu/tribu-augi/asset/vio_edge/mongodb:latest' # noqa
+    image_name = 'ghcr.io/octo-technology/vio/mongodb:latest'
     context.mongo_db_uri, context.mongo_db_container = start_test_mongo_db(image_name=image_name)
-    image_name = 'registry.gitlab.com/octo-technology/les-bg-de-la-data/s-s-all/tribu/tribu-augi/asset/vio_edge/model_serving:latest'  # noqa
+    image_name = 'ghcr.io/octo-technology/vio/edge_model_serving:latest'
     context.tensorflow_serving_url, context.tensorflow_serving_container = start_test_tf_serving(
         image_name=image_name,
         starting_log=r'Entering the event loop ...',
