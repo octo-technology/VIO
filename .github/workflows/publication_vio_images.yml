@@ -1,6 +1,10 @@
-name: edge_serving images publication to Github registry
+name: Publication vio images to Github registry
 
-on: workflow_dispatch
+on:
+  release:
+    types:
+      - created
+  workflow_dispatch:
 
 env:
   REGISTRY: ghcr.io
@@ -13,6 +17,12 @@ jobs:
       fail-fast: false
       matrix:
         include:
+          - dockerfile: ./edge_interface/Dockerfile
+            image: ghcr.io/${{ github.repository }}/edge_interface
+            context: ./edge_interface
+          - dockerfile: ./supervisor/Dockerfile
+            image: ghcr.io/${{ github.repository }}/edge_orchestrator
+            context: ./supervisor
           - dockerfile: ./model_serving/Dockerfile
             image: ghcr.io/${{ github.repository }}/edge_model_serving
             context: ./model_serving
@@ -39,8 +49,7 @@ jobs:
         with:
           images: ${{ matrix.image }}
           tags: |
-            type=ref,event=branch
-            type=ref,event=pr
+            type=ref,event=release
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
           flavor: latest=auto

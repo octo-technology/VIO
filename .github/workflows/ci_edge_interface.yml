@@ -1,4 +1,4 @@
-name: edge_interface CI publication to Github registry
+name: CI edge_interface
 run-name: edge_interface CI on branch >> ${{ github.ref_name }} <<
 
 on:

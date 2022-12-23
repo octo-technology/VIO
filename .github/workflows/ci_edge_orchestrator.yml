@@ -1,4 +1,4 @@
-name: edge_orchestrator CI
+name: CI edge_orchestrator
 run-name: edge_orchestrator CI on branch >> ${{ github.ref_name }} <<
 
 on:
