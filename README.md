@@ -1,5 +1,8 @@
-![edge_orchestrator CI](https://github.com/octo-technology/VIO/actions/workflows/edge_orchestrator_ci.yml/badge.svg)![GitHub issues](https://img.shields.io/github/issues/octo-technology/VIO)
-# VIO-EDGE
+# Visual Inspection Orchestrator
+
+![CI edge_orchestrator](https://github.com/octo-technology/VIO/actions/workflows/ci_edge_orchestrator.yml/badge.svg)
+![CI edge_interface](https://github.com/octo-technology/VIO/actions/workflows/ci_edge_interface.yml/badge.svg)
+![GitHub issues](https://img.shields.io/github/issues/octo-technology/VIO)
 
 Visual Inspection Orchestrator is a modular framework made to ease the deployment of VI usecases.
 
@@ -9,11 +12,11 @@ VIO full documentation can be found [here](https://octo-technology.github.io/VIO
 
 ## Features
 
-- [The core](docs/supervisor.md) 
-- [The deployment tools](docs/deployment.md)
-- [The fleet monitoring](docs/monitoring.md)
+- [The edge orchestrator](docs/supervisor.md) 
 - [The edge interface](docs/edge_interface.md)
-- [The model serving](docs/model_serving.md)
+- [The edge model serving](docs/model_serving.md)
+- [The hub monitoring](docs/monitoring.md)
+- [The deployment tools](docs/deployment.md)
 
 ## Install the framework
 

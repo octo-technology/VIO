@@ -24,11 +24,11 @@ jobs:
         ports:
           - 27017:27017
       model_serving:
-        image: ghcr.io/octo-technology/vio/edge_model_serving:ci-cd-github-actions
+        image: ghcr.io/octo-technology/vio/edge_model_serving:latest
         ports:
           - 8501:8501
       tflite_serving:
-        image: ghcr.io/octo-technology/vio/edge_tflite_serving:ci-cd-github-actions
+        image: ghcr.io/octo-technology/vio/edge_tflite_serving:latest
         ports:
           - 8502:8501
     env:
@@ -123,8 +123,7 @@ jobs:
           tags: |
             type=ref,event=branch
             type=ref,event=pr
-            type=semver,pattern={{version}}
-            type=semver,pattern={{major}}.{{minor}}
+            type=semver,pattern={{major}}.{{minor}}.{{patch}}
           flavor: latest=auto
 
       - name: Build and push Docker images

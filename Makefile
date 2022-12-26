@@ -10,28 +10,28 @@ help:
 	grep -E '^\.PHONY: [a-zA-Z0-9_-]+ .*?## .*$$' $(MAKEFILE_LIST) | \
 		awk 'BEGIN {FS = "(: |##)"}; {printf "\033[36m%-30s\033[0m %s\n", $$2, $$3}'
 
-.PHONY: model_serving ## 💁 Start model_serving service (Docker container)
+.PHONY: edge_model_serving ## 💁 Start model_serving service (Docker container)
 model_serving:
-	docker-compose up -d --build model_serving
+	docker-compose up -d --build edge_model_serving
 
-.PHONY: supervisor ## 🕵 Start supervisor service (Docker container)
-supervisor:
-	docker-compose up -d --build supervisor
+.PHONY: edge_orchestrator ## 🕵 Start supervisor service (Docker container)
+edge_orchestrator:
+	docker-compose up -d --build edge_orchestrator
 
-.PHONY: edge_interface ## 📸 Start ui inside a docker container
+.PHONY: edge_interface ## 📸 Start edge_interface inside a docker container
 edge_interface:
 	docker-compose up -d --build edge_interface
 
-.PHONY: mongodb ## 📁 Start mongodb inside a docker container
-mongodb:
-	docker-compose up -d --build mongodb
+.PHONY: edge_db ## 📁 Start edge_db inside a docker container
+edge_db:
+	docker-compose up -d --build edge_db
 
-.PHONY: grafana-local ## ⚙️ Start grafana inside a docker container
-grafana-local:
-	docker-compose up -d --build grafana
+.PHONY: hub_monitoring ## ⚙️ Start hub_monitoring inside a docker container
+hub_monitoring:
+	docker-compose up -d --build hub_monitoring
 
-.PHONY: deploy-grafana-azure ## ⚙️ Deploy grafana files in Azure
-deploy-grafana-azure:
+.PHONY: deploy-hub_monitoring-azure ## ⚙️ Deploy hub_monitoring files in Azure
+deploy-hub_monitoring-azure:
 	ssh-add deployment/grafvio_id_rsa # chmod 400 deployment/grafvio_id_rsa
 	ansible-playbook deployment/ansible/update_grafana_dashboard.yml  -i deployment/ansible/inventory --extra-vars ansible_port=22000
 

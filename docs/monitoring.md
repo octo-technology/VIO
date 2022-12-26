@@ -1,4 +1,4 @@
-# Edge fleet monitoring 
+# The hub monitoring 
 
 The monitoring is here to help us monitor our IoTHub Devices and Modules via a Grafana dashboard.
 

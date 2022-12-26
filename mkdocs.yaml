@@ -6,11 +6,11 @@ theme:
 nav:
     - Getting Started: index.md
     - Overview: overview.md
-    - Core: supervisor.md
-    - Deployment: deployment.md
-    - Monitoring: monitoring.md
-    - Model serving: model_serving.md
+    - Edge orchestrator: supervisor.md
+    - Edge model serving: model_serving.md
     - Edge interface: edge_interface.md
+    - Hub monitoring: monitoring.md
+    - Deployment: deployment.md
     - Contribute:
       - Contribute: CONTRIBUTING.md
       - Organization: ORGANIZATION.md

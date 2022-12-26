@@ -14,8 +14,8 @@ from tests.conftest import TEST_STATION_CONFIGS_FOLDER_PATH, TEST_INVENTORY_PATH
 
 class Test(Config):
     ROOT_PATH = Path('/tests')
-    MONGO_DB_URI = os.environ.get('MONGO_DB_URI', 'mongodb://mongodb:27017/')
-    SERVING_MODEL_URL = os.environ.get('SERVING_MODEL_URL', 'http://model_serving:8501')
+    MONGO_DB_URI = os.environ.get('MONGO_DB_URI', 'mongodb://edge_db:27017/')
+    SERVING_MODEL_URL = os.environ.get('SERVING_MODEL_URL', 'http://edge_model_serving:8501')
 
     def __init__(self):
         self.metadata_storage = MongoDbMetadataStorage(self.MONGO_DB_URI)

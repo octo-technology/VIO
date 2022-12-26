@@ -1,5 +1,0 @@
-build_and_push_mongodb_raspberrypi_to_registry:
-  extends: .build_raspberrypi_image_and_push_to_registry
-  variables:
-    SERVICE_NAME: mongodb
-    IMAGE_NAME: mongodb_raspberrypi

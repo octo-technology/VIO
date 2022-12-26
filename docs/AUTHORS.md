@@ -1,6 +1,6 @@
 This AI asset was designed by Accenture Technology in collaboration with Octo Technology, if you have any interest please make sure to drop us an email:
 
-    science.at.scale-augi@octo.com
+    octo.data-ai.augi@accenture.com
 
 Members of the team involved into the development of the asset are:
 

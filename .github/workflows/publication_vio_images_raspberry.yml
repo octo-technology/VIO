@@ -18,17 +18,17 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - dockerfile: ./edge_interface/Dockerfile.raspberry
-            image: ghcr.io/${{ github.repository }}/edge_interface.raspberry
+          - dockerfile: ./edge_interface/Dockerfile.raspberrypi
+            image: ghcr.io/${{ github.repository }}/edge_interface.raspberrypi
             context: ./edge_interface
-          - dockerfile: ./supervisor/Dockerfile.raspberry
-            image: ghcr.io/${{ github.repository }}/edge_orchestrator.raspberry
+          - dockerfile: ./supervisor/Dockerfile.raspberrypi
+            image: ghcr.io/${{ github.repository }}/edge_orchestrator.raspberrypi
             context: ./supervisor
-          - dockerfile: ./model_serving/Dockerfile.raspberry
-            image: ghcr.io/${{ github.repository }}/edge_model_serving.raspberry
+          - dockerfile: ./model_serving/Dockerfile.raspberrypi
+            image: ghcr.io/${{ github.repository }}/edge_model_serving.raspberrypi
             context: ./model_serving
-          - dockerfile: ./tflite_serving/Dockerfile.raspberry
-            image: ghcr.io/${{ github.repository }}/edge_tflite_serving.raspberry
+          - dockerfile: ./tflite_serving/Dockerfile.raspberrypi
+            image: ghcr.io/${{ github.repository }}/edge_tflite_serving.raspberrypi
             context: ./tflite_serving
     permissions:
       packages: write

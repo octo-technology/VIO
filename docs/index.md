@@ -7,11 +7,11 @@ Usecase example: Quality check of a product manufactured on an assembly line.
 
 ## Features
 
-- [The core](supervisor.md) 
-- [The deployment tools](deployment.md)
-- [The fleet monitoring](monitoring.md)
+- [The edge orchestrator](supervisor.md) 
 - [The edge interface](edge_interface.md)
-- [The model serving](model_serving.md)
+- [The edge model serving](model_serving.md)
+- [The hub monitoring](monitoring.md)
+- [The deployment tools](deployment.md)
 
 
 ## Install the framework

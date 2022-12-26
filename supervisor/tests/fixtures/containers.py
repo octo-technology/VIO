@@ -46,7 +46,7 @@ def stop_test_container(container: DockerContainer):
 
 @fixture(scope='session')
 def setup_test_mongo_db() -> str:
-    image_name = 'ghcr.io/octo-technology/vio/mongodb:latest' # noqa
+    image_name = 'mongo:5.0.2' # noqa
     connection_url, mongo_db_container = start_test_mongo_db(image_name=image_name)
     yield connection_url
     stop_test_container(mongo_db_container)
