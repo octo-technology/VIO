@@ -1,4 +1,4 @@
-# Model serving
+# The edge model serving
 
 more documentation coming soon..
 

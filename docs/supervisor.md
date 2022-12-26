@@ -1,4 +1,4 @@
-# Le Core: Supervisor
+# The edge orchestrator
 
 Le supervisor orchestre les étapes suivantes dès qu'il est déclenché :
 

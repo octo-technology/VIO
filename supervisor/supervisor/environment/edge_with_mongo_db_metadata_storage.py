@@ -12,7 +12,7 @@ from supervisor.infrastructure.telemetry_sink.azure_iot_hub_telemetry_sink impor
 
 class EdgeWithMongoDbMetadataStorage(Config):
     ROOT_PATH = Path('/supervisor')
-    SERVING_MODEL_URL = 'http://model_serving:8501'
+    SERVING_MODEL_URL = 'http://edge_model_serving:8501'
 
     def __init__(self):
         self.metadata_storage = MongoDbMetadataStorage('mongodb://mongodb:27017/')

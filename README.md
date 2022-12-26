@@ -12,11 +12,11 @@ VIO full documentation can be found [here](https://octo-technology.github.io/VIO
 
 ## Features
 
-- [The core](docs/supervisor.md) 
-- [The deployment tools](docs/deployment.md)
-- [The fleet monitoring](docs/monitoring.md)
+- [The edge orchestrator](docs/supervisor.md) 
 - [The edge interface](docs/edge_interface.md)
-- [The model serving](docs/model_serving.md)
+- [The edge model serving](docs/model_serving.md)
+- [The hub monitoring](docs/monitoring.md)
+- [The deployment tools](docs/deployment.md)
 
 ## Install the framework
 
