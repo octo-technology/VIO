@@ -1,14 +1,11 @@
-FROM python:3.8-alpine
+FROM continuumio/miniconda3:4.12.0
+# version freeze due to issue between numpy installation and latest miniconda3 image version
 
 WORKDIR /supervisor
 
 COPY setup.py ./setup.py
 COPY requirements.txt ./requirements.txt
-COPY requirements-dev.txt ./requirements-dev.txt
 
-RUN apk update
-RUN apk add make automake gcc g++ subversion python3-dev zlib-dev libjpeg-turbo-dev libffi-dev
-RUN python -m pip install --upgrade pip
 RUN pip install -r requirements.txt
 
 COPY supervisor ./supervisor
