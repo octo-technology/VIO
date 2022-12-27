@@ -35,14 +35,14 @@ deploy-hub_monitoring-azure:
 	ssh-add deployment/grafvio_id_rsa # chmod 400 deployment/grafvio_id_rsa
 	ansible-playbook deployment/ansible/update_grafana_dashboard.yml  -i deployment/ansible/inventory --extra-vars ansible_port=22000
 
-.PHONY: services-up ## 🐳 Start all services (mongodb, model_serving, supervisor, ui)
-services-up:
+.PHONY: vio-edge-up ## 🐳 Start all services (mongodb, model_serving, supervisor, ui)
+vio-edge-up:
 	docker-compose up -d --build
 
-.PHONY: services-up-raspberrypi ## 🐳 Start all services on RaspberryPI (mongodb, model_serving, supervisor, ui)
-services-up-raspberrypi:
+.PHONY: vio-edge-up-raspberrypi ## 🐳 Start all services on RaspberryPI (mongodb, model_serving, supervisor, ui)
+vio-edge-up-raspberrypi:
 	docker-compose -f docker-compose.raspberrypi.yml up -d
 
-.PHONY: services-down ## ❌ Stop all services (model_serving, supervisor, ui)
-services-down:
+.PHONY: vio-edge-down ## ❌ Stop all services (model_serving, supervisor, ui)
+vio-edge-down:
 	docker-compose down

@@ -1,83 +1,76 @@
-# The edge orchestrator
+# Edge Orchestrator
 
-Le supervisor orchestre les étapes suivantes dès qu'il est déclenché :
+The supervisor orchestrates the following steps as soon as it is triggered:
 
-1. capture d'images
-2. sauvegarde des images
-3. sauvegarde des metadata
-4. faire l'inférence des modèles sur les images
-6. sauvegarde des résultats
+1. image capture
+2. image backup
+3. metadata backup
+4. model inference on images
+5. saving results
 
-## Développement
+ ![vio-architecture-stack](images/supervisor-actions.png)
 
-Pour faciliter l'installation de l'environnement de développment, un [Makefile](https://github.com/octo-technology/VIO/blob/main/supervisor/Makefile) automatise les tâches:
-```shell
-$ make
-❓ Use `make <target>'
-conda_env                       🐍 Create a Python conda environment
-dependencies                    ⏬ Install development dependencies
-tests                           ✅ Launch all the tests
-unit_tests                      ✅ Launch the unit tests
-integration_tests               ✅ Launch the integration tests
-functional_tests                ✅ Launch the functional tests
-pyramid                         ⨺ Compute the tests pyramid
-pyramid_and_badges              📛 Generate Gitlab badges
-```
+## Set up your development environment
 
+To facilitate the installation of the development environment, a [Makefile](https://github.com/octo-technology/VIO/blob/main/supervisor/Makefile)  automates tasks:
 
-### Installation de l'interpréteur Python
+    $ make
+    ❓ Use `make <target>'
+    conda_env                       🐍 Create a Python conda environment
+    dependencies                    ⏬ Install development dependencies
+    tests                           ✅ Launch all the tests
+    unit_tests                      ✅ Launch the unit tests
+    integration_tests               ✅ Launch the integration tests
+    functional_tests                ✅ Launch the functional tests
+    pyramid                         ⨺ Compute the tests pyramid
+    pyramid_and_badges              📛 Generate Gitlab badges
 
-Le projet utilise `conda` pour gérer les environnements virtuels Python [Guide d'installation Miniconda](https://docs.conda.io/en/latest/miniconda.html).
+** Python interpreter installation **
 
-#### MacOS
+The project uses `conda` to manage Python virtual environments [Miniconda installation guide](https://docs.conda.io/en/latest/miniconda.html).
 
-La façon la plus directe pour installer `conda` reste Homebrew :
-```shell
-$ brew update
-$ brew install --cask miniconda
-```
+** Install conda on MacOS **
 
-#### Initialiser l'environnement projet
+The most direct way to install `conda` is still Homebrew:
 
-Une fois Miniconda installé, créer l'environnement virtuel Python et installer ses dépendences via le Makefile :
-```shell
-$ cd supervisor
-$ make conda_env
-```
+    brew update
+    brew install --cask miniconda
 
-#### Installation des dépendances projet
-```shell
-$ make dependencies
-```
+** Initialize the project environment **
 
-### Setuptools "editable mode"
+Once Miniconda is installed, create the Python virtual environment and install its dependencies using the Makefile:
 
-Pour pouvoir bénéficier du packaging Python sans être impacté lors du développement en local (ie. sans devoir reconstruire un package à chaque modification), nous utilisons le mode `editable` (cf la [doc](https://pip.pypa.io/en/stable/cli/pip_install/#install-editable) officielle de pip).
+    cd supervisor
+    make conda_env
 
-```shell
-$ pip install -e .
-```
+** Install project dependencies **
 
-Lors de l'installation de l'environnement de développement la commande ci-dessus va produire l'effet suivant:
-- Un fichier [supervisor.egg-link](/usr/local/Caskroom/miniconda/base/envs/supervisor/lib/python3.9/site-packages/supervisor.egg-link) a été créé dans l'environnement virtuel supervisor avec le contenu suivante :
+    make dependencies
 
-```shell
-$ cat /usr/local/Caskroom/miniconda/base/envs/supervisor/lib/python3.9/site-packages/supervisor.egg-link
-/path/to/project/sources/vio_edge/supervisor
-```
+** Setuptools "editable mode" **
 
-Ainsi grâce au `egg-link`, le module python `supervisor` est bien installé comme librairie dans l'environnement virtuel, mais permet de ne pas avoir à repackager régulièrement après une mise à jour en local.
+To be able to benefit from Python packaging without being impacted during local development (i.e. without having to rebuild a package each time it is updated), we use the editable mode (see the official pip [doc](https://pip.pypa.io/en/stable/cli/pip_install/#install-editable)).
 
-### Setuptools "development mode"
+    pip install -e .
 
-Pour pouvoir installer la librairie et ses dépendences de développement (librairies de tests):
-```shell
-$ pip install -e ".[dev]"
-```
+During the installation of the development environment, the above command will have the following effect:
 
-### Setuptools "console_scripts" EntryPoints
+A file supervisor.egg-link was created in the supervisor virtual environment with the following content:
 
-Dans le fichier [setup.py](https://github.com/octo-technology/VIO/blob/main/supervisor/setup.py) du supervisor, le bloc `entry_points` suivant est configuré :
+    cat /usr/local/Caskroom/miniconda/base/envs/supervisor/lib/python3.9/site-packages/supervisor.egg-link
+    /path/to/project/sources/vio_edge/supervisor
+
+Thus, thanks to the egg-link, the python module supervisor is properly installed as a library in the virtual environment, but does not require regular repackaging after an update in local.
+
+** Setuptools "development mode" **
+
+To be able to install the library and its development dependencies (test libraries):
+
+    pip install -e ".[dev]"
+
+** Setuptools "console_scripts" EntryPoints **
+
+In the [supervisor.egg-link](/usr/local/Caskroom/miniconda/base/envs/supervisor/lib/python3.9/site-packages/supervisor.egg-link) file of the supervisor, the following entry_points block is configured
 
 ```python
 setup(
@@ -91,18 +84,18 @@ setup(
 )
 ```
 
-L'outil de packaging `setuptools` permet de configurer différents types de scripts, notamment les `console_scripts` qui vont permettre la génération d'un script shell "shim", qui sera positionné sur le PATH, et se chargera d'appeler la fonction `supervisor.__main__:main` tel que configuré
+The `setuptools` package allows you to configure different types of scripts, including console_scripts, which will generate a "shim" shell script that will be placed on the PATH and will call the supervisor.__main__:main function as configured.
 
-Ce script [supervisor](/usr/local/Caskroom/miniconda/base/envs/supervisor/bin/supervisor) se situe dans l'environnement virtuel créé lors de l'installation du projet.
+This supervisor [supervisor](/usr/local/Caskroom/miniconda/base/envs/supervisor/bin/supervisor)  is located in the virtual environment created during project installation.
 
-Lorsque l'on active l'environnement virtuel (en faisant `conda activate supervisor`), la variable d'environnement `$PATH` est configurée pour pointer vers le dossier `bin/` de l'environnement virtuel.
+When the virtual environment is activated (by running `conda` activate supervisor), the $PATH environment variable is configured to point to the bin/ folder of the virtual environment.
 
 ```shell
 $ echo $PATH
 /usr/local/Caskroom/miniconda/base/envs/supervisor/bin:[...]
 ```
 
-Si on regarde à l'intérieur de ce script, on remarque qu'il se charge d'importer notre module `supervisor` et d'en appeler l'entry point.
+If we look inside this script, we notice that it is responsible for importing our supervisor module and calling its entry point.
 
 ```shell
 #!/usr/local/Caskroom/miniconda/base/envs/supervisor/bin/python3.9
@@ -121,23 +114,24 @@ if __name__ == '__main__':
     sys.argv[0] = re.sub(r'(-script\.pyw?|\.exe)?$', '', sys.argv[0])
     sys.exit(load_entry_point('supervisor', 'console_scripts', 'supervisor')())
 ```
-
-Pour plus d'information, la documentation se trouve [ici](https://python-packaging.readthedocs.io/en/latest/command-line-scripts.html).
+For more information, the documentation can be found [here](https://python-packaging.readthedocs.io/en/latest/command-line-scripts.html).
 
 ## Tests
-Pour exécuter tous les tests:
-```shell
-$ make tests
-```
 
-Pour exécuter seulement les tests unitaires:
-```shell
-$ make unit_tests
-```
+To run all tests:
 
-## Routes API
+    make tests
 
-Toutes les routes sont préfixées par `api/v1`. Par exemple pour récupérer la liste des items en local, il faut utiliser cette url: `http://localhost:8000/api/v1/items`
+To run only unit tests:
+
+    make unit_tests
+
+## API Routes
+
+All routes are prefixed with api/v1. For example, to retrieve the list of items locally, use this url: 
+[http://localhost:8000/api/v1/items](http://localhost:8000/api/v1/items)
+
+You can also refer to the API swagger on the /docs url: [http://localhost:8000/docs](http://localhost:8000/docs)
 
 ## Add a new configuration 
 
