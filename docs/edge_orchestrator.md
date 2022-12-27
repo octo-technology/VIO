@@ -1,4 +1,4 @@
-# The edge orchestrator
+# Edge Orchestrator
 
 Le supervisor orchestre les étapes suivantes dès qu'il est déclenché :
 

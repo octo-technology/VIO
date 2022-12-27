@@ -6,16 +6,16 @@ theme:
 nav:
     - Getting Started: index.md
     - Overview: overview.md
-    - Edge orchestrator: supervisor.md
-    - Edge model serving: model_serving.md
+    - Edge orchestrator: edge_orchestrator.md
+    - Edge model serving: edge_model_serving.md
     - Edge interface: edge_interface.md
     - Edge Deployment: edge_deployment.md
-    - Hub monitoring: monitoring.md
+    - Hub monitoring: hub_monitoring.md
     - Hub Deployment: hub_deployment.md
     - Contribute:
       - Contributing: CONTRIBUTING.md
       - Organization: ORGANIZATION.md
       - CI-CD: CICD.md
-      - Documentation: documentation.md
+      - Documentation: DOCUMENTATION.md
       - License: LICENSE.md
       - Authors: AUTHORS.md

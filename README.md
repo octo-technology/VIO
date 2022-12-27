@@ -13,13 +13,13 @@ VIO full documentation can be found [here](https://octo-technology.github.io/VIO
 ## Features
 
 ### Edge modules
-- [The edge orchestrator](docs/supervisor.md)
+- [The edge orchestrator](docs/edge_orchestrator.md)
 - [The edge interface](docs/edge_interface.md)
-- [The edge model serving](docs/model_serving.md)
+- [The edge model serving](docs/edge_model_serving.md)
 - [The edge deployment playbook](docs/edge_deployment.md)
 
 ### Hub modules
-- [The hub monitoring](docs/monitoring.md)
+- [The hub monitoring](docs/hub_monitoring.md)
 - [The hub deployment playbook](docs/hub_deployment.md)
 
 ## Install the framework
@@ -34,9 +34,9 @@ Prerequisites:
 
 To launch the stack you can use the [Makefile](../Makefile) on the root of the repository which define the different target based on the [docker-compose.yml](../docker-compose.yml):
 
-- run all services (supervisor, model-serving, Mongo DB, UI) : `make services-up`
+- run all edge services (orchestrator, model-serving, interface, db) with local hub monitoring (grafana): `make vio-edge-up`
 
-- stop and delete all running services : `make services-down`
+- stop and delete all running services : `make vio-edge-down`
 
 To check all services are up and running you can run the command `docker ps`, you should see something like below:
 

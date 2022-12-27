@@ -8,13 +8,13 @@ Usecase example: Quality check of a product manufactured on an assembly line.
 ## Features
 
 ### Edge modules
-- [The edge orchestrator](supervisor.md)
+- [The edge orchestrator](edge_orchestrator.md)
 - [The edge interface](edge_interface.md)
-- [The edge model serving](model_serving.md)
+- [The edge model serving](edge_model_serving.md)
 - [The edge deployment playbook](edge_deployment.md)
 
 ### Hub modules
-- [The hub monitoring](monitoring.md)
+- [The hub monitoring](hub_monitoring.md)
 - [The hub deployment playbook](hub_deployment.md)
 
 ## Install the framework
@@ -29,11 +29,11 @@ Note: The VIO docker images will be soon available in a public registry, stay tu
 
 To launch the stack you can use the [Makefile](https://github.com/octo-technology/VIO/blob/main/Makefile) on the root of the repository which define the different target based on the [docker-compose.yml](https://github.com/octo-technology/VIO/blob/main/docker-compose.yml):
 
-- run all services (supervisor, model-serving, Mongo DB, UI) : `make services-up`
-- run the core (supervisor) containerized : `make edge_orchestrator`
-- run the model serving containerized: `make edge_model_serving`
-- run the edge interface containerized : `make edge_interface`
-- stop and delete all running services : `make services-down`
+- run all edge services (orchestrator, model-serving, interface, db) with local hub monitoring (grafana): `make vio-edge-up`
+- run the edge_orchestrator containerized: `make edge_orchestrator`
+- run the edge model serving containerized: `make edge_model_serving`
+- run the edge interface containerized: `make edge_interface`
+- stop and delete all running services: `make vio-edge-down`
 
 Each of the above target correspond to a command [docker-compose.yml](https://github.com/octo-technology/VIO/blob/main/docker-compose.yml). For example, the target `supervisor` correspond to :
 
@@ -52,12 +52,12 @@ Once all services are up and running you can access:
 - the hub monitoring: [http://localhost:4000/login](http://localhost:4000/login)
 - the edge interface: [http://localhost:8080](http://localhost:8080)
 
-From the edge interface you can load a configuration and run the trigger button that will trigger the Core API and launch the following actions:
+From the edge interface you can load a configuration and run the trigger button that will trigger the Orchestrator API and launch the following actions:
 
  ![vio-architecture-stack](images/supervisor-actions.png)
 
 ## Implementation example
 
-Here you can find an implementation of VIO deployed on Azure managing a fleet of Raspberrys:
+Here you can find an implementation of VIO deployed on Azure (vio-hub) managing a fleet of Raspberrys (vio-edge):
  
  ![vio-architecture-stack](images/vio_azure_stack.png)

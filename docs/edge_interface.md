@@ -1,4 +1,4 @@
-# The Edge interface
+# Edge Interface
 
 1. Select a configuration
  ![edge_interface_config_screen](images/edge_interface_config_screen.png)

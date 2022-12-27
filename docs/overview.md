@@ -22,13 +22,13 @@ Each sub folders below are indeed a module, an application, an independant micro
 Les sous-dossiers du dossier courant, à savoir :
 
 ### Edge modules
-- [The edge orchestrator](supervisor.md)
+- [The edge orchestrator](edge_orchestrator.md)
 - [The edge interface](edge_interface.md)
-- [The edge model serving](model_serving.md)
+- [The edge model serving](edge_model_serving.md)
 - [The edge deployment playbook](edge_deployment.md)
 
 ### Hub modules
-- [The hub monitoring](monitoring.md)
+- [The hub monitoring](hub_monitoring.md)
 - [The hub deployment playbook](hub_deployment.md)
 
 All of those modules have been packages inside a dedicated docker images to facilitate their deployment.
