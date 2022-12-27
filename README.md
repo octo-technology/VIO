@@ -12,11 +12,15 @@ VIO full documentation can be found [here](https://octo-technology.github.io/VIO
 
 ## Features
 
-- [The edge orchestrator](docs/supervisor.md) 
+### Edge modules
+- [The edge orchestrator](docs/supervisor.md)
 - [The edge interface](docs/edge_interface.md)
 - [The edge model serving](docs/model_serving.md)
+- [The edge deployment playbook](docs/edge_deployment.md)
+
+### Hub modules
 - [The hub monitoring](docs/monitoring.md)
-- [The deployment tools](docs/deployment.md)
+- [The hub deployment playbook](docs/hub_deployment.md)
 
 ## Install the framework
 
@@ -40,14 +44,20 @@ To check all services are up and running you can run the command `docker ps`, yo
 
 Once all services are up and running you can access:
 
-- the swagger of the core API (OrchestratoAPI): [http://localhost:8000/docs](http://localhost:8000/docs)
-- the swagger of the model serving: [http://localhost:8501/docs](http://localhost:8501/docs)
-- the monitoring grafana: [http://localhost:4000/login](http://localhost:4000/login)
+- the swagger of the edge orchestrator API (OrchestratoAPI): [http://localhost:8000/docs](http://localhost:8000/docs)
+- the swagger of the edge model serving: [http://localhost:8501/docs](http://localhost:8501/docs)
+- the hub monitoring: [http://localhost:4000/login](http://localhost:4000/login)
 - the edge interface: [http://localhost:8080](http://localhost:8080)
 
 From the edge interface you can load a configuration and run the trigger button that will trigger the Core API and launch the following actions:
 
  ![vio-architecture-stack](docs/images/supervisor-actions.png)
+
+# Releases
+
+Build Type                    | Status                                                                                                                                                                           | Artifacts
+----------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------
+**Docker images** | [![Status](https://github.com/octo-technology/VIO/actions/workflows/publication_vio_images.yml/badge.svg)](https://github.com/octo-technology/VIO/actions/workflows/publication_vio_images.yml/badge.svg) | [Github registry](https://github.com/orgs/octo-technology/packages)
 
 ## License
 

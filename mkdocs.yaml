@@ -9,10 +9,11 @@ nav:
     - Edge orchestrator: supervisor.md
     - Edge model serving: model_serving.md
     - Edge interface: edge_interface.md
+    - Edge Deployment: edge_deployment.md
     - Hub monitoring: monitoring.md
-    - Deployment: deployment.md
+    - Hub Deployment: hub_deployment.md
     - Contribute:
-      - Contribute: CONTRIBUTING.md
+      - Contributing: CONTRIBUTING.md
       - Organization: ORGANIZATION.md
       - CI-CD: CICD.md
       - Documentation: documentation.md

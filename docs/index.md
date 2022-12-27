@@ -1,18 +1,21 @@
 # Getting Started
 
-Visual Inspection Orchestrator is a modular framework made to ease the deployment of VI usecases.
+Visual Inspection Orchestrator is a modular open source framework made to ease the deployment of VI usecases, initiated by Octo Technology.
 
 Usecase example: Quality check of a product manufactured on an assembly line.
 
 
 ## Features
 
-- [The edge orchestrator](supervisor.md) 
+### Edge modules
+- [The edge orchestrator](supervisor.md)
 - [The edge interface](edge_interface.md)
 - [The edge model serving](model_serving.md)
-- [The hub monitoring](monitoring.md)
-- [The deployment tools](deployment.md)
+- [The edge deployment playbook](edge_deployment.md)
 
+### Hub modules
+- [The hub monitoring](monitoring.md)
+- [The hub deployment playbook](hub_deployment.md)
 
 ## Install the framework
 
@@ -27,15 +30,15 @@ Note: The VIO docker images will be soon available in a public registry, stay tu
 To launch the stack you can use the [Makefile](https://github.com/octo-technology/VIO/blob/main/Makefile) on the root of the repository which define the different target based on the [docker-compose.yml](https://github.com/octo-technology/VIO/blob/main/docker-compose.yml):
 
 - run all services (supervisor, model-serving, Mongo DB, UI) : `make services-up`
-- run the core (supervisor) containerized : `make supervisor`
-- run the model serving containerized: `make model_serving`
-- run the edge interface containerized : `make ui`
+- run the core (supervisor) containerized : `make edge_orchestrator`
+- run the model serving containerized: `make edge_model_serving`
+- run the edge interface containerized : `make edge_interface`
 - stop and delete all running services : `make services-down`
 
 Each of the above target correspond to a command [docker-compose.yml](https://github.com/octo-technology/VIO/blob/main/docker-compose.yml). For example, the target `supervisor` correspond to :
 
 ```shell
-$ docker-compose up -d --build supervisor
+$ docker-compose up -d --build edge_orchestrator
 ```
 
 To check all services are up and running you can run the command `docker ps`, you should see something like below:
@@ -44,9 +47,9 @@ To check all services are up and running you can run the command `docker ps`, yo
 
 Once all services are up and running you can access:
 
-- the swagger of the core API (OrchestratoAPI): [http://localhost:8000/docs](http://localhost:8000/docs)
-- the swagger of the model serving: [http://localhost:8501/docs](http://localhost:8501/docs)
-- the monitoring grafana: [http://localhost:4000/login](http://localhost:4000/login)
+- the swagger of the edge orchestrator API (OrchestratoAPI): [http://localhost:8000/docs](http://localhost:8000/docs)
+- the swagger of the edge model serving: [http://localhost:8501/docs](http://localhost:8501/docs)
+- the hub monitoring: [http://localhost:4000/login](http://localhost:4000/login)
 - the edge interface: [http://localhost:8080](http://localhost:8080)
 
 From the edge interface you can load a configuration and run the trigger button that will trigger the Core API and launch the following actions:

@@ -1,12 +1,12 @@
 # Contributing
 
-**Contribution rules**
+## Contribution rules
 - The code must be exhaustively tested.
 - Python test package: `pytest` (with possibility to use unittest mocks)
 - Code style: PEP8
 - Programming language for code and comments: English
 
-**Coding conventions**
+## Coding conventions
 - 120 character max per line
 - Use python 3.6 `fstring` instead of `format()` or `%s`
 - Directories, filenames, function and method names in `snake_case`
@@ -20,7 +20,7 @@ corresponding class).
  existing dead code.
 - Use [pathlib](https://docs.python.org/3/library/pathlib.html#module-pathlib) instead of native Python [os.path](https://docs.python.org/3/library/os.path.html)
 
-**Exception conventions**
+## Exception conventions
 - Create a custom exception in the module `exception.py` as follow:
 ```python
 class MyCustomException(Exception):
@@ -40,7 +40,7 @@ except MyCustomException as e:
     return True
 ```
 
-**Logging conventions**
+## Logging conventions
 - The logger should always be used at the class level and not the module level.
 - The logger should always be created through the _getChild_ method as a class attribute.
 - The created child logger should always be used in the class.
@@ -60,7 +60,7 @@ class MyClassWithLogging:
         self.logger.info('Doing something!')
 ```
 
-**Test conventions**
+## Test conventions
 - The same file hierarchy should be used between a project and the associated tests.
 ```
 my_project
@@ -123,7 +123,7 @@ class TestMyFunction:
 - Don't mistake a stub for a mock. A mock is used to assert that it has been called (see above example). A stub 
 is used to simulate the returned value.
   
-**Versioning strategy**
+## Versioning strategy
 - Git tutorial:
     - [Basic git tutorial](http://rogerdudler.github.io/git-guide/)
     - [Learn git branching](https://learngitbranching.js.org/)

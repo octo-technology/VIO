@@ -21,10 +21,14 @@ VIO core has been built following the hexagonal architecture patterns, therefore
 Each sub folders below are indeed a module, an application, an independant micro service. Anyone of them is therefore functional by itself.
 Les sous-dossiers du dossier courant, à savoir :
 
-- [The core](supervisor.md) 
-- [The deployment tools](deployment.md)
-- [The fleet monitoring](monitoring.md)
+### Edge modules
+- [The edge orchestrator](supervisor.md)
 - [The edge interface](edge_interface.md)
-- [The model serving](model_serving.md)
+- [The edge model serving](model_serving.md)
+- [The edge deployment playbook](edge_deployment.md)
+
+### Hub modules
+- [The hub monitoring](monitoring.md)
+- [The hub deployment playbook](hub_deployment.md)
 
 All of those modules have been packages inside a dedicated docker images to facilitate their deployment.
