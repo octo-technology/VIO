@@ -19,7 +19,6 @@ VIO core has been built following the hexagonal architecture patterns, therefore
 ### Micro-services approach
 
 Each sub folders below are indeed a module, an application, an independant micro service. Anyone of them is therefore functional by itself.
-Les sous-dossiers du dossier courant, à savoir :
 
 ### Edge modules
 - [The edge orchestrator](edge_orchestrator.md)

@@ -2,18 +2,19 @@
 
 Visual Inspection Orchestrator is a modular open source framework made to ease the deployment of VI usecases, initiated by Octo Technology.
 
-Usecase example: Quality check of a product manufactured on an assembly line.
+*Usecase example: Quality check of a product manufactured on an assembly line.*
 
+The VIO modules are split between:
 
-## Features
+** Edge modules **: The VIO edge modules are deployed close to the object to inspect
 
-### Edge modules
 - [The edge orchestrator](edge_orchestrator.md)
 - [The edge interface](edge_interface.md)
 - [The edge model serving](edge_model_serving.md)
 - [The edge deployment playbook](edge_deployment.md)
 
-### Hub modules
+** Hub modules **: The VIO hub modules are deployed in the cloud to collect data and orchestrate the edge fleet
+
 - [The hub monitoring](hub_monitoring.md)
 - [The hub deployment playbook](hub_deployment.md)
 
@@ -23,19 +24,22 @@ To launch the complete stack, you'll need a minima docker install on your machin
 
 `git clone git@github.com:octo-technology/VIO.git`
 
-Note: The VIO docker images will be soon available in a public registry, stay tunned. For now you can download the repository and build the image locally.
+Note: The VIO docker images are available [here](https://github.com/orgs/octo-technology/packages?repo_name=VIO)
 
 ## Run the stack
 
 To launch the stack you can use the [Makefile](https://github.com/octo-technology/VIO/blob/main/Makefile) on the root of the repository which define the different target based on the [docker-compose.yml](https://github.com/octo-technology/VIO/blob/main/docker-compose.yml):
 
 - run all edge services (orchestrator, model-serving, interface, db) with local hub monitoring (grafana): `make vio-edge-up`
+- stop and delete all running services: `make vio-edge-down`
+
+In case you want to run a specific module, each module has its own make command:
+
 - run the edge_orchestrator containerized: `make edge_orchestrator`
 - run the edge model serving containerized: `make edge_model_serving`
 - run the edge interface containerized: `make edge_interface`
-- stop and delete all running services: `make vio-edge-down`
 
-Each of the above target correspond to a command [docker-compose.yml](https://github.com/octo-technology/VIO/blob/main/docker-compose.yml). For example, the target `supervisor` correspond to :
+Indeed each of the above target correspond to a command [docker-compose.yml](https://github.com/octo-technology/VIO/blob/main/docker-compose.yml). For example, the target `supervisor` correspond to :
 
 ```shell
 $ docker-compose up -d --build edge_orchestrator
@@ -52,7 +56,7 @@ Once all services are up and running you can access:
 - the hub monitoring: [http://localhost:4000/login](http://localhost:4000/login)
 - the edge interface: [http://localhost:8080](http://localhost:8080)
 
-From the edge interface you can load a configuration and run the trigger button that will trigger the Orchestrator API and launch the following actions:
+From the [edge interface](edge_interface.md) you can load a configuration and run the trigger button that will trigger the Orchestrator API and launch the following actions:
 
  ![vio-architecture-stack](images/supervisor-actions.png)
 

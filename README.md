@@ -6,21 +6,25 @@
 
 Visual Inspection Orchestrator is a modular framework made to ease the deployment of VI usecases.
 
-Usecase example: Quality check of a product manufactured on an assembly line.
+*Usecase example: Quality check of a product manufactured on an assembly line.*
 
 VIO full documentation can be found [here](https://octo-technology.github.io/VIO/)
 
-## Features
 
-### Edge modules
+The VIO modules are split between:
+
+** Edge modules **: The VIO edge modules are deployed close to the object to inspect
+
 - [The edge orchestrator](docs/edge_orchestrator.md)
 - [The edge interface](docs/edge_interface.md)
 - [The edge model serving](docs/edge_model_serving.md)
 - [The edge deployment playbook](docs/edge_deployment.md)
 
-### Hub modules
+** Hub modules **: The VIO hub modules are deployed in the cloud to collect data and orchestrate the edge fleet
+
 - [The hub monitoring](docs/hub_monitoring.md)
 - [The hub deployment playbook](docs/hub_deployment.md)
+
 
 ## Install the framework
 
