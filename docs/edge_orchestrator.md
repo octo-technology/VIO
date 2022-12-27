@@ -8,6 +8,8 @@ The supervisor orchestrates the following steps as soon as it is triggered:
 4. model inference on images
 5. saving results
 
+ ![vio-architecture-stack](images/supervisor-actions.png)
+
 ## Set up your development environment
 
 To facilitate the installation of the development environment, a [Makefile](https://github.com/octo-technology/VIO/blob/main/supervisor/Makefile)  automates tasks:
