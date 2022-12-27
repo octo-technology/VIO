@@ -19,7 +19,7 @@ jobs:
       matrix:
         python-version: [ "3.8", "3.9" ] # TODO: add 3.10 and 3.11
     services:
-      mongo:
+      edge_db:
         image: mongo:5.0.2
         ports:
           - 27017:27017
@@ -32,7 +32,7 @@ jobs:
         ports:
           - 8502:8501
     env:
-      DATABASE_CONNECTION_URL: mongodb://localhost:27017
+      DATABASE_CONNECTION_URL: edge_db://localhost:27017
       TENSORFLOW_SERVING_HOST: localhost
       TENSORFLOW_SERVING_PORT: 8501
       TFLITE_SERVING_HOST: localhost
