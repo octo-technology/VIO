@@ -32,20 +32,3 @@ The CI workflows (edge_[interface|orchestrator]_ci.yml) are triggered under one 
 
 The release workflows are triggered under one of the following conditions:
 - if a release is created from Github
-
-
-////////////////////////////// WIP //////////////////////////////
-
-To deploy a new version on RaspberryPI, you must first create specific Docker images for the device in question.
-To create these images, simply add a Git tag, following the
-[SemVer](https://semver.org/lang/fr/) convention. For example:
-
-        git tag rpi-1.2.1
-        git push --tags
-
-Once the tag is pushed, it triggers a Gitlab CI pipeline that will build the Docker images for RaspberryPI.
-These will be stored in the Gitlab registry, and themselves tagged with the same tag `rpi-1.2.1`.
-
-To update the version deployed on your edge fleet from Azure IoT Hub, specify the above version in the dedicated varibale in the file `deployment/ansible/setup_iot_hub_azure.yml` and run the ansible playbook
-
-////////////////////////////// WIP //////////////////////////////
