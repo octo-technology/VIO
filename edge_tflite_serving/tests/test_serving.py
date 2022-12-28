@@ -1,5 +1,5 @@
 from fastapi.testclient import TestClient
-from tflite_serving.tflite_server import app
+from edge_tflite_serving.tflite_server import app
 import numpy as np
 
 

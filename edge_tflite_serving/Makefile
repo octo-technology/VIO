@@ -15,7 +15,7 @@ help:
 
 .PHONY: conda_env  ## 🐍 Create a Python conda environment
 conda_env:
-	conda create --name tflite_serving python=3.7 -y
+	conda create --name edge_tflite_serving python=3.7 -y
 
 .PHONY: dependencies  ## ⏬ Install dependencies
 dependencies:
@@ -29,6 +29,6 @@ dev-dependencies:
 tests:
 	pytest tests
 
-.PHONY: tflite_serving  ## ✅ Launch the serving app
-tflite_serving:
-	uvicorn tflite_server:app --reload --port 8501 --host 0.0.0.0
+.PHONY: edge_tflite_serving  ## ✅ Launch the serving app
+edge_tflite_serving:
+	uvicorn edge_tflite_server:app --reload --port 8501 --host 0.0.0.0

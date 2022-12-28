@@ -15,7 +15,7 @@ services:
     ports:
       - 8501:8501
     volumes:
-      - ./model_serving:/models
+      - ./edge_model_serving:/models
 
   edge_orchestrator:
     container_name: edge_orchestrator

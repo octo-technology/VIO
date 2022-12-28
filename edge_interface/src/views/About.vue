@@ -7,7 +7,7 @@
         email:
       </h4>
       <ul>
-        <li>science.at.scale-augi@octo.com</li>
+        <li>octo.data-ai.augi@accenture.com</li>
       </ul>
     </v-alert>
   </div>
