@@ -6,14 +6,14 @@ Visual Inspection Orchestrator is a modular open source framework made to ease t
 
 The VIO modules are split between:
 
-** Edge modules **: The VIO edge modules are deployed close to the object to inspect
+** vio-edge modules **: The VIO edge modules are deployed close to the object to inspect
 
 - [The edge orchestrator](edge_orchestrator.md)
 - [The edge interface](edge_interface.md)
 - [The edge model serving](edge_model_serving.md)
 - [The edge deployment playbook](edge_deployment.md)
 
-** Hub modules **: The VIO hub modules are deployed in the cloud to collect data and orchestrate the edge fleet
+** vio-hub modules **: The VIO hub modules are deployed in the cloud to collect data and orchestrate the edge fleet
 
 - [The hub monitoring](hub_monitoring.md)
 - [The hub deployment playbook](hub_deployment.md)
