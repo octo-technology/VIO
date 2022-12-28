@@ -1,5 +1,5 @@
-site_name: vio
-site_url: https://github.com/octo-technology/VIO
+site_name: VIO - Visual Inspection Orchestrator
+site_url: https://github.com/octo-technology/vio
 repo_url: https://github.com/octo-technology/VIO
 theme:
   name: material

@@ -1,4 +1,4 @@
-# Visual Inspection Orchestrator
+# VIO - Visual Inspection Orchestrator
 
 ![CI edge_orchestrator](https://github.com/octo-technology/VIO/actions/workflows/ci_edge_orchestrator.yml/badge.svg)
 ![CI edge_interface](https://github.com/octo-technology/VIO/actions/workflows/ci_edge_interface.yml/badge.svg)
@@ -8,7 +8,7 @@ Visual Inspection Orchestrator is a modular framework made to ease the deploymen
 
 *Usecase example: Quality check of a product manufactured on an assembly line.*
 
-VIO full documentation can be found [here](https://octo-technology.github.io/VIO/)
+VIO full documentation can be found [here](https://octo-technology.github.io/vio/)
 
 
 The VIO modules are split between:
