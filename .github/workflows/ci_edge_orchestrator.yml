@@ -7,7 +7,7 @@ on:
       - main
   pull_request:
     paths:
-      - 'supervisor/**'
+      - 'edge_orchestrator/**'
 
 env:
   REGISTRY: ghcr.io
@@ -48,11 +48,11 @@ jobs:
 
       - name: Install dependencies
         run: make install
-        working-directory: ./supervisor
+        working-directory: ./edge_orchestrator
 
       - name: Lint with flake8
         run: make lint
-        working-directory: ./supervisor
+        working-directory: ./edge_orchestrator
 
       - name: Run unit tests
         run: make unit_tests
