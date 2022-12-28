@@ -8,6 +8,7 @@ from fastapi.testclient import TestClient
 from tests.conftest import ROOT_REPOSITORY_PATH, TEST_DATA_FOLDER_PATH, EDGE_DB_IMG, EDGE_MODEL_SERVING_IMG
 from tests.fixtures.containers import start_test_mongo_db, start_test_tf_serving, stop_test_container
 
+
 def before_all(context: Context):
     context.test_directory = Path(__file__).parent.parent
     image_name = EDGE_DB_IMG

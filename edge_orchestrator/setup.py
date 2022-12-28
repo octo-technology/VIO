@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
-long_description = "The edge_orchestrator orchestrates the following steps as soon as it is triggered: image capture, " \
-                   "image backup, metadata backup, model inference on images, saving results "
+long_description = "The edge_orchestrator orchestrates the following steps as soon as it is triggered: " \
+                   "image capture, image backup, metadata backup, model inference on images and saving results."
 
 with open('requirements.txt', 'r', encoding='utf-8') as f:
     requirements = f.read()

@@ -19,7 +19,6 @@ load_dotenv()
 config.MAX_TRIES = 5
 
 
-
 def check_image_presence_or_pull_it_from_registry(image_name: str):
     client = docker.from_env()
     image_tags = [tag for image in client.images.list() for tag in image.tags]

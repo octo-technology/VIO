@@ -7,8 +7,8 @@ from typing import Dict, Union, Any, List
 
 from PIL import Image
 
-from edge_orchestrator.api_config import get_metadata_storage, get_binary_storage, get_model_forward, get_edge_station, \
-    get_station_config, get_telemetry_sink, logger
+from edge_orchestrator.api_config import get_metadata_storage, get_binary_storage, get_model_forward, \
+    get_edge_station, get_station_config, get_telemetry_sink, logger
 from edge_orchestrator.domain.models.camera import get_last_inference_by_camera, get_camera_rule
 from edge_orchestrator.domain.models.item import get_item_rule
 from edge_orchestrator.domain.models.item import Item

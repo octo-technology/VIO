@@ -2,7 +2,8 @@ import datetime as dt
 import uuid
 from typing import Dict, Type
 
-from edge_orchestrator.domain.models.business_rules.item_business_rule.item_threshold_ratio_rule import ThresholdRatioRule
+from edge_orchestrator.domain.models.business_rules.item_business_rule.item_threshold_ratio_rule import \
+    ThresholdRatioRule
 from edge_orchestrator.domain.models.business_rules.item_business_rule.item_threshold_rule import ThresholdRule
 from edge_orchestrator.domain.models.business_rules.item_rule import ItemRule
 
