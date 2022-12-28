@@ -19,15 +19,15 @@ jobs:
       matrix:
         python-version: [ "3.8", "3.9" ] # TODO: add 3.10 and 3.11
     services:
-      mongo:
+      edge_db:
         image: mongo:5.0.2
         ports:
           - 27017:27017
-      model_serving:
+      edge_model_serving:
         image: ghcr.io/octo-technology/vio/edge_model_serving:latest
         ports:
           - 8501:8501
-      tflite_serving:
+      edge_tflite_serving:
         image: ghcr.io/octo-technology/vio/edge_tflite_serving:latest
         ports:
           - 8502:8501

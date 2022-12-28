@@ -45,5 +45,5 @@ services:
     environment:
       - GF_INSTALL_PLUGINS=yesoreyeram-infinity-datasource
     volumes:
-      - ./monitoring/dashboards:/var/lib/grafana/dashboards
-      - ./monitoring/provisioning:/etc/grafana/provisioning
+      - ./hub_monitoring/dashboards:/var/lib/grafana/dashboards
+      - ./hub_monitoring/provisioning:/etc/grafana/provisioning

@@ -91,7 +91,7 @@ $ ansible-playbook ansible/create_azure_cloud_infrastructure.yml -e 'ansible_pyt
 
 ### Deploy hub monitoring (grafana)
 
-To deploy Grafana [dashboard](../monitoring/dashboards) and [data-sources](../monitoring/provisioning), run the following playbook :
+To deploy Grafana [dashboard](../hub_monitoring/dashboards) and [data-sources](../hub_monitoring/provisioning), run the following playbook :
 ```shell
 $ ansible-playbook -i ansible/inventory/production.ini ansible/update_grafana_dashboard.yml --ask-pass
 ```

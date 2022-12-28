@@ -44,11 +44,11 @@ devices:
     local_storage_name: blob-storage-raspberry-1
     cloud_storage_name: blob-storage-raspberry-1
     modules:
-      mongodb:
+      edge_db:
         image: webhippie/mongodb
         version: latest-arm32v7
         ports: 27017:27017
-      model_serving:
+      edge_model_serving:
         image: ghcr.io/octo-technology/vio/edge_tflite_serving.raspberrypi
         version: latest
         ports: 8501:8501
@@ -87,11 +87,11 @@ devices:
     local_storage_name: blob-storage-raspberry-2
     cloud_storage_name: blob-storage-raspberry-2
     modules:
-      mongodb:
+      edge_db:
         image: webhippie/mongodb
         version: latest-arm32v7
         ports: 27017:27017
-      model_serving:
+      edge_model_serving:
         image: ghcr.io/octo-technology/vio/edge_tflite_serving.raspberrypi
         version: latest
         ports: 8501:8501

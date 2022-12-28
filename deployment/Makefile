@@ -62,3 +62,8 @@ setup-wifi-credentials:
 eject-sd-card:
 	@diskutil unmountDisk $(MOUNTING_DIR)
 	@diskutil eject $(MOUNTING_DIR)
+
+.PHONY: deploy-hub_monitoring-azure ## ⚙️ Deploy hub_monitoring files in Azure
+deploy-hub_monitoring-azure:
+	ssh-add grafvio_id_rsa # chmod 400 deployment/grafvio_id_rsa
+	ansible-playbook ansible/update_grafana_dashboard.yml  -i ansible/inventory --extra-vars ansible_port=22000
