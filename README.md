@@ -55,7 +55,7 @@ Once all services are up and running you can access:
 
 From the edge interface you can load a configuration and run the trigger button that will trigger the Core API and launch the following actions:
 
- ![vio-architecture-stack](docs/images/supervisor-actions.png)
+ ![vio-architecture-stack](docs/images/edge_orchestrator-actions.png)
 
 # Releases
 

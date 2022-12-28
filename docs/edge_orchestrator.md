@@ -1,6 +1,6 @@
 # Edge Orchestrator
 
-The supervisor orchestrates the following steps as soon as it is triggered:
+The edge_orchestrator orchestrates the following steps as soon as it is triggered:
 
 1. image capture
 2. image backup
@@ -8,11 +8,11 @@ The supervisor orchestrates the following steps as soon as it is triggered:
 4. model inference on images
 5. saving results
 
- ![vio-architecture-stack](images/supervisor-actions.png)
+ ![vio-architecture-stack](images/edge_orchestrator-actions.png)
 
 ## Set up your development environment
 
-To facilitate the installation of the development environment, a [Makefile](https://github.com/octo-technology/VIO/blob/main/supervisor/Makefile)  automates tasks:
+To facilitate the installation of the development environment, a [Makefile](https://github.com/octo-technology/VIO/blob/main/edge_orchestrator/Makefile)  automates tasks:
 
     $ make
     ❓ Use `make <target>'
@@ -40,7 +40,7 @@ The most direct way to install `conda` is still Homebrew:
 
 Once Miniconda is installed, create the Python virtual environment and install its dependencies using the Makefile:
 
-    cd supervisor
+    cd edge_orchestrator
     make conda_env
 
 ** Install project dependencies **
@@ -55,12 +55,12 @@ To be able to benefit from Python packaging without being impacted during local 
 
 During the installation of the development environment, the above command will have the following effect:
 
-A file supervisor.egg-link was created in the supervisor virtual environment with the following content:
+A file edge_orchestrator.egg-link was created in the edge_orchestrator virtual environment with the following content:
 
-    cat /usr/local/Caskroom/miniconda/base/envs/supervisor/lib/python3.9/site-packages/supervisor.egg-link
-    /path/to/project/sources/vio_edge/supervisor
+    cat /usr/local/Caskroom/miniconda/base/envs/edge_orchestrator/lib/python3.9/site-packages/edge_orchestrator.egg-link
+    /path/to/project/sources/vio_edge/edge_orchestrator
 
-Thus, thanks to the egg-link, the python module supervisor is properly installed as a library in the virtual environment, but does not require regular repackaging after an update in local.
+Thus, thanks to the egg-link, the python module edge_orchestrator is properly installed as a library in the virtual environment, but does not require regular repackaging after an update in local.
 
 ** Setuptools "development mode" **
 
@@ -70,41 +70,41 @@ To be able to install the library and its development dependencies (test librari
 
 ** Setuptools "console_scripts" EntryPoints **
 
-In the [supervisor.egg-link](/usr/local/Caskroom/miniconda/base/envs/supervisor/lib/python3.9/site-packages/supervisor.egg-link) file of the supervisor, the following entry_points block is configured
+In the [edge_orchestrator.egg-link](/usr/local/Caskroom/miniconda/base/envs/edge_orchestrator/lib/python3.9/site-packages/edge_orchestrator.egg-link) file of the edge_orchestrator, the following entry_points block is configured
 
 ```python
 setup(
-    name="supervisor",
+    name="edge_orchestrator",
     # [...]
    entry_points={
       'console_scripts': [
-         'supervisor = supervisor.__main__:main',
+         'edge_orchestrator = edge_orchestrator.__main__:main',
       ],
    },
 )
 ```
 
-The `setuptools` package allows you to configure different types of scripts, including console_scripts, which will generate a "shim" shell script that will be placed on the PATH and will call the supervisor.__main__:main function as configured.
+The `setuptools` package allows you to configure different types of scripts, including console_scripts, which will generate a "shim" shell script that will be placed on the PATH and will call the edge_orchestrator.__main__:main function as configured.
 
-This supervisor [supervisor](/usr/local/Caskroom/miniconda/base/envs/supervisor/bin/supervisor)  is located in the virtual environment created during project installation.
+This edge_orchestrator [edge_orchestrator](/usr/local/Caskroom/miniconda/base/envs/edge_orchestrator/bin/edge_orchestrator)  is located in the virtual environment created during project installation.
 
-When the virtual environment is activated (by running `conda` activate supervisor), the $PATH environment variable is configured to point to the bin/ folder of the virtual environment.
+When the virtual environment is activated (by running `conda` activate edge_orchestrator), the $PATH environment variable is configured to point to the bin/ folder of the virtual environment.
 
 ```shell
 $ echo $PATH
-/usr/local/Caskroom/miniconda/base/envs/supervisor/bin:[...]
+/usr/local/Caskroom/miniconda/base/envs/edge_orchestrator/bin:[...]
 ```
 
-If we look inside this script, we notice that it is responsible for importing our supervisor module and calling its entry point.
+If we look inside this script, we notice that it is responsible for importing our edge_orchestrator module and calling its entry point.
 
 ```shell
-#!/usr/local/Caskroom/miniconda/base/envs/supervisor/bin/python3.9
-# EASY-INSTALL-ENTRY-SCRIPT: 'supervisor','console_scripts','supervisor'
+#!/usr/local/Caskroom/miniconda/base/envs/edge_orchestrator/bin/python3.9
+# EASY-INSTALL-ENTRY-SCRIPT: 'edge_orchestrator','console_scripts','edge_orchestrator'
 import re
 import sys
 
 # for compatibility with easy_install; see #2198
-__requires__ = 'supervisor'
+__requires__ = 'edge_orchestrator'
 
 from pkg_resources import load_entry_point
 
@@ -112,7 +112,7 @@ from pkg_resources import load_entry_point
 
 if __name__ == '__main__':
     sys.argv[0] = re.sub(r'(-script\.pyw?|\.exe)?$', '', sys.argv[0])
-    sys.exit(load_entry_point('supervisor', 'console_scripts', 'supervisor')())
+    sys.exit(load_entry_point('edge_orchestrator', 'console_scripts', 'edge_orchestrator')())
 ```
 For more information, the documentation can be found [here](https://python-packaging.readthedocs.io/en/latest/command-line-scripts.html).
 
@@ -135,7 +135,7 @@ You can also refer to the API swagger on the /docs url: [http://localhost:8000/d
 
 ## Add a new configuration 
 
-All the JSON config files are in `supervisor/config/station_configs`
+All the JSON config files are in `edge_orchestrator/config/station_configs`
 If you want to create a new config, you need to add a new JSON in the above directory.
 Here's a template of a config file.
 
@@ -206,7 +206,7 @@ The comments are only here to guide you, you should delete them in your new json
 - All our models are in tflite format. In order to add an already trained model in the ```flite_serving ``` folder. 
 Inside this folder should be the .tflite model and if needed a .txt file with the labels/class names.
 
-- You also need to add this model in the inventory located in ````supervisor/config/inventory.json```` under the 
+- You also need to add this model in the inventory located in ````edge_orchestrator/config/inventory.json```` under the 
 ````models ```` category. 
   - Classification model
     ```
@@ -250,11 +250,11 @@ Inside this folder should be the .tflite model and if needed a .txt file with th
 
 ## Add new camera rule
 In order to make a final decision i.e the item rule, we first need camera rules. Each camera gets a rule.
-- Each rule is in a distinct file located in  ``` supervisor/supervisor/domain/model/business_rules/camera_business_rules ```
+- Each rule is in a distinct file located in  ``` edge_orchestrator/edge_orchestrator/domain/model/business_rules/camera_business_rules ```
 It's in this method that's the camera rule will be described. 
 The method only takes the inference in argument.
 
-- You also need to precise the camera rule in the station config in ```supervisor/config/station_configs/```
+- You also need to precise the camera rule in the station config in ```edge_orchestrator/config/station_configs/```
 
 ```
 "camera_rule": {
@@ -267,17 +267,17 @@ The method only takes the inference in argument.
 
 ```
 
-- You need to add the new rule in the ```get_camera_rule``` function located in ``` supervisor/supervisor/domain/model/camera.py ```
+- You need to add the new rule in the ```get_camera_rule``` function located in ``` edge_orchestrator/edge_orchestrator/domain/model/camera.py ```
 which get the good method from the name of the camera rule in the station config file. 
 
 ## Add new item rule
 
 This is to make a final decision i.e the item rule. Each station config gets an item rule (only one).
-- Each rule is in a distinct file located in  ``` supervisor/supervisor/domain/model/business_rules/item_business_rules ```
+- Each rule is in a distinct file located in  ``` edge_orchestrator/edge_orchestrator/domain/model/business_rules/item_business_rules ```
 It's in this method that's the item rule will be described. 
 The method only takes the camera decisions in argument.
 
-- You also need to precise the item rule in the station config in ```supervisor/config/station_configs/```
+- You also need to precise the item rule in the station config in ```edge_orchestrator/config/station_configs/```
 
 ```
   "item_rule": {
@@ -290,8 +290,8 @@ The method only takes the camera decisions in argument.
 
 ```
 
-- You need to add the new rule in the ```get_item_rule``` function located in ``` supervisor/supervisor/domain/model/item.py ```
+- You need to add the new rule in the ```get_item_rule``` function located in ``` edge_orchestrator/edge_orchestrator/domain/model/item.py ```
 which get the good method from the name of the item rule in the station config file. 
 
-The camera and item rules are called in the supervisor method ```supervisor/supervisor/domain/use_cases/supervisor.py``` 
+The camera and item rules are called in the edge_orchestrator method ```edge_orchestrator/edge_orchestrator/domain/use_cases/edge_orchestrator.py``` 
 in the ``` apply_business_rules ``` function.

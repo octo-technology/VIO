@@ -39,7 +39,7 @@ In case you want to run a specific module, each module has its own make command:
 - run the edge model serving containerized: `make edge_model_serving`
 - run the edge interface containerized: `make edge_interface`
 
-Indeed each of the above target correspond to a command [docker-compose.yml](https://github.com/octo-technology/VIO/blob/main/docker-compose.yml). For example, the target `supervisor` correspond to :
+Indeed each of the above target correspond to a command [docker-compose.yml](https://github.com/octo-technology/VIO/blob/main/docker-compose.yml). For example, the target `edge_orchestrator` correspond to :
 
 ```shell
 $ docker-compose up -d --build edge_orchestrator
@@ -58,7 +58,7 @@ Once all services are up and running you can access:
 
 From the [edge interface](edge_interface.md) you can load a configuration and run the trigger button that will trigger the Orchestrator API and launch the following actions:
 
- ![vio-architecture-stack](images/supervisor-actions.png)
+ ![vio-architecture-stack](images/edge_orchestrator-actions.png)
 
 ## Implementation example
 

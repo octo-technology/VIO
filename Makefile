@@ -14,7 +14,7 @@ help:
 model_serving:
 	docker-compose up -d --build edge_model_serving
 
-.PHONY: edge_orchestrator ## 🕵 Start supervisor service (Docker container)
+.PHONY: edge_orchestrator ## 🕵 Start edge_orchestrator service (Docker container)
 edge_orchestrator:
 	docker-compose up -d --build edge_orchestrator
 
@@ -38,6 +38,6 @@ vio-edge-up:
 vio-edge-up-raspberrypi:
 	docker-compose -f docker-compose.raspberrypi.yml up -d
 
-.PHONY: vio-edge-down ## ❌ Stop all services (model_serving, supervisor, ui)
+.PHONY: vio-edge-down ## ❌ Stop all services (model_serving, edge_orchestrator, ui)
 vio-edge-down:
 	docker-compose down

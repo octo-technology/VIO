@@ -56,38 +56,38 @@ jobs:
 
       - name: Run unit tests
         run: make unit_tests
-        working-directory: ./supervisor
+        working-directory: ./edge_orchestrator
 
       - name: Upload unit test report
         uses: dorny/test-reporter@v1
         if: ${{ always() }}
         with:
           name: Unit tests report in Python ${{ matrix.python-version }}
-          path: supervisor/reports/pytest/unit-tests-report.xml
+          path: edge_orchestrator/reports/pytest/unit-tests-report.xml
           reporter: java-junit
 
       - name: Run integration tests
         run: make integration_tests
-        working-directory: ./supervisor
+        working-directory: ./edge_orchestrator
 
       - name: Upload integration test report
         uses: dorny/test-reporter@v1
         if: ${{ always() }}
         with:
           name: Integration tests report in Python ${{ matrix.python-version }}
-          path: supervisor/reports/pytest/integration-tests-report.xml
+          path: edge_orchestrator/reports/pytest/integration-tests-report.xml
           reporter: java-junit
 
       - name: Run functional tests
         run: make functional_tests
-        working-directory: ./supervisor
+        working-directory: ./edge_orchestrator
 
       - name: Upload functional test report
         uses: dorny/test-reporter@v1
         if: ${{ always() }}
         with:
           name: Functional tests report in Python ${{ matrix.python-version }}
-          path: supervisor/reports/behave/*.xml
+          path: edge_orchestrator/reports/behave/*.xml
           reporter: java-junit
 
   build_and_push_images:
@@ -98,9 +98,9 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - dockerfile: ./supervisor/Dockerfile
+          - dockerfile: ./edge_orchestrator/Dockerfile
             image: ghcr.io/${{ github.repository }}/edge_orchestrator
-            context: ./supervisor
+            context: ./edge_orchestrator
     permissions:
       packages: write
       contents: read

@@ -22,7 +22,7 @@ services:
     image: ghcr.io/octo-technology/vio/edge_orchestrator.raspberrypi:latest
     privileged: true
     volumes:
-      - ./supervisor/data/storage:/supervisor/data/storage
+      - ./edge_orchestrator/data/storage:/edge_orchestrator/data/storage
       - /opt/vc:/opt/vc
     ports:
       - 8000:8000

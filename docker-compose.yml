@@ -22,10 +22,10 @@ services:
   edge_orchestrator:
     container_name: edge_orchestrator
     build:
-      context: supervisor
+      context: edge_orchestrator
       dockerfile: Dockerfile
     volumes:
-      - ./supervisor/data/storage:/supervisor/data/storage
+      - ./edge_orchestrator/data/storage:/edge_orchestrator/data/storage
     ports:
       - 8000:8000
 
