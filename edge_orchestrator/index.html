@@ -1,0 +1,984 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://github.com/octo-technology/vio/edge_orchestrator/">
+      
+      
+        <link rel="prev" href="../overview/">
+      
+      
+        <link rel="next" href="../edge_model_serving/">
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.0">
+    
+    
+      
+        <title>Edge orchestrator - VIO - Visual Inspection Orchestrator</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.f79797b0.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.2505c338.min.css">
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="" data-md-color-accent="">
+  
+    
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#edge-orchestrator" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="VIO - Visual Inspection Orchestrator" class="md-header__button md-logo" aria-label="VIO - Visual Inspection Orchestrator" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            VIO - Visual Inspection Orchestrator
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Edge orchestrator
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/octo-technology/VIO" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="VIO - Visual Inspection Orchestrator" class="md-nav__button md-logo" aria-label="VIO - Visual Inspection Orchestrator" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    VIO - Visual Inspection Orchestrator
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/octo-technology/VIO" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        Getting Started
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../overview/" class="md-nav__link">
+        Overview
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3">
+          vio-edge
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="vio-edge" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          vio-edge
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Edge orchestrator
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Edge orchestrator
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#set-up-your-development-environment" class="md-nav__link">
+    Set up your development environment
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tests" class="md-nav__link">
+    Tests
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#api-routes" class="md-nav__link">
+    API Routes
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#add-a-new-configuration" class="md-nav__link">
+    Add a new configuration
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#add-a-new-model" class="md-nav__link">
+    Add a new model
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#add-new-camera-rule" class="md-nav__link">
+    Add new camera rule
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#add-new-item-rule" class="md-nav__link">
+    Add new item rule
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../edge_model_serving/" class="md-nav__link">
+        Edge model serving
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../edge_interface/" class="md-nav__link">
+        Edge interface
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../edge_deployment/" class="md-nav__link">
+        Edge deployment
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4">
+          vio-hub
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="vio-hub" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          vio-hub
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hub_monitoring/" class="md-nav__link">
+        Hub monitoring
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hub_deployment/" class="md-nav__link">
+        Hub deployment
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5" type="checkbox" id="__nav_5" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5">
+          Contribute
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Contribute" data-md-level="1">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          Contribute
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CONTRIBUTING/" class="md-nav__link">
+        Contributing
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ORGANIZATION/" class="md-nav__link">
+        Organization
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CICD/" class="md-nav__link">
+        CI-CD
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DOCUMENTATION/" class="md-nav__link">
+        Documentation
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../LICENSE/" class="md-nav__link">
+        License
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../AUTHORS/" class="md-nav__link">
+        Authors
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#set-up-your-development-environment" class="md-nav__link">
+    Set up your development environment
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tests" class="md-nav__link">
+    Tests
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#api-routes" class="md-nav__link">
+    API Routes
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#add-a-new-configuration" class="md-nav__link">
+    Add a new configuration
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#add-a-new-model" class="md-nav__link">
+    Add a new model
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#add-new-camera-rule" class="md-nav__link">
+    Add new camera rule
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#add-new-item-rule" class="md-nav__link">
+    Add new item rule
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+
+<h1 id="edge-orchestrator">Edge Orchestrator</h1>
+<p>The edge_orchestrator orchestrates the following steps as soon as it is triggered:</p>
+<ol>
+<li>image capture</li>
+<li>image backup</li>
+<li>metadata backup</li>
+<li>model inference on images</li>
+<li>saving results</li>
+</ol>
+<p><img alt="vio-architecture-stack" src="../images/edge_orchestrator-actions.png" /></p>
+<h2 id="set-up-your-development-environment">Set up your development environment</h2>
+<p>To facilitate the installation of the development environment, a <a href="https://github.com/octo-technology/VIO/blob/main/edge_orchestrator/Makefile">Makefile</a>  automates tasks:</p>
+<pre><code>$ make
+❓ Use `make &lt;target&gt;'
+conda_env                       🐍 Create a Python conda environment
+dependencies                    ⏬ Install development dependencies
+tests                           ✅ Launch all the tests
+unit_tests                      ✅ Launch the unit tests
+integration_tests               ✅ Launch the integration tests
+functional_tests                ✅ Launch the functional tests
+pyramid                         ⨺ Compute the tests pyramid
+pyramid_and_badges              📛 Generate Gitlab badges
+</code></pre>
+<p><strong> Python interpreter installation </strong></p>
+<p>The project uses <code>conda</code> to manage Python virtual environments <a href="https://docs.conda.io/en/latest/miniconda.html">Miniconda installation guide</a>.</p>
+<p><strong> Install conda on MacOS </strong></p>
+<p>The most direct way to install <code>conda</code> is still Homebrew:</p>
+<pre><code>brew update
+brew install --cask miniconda
+</code></pre>
+<p><strong> Initialize the project environment </strong></p>
+<p>Once Miniconda is installed, create the Python virtual environment and install its dependencies using the Makefile:</p>
+<pre><code>cd edge_orchestrator
+make conda_env
+</code></pre>
+<p><strong> Install project dependencies </strong></p>
+<pre><code>make dependencies
+</code></pre>
+<p><strong> Setuptools "editable mode" </strong></p>
+<p>To be able to benefit from Python packaging without being impacted during local development (i.e. without having to rebuild a package each time it is updated), we use the editable mode (see the official pip <a href="https://pip.pypa.io/en/stable/cli/pip_install/#install-editable">doc</a>).</p>
+<pre><code>pip install -e .
+</code></pre>
+<p>During the installation of the development environment, the above command will have the following effect:</p>
+<p>A file edge_orchestrator.egg-link was created in the edge_orchestrator virtual environment with the following content:</p>
+<pre><code>cat /usr/local/Caskroom/miniconda/base/envs/edge_orchestrator/lib/python3.9/site-packages/edge_orchestrator.egg-link
+/path/to/project/sources/vio_edge/edge_orchestrator
+</code></pre>
+<p>Thus, thanks to the egg-link, the python module edge_orchestrator is properly installed as a library in the virtual environment, but does not require regular repackaging after an update in local.</p>
+<p><strong> Setuptools "development mode" </strong></p>
+<p>To be able to install the library and its development dependencies (test libraries):</p>
+<pre><code>pip install -e ".[dev]"
+</code></pre>
+<p><strong> Setuptools "console_scripts" EntryPoints </strong></p>
+<p>In the <a href="/usr/local/Caskroom/miniconda/base/envs/edge_orchestrator/lib/python3.9/site-packages/edge_orchestrator.egg-link">edge_orchestrator.egg-link</a> file of the edge_orchestrator, the following entry_points block is configured</p>
+<pre><code class="language-python">setup(
+    name=&quot;edge_orchestrator&quot;,
+    # [...]
+   entry_points={
+      'console_scripts': [
+         'edge_orchestrator = edge_orchestrator.__main__:main',
+      ],
+   },
+)
+</code></pre>
+<p>The <code>setuptools</code> package allows you to configure different types of scripts, including console_scripts, which will generate a "shim" shell script that will be placed on the PATH and will call the edge_orchestrator.<strong>main</strong>:main function as configured.</p>
+<p>This edge_orchestrator <a href="/usr/local/Caskroom/miniconda/base/envs/edge_orchestrator/bin/edge_orchestrator">edge_orchestrator</a>  is located in the virtual environment created during project installation.</p>
+<p>When the virtual environment is activated (by running <code>conda</code> activate edge_orchestrator), the $PATH environment variable is configured to point to the bin/ folder of the virtual environment.</p>
+<pre><code class="language-shell">$ echo $PATH
+/usr/local/Caskroom/miniconda/base/envs/edge_orchestrator/bin:[...]
+</code></pre>
+<p>If we look inside this script, we notice that it is responsible for importing our edge_orchestrator module and calling its entry point.</p>
+<pre><code class="language-shell">#!/usr/local/Caskroom/miniconda/base/envs/edge_orchestrator/bin/python3.9
+# EASY-INSTALL-ENTRY-SCRIPT: 'edge_orchestrator','console_scripts','edge_orchestrator'
+import re
+import sys
+
+# for compatibility with easy_install; see #2198
+__requires__ = 'edge_orchestrator'
+
+from pkg_resources import load_entry_point
+
+[...]
+
+if __name__ == '__main__':
+    sys.argv[0] = re.sub(r'(-script\.pyw?|\.exe)?$', '', sys.argv[0])
+    sys.exit(load_entry_point('edge_orchestrator', 'console_scripts', 'edge_orchestrator')())
+</code></pre>
+<p>For more information, the documentation can be found <a href="https://python-packaging.readthedocs.io/en/latest/command-line-scripts.html">here</a>.</p>
+<h2 id="tests">Tests</h2>
+<p>To run all tests:</p>
+<pre><code>make tests
+</code></pre>
+<p>To run only unit tests:</p>
+<pre><code>make unit_tests
+</code></pre>
+<h2 id="api-routes">API Routes</h2>
+<p>All routes are prefixed with api/v1. For example, to retrieve the list of items locally, use this url: 
+<a href="http://localhost:8000/api/v1/items">http://localhost:8000/api/v1/items</a></p>
+<p>You can also refer to the API swagger on the /docs url: <a href="http://localhost:8000/docs">http://localhost:8000/docs</a></p>
+<h2 id="add-a-new-configuration">Add a new configuration</h2>
+<p>All the JSON config files are in <code>edge_orchestrator/config/station_configs</code>
+If you want to create a new config, you need to add a new JSON in the above directory.
+Here's a template of a config file.</p>
+<pre><code>{
+  &quot;cameras&quot;: {
+    &quot;camera_id3&quot;: {
+      &quot;type&quot;: &quot;fake&quot; #type of the camera : fake, pi_camera or usb_camera
+      &quot;input_images_folder&quot;: &quot;people_dataset&quot;,
+      &quot;position&quot;: &quot;front&quot;,
+      &quot;exposition&quot;: 100,
+      &quot;models_graph&quot;: {
+        &quot;model_id1&quot;: {
+          &quot;metadata&quot;: &quot;mobilenet_ssd_v2_coco&quot;, #name of the model
+          &quot;depends_on&quot;: [], #if this model depends on another model, if none then empty list
+          &quot;class_to_detect&quot;: [&quot;cell phone&quot;] #class to detect, always in list format and only for object detection model. If classification model, can delete this row
+        },
+        &quot;model_id6&quot;: {
+          &quot;metadata&quot;: &quot;cellphone_connection_control&quot;,#name of the model
+          &quot;depends_on&quot;: [ 
+            &quot;model_id1&quot;
+          ], #the model_id6 depends on the model_id1
+          &quot;class_to_detect&quot;: [&quot;connected&quot;]
+        }
+      },
+      &quot;camera_rule&quot;: {
+        &quot;name&quot;: &quot;min_nb_objects_rule&quot;, #name of the camera rule
+        &quot;parameters&quot;: {
+          &quot;class_to_detect&quot;: [&quot;person&quot;], #always a list
+          &quot;min_threshold&quot;: 1
+        }
+      }
+    },
+    &quot;camera_id2&quot;: { # if there's another camera, if not you can delete this section, if there's a third then add one.
+      &quot;type&quot;: &quot;fake&quot;,
+      &quot;input_images_folder&quot;: &quot;people_dataset&quot;,
+      &quot;position&quot;: &quot;front&quot;,
+      &quot;exposition&quot;: 100,
+      &quot;models_graph&quot;: {
+        &quot;model_id1&quot;: {
+          &quot;metadata&quot;: &quot;mobilenet_ssd_v2_face&quot;,
+          &quot;depends_on&quot;: [],
+          &quot;class_to_detect&quot;: [&quot;face&quot;]
+        }
+      },
+      &quot;camera_rule&quot;: {
+        &quot;name&quot;: &quot;min_nb_objects_rule&quot;,
+        &quot;parameters&quot;: {
+          &quot;class_to_detect&quot;: [&quot;face&quot;],
+          &quot;min_threshold&quot;: 1
+        }
+      }
+    }
+  },
+  &quot;item_rule&quot;: {
+    &quot;name&quot;: &quot;min_threshold_KO_rule&quot;, #the item rule name
+    &quot;parameters&quot;: {
+      &quot;threshold&quot;: 1
+    }
+  }
+}
+</code></pre>
+<p>The comments are only here to guide you, you should delete them in your new json config.</p>
+<h2 id="add-a-new-model">Add a new model</h2>
+<ul>
+<li>
+<p>All our models are in tflite format. In order to add an already trained model in the <code>flite_serving</code> folder. 
+Inside this folder should be the .tflite model and if needed a .txt file with the labels/class names.</p>
+</li>
+<li>
+<p>You also need to add this model in the inventory located in <code>edge_orchestrator/config/inventory.json</code> under the 
+<code>models</code> category. </p>
+</li>
+<li>Classification model
+    <code>"your_new_model_name": {
+      "category": "classification",
+      "version": 1,
+      "pb_file_path": "modelforward/your_new_model_name",
+      "class_names": [
+        "class name 1",
+        "class name 2",
+         ...
+      ],
+      "image_resolution": [
+        x resolution for your trained model (int),
+        y resolution for your trained model (int)
+      ]
+    }</code></li>
+<li>
+<p>Object detection model
+    ```
+    "your_new_model_name": {
+      "category": "object_detection",
+      "version": 1,
+      "pb_file_path": "modelforward/your_new_model_name",
+      "class_names_path": "{name of file with the class names}.txt",
+      "output": {
+        "boxes_coordinates": "{name of the boxes_coordinates variable in your model}",
+        "objectness_scores": "{name of the objectness_scores variable in your model}",
+        "number_of_boxes": "{name of the number_of_boxes variable in your model}",
+        "detection_classes": "{name of the detection_classes variable in your model}"
+      },
+      "image_resolution": [
+        x resolution for your trained model (int),
+        y resolution for your trained model (int)
+      ],
+      "objectness_threshold": minimum threshold score for an object to be detected (float)</p>
+<p>}
+```</p>
+</li>
+</ul>
+<h2 id="add-new-camera-rule">Add new camera rule</h2>
+<p>In order to make a final decision i.e the item rule, we first need camera rules. Each camera gets a rule.
+- Each rule is in a distinct file located in  <code>edge_orchestrator/edge_orchestrator/domain/model/business_rules/camera_business_rules</code>
+It's in this method that's the camera rule will be described. 
+The method only takes the inference in argument.</p>
+<ul>
+<li>You also need to precise the camera rule in the station config in <code>edge_orchestrator/config/station_configs/</code></li>
+</ul>
+<pre><code>&quot;camera_rule&quot;: {
+        &quot;name&quot;: &quot;name of the rule&quot;,
+        &quot;parameters&quot;: {
+          # parameters of the rules for example : 
+          &quot;expected_label&quot;: [&quot;connected&quot;]
+        }
+      }
+
+</code></pre>
+<ul>
+<li>You need to add the new rule in the <code>get_camera_rule</code> function located in <code>edge_orchestrator/edge_orchestrator/domain/model/camera.py</code>
+which get the good method from the name of the camera rule in the station config file. </li>
+</ul>
+<h2 id="add-new-item-rule">Add new item rule</h2>
+<p>This is to make a final decision i.e the item rule. Each station config gets an item rule (only one).
+- Each rule is in a distinct file located in  <code>edge_orchestrator/edge_orchestrator/domain/model/business_rules/item_business_rules</code>
+It's in this method that's the item rule will be described. 
+The method only takes the camera decisions in argument.</p>
+<ul>
+<li>You also need to precise the item rule in the station config in <code>edge_orchestrator/config/station_configs/</code></li>
+</ul>
+<pre><code>  &quot;item_rule&quot;: {
+    &quot;name&quot;: &quot;name of the item rule&quot;,
+    &quot;parameters&quot;: {
+    # parameters of the rules for example : 
+      &quot;threshold&quot;: 1
+    }
+  }
+
+</code></pre>
+<ul>
+<li>You need to add the new rule in the <code>get_item_rule</code> function located in <code>edge_orchestrator/edge_orchestrator/domain/model/item.py</code>
+which get the good method from the name of the item rule in the station config file. </li>
+</ul>
+<p>The camera and item rules are called in the edge_orchestrator method <code>edge_orchestrator/edge_orchestrator/domain/use_cases/edge_orchestrator.py</code> 
+in the <code>apply_business_rules</code> function.</p>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.12658920.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.5cf534bf.min.js"></script>
+      
+    
+  </body>
+</html>
