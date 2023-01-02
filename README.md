@@ -8,7 +8,7 @@ Visual Inspection Orchestrator is a modular framework made to ease the deploymen
 
 *Usecase example: Quality check of a product manufactured on an assembly line.*
 
-VIO full documentation can be found [here](https://octo-technology.github.io/vio/)
+VIO full documentation can be found [here](https://octo-technology.github.io/VIO/)
 
 
 The VIO modules are split between:
