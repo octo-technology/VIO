@@ -14,7 +14,7 @@ help:
 model_serving:
 	docker-compose up -d --build edge_model_serving
 
-.PHONY: edge_orchestrator ## 🕵 Start supervisor service (Docker container)
+.PHONY: edge_orchestrator ## 🕵 Start edge_orchestrator service (Docker container)
 edge_orchestrator:
 	docker-compose up -d --build edge_orchestrator
 
@@ -30,19 +30,14 @@ edge_db:
 hub_monitoring:
 	docker-compose up -d --build hub_monitoring
 
-.PHONY: deploy-hub_monitoring-azure ## ⚙️ Deploy hub_monitoring files in Azure
-deploy-hub_monitoring-azure:
-	ssh-add deployment/grafvio_id_rsa # chmod 400 deployment/grafvio_id_rsa
-	ansible-playbook deployment/ansible/update_grafana_dashboard.yml  -i deployment/ansible/inventory --extra-vars ansible_port=22000
-
-.PHONY: vio-edge-up ## 🐳 Start all services (mongodb, model_serving, supervisor, ui)
+.PHONY: vio-edge-up ## 🐳 Start all services (db, model_serving, orchestrator, interface) and local hub monitoring
 vio-edge-up:
 	docker-compose up -d --build
 
-.PHONY: vio-edge-up-raspberrypi ## 🐳 Start all services on RaspberryPI (mongodb, model_serving, supervisor, ui)
+.PHONY: vio-edge-up-raspberrypi ## 🐳 Start all edge services on RaspberryPI (db, model_serving, orchestrator, interface)
 vio-edge-up-raspberrypi:
 	docker-compose -f docker-compose.raspberrypi.yml up -d
 
-.PHONY: vio-edge-down ## ❌ Stop all services (model_serving, supervisor, ui)
+.PHONY: vio-edge-down ## ❌ Stop all services (model_serving, edge_orchestrator, ui)
 vio-edge-down:
 	docker-compose down

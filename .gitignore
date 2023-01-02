@@ -168,5 +168,5 @@ poetry.toml
 
 
 # End of https://www.toptal.com/developers/gitignore/api/python
-supervisor/data/storage/
-supervisor/reports
+edge_orchestrator/data/storage/
+edge_orchestrator/reports

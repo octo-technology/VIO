@@ -1,17 +1,19 @@
-site_name: vio
-site_url: https://github.com/octo-technology/VIO
+site_name: VIO - Visual Inspection Orchestrator
+site_url: https://github.com/octo-technology/vio
 repo_url: https://github.com/octo-technology/VIO
 theme:
   name: material
 nav:
     - Getting Started: index.md
     - Overview: overview.md
-    - Edge orchestrator: edge_orchestrator.md
-    - Edge model serving: edge_model_serving.md
-    - Edge interface: edge_interface.md
-    - Edge deployment: edge_deployment.md
-    - Hub monitoring: hub_monitoring.md
-    - Hub deployment: hub_deployment.md
+    - vio-edge:
+      - Edge orchestrator: edge_orchestrator.md
+      - Edge model serving: edge_model_serving.md
+      - Edge interface: edge_interface.md
+      - Edge deployment: edge_deployment.md
+    - vio-hub:
+      - Hub monitoring: hub_monitoring.md
+      - Hub deployment: hub_deployment.md
     - Contribute:
       - Contributing: CONTRIBUTING.md
       - Organization: ORGANIZATION.md

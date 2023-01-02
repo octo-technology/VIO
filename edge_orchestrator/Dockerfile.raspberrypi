@@ -1,0 +1,26 @@
+FROM --platform=linux/arm/v7 arm32v7/python:3.7
+
+RUN echo "[global]\nextra-index-url=https://www.piwheels.org/simple" >> /etc/pip.conf
+
+WORKDIR /edge_orchestrator
+COPY edge_orchestrator ./edge_orchestrator
+COPY config ./config
+COPY data ./data
+COPY setup.py ./setup.py
+COPY requirements-raspberrypi.txt ./requirements-raspberrypi.txt
+
+RUN apt-get update
+RUN apt-get install libatlas3-base libgfortran5 -y
+RUN apt-get install fswebcam -y
+
+RUN pip3 install -r requirements-raspberrypi.txt
+
+# https://stackoverflow.com/questions/61875869/ubuntu-20-04-upgrade-python-missing-libffi-so-6
+RUN cd /usr/lib && ln -s /usr/lib/arm-linux-gnueabihf/libffi.so.7 libffi.so.6
+
+EXPOSE 8000
+
+ENV API_CONFIG edge
+ENV LD_LIBRARY_PATH /opt/vc/lib
+
+CMD python -m edge_orchestrator

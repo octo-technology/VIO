@@ -10,22 +10,22 @@ services:
   edge_model_serving:
     container_name: edge_model_serving
     build:
-      context: tflite_serving
+      context: edge_tflite_serving
       dockerfile: Dockerfile
     environment:
       - TF_CPP_MIN_VLOG_LEVEL=0
     ports:
       - 8501:8501
     volumes:
-      - ./model_serving:/models
+      - ./edge_model_serving:/models
 
   edge_orchestrator:
     container_name: edge_orchestrator
     build:
-      context: supervisor
+      context: edge_orchestrator
       dockerfile: Dockerfile
     volumes:
-      - ./supervisor/data/storage:/supervisor/data/storage
+      - ./edge_orchestrator/data/storage:/edge_orchestrator/data/storage
     ports:
       - 8000:8000
 
@@ -45,5 +45,5 @@ services:
     environment:
       - GF_INSTALL_PLUGINS=yesoreyeram-infinity-datasource
     volumes:
-      - ./monitoring/dashboards:/var/lib/grafana/dashboards
-      - ./monitoring/provisioning:/etc/grafana/provisioning
+      - ./hub_monitoring/dashboards:/var/lib/grafana/dashboards
+      - ./hub_monitoring/provisioning:/etc/grafana/provisioning

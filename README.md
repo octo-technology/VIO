@@ -1,4 +1,4 @@
-# Visual Inspection Orchestrator
+# VIO - Visual Inspection Orchestrator
 
 ![CI edge_orchestrator](https://github.com/octo-technology/VIO/actions/workflows/ci_edge_orchestrator.yml/badge.svg)
 ![CI edge_interface](https://github.com/octo-technology/VIO/actions/workflows/ci_edge_interface.yml/badge.svg)
@@ -8,19 +8,19 @@ Visual Inspection Orchestrator is a modular framework made to ease the deploymen
 
 *Usecase example: Quality check of a product manufactured on an assembly line.*
 
-VIO full documentation can be found [here](https://octo-technology.github.io/VIO/)
+VIO full documentation can be found [here](https://octo-technology.github.io/vio/)
 
 
 The VIO modules are split between:
 
-** Edge modules **: The VIO edge modules are deployed close to the object to inspect
+** vio-edge modules **: The VIO edge modules are deployed close to the object to inspect
 
 - [The edge orchestrator](docs/edge_orchestrator.md)
 - [The edge interface](docs/edge_interface.md)
 - [The edge model serving](docs/edge_model_serving.md)
 - [The edge deployment playbook](docs/edge_deployment.md)
 
-** Hub modules **: The VIO hub modules are deployed in the cloud to collect data and orchestrate the edge fleet
+** vio-hub modules **: The VIO hub modules are deployed in the cloud to collect data and orchestrate the edge fleet
 
 - [The hub monitoring](docs/hub_monitoring.md)
 - [The hub deployment playbook](docs/hub_deployment.md)
@@ -55,7 +55,7 @@ Once all services are up and running you can access:
 
 From the edge interface you can load a configuration and run the trigger button that will trigger the Core API and launch the following actions:
 
- ![vio-architecture-stack](docs/images/supervisor-actions.png)
+ ![vio-architecture-stack](docs/images/edge_orchestrator-actions.png)
 
 # Releases
 

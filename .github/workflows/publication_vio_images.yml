@@ -21,9 +21,9 @@ jobs:
           - dockerfile: ./edge_interface/Dockerfile
             image: ghcr.io/${{ github.repository }}/edge_interface
             context: ./edge_interface
-          - dockerfile: ./supervisor/Dockerfile
+          - dockerfile: ./edge_orchestrator/Dockerfile
             image: ghcr.io/${{ github.repository }}/edge_orchestrator
-            context: ./supervisor
+            context: ./edge_orchestrator
           - dockerfile: ./model_serving/Dockerfile
             image: ghcr.io/${{ github.repository }}/edge_model_serving
             context: ./model_serving

@@ -6,14 +6,14 @@ Visual Inspection Orchestrator is a modular open source framework made to ease t
 
 The VIO modules are split between:
 
-** Edge modules **: The VIO edge modules are deployed close to the object to inspect
+** vio-edge modules **: The VIO edge modules are deployed close to the object to inspect
 
 - [The edge orchestrator](edge_orchestrator.md)
 - [The edge interface](edge_interface.md)
 - [The edge model serving](edge_model_serving.md)
 - [The edge deployment playbook](edge_deployment.md)
 
-** Hub modules **: The VIO hub modules are deployed in the cloud to collect data and orchestrate the edge fleet
+** vio-hub modules **: The VIO hub modules are deployed in the cloud to collect data and orchestrate the edge fleet
 
 - [The hub monitoring](hub_monitoring.md)
 - [The hub deployment playbook](hub_deployment.md)
@@ -39,7 +39,7 @@ In case you want to run a specific module, each module has its own make command:
 - run the edge model serving containerized: `make edge_model_serving`
 - run the edge interface containerized: `make edge_interface`
 
-Indeed each of the above target correspond to a command [docker-compose.yml](https://github.com/octo-technology/VIO/blob/main/docker-compose.yml). For example, the target `supervisor` correspond to :
+Indeed each of the above target correspond to a command [docker-compose.yml](https://github.com/octo-technology/VIO/blob/main/docker-compose.yml). For example, the target `edge_orchestrator` correspond to :
 
 ```shell
 $ docker-compose up -d --build edge_orchestrator
@@ -58,7 +58,7 @@ Once all services are up and running you can access:
 
 From the [edge interface](edge_interface.md) you can load a configuration and run the trigger button that will trigger the Orchestrator API and launch the following actions:
 
- ![vio-architecture-stack](images/supervisor-actions.png)
+ ![vio-architecture-stack](images/edge_orchestrator-actions.png)
 
 ## Implementation example
 

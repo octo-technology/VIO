@@ -7,7 +7,7 @@ on:
       - main
   pull_request:
     paths:
-      - 'supervisor/**'
+      - 'edge_orchestrator/**'
 
 env:
   REGISTRY: ghcr.io
@@ -19,15 +19,15 @@ jobs:
       matrix:
         python-version: [ "3.8", "3.9" ] # TODO: add 3.10 and 3.11
     services:
-      mongo:
+      edge_db:
         image: mongo:5.0.2
         ports:
           - 27017:27017
-      model_serving:
+      edge_model_serving:
         image: ghcr.io/octo-technology/vio/edge_model_serving:latest
         ports:
           - 8501:8501
-      tflite_serving:
+      edge_tflite_serving:
         image: ghcr.io/octo-technology/vio/edge_tflite_serving:latest
         ports:
           - 8502:8501
@@ -48,46 +48,46 @@ jobs:
 
       - name: Install dependencies
         run: make install
-        working-directory: ./supervisor
+        working-directory: ./edge_orchestrator
 
       - name: Lint with flake8
         run: make lint
-        working-directory: ./supervisor
+        working-directory: ./edge_orchestrator
 
       - name: Run unit tests
         run: make unit_tests
-        working-directory: ./supervisor
+        working-directory: ./edge_orchestrator
 
       - name: Upload unit test report
         uses: dorny/test-reporter@v1
         if: ${{ always() }}
         with:
           name: Unit tests report in Python ${{ matrix.python-version }}
-          path: supervisor/reports/pytest/unit-tests-report.xml
+          path: edge_orchestrator/reports/pytest/unit-tests-report.xml
           reporter: java-junit
 
       - name: Run integration tests
         run: make integration_tests
-        working-directory: ./supervisor
+        working-directory: ./edge_orchestrator
 
       - name: Upload integration test report
         uses: dorny/test-reporter@v1
         if: ${{ always() }}
         with:
           name: Integration tests report in Python ${{ matrix.python-version }}
-          path: supervisor/reports/pytest/integration-tests-report.xml
+          path: edge_orchestrator/reports/pytest/integration-tests-report.xml
           reporter: java-junit
 
       - name: Run functional tests
         run: make functional_tests
-        working-directory: ./supervisor
+        working-directory: ./edge_orchestrator
 
       - name: Upload functional test report
         uses: dorny/test-reporter@v1
         if: ${{ always() }}
         with:
           name: Functional tests report in Python ${{ matrix.python-version }}
-          path: supervisor/reports/behave/*.xml
+          path: edge_orchestrator/reports/behave/*.xml
           reporter: java-junit
 
   build_and_push_images:
@@ -98,9 +98,9 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - dockerfile: ./supervisor/Dockerfile
+          - dockerfile: ./edge_orchestrator/Dockerfile
             image: ghcr.io/${{ github.repository }}/edge_orchestrator
-            context: ./supervisor
+            context: ./edge_orchestrator
     permissions:
       packages: write
       contents: read

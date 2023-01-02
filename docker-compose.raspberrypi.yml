@@ -15,14 +15,14 @@ services:
     ports:
       - 8501:8501
     volumes:
-      - ./model_serving:/models
+      - ./edge_model_serving:/models
 
   edge_orchestrator:
     container_name: edge_orchestrator
     image: ghcr.io/octo-technology/vio/edge_orchestrator.raspberrypi:latest
     privileged: true
     volumes:
-      - ./supervisor/data/storage:/supervisor/data/storage
+      - ./edge_orchestrator/data/storage:/edge_orchestrator/data/storage
       - /opt/vc:/opt/vc
     ports:
       - 8000:8000
