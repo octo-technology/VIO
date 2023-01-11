@@ -46,4 +46,4 @@
     login_password: "{{ postgres_admin_password }}"
     postgresql_connection_url: "postgresql://{{ login_user }}:{{ login_password }}@{{ login_host }}:5432/{{ db }}"
   shell: |
-    AZURE_POSTGRESQL_URL="{{ postgresql_connection_url }}" alembic -c $(pwd)/alembic.ini upgrade head
+    DB_CONNECTION_URL="{{ postgresql_connection_url }}" alembic -c $(pwd)/alembic.ini upgrade head

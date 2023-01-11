@@ -26,12 +26,14 @@ setup(
         'fastapi==0.80.0',
         'numpy==1.24.1',
         'Pillow==8.4.0',
+        'psycopg2-binary==2.9.5',
         'pymongo==4.3.3',
         'uvicorn==0.20.0',
         'smart_open[azure]==6.3.0'
     ],
     extras_require={
         'dev': [
+            'alembic==1.9.2',
             'autopep8==2.0.1',
             'behave==1.2.6',
             'flake8==6.0.0',

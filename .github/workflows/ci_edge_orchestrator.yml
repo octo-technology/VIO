@@ -24,6 +24,14 @@ jobs:
         image: mongo:5.0.2
         ports:
           - 27017:27017
+      hub_monitoring_db:
+        image: postgres:15.1
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_DB: test
+          POSTGRES_USER: test
+          POSTGRES_PASSWORD: test
       edge_model_serving:
         image: ghcr.io/octo-technology/vio/edge_model_serving:latest
         ports:
@@ -33,7 +41,8 @@ jobs:
         ports:
           - 8502:8501
     env:
-      DATABASE_CONNECTION_URL: mongodb://localhost:27017
+      MONGO_DB_URI: mongodb://localhost:27017
+      POSTGRES_DB_URI: postgresql://test:test@localhost:5432/test
       TENSORFLOW_SERVING_HOST: localhost
       TENSORFLOW_SERVING_PORT: 8501
       TFLITE_SERVING_HOST: localhost

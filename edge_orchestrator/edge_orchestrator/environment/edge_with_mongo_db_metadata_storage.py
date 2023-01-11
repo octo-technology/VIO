@@ -1,3 +1,5 @@
+import os
+
 from edge_orchestrator.domain.models.edge_station import EdgeStation
 from edge_orchestrator.environment.config import Config
 from edge_orchestrator.infrastructure.binary_storage.filesystem_binary_storage import FileSystemBinaryStorage
@@ -9,10 +11,11 @@ from edge_orchestrator.infrastructure.telemetry_sink.azure_iot_hub_telemetry_sin
 
 
 class EdgeWithMongoDbMetadataStorage(Config):
+    MONGO_DB_URI = os.environ.get('MONGO_DB_URI', 'mongodb://edge_db:27017/')
     SERVING_MODEL_URL = 'http://edge_model_serving:8501'
 
     def __init__(self):
-        self.metadata_storage = MongoDbMetadataStorage('mongodb://mongodb:27017/')
+        self.metadata_storage = MongoDbMetadataStorage(self.MONGO_DB_URI)
         self.binary_storage = FileSystemBinaryStorage(self.ROOT_PATH / 'data' / 'storage')
         self.inventory = JsonInventory(self.ROOT_PATH / 'config' / 'inventory.json')
         self.station_config = JsonStationConfig(self.ROOT_PATH / 'config' / 'station_configs',

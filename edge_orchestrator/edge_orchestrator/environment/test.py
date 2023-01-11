@@ -8,13 +8,14 @@ from edge_orchestrator.infrastructure.inventory.json_inventory import JsonInvent
 from edge_orchestrator.infrastructure.metadata_storage.mongodb_metadata_storage import MongoDbMetadataStorage
 from edge_orchestrator.infrastructure.model_forward.tf_serving_wrapper import TFServingWrapper
 from edge_orchestrator.infrastructure.station_config.json_station_config import JsonStationConfig
-from edge_orchestrator.infrastructure.telemetry_sink.fake_telemetry_sink import FakeTelemetrySink
+from edge_orchestrator.infrastructure.telemetry_sink.postgresql_telemetry_sink import PostgresTelemetrySink
 from tests.conftest import TEST_STATION_CONFIGS_FOLDER_PATH, TEST_INVENTORY_PATH, TEST_DATA_FOLDER_PATH
 
 
 class Test(Config):
     ROOT_PATH = Path('/tests')
     MONGO_DB_URI = os.environ.get('MONGO_DB_URI', 'mongodb://edge_db:27017/')
+    POSTGRES_DB_URI = os.environ.get('POSTGRES_DB_URI', 'postgresql://vio:vio@hub_monitoring_db:5432/vio')
     SERVING_MODEL_URL = os.environ.get('SERVING_MODEL_URL', 'http://edge_model_serving:8501')
 
     def __init__(self):
@@ -25,4 +26,4 @@ class Test(Config):
                                                 self.inventory, TEST_DATA_FOLDER_PATH)
         self.edge_station = EdgeStation(self.station_config, TEST_DATA_FOLDER_PATH)
         self.model_forward = TFServingWrapper(self.SERVING_MODEL_URL, self.inventory, self.station_config)
-        self.telemetry_sink = FakeTelemetrySink()
+        self.telemetry_sink = PostgresTelemetrySink(self.POSTGRES_DB_URI)
