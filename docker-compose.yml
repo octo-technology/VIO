@@ -28,6 +28,11 @@ services:
       - ./edge_orchestrator/data/storage:/edge_orchestrator/data/storage
     ports:
       - 8000:8000
+    healthcheck:
+      test: [ "CMD-SHELL", "nc -zv 0.0.0.0 5432" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   edge_interface:
     container_name: edge_interface
@@ -45,5 +50,22 @@ services:
     environment:
       - GF_INSTALL_PLUGINS=yesoreyeram-infinity-datasource
     volumes:
-      - ./hub_monitoring/dashboards:/var/lib/grafana/dashboards
-      - ./hub_monitoring/provisioning:/etc/grafana/provisioning
+      - ./hub_monitoring/grafana/dashboards:/var/lib/grafana/dashboards
+      - ./hub_monitoring/grafana/provisioning:/etc/grafana/provisioning
+
+  hub_monitoring_db:
+    container_name: hub_monitoring_db
+    image: postgres:15.1
+    restart: always
+    environment:
+      POSTGRES_DB: vio
+      POSTGRES_USER: vio
+      POSTGRES_PASSWORD: vio
+    ports:
+      - 5432:5432
+    volumes:
+      - vio-postgresql-data:/var/lib/postgresql/data
+      - ./hub_monitoring/docker/init-db.sh:/docker-entrypoint-initdb.d/init-db.sh
+
+volumes:
+  vio-postgresql-data:

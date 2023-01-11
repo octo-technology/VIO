@@ -121,3 +121,4 @@ Feature: The client trigger a visual inspection and request the resulting metada
     }
     """
     And the item metadata are stored
+    And a telemetry message is stored

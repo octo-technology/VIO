@@ -24,10 +24,10 @@ target_metadata = None
 # can be acquired:
 # my_important_option = config.get_main_option("my_important_option")
 # ... etc.
-azure_postgresql_url = os.environ.get('AZURE_POSTGRESQL_URL')
-if not azure_postgresql_url:
-    azure_postgresql_url = input('Please enter the AZURE_POSTGRESQL_URL to connect to the database: ')
-config.set_main_option('sqlalchemy.url', azure_postgresql_url)
+db_connection_url = os.environ.get('DB_CONNECTION_URL')
+if not db_connection_url:
+    db_connection_url = input('Please enter the DB_CONNECTION_URL to connect to the database: ')
+config.set_main_option('sqlalchemy.url', db_connection_url)
 
 
 def run_migrations_offline():

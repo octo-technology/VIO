@@ -26,7 +26,6 @@ def load_config():
     elif configuration == 'edge-lite':
         from edge_orchestrator.environment.edge_with_azure_container_storage import EdgeWithAzureContainerStorage
         configuration_class = EdgeWithAzureContainerStorage
-
     return configuration_class()
 
 

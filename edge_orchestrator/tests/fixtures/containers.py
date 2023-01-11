@@ -1,20 +1,21 @@
 import logging
 import os
-from typing import Union, Tuple, Generator
-from dotenv import load_dotenv
 
 import docker
 import pymongo
 from _pytest.fixtures import SubRequest
 from _pytest.fixtures import fixture
+from alembic import command as alembic_command
+from alembic.config import Config
 from testcontainers.core import config
 from testcontainers.core.container import DockerContainer
 from testcontainers.mongodb import MongoDbContainer
+from testcontainers.postgres import PostgresContainer
+from typing import Union, Tuple, Generator, Optional
 
-from tests.conftest import ROOT_REPOSITORY_PATH, EDGE_DB_IMG, EDGE_MODEL_SERVING_IMG, EDGE_TFLITE_SERVING_IMG
+from tests.conftest import ROOT_REPOSITORY_PATH, EDGE_DB_IMG, EDGE_MODEL_SERVING_IMG, EDGE_TFLITE_SERVING_IMG, \
+    HUB_MONITORING_DB_IMG
 from tests.tf_serving_container import TfServingContainer
-
-load_dotenv()
 
 config.MAX_TRIES = 5
 
@@ -31,12 +32,14 @@ def check_image_presence_or_pull_it_from_registry(image_name: str):
                                                     'password': os.environ.get('REGISTRY_PASSWORD')})
 
 
-def start_test_mongo_db(image_name: str) -> Tuple[str, MongoDbContainer]:
-    connection_url = os.environ.get('DATABASE_CONNECTION_URL')
+def start_test_db(image_name: str, connection_url: Optional[str]) -> Tuple[str, MongoDbContainer]:
     container = None
     if connection_url is None:
         check_image_presence_or_pull_it_from_registry(image_name)
-        container = MongoDbContainer(image_name)
+        if 'mongo' in image_name:
+            container = MongoDbContainer(image_name)
+        else:
+            container = PostgresContainer(image_name)
         container.start()
         connection_url = container.get_connection_url()
     return connection_url, container
@@ -49,8 +52,8 @@ def stop_test_container(container: DockerContainer):
 
 @fixture(scope='session')
 def setup_test_mongo_db() -> str:
-    image_name = EDGE_DB_IMG  # noqa
-    connection_url, mongo_db_container = start_test_mongo_db(image_name=image_name)
+    connection_url, mongo_db_container = start_test_db(image_name=EDGE_DB_IMG,
+                                                       connection_url=os.environ.get('MONGO_DB_URI'))
     yield connection_url
     stop_test_container(mongo_db_container)
 
@@ -60,6 +63,20 @@ def test_mongo_db_uri(setup_test_mongo_db) -> str:
     yield setup_test_mongo_db
     client = pymongo.MongoClient(setup_test_mongo_db)
     client.drop_database('orchestratorDB')
+
+
+@fixture(scope='session')
+def setup_test_postgres_db() -> str:
+    connection_url, postgres_db_container = start_test_db(image_name=HUB_MONITORING_DB_IMG,
+                                                          connection_url=os.environ.get('POSTGRES_DB_URI'))
+    apply_db_migrations(connection_url)
+    yield connection_url
+    stop_test_container(postgres_db_container)
+
+
+@fixture(scope='function')
+def test_postgres_db_uri(setup_test_postgres_db) -> str:
+    yield setup_test_postgres_db
 
 
 def start_test_tf_serving(image_name: str, starting_log: str, exposed_model_name: str,
@@ -123,3 +140,12 @@ def test_tensorflow_serving_base_url(setup_test_tensorflow_serving) -> str:
 @fixture(scope='function')
 def test_tflite_serving_base_url(setup_test_tflite_serving) -> str:
     return setup_test_tflite_serving
+
+
+def apply_db_migrations(connection_url: str) -> bool:
+    os.environ['DB_CONNECTION_URL'] = connection_url
+    path_to_migration = ROOT_REPOSITORY_PATH / 'hub_monitoring/db_migrations'
+    alembic_cfg = Config(path_to_migration / 'alembic.ini')
+    alembic_cfg.set_main_option('script_location', (path_to_migration / 'alembic').as_posix())
+    alembic_command.upgrade(alembic_cfg, 'head')
+    return True

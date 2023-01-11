@@ -1,14 +1,11 @@
 from typing import List, Dict
-
 import pymongo
-
 from edge_orchestrator.domain.models.item import Item
 from edge_orchestrator.domain.ports.metadata_storage import MetadataStorage
 
 
 class MongoDbMetadataStorage(MetadataStorage):
-    def __init__(self, mongodb_uri=None):
-        mongodb_uri = mongodb_uri or 'mongodb://localhost:27017/'
+    def __init__(self, mongodb_uri: str):
         self.client = pymongo.MongoClient(mongodb_uri)
         self.db = self.client['orchestratorDB']
         self.items_metadata = self.db['items']

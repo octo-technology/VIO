@@ -16,6 +16,7 @@ from edge_orchestrator.infrastructure.station_config.json_station_config import 
     JsonStationConfig,
 )
 from edge_orchestrator.infrastructure.telemetry_sink.fake_telemetry_sink import FakeTelemetrySink
+from edge_orchestrator.infrastructure.telemetry_sink.postgresql_telemetry_sink import PostgresTelemetrySink
 from tests.conftest import TEST_DATA_FOLDER_PATH, TEST_INVENTORY_PATH, TEST_STATION_CONFIGS_FOLDER_PATH
 
 
@@ -557,7 +558,7 @@ class TestSupervisor:
         )
         assert caplog.records[1].msg == "xmin (=554) is greater than xmax (=553)"
 
-    @patch.object(FakeTelemetrySink, 'send')
+    @patch.object(PostgresTelemetrySink, 'send')
     async def test_set_decision_should_send_final_decision_to_telemetry_sink(self, mock_send):
         # Given
         item = Item(serial_number='', category='', cameras_metadata={}, binaries={})
@@ -597,7 +598,8 @@ class TestSupervisor:
                                            inventory, TEST_DATA_FOLDER_PATH)
         station_config.set_station_config('station_config_TEST')
         supervisor = Supervisor(station_config=station_config, metadata_storage=MemoryMetadataStorage(),
-                                model_forward=FakeModelForward(), binary_storage=MemoryBinaryStorage())
+                                model_forward=FakeModelForward(), binary_storage=MemoryBinaryStorage(),
+                                telemetry_sink=FakeTelemetrySink())
 
         # When
         with caplog.at_level(logging.INFO, logger="edge_orchestrator"):

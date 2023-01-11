@@ -5,7 +5,7 @@
 ## Alembic migration
 To run Postgresql migration we use [Alembic](https://alembic.sqlalchemy.org/en/latest/tutorial.html).
 
-You need to install alembic (inside [requirements.txt](../../requirements.txt)) as follow:
+You need to install alembic (inside [requirements.txt](../../../deployment/requirements.txt)) as follow:
 ```shell scrip
 $ cd ./deployment/
 $ conda activate ansible

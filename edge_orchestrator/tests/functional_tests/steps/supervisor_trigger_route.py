@@ -1,9 +1,13 @@
 import json
+from datetime import datetime
+from urllib.parse import urlparse
 
+import psycopg2
 from behave import given, when, then, use_step_matcher
 from behave.runner import Context
 from starlette.status import HTTP_200_OK
 
+from edge_orchestrator.domain.models.decision import Decision
 from tests.functional_tests.steps.common_steps import assert_metadata_almost_equal, assert_decision_is_valid, \
     assert_state_is_valid
 
@@ -110,3 +114,22 @@ def check_metadata_is_stored(context: Context):
     response = context.test_client.get('/api/v1/items')
     assert response.status_code == HTTP_200_OK
     assert context.item_id in [item['_id'] for item in response.json()]
+
+
+@then("a telemetry message is stored")
+def check_telemetry_message_is_stored(context):
+    result = urlparse(context.postgres_db_uri)
+    username, password, hostname, port = result.username, result.password, result.hostname, result.port
+    database = result.path[1:]
+    connection = psycopg2.connect(dbname=database, user=username, password=password,
+                                  host=hostname, port=port)
+    with connection.cursor() as curs:
+        curs.execute('SELECT * FROM iothub.telemetry WHERE item_id = %s;', (context.item_id,))
+        res = curs.fetchone()
+    _id, device_id, decision, timestamp, item_id, config_res = res
+    assert isinstance(_id, str)
+    assert device_id.startswith('device_')
+    assert Decision(decision)
+    assert isinstance(timestamp, datetime)
+    assert isinstance(item_id, str)
+    assert config_res == 'station_config_TEST'
