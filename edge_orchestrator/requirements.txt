@@ -21,3 +21,4 @@ urllib3==1.26.6
 uvicorn==0.13.4
 uvloop==0.15.2
 websockets==9.0.1
+google-cloud-storage==2.2.1
