@@ -1,4 +1,4 @@
-FROM --platform=linux/arm/v7 arm32v7/python:3.7
+FROM --platform=linux/arm64 arm64v8/python:3.8.16
 
 RUN echo "[global]\nextra-index-url=https://www.piwheels.org/simple" >> /etc/pip.conf
 
@@ -12,10 +12,9 @@ COPY requirements-raspberrypi.txt ./requirements-raspberrypi.txt
 RUN apt-get update
 RUN apt-get install libatlas3-base libgfortran5 -y
 RUN apt-get install fswebcam -y
+RUN apt-get install build-essential python3-dev cargo -y
 
 RUN pip install --upgrade pip
-RUN apt-get install build-essential libssl-dev libffi-dev \
-    python3-dev cargo pkg-config -y
 
 # https://stackoverflow.com/questions/61875869/ubuntu-20-04-upgrade-python-missing-libffi-so-6
 RUN cd /usr/lib && ln -s /usr/lib/arm-linux-gnueabihf/libffi.so.7 libffi.so.6
