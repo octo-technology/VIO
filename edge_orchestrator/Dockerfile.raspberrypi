@@ -17,10 +17,10 @@ RUN pip install --upgrade pip
 RUN apt-get install build-essential libssl-dev libffi-dev \
     python3-dev cargo pkg-config -y
 
-RUN pip3 install -r requirements-raspberrypi.txt
-
 # https://stackoverflow.com/questions/61875869/ubuntu-20-04-upgrade-python-missing-libffi-so-6
 RUN cd /usr/lib && ln -s /usr/lib/arm-linux-gnueabihf/libffi.so.7 libffi.so.6
+
+RUN pip3 install -r requirements-raspberrypi.txt
 
 EXPOSE 8000
 
