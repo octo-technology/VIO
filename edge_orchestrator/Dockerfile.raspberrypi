@@ -13,6 +13,10 @@ RUN apt-get update
 RUN apt-get install libatlas3-base libgfortran5 -y
 RUN apt-get install fswebcam -y
 
+RUN pip install --upgrade pip
+RUN apt-get install build-essential libssl-dev libffi-dev \
+    python3-dev cargo pkg-config -y
+
 RUN pip3 install -r requirements-raspberrypi.txt
 
 # https://stackoverflow.com/questions/61875869/ubuntu-20-04-upgrade-python-missing-libffi-so-6
