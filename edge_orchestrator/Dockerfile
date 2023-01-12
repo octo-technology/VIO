@@ -10,4 +10,7 @@ COPY setup.py ./setup.py
 RUN pip install .
 
 ENV API_CONFIG docker
-CMD python -m edge_orchestrator
+
+ENTRYPOINT ["python", "-m", "edge_orchestrator"]
+
+EXPOSE 8000

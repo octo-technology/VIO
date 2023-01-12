@@ -1,8 +1,7 @@
-FROM --platform=linux/arm64 arm64v8/python:3.8.16
-
-RUN echo "[global]\nextra-index-url=https://www.piwheels.org/simple" >> /etc/pip.conf
+FROM --platform=linux/arm/v7 arm32v7/python:3.7
 
 WORKDIR /edge_orchestrator
+
 COPY edge_orchestrator ./edge_orchestrator
 COPY config ./config
 COPY data ./data
@@ -14,16 +13,18 @@ RUN apt-get install libatlas3-base libgfortran5 -y
 RUN apt-get install fswebcam -y
 RUN apt-get install build-essential python3-dev cargo -y
 
-RUN pip install --upgrade pip
-
 # https://stackoverflow.com/questions/61875869/ubuntu-20-04-upgrade-python-missing-libffi-so-6
 RUN cd /usr/lib && ln -s /usr/lib/arm-linux-gnueabihf/libffi.so.7 libffi.so.6
 
-RUN pip3 install -r requirements-raspberrypi.txt
+RUN echo "[global]\nextra-index-url=https://www.piwheels.org/simple" >> /etc/pip.conf
+RUN pip install --upgrade pip
 
-EXPOSE 8000
+RUN pip3 install -r requirements-raspberrypi.txt
+RUN pip install .
 
 ENV API_CONFIG edge
 ENV LD_LIBRARY_PATH /opt/vc/lib
 
-CMD python -m edge_orchestrator
+ENTRYPOINT ["python", "-m", "edge_orchestrator"]
+
+EXPOSE 8000
