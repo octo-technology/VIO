@@ -59,9 +59,3 @@ Once all services are up and running you can access:
 From the [edge interface](edge_interface.md) you can load a configuration and run the trigger button that will trigger the Orchestrator API and launch the following actions:
 
  ![vio-architecture-stack](images/edge_orchestrator-actions.png)
-
-## Implementation example
-
-Here you can find an implementation of VIO deployed on Azure (vio-hub) managing a fleet of Raspberrys (vio-edge):
- 
- ![vio-architecture-stack](images/vio_azure_stack.png)

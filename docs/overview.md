@@ -31,3 +31,18 @@ Each sub folders below are indeed a module, an application, an independant micro
 - [The hub deployment playbook](hub_deployment.md)
 
 All of those modules have been packages inside a dedicated docker images to facilitate their deployment.
+
+## Cloud agnostic
+
+### VIO hub deployed on azure
+
+![vio-architecture-stack](drawio/vio-archi-cloud-azure.svg)
+
+### VIO hub deployed on GCP
+
+![vio-architecture-stack](drawio/vio-archi-cloud-azure.svg)
+
+### VIO hub deployed on AWS
+
+![vio-architecture-stack](drawio/vio-archi-cloud-azure.svg)
+
