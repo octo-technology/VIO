@@ -24,12 +24,12 @@ jobs:
           - dockerfile: ./edge_orchestrator/Dockerfile
             image: ghcr.io/${{ github.repository }}/edge_orchestrator
             context: ./edge_orchestrator
-          - dockerfile: ./model_serving/Dockerfile
+          - dockerfile: ./edge_model_serving/Dockerfile
             image: ghcr.io/${{ github.repository }}/edge_model_serving
-            context: ./model_serving
-          - dockerfile: ./tflite_serving/Dockerfile
+            context: ./edge_model_serving
+          - dockerfile: ./edge_tflite_serving/Dockerfile
             image: ghcr.io/${{ github.repository }}/edge_tflite_serving
-            context: ./tflite_serving
+            context: ./edge_tflite_serving
     permissions:
       packages: write
       contents: read

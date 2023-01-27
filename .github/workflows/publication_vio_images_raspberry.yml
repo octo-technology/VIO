@@ -24,12 +24,12 @@ jobs:
           - dockerfile: ./edge_orchestrator/Dockerfile.raspberrypi
             image: ghcr.io/${{ github.repository }}/edge_orchestrator.raspberrypi
             context: ./edge_orchestrator
-          - dockerfile: ./model_serving/Dockerfile.raspberrypi
+          - dockerfile: ./edge_model_serving/Dockerfile.raspberrypi
             image: ghcr.io/${{ github.repository }}/edge_model_serving.raspberrypi
-            context: ./model_serving
-          - dockerfile: ./tflite_serving/Dockerfile.raspberrypi
+            context: ./edge_model_serving
+          - dockerfile: ./edge_tflite_serving/Dockerfile.raspberrypi
             image: ghcr.io/${{ github.repository }}/edge_tflite_serving.raspberrypi
-            context: ./tflite_serving
+            context: ./edge_tflite_serving
     permissions:
       packages: write
       contents: read
