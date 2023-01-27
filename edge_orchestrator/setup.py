@@ -3,12 +3,6 @@ from setuptools import setup, find_packages
 long_description = "The edge_orchestrator orchestrates the following steps as soon as it is triggered: " \
                    "image capture, image backup, metadata backup, model inference on images and saving results."
 
-with open('requirements.txt', 'r', encoding='utf-8') as f:
-    requirements = f.read()
-
-with open('requirements-dev.txt', 'r', encoding='utf-8') as f:
-    requirements_dev = f.read()
-
 setup(
     name='edge_orchestrator',
     version='0.2.0',
@@ -23,10 +17,35 @@ setup(
         'License :: OSI Approved :: Apache2.0',
         'Operating System :: OS Independent',
     ],
-    packages=find_packages(exclude=['test', 'test.*', 'data']),
-    install_requires=requirements,
+    packages=find_packages(exclude=['tests*', 'data']),
+    package_data={'edge_orchestrator': ['logger.cfg']},
+    # data_files=[('config', ['config/inventory.json'])],
+    install_requires=[
+        'aiohttp==3.8.3',
+        'azure-iot-device==2.12.0',
+        'fastapi==0.80.0',
+        'numpy==1.24.1',
+        'Pillow==8.4.0',
+        'pymongo==4.3.3',
+        'uvicorn==0.20.0',
+        'smart_open[azure]==6.3.0'
+    ],
     extras_require={
-        'dev': requirements_dev
+        'dev': [
+            'autopep8==2.0.1',
+            'behave==1.2.6',
+            'flake8==6.0.0',
+            'freezegun==1.2.2',
+            'pytest==7.2.1',
+            'pytest-asyncio==0.20.3',
+            'pytest-cov==4.0.0',
+            'python-dotenv==0.21.1',
+            'requests[security]==2.28.2',
+            'testcontainers==3.7.1'
+        ],
+        'raspberry': [
+            'picamera==1.13'
+        ]
     },
     python_requires='>=3.8.5',
     entry_points={
