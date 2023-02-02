@@ -10,7 +10,7 @@ services:
   edge_model_serving:
     container_name: edge_model_serving
     build:
-      context: edge_tflite_serving
+      context: edge_model_serving
       dockerfile: Dockerfile
     environment:
       - TF_CPP_MIN_VLOG_LEVEL=0

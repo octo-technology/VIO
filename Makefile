@@ -11,7 +11,7 @@ help:
 		awk 'BEGIN {FS = "(: |##)"}; {printf "\033[36m%-30s\033[0m %s\n", $$2, $$3}'
 
 .PHONY: edge_model_serving ## 💁 Start model_serving service (Docker container)
-model_serving:
+edge_model_serving:
 	docker-compose up -d --build edge_model_serving
 
 .PHONY: edge_orchestrator ## 🕵 Start edge_orchestrator service (Docker container)

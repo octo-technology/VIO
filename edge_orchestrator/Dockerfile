@@ -7,6 +7,9 @@ COPY config ./config
 COPY data ./data
 COPY setup.py ./setup.py
 
+ENV PIP_INDEX_URL="https://artifactory.michelin.com/api/pypi/pypi/simple"
+# Say pip to use artifactory
+RUN pip install --upgrade pip
 RUN pip install .
 
 ENV API_CONFIG docker

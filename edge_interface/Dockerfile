@@ -2,6 +2,7 @@ FROM node:12.2.0-alpine as build-stage
 
 WORKDIR /edge_interface
 COPY package*.json ./
+RUN npm config set registry https://artifactory.michelin.com/artifactory/api/npm/npm-remote/
 RUN npm install
 COPY ./ .
 RUN npm run build
