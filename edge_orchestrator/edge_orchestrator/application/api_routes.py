@@ -50,6 +50,7 @@ def get_inventory(inventory: Inventory = Depends(get_inventory)):
 
 @api_router.get('/configs')
 def get_all_configs(station_config: StationConfig = Depends(get_station_config)):
+    station_config.load()
     return station_config.all_configs
 
 

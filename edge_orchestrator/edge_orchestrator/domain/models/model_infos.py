@@ -109,3 +109,4 @@ class ModelTypes(Enum):
     CLASSIFICATION = 'classification'
     OBJECT_DETECTION = 'object_detection'
     OBJECT_DETECTION_WITH_CLASSIFICATION = 'object_detection_with_classification'
+    OBJECT_DETECTION_WITH_CLASSIFICATION_TORCH = 'object_detection_with_classification_torch'

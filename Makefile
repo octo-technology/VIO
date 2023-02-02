@@ -10,7 +10,7 @@ help:
 	grep -E '^\.PHONY: [a-zA-Z0-9_-]+ .*?## .*$$' $(MAKEFILE_LIST) | \
 		awk 'BEGIN {FS = "(: |##)"}; {printf "\033[36m%-30s\033[0m %s\n", $$2, $$3}'
 
-.PHONY: edge_model_serving ## 💁 Start edge_model_serving service (Docker container)
+.PHONY: edge_model_serving ## 💁 Start model_serving service (Docker container)
 edge_model_serving:
 	docker-compose up -d --build edge_model_serving
 

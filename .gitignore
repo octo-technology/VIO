@@ -6,6 +6,9 @@
 __pycache__/
 *.py[cod]
 *$py.class
+/venv-torch
+.vscode
+edge_torch_serving
 
 # C extensions
 *.so
