@@ -28,7 +28,7 @@ class TFServingDetectionClassificationWrapper(ModelForward):
             async with aiohttp.ClientSession() as session:
                 async with session.post(model_url, json=payload) as response:
                     json_data = await response.json()
-            logger.info('json DONE')
+            logger.info(f'response received {json_data}')
             inference_output = self.perform_post_processing(model, json_data['outputs'])
             return inference_output
         except Exception as e:
@@ -40,17 +40,17 @@ class TFServingDetectionClassificationWrapper(ModelForward):
         img = Image.open(io.BytesIO(binary))
         img = np.asarray(img)
         self.image_shape = img.shape[:2]
-        img = np.expand_dims(img, axis=0).astype(np.uint8)
+        # img = np.expand_dims(img, axis=0).astype(np.uint8)
         return img
 
     def perform_post_processing(self, model: ModelInfos, json_outputs: dict) -> dict:
         inference_output = {}
         class_names = []
-        boxes_coordinates, objectness_scores, number_of_boxes, detection_classes = (
-            json_outputs[model.boxes_coordinates][0],
-            json_outputs[model.objectness_scores][0],
-            json_outputs[model.number_of_boxes][0],
-            json_outputs[model.detection_classes][0])
+        boxes_coordinates, objectness_scores, detection_classes = (
+            json_outputs[model.boxes_coordinates],
+            json_outputs[model.objectness_scores],
+            json_outputs[model.detection_classes]
+        )
 
         try:
             class_names = [c.strip() for c in open(self.class_names_path).readlines()]
@@ -58,16 +58,18 @@ class TFServingDetectionClassificationWrapper(ModelForward):
             logger.exception(e)
             logger.info('cannot open class names files at location {}'.format(self.class_names_path))
 
-        for box_index in range(int(number_of_boxes)):
-            box_coordinates_in_current_image = boxes_coordinates[box_index]
+        for box_index, box_coordinates_in_current_image in enumerate(boxes_coordinates):
             # crop_image expects the box coordinates to be (xmin, ymin, xmax, ymax)
             # Mobilenet returns the coordinates as (ymin, xmin, ymax, xmax)
             # Hence, the switch here
-            box_coordinates_in_current_image = [int(box_coordinates_in_current_image[1] * self.image_shape[1]),
-                                                int(box_coordinates_in_current_image[0] * self.image_shape[0]),
-                                                int(box_coordinates_in_current_image[3] * self.image_shape[1]),
-                                                int(box_coordinates_in_current_image[2] * self.image_shape[0])
-                                                ]
+            logger.info(f"box {box_coordinates_in_current_image} - image {self.image_shape}")
+            
+            height = self.image_shape[0]
+            width = self.image_shape[1]
+            original_dims = np.array([width, height, width, height])
+            box_coordinates_in_current_image = box_coordinates_in_current_image * original_dims
+            box_coordinates_in_current_image = box_coordinates_in_current_image.astype(int).tolist()
+            
             box_objectness_score_in_current_image = objectness_scores[box_index]
 
             boxes_detected_in_current_image_labels = detection_classes[box_index]
