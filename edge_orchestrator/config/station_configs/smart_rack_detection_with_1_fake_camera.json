@@ -1,0 +1,30 @@
+{
+  "cameras": {
+    "camera_id3": {
+      "type": "fake",
+      "input_images_folder": "ols-smart-rack",
+      "position": "front",
+      "exposition": 100,
+      "models_graph": {
+        "model_id5": {
+          "metadata": "ols-smart-rack",
+          "depends_on": [],
+          "class_to_detect": ["spool_full", "spool_empty", "spool_gi_full", "spool_gi_empty", "forklift"]
+        }
+      },
+      "camera_rule": {
+        "name": "min_nb_objects_rule",
+        "parameters": {
+          "class_to_detect": ["spool_full", "spool_empty", "spool_gi_full", "spool_gi_empty", "forklift"],
+           "min_threshold": 1
+        }
+      }
+    }
+  },
+  "item_rule": {
+    "name": "min_threshold_KO_rule",
+    "parameters": {
+      "threshold": 1
+    }
+  }
+}

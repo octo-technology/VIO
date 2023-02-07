@@ -1,0 +1,6 @@
+background
+spool_full
+spool_empty
+spool_gi_full
+spool_gi_empty
+forklift

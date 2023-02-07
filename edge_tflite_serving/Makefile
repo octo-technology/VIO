@@ -31,4 +31,4 @@ tests:
 
 .PHONY: edge_tflite_serving  ## ✅ Launch the serving app
 edge_tflite_serving:
-	uvicorn edge_tflite_server:app --reload --port 8501 --host 0.0.0.0
+	uvicorn tflite_server:app --reload --port 8501 --host 0.0.0.0

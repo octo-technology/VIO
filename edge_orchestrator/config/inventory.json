@@ -102,6 +102,22 @@
         224,
         224
       ]
+    },
+    "ols-smart-rack": {
+      "category": "object_detection",
+      "version": 1,
+      "pb_file_path": "modelforward/ols-smart-rack",
+      "class_names_path": "ols-smart-rack.txt",
+      "output": {
+        "boxes_coordinates": "detection_boxes",
+        "objectness_scores": "detection_scores",
+        "detection_classes": "detection_classes"
+      },
+      "image_resolution": [
+        300,
+        300
+      ],
+      "objectness_threshold": 0
     }
   },
   "camera_rules": [
