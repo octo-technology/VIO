@@ -10,14 +10,14 @@ services:
   edge_model_serving:
     container_name: edge_model_serving
     build:
-      context: edge_torch_serving
+      context: edge_model_serving/torch_serving
       dockerfile: Dockerfile
     environment:
       - TF_CPP_MIN_VLOG_LEVEL=0
     ports:
       - 8501:8501
     volumes:
-      - ./edge_torch_serving:/models
+      - ./edge_model_serving/models:/models
 
   edge_orchestrator:
     container_name: edge_orchestrator

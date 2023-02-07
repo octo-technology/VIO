@@ -1,5 +1,0 @@
-*.tar
-trained_models
-__pycache__
-venv-torch
-logs

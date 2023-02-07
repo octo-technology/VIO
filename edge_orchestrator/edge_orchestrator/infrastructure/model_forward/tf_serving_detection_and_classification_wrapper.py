@@ -40,7 +40,7 @@ class TFServingDetectionClassificationWrapper(ModelForward):
         img = Image.open(io.BytesIO(binary))
         img = np.asarray(img)
         self.image_shape = img.shape[:2]
-        img = np.expand_dims(img, axis=0).astype(np.uint8)
+        # img = np.expand_dims(img, axis=0).astype(np.uint8)
         return img
 
     def perform_post_processing(self, model: ModelInfos, json_outputs: dict) -> dict:
