@@ -22,7 +22,7 @@ class FakeCamera(Camera):
 
     def select_random_image(self) -> Path:
         input_images_folder = self.data_folder_path / self.settings['input_images_folder']
-        selected_images = [] 
+        selected_images = []
         for extension in self.image_extensions:
             selected_images += list(input_images_folder.glob(extension))
         random_image_path = Path(random.choice(selected_images))

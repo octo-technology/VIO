@@ -40,16 +40,16 @@ class TFServingDetectionClassificationWrapper(ModelForward):
         img = Image.open(io.BytesIO(binary))
         img = np.asarray(img)
         self.image_shape = img.shape[:2]
-        # img = np.expand_dims(img, axis=0).astype(np.uint8)
+        img = np.expand_dims(img, axis=0).astype(np.uint8)
         return img
 
     def perform_post_processing(self, model: ModelInfos, json_outputs: dict) -> dict:
         inference_output = {}
         class_names = []
         boxes_coordinates, objectness_scores, detection_classes = (
-            json_outputs[model.boxes_coordinates],
-            json_outputs[model.objectness_scores],
-            json_outputs[model.detection_classes]
+            json_outputs[model.boxes_coordinates][0],
+            json_outputs[model.objectness_scores][0],
+            json_outputs[model.detection_classes][0]
         )
 
         try:
@@ -63,13 +63,13 @@ class TFServingDetectionClassificationWrapper(ModelForward):
             # Mobilenet returns the coordinates as (ymin, xmin, ymax, xmax)
             # Hence, the switch here
             logger.info(f"box {box_coordinates_in_current_image} - image {self.image_shape}")
-            
+
             height = self.image_shape[0]
             width = self.image_shape[1]
             original_dims = np.array([width, height, width, height])
             box_coordinates_in_current_image = box_coordinates_in_current_image * original_dims
             box_coordinates_in_current_image = box_coordinates_in_current_image.astype(int).tolist()
-            
+
             box_objectness_score_in_current_image = objectness_scores[box_index]
 
             boxes_detected_in_current_image_labels = detection_classes[box_index]

@@ -25,7 +25,7 @@ class JsonStationConfig(StationConfig):
         self.station_configs_folder = station_configs_folder
         self.all_configs = {}
         self.load()
-        
+
     def load(self):
         self.all_configs = {}
         for config in self.station_configs_folder.glob("*.json"):

@@ -32,7 +32,6 @@ class TestDetectionClassificationHelper:
         json_outputs = {
             'detection_boxes': [[[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12]]],
             'detection_scores': [[0.8, 0.7, 0.6]],
-            'num_detections': [3],
             'detection_classes': [[1., 1., 2.]]
         }
 
@@ -40,6 +39,10 @@ class TestDetectionClassificationHelper:
                            boxes_coordinates='detection_boxes', objectness_scores='detection_scores',
                            number_of_boxes='num_detections', detection_classes='detection_classes',
                            class_to_detect='foo', objectness_threshold=0.5)
+
+        # crop_image expects the box coordinates to be (xmin, ymin, xmax, ymax)
+        # Mobilenet returns the coordinates as (ymin, xmin, ymax, xmax)
+        # Hence, the switch here
 
         expected = {
             'object_1': {

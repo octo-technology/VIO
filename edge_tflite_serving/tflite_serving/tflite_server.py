@@ -16,7 +16,8 @@ coral_tpu = os.environ.get('TPU', 'false')
 
 
 def create_interpreter(model_directory: Path):
-    model_path = str([filepath for filepath in model_directory.iterdir() if '.tflite' in filepath.name][0])
+    model_path = str([filepath for filepath in model_directory.iterdir(
+    ) if '.tflite' in filepath.name][0])
     interpreter = tflite.Interpreter(model_path=model_path)
     interpreter.allocate_tensors()
     return interpreter
@@ -27,7 +28,8 @@ model_interpreters = {}
 
 for model_directory in Path('models').iterdir():
     if model_directory.is_dir():
-        model_interpreters[model_directory.name] = create_interpreter(model_directory)
+        model_interpreters[model_directory.name] = create_interpreter(
+            model_directory)
 
 
 @app.get("/")
@@ -56,7 +58,8 @@ async def predict(model_name: str, model_version: str, payload: JSONStructure):
     output_details = interpreter.get_output_details()
 
     input_dtype = input_details[0]["dtype"]
-    logging.info(f'interpreting with {model_name} for input type {input_dtype}')
+    logging.info(
+        f'interpreting with {model_name} for input type {input_dtype}')
     logging.warning(f'output details: {output_details}')
 
     try:
@@ -71,10 +74,12 @@ async def predict(model_name: str, model_version: str, payload: JSONStructure):
 
         if len(output_details) >= 3:
             boxes = interpreter.get_tensor(output_details[0]["index"])
-            classes = interpreter.get_tensor(output_details[1]["index"]).astype(int) + 1
+            classes = interpreter.get_tensor(
+                output_details[1]["index"]).astype(int) + 1
             scores = interpreter.get_tensor(output_details[2]["index"])
 
-            logging.warning(f'interpreting with {model_name} for input type {input_dtype}')
+            logging.warning(
+                f'interpreting with {model_name} for input type {input_dtype}')
             logging.warning(f'Boxes of object detected: {boxes[0]}')
             logging.warning(f'Classes of object detected: {classes[0]}')
             logging.warning(f'Scores of object detected: {scores[0]}')
@@ -88,7 +93,8 @@ async def predict(model_name: str, model_version: str, payload: JSONStructure):
             }
         elif len(output_details) == 1:
             scores = interpreter.get_tensor(output_details[0]["index"])
-            logging.warning(f'interpreting with {model_name} for input type {input_dtype}')
+            logging.warning(
+                f'interpreting with {model_name} for input type {input_dtype}')
             logging.warning(f'Scores of classification: {scores[0]}')
             prediction = {'outputs': scores.tolist()}
 

@@ -25,6 +25,15 @@ dependencies:
 dev-dependencies:
 	pip install -r requirements-dev.txt
 
+.PHONY: lint  ## 🐍 Lint Python files to conform to the PEP 8 style guide
+lint:
+	flake8 --count --show-source --statistics --exclude venv*
+
+.PHONY: autopep8  ## 🐍 Automatically formats Python code to conform to the PEP 8 style guide
+autopep8:
+	autopep8 --in-place --aggressive -r tflite_serving
+
+
 .PHONY: tests  ## ✅ Launch the unit tests
 tests:
 	pytest tests

@@ -20,8 +20,8 @@ class Docker(Config):
         self.inventory = JsonInventory(self.ROOT_PATH / 'config' / 'inventory.json')
         self.station_config = JsonStationConfig(
             station_configs_folder=self.ROOT_PATH / 'config' / 'station_configs',
-            inventory= self.inventory, 
-            data_folder= self.ROOT_PATH / 'data'
+            inventory=self.inventory,
+            data_folder=self.ROOT_PATH / 'data'
         )
         self.edge_station = EdgeStation(self.station_config, self.ROOT_PATH / 'data')
         self.model_forward = TFServingWrapper(self.SERVING_MODEL_URL, self.inventory, self.station_config)
