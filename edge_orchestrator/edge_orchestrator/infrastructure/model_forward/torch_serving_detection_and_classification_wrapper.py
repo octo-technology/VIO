@@ -11,7 +11,7 @@ from edge_orchestrator.domain.models.model_infos import ModelInfos
 from edge_orchestrator.domain.ports.model_forward import ModelForward
 
 
-class TFServingDetectionClassificationWrapper(ModelForward):
+class TorchServingDetectionClassificationWrapper(ModelForward):
 
     def __init__(self, base_url, class_names_path: Path, image_shape=None):
         self.base_url = base_url

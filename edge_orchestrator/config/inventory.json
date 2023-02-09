@@ -104,7 +104,7 @@
       ]
     },
     "ols-smart-rack": {
-      "category": "object_detection_with_classification",
+      "category": "object_detection_with_classification_torch",
       "version": 1,
       "pb_file_path": "modelforward/ols-smart-rack",
       "class_names_path": "ols-smart-rack.txt",

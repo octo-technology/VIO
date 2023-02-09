@@ -2,12 +2,10 @@ FROM python:3.8.16-slim
 
 WORKDIR /edge_orchestrator
 
-# COPY config ./config
-# COPY data ./data
 COPY setup.py ./setup.py
 
-ENV PIP_INDEX_URL="https://artifactory.michelin.com/api/pypi/pypi/simple"
-# Say pip to use artifactory
+# ENV PIP_INDEX_URL="https://artifactory.michelin.com/api/pypi/pypi/simple"
+
 RUN pip install --upgrade pip
 RUN pip install .
 
