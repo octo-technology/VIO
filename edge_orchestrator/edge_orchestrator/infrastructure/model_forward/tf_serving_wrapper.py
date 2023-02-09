@@ -1,7 +1,9 @@
 from edge_orchestrator import logger
 from edge_orchestrator.domain.models.model_infos import ModelInfos, ModelTypes
 from edge_orchestrator.domain.ports.model_forward import ModelForward
-from edge_orchestrator.infrastructure.model_forward.torch_serving_detection_and_classification_wrapper import TorchServingDetectionClassificationWrapper
+from edge_orchestrator.infrastructure.model_forward.torch_serving_detection_and_classification_wrapper import (
+    TorchServingDetectionClassificationWrapper
+)
 from edge_orchestrator.infrastructure.model_forward.tf_serving_classification_wrapper import (
     TFServingClassificationWrapper,
 )
