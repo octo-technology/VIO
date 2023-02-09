@@ -4,8 +4,6 @@ WORKDIR /edge_orchestrator
 
 COPY setup.py ./setup.py
 
-# ENV PIP_INDEX_URL="https://artifactory.michelin.com/api/pypi/pypi/simple"
-
 RUN pip install --upgrade pip
 RUN pip install .
 
