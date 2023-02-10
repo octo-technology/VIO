@@ -7,7 +7,7 @@ def load_config():
     configuration = os.environ.get('API_CONFIG', 'default')
     logger.info(f'App running with configuration: {configuration}')
 
-    available_configurations = ['test', 'docker', 'default', 'edge', 'edge-lite', 'test-gcp']
+    available_configurations = ['test', 'docker', 'default', 'edge', 'edge-lite', 'edge-gcp']
     if configuration not in available_configurations:
         raise ValueError(f"Unknown configuration '{configuration}'. "
                          f'Valid configurations are {available_configurations}.')
@@ -26,10 +26,9 @@ def load_config():
     elif configuration == 'edge-lite':
         from edge_orchestrator.environment.edge_with_azure_container_storage import EdgeWithAzureContainerStorage
         configuration_class = EdgeWithAzureContainerStorage
-
-    elif configuration == 'test-gcp':
-        from edge_orchestrator.environment.gcp import Gcp
-        configuration_class = Gcp
+    elif configuration == 'gcp':
+        from edge_orchestrator.environment.edge_with_gcp_bucket import EdgeWithGCPBucket
+        configuration_class = EdgeWithGCPBucket
 
     return configuration_class()
 
