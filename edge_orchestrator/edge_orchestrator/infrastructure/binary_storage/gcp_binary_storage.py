@@ -1,3 +1,4 @@
+import os
 from typing import List
 from datetime import datetime
 
@@ -5,13 +6,13 @@ from edge_orchestrator.domain.models.item import Item
 from edge_orchestrator.domain.ports.binary_storage import BinaryStorage
 from google.cloud import storage
 
-BUCKET_NAME = "augi_vio_storage"
+BUCKET_NAME = "airbus-vio-storage"
 
 
 class GCPBinaryStorage(BinaryStorage):
     def __init__(self):
         self.storage_client = storage.Client()
-        self.bucket = self.storage_client.get_bucket(BUCKET_NAME)
+        self.bucket = self.storage_client.get_bucket(os.getenv('GCP_BUCKET_NAME'))
         self.dt_string = datetime.now().strftime("%d-%m-%Y")
 
     def save_item_binaries(self, item: Item) -> None:
