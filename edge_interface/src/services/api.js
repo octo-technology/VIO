@@ -1,6 +1,8 @@
 import axios from "axios";
 
-const api_url = "http://" + location.hostname + ":8000/api/v1";
+const env_hostname = process.env.VUE_APP_API_HOSTNAME;
+const hostname = env_hostname !== "" ? env_hostname : location.hostname;
+const api_url = "http://" + hostname + ":8000/api/v1";
 
 export const baseURL = api_url;
 console.log(`Server listening on: ${baseURL}`);
