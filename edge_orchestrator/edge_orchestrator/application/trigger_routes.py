@@ -23,7 +23,7 @@ async def trigger_job(background_tasks: BackgroundTasks = None):
         return {'item_id': item.id}
 
 
-@trigger_router.put('/upload')
+@trigger_router.post('/upload')
 async def upload_job(image: UploadFile = File(...), background_tasks: BackgroundTasks = None):
     item = Item.from_nothing()
     contents = image.file.read()

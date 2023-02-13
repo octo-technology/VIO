@@ -6,8 +6,6 @@ from edge_orchestrator.domain.models.item import Item
 from edge_orchestrator.domain.ports.binary_storage import BinaryStorage
 from google.cloud import storage
 
-BUCKET_NAME = "airbus-vio-storage"
-
 
 class GCPBinaryStorage(BinaryStorage):
     def __init__(self):
