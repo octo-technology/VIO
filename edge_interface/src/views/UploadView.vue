@@ -58,7 +58,7 @@
         </v-alert>
       </div>
       <div v-if="done_status !== null" class="no_configuration">
-        <v-alert color="green" dismissible elevation="10" type="warning"
+        <v-alert color="green" dismissible elevation="10" type="success"
           >{{ this.done_status }}
         </v-alert>
       </div>
