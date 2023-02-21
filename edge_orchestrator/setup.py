@@ -47,6 +47,9 @@ setup(
         ],
         'raspberry': [
             'picamera==1.13'
+        ],
+        'gcp': [
+            'google-cloud-storage==2.2.1'
         ]
     },
     python_requires='>=3.8.5',
