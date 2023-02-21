@@ -102,20 +102,6 @@
         224,
         224
       ]
-    },
-    "ols-smart-rack": {
-      "category": "object_detection_with_classification_torch",
-      "version": 1,
-      "pb_file_path": "modelforward/ols-smart-rack",
-      "class_names_path": "ols-smart-rack.txt",
-      "output": {
-        "boxes_coordinates": "detection_boxes",
-        "objectness_scores": "detection_scores",
-        "number_of_boxes": "number_of_boxes",
-        "detection_classes": "detection_classes"
-      },
-      "image_resolution": [720, 536],
-      "objectness_threshold": 0
     }
   },
   "camera_rules": [
