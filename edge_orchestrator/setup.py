@@ -29,7 +29,8 @@ setup(
         'psycopg2-binary==2.9.5',
         'pymongo==4.3.3',
         'uvicorn==0.20.0',
-        'smart_open[azure]==6.3.0'
+        'smart_open[azure]==6.3.0',
+        'google-cloud-storage==2.2.1'
     ],
     extras_require={
         'dev': [
@@ -47,9 +48,6 @@ setup(
         ],
         'raspberry': [
             'picamera==1.13'
-        ],
-        'gcp': [
-            'google-cloud-storage==2.2.1'
         ]
     },
     python_requires='>=3.8.5',

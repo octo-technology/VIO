@@ -1,4 +1,3 @@
-from typing import List
 from fastapi import APIRouter, BackgroundTasks, UploadFile, File
 from fastapi.responses import JSONResponse
 from edge_orchestrator.domain.models.item import Item
@@ -24,7 +23,8 @@ async def trigger_job(background_tasks: BackgroundTasks = None):
 
 
 @trigger_router.post('/upload')
-async def upload_job(image: UploadFile = File(...), background_tasks: BackgroundTasks = None):
+async def upload_job(image: UploadFile = File(...), background_tasks:
+                     BackgroundTasks = None):
     item = Item.from_nothing()
     contents = image.file.read()
     item.binaries = {'0': contents}
