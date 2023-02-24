@@ -1,9 +1,6 @@
 from edge_orchestrator import logger
 from edge_orchestrator.domain.models.model_infos import ModelInfos, ModelTypes
 from edge_orchestrator.domain.ports.model_forward import ModelForward
-from edge_orchestrator.infrastructure.model_forward.torch_serving_detection_and_classification_wrapper import (
-    TorchServingDetectionClassificationWrapper
-)
 from edge_orchestrator.infrastructure.model_forward.tf_serving_classification_wrapper import (
     TFServingClassificationWrapper,
 )
@@ -33,9 +30,6 @@ class TFServingWrapper(ModelForward):
                 .perform_inference(model, binary_data, binary_name)
         elif model.category == ModelTypes.OBJECT_DETECTION_WITH_CLASSIFICATION.value:
             return await TFServingDetectionClassificationWrapper(self.serving_model_url, model.class_names_path)\
-                .perform_inference(model, binary_data, binary_name)
-        elif model.category == ModelTypes.OBJECT_DETECTION_WITH_CLASSIFICATION_TORCH.value:
-            return await TorchServingDetectionClassificationWrapper(self.serving_model_url, model.class_names_path)\
                 .perform_inference(model, binary_data, binary_name)
         else:
             logger.error(
