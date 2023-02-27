@@ -21,7 +21,7 @@ class TestGCPBinaryStorage:
         mock_gcs_client = mock_storage.Client.return_value
         mock_bucket = Mock()
         mock_gcs_client.get_bucket.return_value = mock_bucket
-        gcs = GCPBinaryStorage('fake_path')
+        gcs = GCPBinaryStorage()
 
         # When
         gcs.save_item_binaries(item)

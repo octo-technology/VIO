@@ -1,8 +1,5 @@
-import os
 from fastapi.testclient import TestClient
 from tests.conftest import TEST_DATA_FOLDER_PATH
-
-os.environ['API_CONFIG'] = 'default'
 
 from edge_orchestrator.application.server import server
 
