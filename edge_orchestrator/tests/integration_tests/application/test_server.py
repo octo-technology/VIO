@@ -8,7 +8,9 @@ from edge_orchestrator.application.server import server
 
 
 class TestServer:
-    def test_upload_route__should_return_expected_logs_when_received_paylod_with_binary_image(self, caplog):
+    def test_upload_route__should_return_expected_logs_when_received_paylod_with_binary_image(
+            self,
+            caplog):
         # Given
         client = TestClient(server())
         test_file = 'camera_id1.jpg'

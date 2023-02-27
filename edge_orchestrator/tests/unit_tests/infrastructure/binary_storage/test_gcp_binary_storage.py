@@ -1,11 +1,11 @@
 from unittest.mock import patch, Mock
-from google.cloud import storage
 from datetime import datetime
 
 from edge_orchestrator.domain.models.item import Item
 from edge_orchestrator.infrastructure.binary_storage.gcp_binary_storage import GCPBinaryStorage
 
 from tests.conftest import TEST_DATA_FOLDER_PATH
+
 
 class TestGCPBinaryStorage:
     @patch('edge_orchestrator.infrastructure.binary_storage.gcp_binary_storage.storage')
@@ -16,7 +16,7 @@ class TestGCPBinaryStorage:
         test_file_path = TEST_DATA_FOLDER_PATH / 'item_2' / test_file
         item = Item.from_nothing()
         with open(test_file_path, "rb") as f:
-            item.binaries = {camera_id: f}
+            item.binaries = {test_camera_id: f}
 
         mock_gcs_client = mock_storage.Client.return_value
         mock_bucket = Mock()
@@ -28,5 +28,6 @@ class TestGCPBinaryStorage:
 
         # Then
         mock_storage.Client.assert_called_once()
-        mock_bucket.blob.assert_called_once_with(f"{datetime.now().strftime("%d-%m-%Y")}_{item.id}/{camera_id}.jpg")
+        mock_bucket.blob.assert_called_once_with(
+            f"{datetime.now().strftime('%d-%m-%Y')}_{item.id}/{test_camera_id}.jpg")
         mock_bucket.blob.return_value.upload_from_string.assert_called_once_with(f, content_type="image/jpg")
