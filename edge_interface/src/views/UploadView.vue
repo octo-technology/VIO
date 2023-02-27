@@ -67,7 +67,7 @@
 </template>
 
 <script>
-import TriggerCaptureService from "@/services/TriggerCaptureService";
+import UploadService from "@/services/UploadFilesService";
 import VideoCapture from "../components/VideoCapture.vue";
 
 export default {
@@ -108,11 +108,11 @@ export default {
       this.img = this.$refs.webcam.capture();
     },
     async upload() {
-      await TriggerCaptureService.upload(this.$refs.webcam.capture())
+      await UploadService.uploadImage(this.$refs.webcam.capture())
         .then(async response => {
           this.item_id = response.data["item_id"];
           this.error_message = null;
-          this.done_status = "GCP upload done";
+          this.done_status = "Image upload done";
         })
         .catch(reason => {
           if (reason.response.status === 403) {

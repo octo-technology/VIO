@@ -9,7 +9,7 @@ COPY setup.py ./setup.py
 
 RUN pip install .
 
-ENV API_CONFIG edge-gcp
+ENV API_CONFIG docker
 
 ENTRYPOINT ["python", "-m", "edge_orchestrator"]
 

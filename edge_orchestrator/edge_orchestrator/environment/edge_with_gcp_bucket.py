@@ -1,5 +1,4 @@
 import os
-from pathlib import Path
 
 from edge_orchestrator.domain.models.edge_station import EdgeStation
 from edge_orchestrator.environment.config import Config
@@ -22,7 +21,6 @@ from edge_orchestrator.infrastructure.telemetry_sink.fake_telemetry_sink import 
 
 
 class EdgeWithGCPBucket(Config):
-    ROOT_PATH = Path.cwd()
     MONGO_DB_URI = os.environ.get("MONGO_DB_URI", "mongodb://mongodb:27017/")
     SERVING_MODEL_URL = os.environ.get(
         "SERVING_MODEL_URL", "http://model_serving:8501"
