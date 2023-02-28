@@ -12,21 +12,9 @@ class TestServer:
         client = TestClient(server())
         test_file = 'camera_id1.jpg'
         test_file_path = TEST_DATA_FOLDER_PATH / 'item_2' / test_file
-        expected_logs = ["Starting Capture",
-                         "Entering try Capture",
-                         "Error during Capture: 'NoneType' object is not subscriptable",
-                         "End of Capture",
-                         "Starting Save Binaries",
+        expected_logs = ["Starting Save Binaries",
                          "Entering try Save Binaries",
-                         "End of Save Binaries",
-                         "Starting Inference",
-                         "Entering try Inference",
-                         "Error during Inference: 'NoneType' object is not subscriptable",
-                         "End of Inference",
-                         "Starting Decision",
-                         "Entering try Decision",
-                         "Error during Decision: 'NoneType' object is not subscriptable",
-                         "End of Decision"]
+                         "End of Save Binaries"]
 
         # When
         with open(test_file_path, "rb") as f:
@@ -34,7 +22,7 @@ class TestServer:
 
         actual_logs = []
         for record in caplog.records:
-            if record.funcName == "inspect":
+            if record.funcName == "upload":
                 actual_logs.append(record.msg)
         # Then
         assert actual_response.status_code == 200

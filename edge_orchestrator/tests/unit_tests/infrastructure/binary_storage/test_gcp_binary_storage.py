@@ -12,12 +12,10 @@ class TestGCPBinaryStorage:
     def test_save_item_binaries_should_write_image_in_gcp(self, mock_storage):
         # Given
         test_camera_id = '1'
-        test_file = 'camera_id1.jpg'
-        test_file_path = TEST_DATA_FOLDER_PATH / 'item_2' / test_file
+        test_file_path = TEST_DATA_FOLDER_PATH / 'item_2' / 'camera_id1.jpg'
         item = Item.from_nothing()
         with open(test_file_path, "rb") as f:
             item.binaries = {test_camera_id: f}
-
         mock_gcs_client = mock_storage.Client.return_value
         mock_bucket = Mock()
         mock_gcs_client.get_bucket.return_value = mock_bucket
