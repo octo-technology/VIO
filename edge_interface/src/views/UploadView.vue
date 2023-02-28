@@ -67,7 +67,7 @@
 </template>
 
 <script>
-import UploadService from "@/services/UploadFilesService";
+import UploadService from "@/services/UploadCameraService";
 import VideoCapture from "../components/VideoCapture.vue";
 
 export default {
@@ -101,6 +101,13 @@ export default {
         this.camera = first.deviceId;
         this.deviceId = first.deviceId;
       }
+    },
+    done_status: function(new_val) {
+      if (new_val) {
+        setTimeout(() => {
+          this.done_status = null;
+        }, 3000);
+      }
     }
   },
   methods: {
@@ -108,7 +115,7 @@ export default {
       this.img = this.$refs.webcam.capture();
     },
     async upload() {
-      await UploadService.uploadImage(this.$refs.webcam.capture())
+      await UploadService.upload(this.$refs.webcam.capture())
         .then(async response => {
           this.item_id = response.data["item_id"];
           this.error_message = null;
