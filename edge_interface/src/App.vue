@@ -22,6 +22,16 @@
             </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+        <v-list-item link to="/upload-camera">
+          <v-list-item-action>
+            <v-icon>mdi-camera</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>
+              Camera
+            </v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
         <v-list-item link to="/trigger">
           <v-list-item-action>
             <v-icon>mdi-cloud-upload</v-icon>

@@ -1,7 +1,9 @@
 <template>
   <v-col cols="12">
     <v-row>
-      <h2>Current Camera</h2>
+      <div class="col-md-6">
+        <h2>Current Camera</h2>
+      </div>
       <div>
         <div class="border">
           <video-capture
@@ -34,6 +36,7 @@
             <v-btn color="error" class="mr-4" @click="onCapture">
               Capture Photo</v-btn
             >
+            <v-btn color="error" class="mr-4" @click="upload"> Upload</v-btn>
             <v-btn color="error" class="mr-4" @click="onStop">
               Stop Camera
             </v-btn>
@@ -49,11 +52,22 @@
           <img :src="img" class="img-responsive" />
         </figure>
       </div>
+      <div v-if="error_message !== null" class="no_configuration">
+        <v-alert color="red" dismissible elevation="10" type="warning"
+          >{{ this.error_message }}
+        </v-alert>
+      </div>
+      <div v-if="done_status !== null" class="no_configuration">
+        <v-alert color="green" dismissible elevation="10" type="success"
+          >{{ this.done_status }}
+        </v-alert>
+      </div>
     </v-row>
   </v-col>
 </template>
 
 <script>
+import UploadService from "@/services/UploadCameraService";
 import VideoCapture from "../components/VideoCapture.vue";
 
 export default {
@@ -62,6 +76,9 @@ export default {
     img: null,
     camera: null,
     deviceId: null,
+    item_id: null,
+    error_message: null,
+    done_status: null,
     devices: []
   }),
   components: {
@@ -84,11 +101,35 @@ export default {
         this.camera = first.deviceId;
         this.deviceId = first.deviceId;
       }
+    },
+    done_status: function(new_val) {
+      if (new_val) {
+        setTimeout(() => {
+          this.done_status = null;
+        }, 3000);
+      }
     }
   },
   methods: {
     onCapture() {
       this.img = this.$refs.webcam.capture();
+    },
+    async upload() {
+      await UploadService.upload(this.$refs.webcam.capture())
+        .then(async response => {
+          this.item_id = response.data["item_id"];
+          this.error_message = null;
+          this.done_status = "Image upload done";
+        })
+        .catch(reason => {
+          if (reason.response.status === 403) {
+            console.log(reason.response.data);
+            this.error_message = reason.response.data["message"];
+            this.item_id = null;
+          } else {
+            console.log(reason.response.data);
+          }
+        });
     },
     onStarted(stream) {
       console.log("On Started Event", stream);
