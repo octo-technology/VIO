@@ -1,9 +1,0 @@
-/models/dogs-vs-cats
-/.pytest_cache
-*.tar
-__pycache__
-venv-torch
-logs
-/torch_serving
-/models
-/tests/data/example_images_OLS

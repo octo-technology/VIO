@@ -9,6 +9,7 @@ RUN pip install https://dl.google.com/coral/python/tflite_runtime-2.1.0.post1-cp
 RUN pip install -r requirements.txt
 
 COPY src/tflite_server.py .
+COPY ../models/tflite ./models
 
 ENV TPU false
 EXPOSE 8501

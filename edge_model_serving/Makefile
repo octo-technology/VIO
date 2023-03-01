@@ -17,16 +17,16 @@ help:
 
 .PHONY: tflite_env  ## 🐍 Create a Python conda environment
 tflite_env:
-	conda create --name edge_tflite_serving python=3.7 -y
+	conda create --name tflite_env python=3.8 -y
 	pip install https://dl.google.com/coral/python/tflite_runtime-2.1.0.post1-cp37-cp37m-macosx_10_14_x86_64.whl && pip install -r requirements.txt
-	pip install -r requirements-dev.txt
+	pip install -r tflite_serving/requirements.txt
+	pip install -r tflite_serving/requirements-dev.txt
 
 .PHONY: torch_env ## setup conda env
 torch_env:
-	conda create -n pytorchenv python=3.8 openssl=1.1.1n
-	conda install pytorch torchvision torchserve torch-model-archiver -c pytorch
-	pip install -r requirements.txt
-	conda activate torchenv
+	conda create --name torch_env python=3.8 openssl=1.1.1n
+	pip install pytorch torchvision torchserve torch-model-archiver -c pytorch
+	pip install -r torch_serving/requirements.txt
 
 .PHONY: lint  ## 🐍 Lint Python files to conform to the PEP 8 style guide
 lint:
@@ -47,5 +47,6 @@ edge_tflite_serving:
 
 .PHONY: edge_torch_serving  ## ✅ Launch the serving app
 edge_torch_serving:
-	cd torch_serving/src
-	uvicorn fast_serving:app --reload --port 8501 --host 0.0.0.0
+	cd torch_serving
+	make build-mar-file
+	make serve
