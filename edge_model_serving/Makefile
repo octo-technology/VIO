@@ -48,5 +48,6 @@ edge_tflite_serving:
 .PHONY: edge_torch_serving  ## ✅ Launch the serving app
 edge_torch_serving:
 	cd torch_serving
+	make download-models
 	make build-mar-file
 	make serve
