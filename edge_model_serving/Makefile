@@ -25,7 +25,6 @@ tflite_env:
 .PHONY: torch_env ## setup conda env
 torch_env:
 	conda create --name torch_env python=3.8 openssl=1.1.1n
-	pip install pytorch torchvision torchserve torch-model-archiver -c pytorch
 	pip install -r torch_serving/requirements.txt
 
 .PHONY: lint  ## 🐍 Lint Python files to conform to the PEP 8 style guide

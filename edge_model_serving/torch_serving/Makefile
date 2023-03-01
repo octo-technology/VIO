@@ -30,7 +30,7 @@ build-mar-file:
 
 .PHONY: serve
 serve:
-	torchserve --start --model-store model_store --models fastrcnn=fastrcnn.mar
+	torchserve --start --model-store ../models/torch --models fastrcnn=fastrcnn.mar
 
 .PHONY: test
 test:
