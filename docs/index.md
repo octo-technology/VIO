@@ -8,15 +8,15 @@ The VIO modules are split between:
 
 ** vio-edge modules **: The VIO edge modules are deployed close to the object to inspect
 
-- [The edge orchestrator](edge_orchestrator.md)
-- [The edge interface](edge_interface.md)
-- [The edge model serving](edge_model_serving.md)
-- [The edge deployment playbook](edge_deployment.md)
+- [The edge orchestrator](vio-edge/edge_orchestrator.md)
+- [The edge interface](vio-edge/edge_interface.md)
+- [The edge model serving](vio-edge/edge_model_serving.md)
+- [The edge deployment playbook](vio-edge/edge_deployment.md)
 
 ** vio-hub modules **: The VIO hub modules are deployed in the cloud to collect data and orchestrate the edge fleet
 
-- [The hub monitoring](hub_monitoring.md)
-- [The hub deployment playbook](hub_deployment.md)
+- [The hub monitoring](vio-hub/hub_monitoring.md)
+- [The hub deployment playbook](vio-hub/hub_deployment.md)
 
 ## Install the framework
 
@@ -56,6 +56,6 @@ Once all services are up and running you can access:
 - the hub monitoring: [http://localhost:4000/login](http://localhost:4000/login)
 - the edge interface: [http://localhost:8080](http://localhost:8080)
 
-From the [edge interface](edge_interface.md) you can load a configuration and run the trigger button that will trigger the Orchestrator API and launch the following actions:
+From the [edge interface](vio-edge/edge_interface.md) you can load a configuration and run the trigger button that will trigger the Orchestrator API and launch the following actions:
 
  ![vio-architecture-stack](images/edge_orchestrator-actions.png)

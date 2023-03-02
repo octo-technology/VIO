@@ -21,14 +21,14 @@ VIO core has been built following the hexagonal architecture patterns, therefore
 Each sub folders below are indeed a module, an application, an independant micro service. Anyone of them is therefore functional by itself.
 
 ### vio-edge modules
-- [The edge orchestrator](edge_orchestrator.md)
-- [The edge interface](edge_interface.md)
-- [The edge model serving](edge_model_serving.md)
-- [The edge deployment playbook](edge_deployment.md)
+- [The edge orchestrator](vio-edge/edge_orchestrator.md)
+- [The edge interface](vio-edge/edge_interface.md)
+- [The edge model serving](vio-edge/edge_model_serving.md)
+- [The edge deployment playbook](vio-edge/edge_deployment.md)
 
 ### vio-hub modules
-- [The hub monitoring](hub_monitoring.md)
-- [The hub deployment playbook](hub_deployment.md)
+- [The hub monitoring](vio-hub/hub_monitoring.md)
+- [The hub deployment playbook](vio-hub/hub_deployment.md)
 
 All of those modules have been packages inside a dedicated docker images to facilitate their deployment.
 
