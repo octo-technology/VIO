@@ -5,6 +5,19 @@
     "usb_camera"
   ],
   "models": {
+    "facerecognition": {
+      "category": "classification",
+      "version": 1,
+      "pb_file_path": "",
+      "class_names": [
+        "AVENGER",
+        "VILAIN"
+      ],
+      "image_resolution": [
+        224,
+        224
+      ]
+    },
     "inception": {
       "category": "classification",
       "version": 1,
@@ -56,7 +69,6 @@
         640
       ],
       "objectness_threshold": 0.5
-
     },
     "mobilenet_ssd_v2_coco": {
       "category": "object_detection",
