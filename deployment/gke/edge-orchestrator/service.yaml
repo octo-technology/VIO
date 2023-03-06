@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    cloud.google.com/neg: '{"ingress":true}'
+  finalizers:
+  - service.kubernetes.io/load-balancer-cleanup
+  labels:
+    app: edge-orchestrator
+  name: api-service
+  namespace: default
+spec:
+  allocateLoadBalancerNodePorts: true
+  clusterIP: 10.172.4.198
+  clusterIPs:
+  - 10.172.4.198
+  externalTrafficPolicy: Cluster
+  internalTrafficPolicy: Cluster
+  ipFamilies:
+  - IPv4
+  ipFamilyPolicy: SingleStack
+  ports:
+  - nodePort: 32018
+    port: 8000
+    protocol: TCP
+    targetPort: 8000
+  selector:
+    app: edge-orchestrator
+  sessionAffinity: None
+  type: LoadBalancer
