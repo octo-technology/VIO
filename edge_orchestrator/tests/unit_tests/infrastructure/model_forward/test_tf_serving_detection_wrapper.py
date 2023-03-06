@@ -40,7 +40,6 @@ class TestDetectionWrapperHelper:
         json_outputs = {
             'detection_boxes': [[[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12]]],
             'detection_scores': [[0.8, 0.7, 0.6]],
-            'num_detections': [3],
             'detection_classes': [[1., 1., 2.]]
         }
 

@@ -4,10 +4,11 @@ from edge_orchestrator.domain.ports.model_forward import ModelForward
 from edge_orchestrator.infrastructure.model_forward.tf_serving_classification_wrapper import (
     TFServingClassificationWrapper,
 )
-from edge_orchestrator.infrastructure.model_forward.tf_serving_detection_and_classification_wrapper import \
-    TFServingDetectionClassificationWrapper
 from edge_orchestrator.infrastructure.model_forward.tf_serving_detection_wrapper import (
     TFServingDetectionWrapper,
+)
+from edge_orchestrator.infrastructure.model_forward.tf_serving_detection_and_classification_wrapper import (
+    TFServingDetectionClassificationWrapper
 )
 
 

@@ -1,0 +1,24 @@
+.base_job_tflite:
+  image: python:3.7
+  before_script:
+    - cd tflite_serving
+    - pip install -r requirements.txt
+    - pip3 install https://dl.google.com/coral/python/tflite_runtime-2.1.0.post1-cp37-cp37m-linux_x86_64.whl
+    - pip install -r requirements-dev.txt
+  only:
+    refs:
+      - master
+      - merge_requests
+
+
+tflite_tests:
+  stage: Test
+  extends: .base_job_tflite
+  script:
+    - make tests
+
+build_and_push_tflite_serving_raspberrypi_to_registry:
+  extends: .build_raspberrypi_image_and_push_to_registry
+  variables:
+    SERVICE_NAME: tflite_serving
+    IMAGE_NAME: tflite_serving_raspberrypi

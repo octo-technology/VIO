@@ -46,10 +46,9 @@ class TFServingDetectionClassificationWrapper(ModelForward):
     def perform_post_processing(self, model: ModelInfos, json_outputs: dict) -> dict:
         inference_output = {}
         class_names = []
-        boxes_coordinates, objectness_scores, number_of_boxes, detection_classes = (
+        boxes_coordinates, objectness_scores, detection_classes = (
             json_outputs[model.boxes_coordinates][0],
             json_outputs[model.objectness_scores][0],
-            json_outputs[model.number_of_boxes][0],
             json_outputs[model.detection_classes][0])
 
         try:
@@ -58,8 +57,7 @@ class TFServingDetectionClassificationWrapper(ModelForward):
             logger.exception(e)
             logger.info('cannot open class names files at location {}'.format(self.class_names_path))
 
-        for box_index in range(int(number_of_boxes)):
-            box_coordinates_in_current_image = boxes_coordinates[box_index]
+        for box_index, box_coordinates_in_current_image in enumerate(boxes_coordinates):
             # crop_image expects the box coordinates to be (xmin, ymin, xmax, ymax)
             # Mobilenet returns the coordinates as (ymin, xmin, ymax, xmax)
             # Hence, the switch here
