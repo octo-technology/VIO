@@ -1,3 +1,4 @@
-torchvision
-torchserve
-torch-model-archiver
+torch==1.13.1
+torchserve==0.7.0
+torchvision==0.14.1
+
