@@ -63,7 +63,6 @@ export default {
 
   methods: {
     goToDetails(id) {
-      console.log("id")
       this.$router.push({ name: "item-show", params: { id: id } });
     },
     getItemLine(item) {

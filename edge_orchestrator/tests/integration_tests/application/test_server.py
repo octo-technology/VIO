@@ -8,6 +8,7 @@ from tests.conftest import TEST_DATA_FOLDER_PATH
 from edge_orchestrator.application.server import server
 from edge_orchestrator.api_config import get_metadata_storage
 
+
 class TestServer:
     def test_upload_route__should_return_expected_logs_when_received_paylod_with_binary_image(
             self,
