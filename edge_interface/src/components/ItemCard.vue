@@ -28,9 +28,9 @@
       <div v-show="has_decision">
         <h3>Internals:</h3>
         <ul>
-          <li v-for="(element, key) in get_decision" :key="key">
-            {{ key }}: {{ element }}
-          </li>
+          <!--          <li v-for="(element, key) in get_decision" :key="key">-->
+          <!--            {{ key }}: {{ element }}-->
+          <!--          </li>-->
         </ul>
       </div>
     </v-card-text>
@@ -63,7 +63,8 @@ export default {
         this.item != null &&
         this.item != undefined &&
         this.item.decision != undefined &&
-        this.item.decision != null
+        this.item.decision != null &&
+        Object.keys(this.item.decision).length != 0
       );
     },
     has_serial_number() {

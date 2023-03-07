@@ -6,6 +6,10 @@
           <v-icon left>mdi-arrow-left</v-icon> Back to Item List
         </v-btn>
         <item-card v-bind:item="loadItem"></item-card>
+
+        <figure v-show="img" class="figure">
+          <img :src="'data:image/png;base64,' + img" class="img-responsive" />
+        </figure>
       </v-col>
     </v-row>
     <v-row>
@@ -24,8 +28,14 @@
 import ItemCard from "@/components/ItemCard";
 import SensorCard from "@/components/SensorCard";
 import { getSensorsIdList } from "@/services/methods";
+import ItemsService from "@/services/ItemsService";
 
 export default {
+  data: () => ({
+    img: null,
+    item: null,
+    sensorsIdList: null
+  }),
   components: {
     ItemCard,
     SensorCard
@@ -34,19 +44,44 @@ export default {
     back() {
       console.log("back");
       this.$router.go(-1);
+    },
+    arrayBufferToBase64(buffer) {
+      let binary = "";
+      const bytes = new Uint8Array(buffer);
+      const len = bytes.byteLength;
+      for (let i = 0; i < len; i++) {
+        binary += String.fromCharCode(bytes[i]);
+      }
+      return window.btoa(binary);
+    },
+    changeItem() {
+      if (this.item == null)
+        this.item = this.$store.getters.getItemById(this.id);
+      return this.item;
+    },
+    changeSensorsIdList() {
+      if (this.item == null)
+        this.sensorsIdList = getSensorsIdList(this.loadItem);
+      return this.sensorsIdList;
     }
   },
   props: ["id"],
   beforeMount: function() {
     this.$store.dispatch("load_items");
   },
+  async mounted() {
+    const result = await ItemsService.get_item_binary_for_camera_by_id(
+      this.id,
+      0
+    );
+    this.img = this.arrayBufferToBase64(result.data);
+  },
   computed: {
     loadItem() {
-      return this.$store.getters.getItemById(this.id);
+      return this.changeItem();
     },
     loadSensorsIdList() {
-      console.log(getSensorsIdList(this.loadItem));
-      return getSensorsIdList(this.loadItem);
+      return this.changeSensorsIdList();
     }
   }
 };
