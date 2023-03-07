@@ -119,7 +119,7 @@ export default {
         .then(async response => {
           this.item_id = response.data["item_id"];
           this.error_message = null;
-          this.done_status = "Image upload done";
+          this.done_status = "Image upload trigger";
         })
         .catch(reason => {
           if (reason.response.status === 403) {

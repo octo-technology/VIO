@@ -20,8 +20,8 @@
               <tbody>
                 <tr
                   v-for="item in listItems"
-                  :key="item._id"
-                  @click="goToDetails(item._id)"
+                  :key="item.id"
+                  @click="goToDetails(item.id)"
                 >
                   <td v-for="(col, index) in columns" :key="index">
                     {{ getItemLine(item)[col] }}
@@ -63,11 +63,12 @@ export default {
 
   methods: {
     goToDetails(id) {
+      console.log("id")
       this.$router.push({ name: "item-show", params: { id: id } });
     },
     getItemLine(item) {
       let itemLine = {
-        id: item._id,
+        id: item.id,
         "station configuration": item.station_config,
         state: item.state,
         error: item.error,

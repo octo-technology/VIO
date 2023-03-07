@@ -96,7 +96,7 @@ export default {
   computed: {
     urlBinary() {
       const binaryName = this.item.sensors[this.sensor_id].binary_filename;
-      return getUrlBinary(this.item._id, binaryName);
+      return getUrlBinary(this.item.id, binaryName);
     },
     getSensor() {
       if (this.item.sensors == null) {
