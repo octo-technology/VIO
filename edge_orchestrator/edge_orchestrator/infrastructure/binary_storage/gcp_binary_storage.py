@@ -21,9 +21,11 @@ class GCPBinaryStorage(BinaryStorage):
             blob.upload_from_string(binary, content_type="image/jpg")
 
     def get_item_binary(self, item_id: str, camera_id: str) -> bytes:
-        filename = f"{self.dt_string}_{item_id}/{camera_id}.jpg"
-        blob = self.bucket.get_blob(filename)
-        binary = blob.download_as_bytes()
+        filename = f"{item_id}/{camera_id}.jpg"
+        binary = None
+        for blob in self.bucket.list_blobs():
+            if filename in blob.name:
+                binary = blob.download_as_bytes()
         return binary
 
     def get_item_binaries(self, item_id: str) -> List[str]:
