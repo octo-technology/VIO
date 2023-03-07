@@ -45,6 +45,7 @@ class Item:
 
     def get_metadata(self) -> Dict:
         return {
+            'id': self.id,
             'serial_number': self.serial_number,
             'category': self.category,
             'station_config': self.station_config,
@@ -52,7 +53,8 @@ class Item:
             'received_time': self.received_time.strftime('%Y-%m-%d %H:%M:%S'),
             'inferences': self.inferences,
             'decision': self.decision,
-            'state': self.state
+            'state': self.state,
+            'error': self.error_message
         }
 
     def __eq__(self, other) -> bool:
