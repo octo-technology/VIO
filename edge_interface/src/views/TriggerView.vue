@@ -9,59 +9,17 @@
       </v-btn>
     </div>
 
-    <div v-if="state" class="timeline">
-      <ol v-for="status in Object.keys(this.statusList)" :key="status">
-        <li>
-          <span class="line" v-bind:class="getColor(status)"></span>
-          <span>{{ status }}</span>
-        </li>
-      </ol>
-    </div>
-
-    <div v-if="item_id !== null">
-      <p class="resultat">Item id: {{ item_id }}</p>
-      <p class="decision">{{ decision }}</p>
-      <div
-        class="result"
-        v-for="(object, index) in predicted_item"
-        :key="index"
-      >
-        <h3>{{ object.camera_id }}</h3>
-        <div
-          id="image-wrapper"
-          :style="{ backgroundImage: `url(${object.image_url})` }"
-        >
-          <img :src="object.image_url" style="visibility: hidden;" />
-          <div
-            v-for="(inference, model_id) in object.inferences"
-            :key="model_id"
-          >
-            <div v-for="(result, object_id) in inference" :key="object_id">
-              <div v-if="'location' in result">
-                <Box
-                  v-bind:x-min="result['location'][0]"
-                  v-bind:y-min="result['location'][1]"
-                  v-bind:x-max="result['location'][2]"
-                  v-bind:y-max="result['location'][3]"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-        <div v-for="(inference, model_id) in object.inferences" :key="model_id">
-          <h4>{{ model_id }}</h4>
-          <div v-for="(result, object_id) in inference" :key="object_id">
-            <span>{{ object_id }}</span>
-            <div v-for="(value, key) in result" :key="key">
-              <span>{{ key }}: {{ value }}</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div v-if="error_message !== null" class="no_configuration">
+    <Inference
+      :predictedItem="predictedItem"
+      :statusList="statusList"
+      :state="state"
+      :item_id="item_id"
+      :errorMessage="errorMessage"
+      :decision="decision"
+    />
+    <div v-if="errorMessage !== null" class="no_configuration">
       <v-alert color="red" dismissible elevation="10" type="warning"
-        >{{ this.error_message }}
+        >{{ this.errorMessage }}
       </v-alert>
     </div>
   </div>
@@ -70,19 +28,20 @@
 <script>
 import TriggerCaptureService from "@/services/TriggerCaptureService";
 import ItemsService from "@/services/ItemsService";
-import Box from "./Box";
+import Inference from "@/components/Inference";
 import { baseURL } from "@/services/api";
 
 export default {
   name: "item-trigger",
-  components: { Box },
+  components: { Inference },
   data() {
     return {
-      predicted_item: {},
+      predictedItem: {},
       state: undefined,
       item_id: null,
-      error_message: null,
-      decision: undefined
+      errorMessage: null,
+      decision: undefined,
+      statusList: null
     };
   },
 
@@ -114,11 +73,11 @@ export default {
       return new Promise(executePoll);
     },
     async trigger() {
-      this.predicted_item = [];
+      this.predictedItem = [];
       TriggerCaptureService.trigger()
         .then(async response => {
           this.item_id = response.data["item_id"];
-          this.error_message = null;
+          this.errorMessage = null;
 
           await this.waitForStateDone();
           const itemResponse = await ItemsService.get_item_by_id(this.item_id);
@@ -126,7 +85,7 @@ export default {
           this.decision = item["decision"];
           const inferences = item["inferences"];
           Object.keys(inferences).forEach(camera_id => {
-            this.predicted_item.push({
+            this.predictedItem.push({
               camera_id: camera_id,
               inferences: inferences[camera_id],
               image_url: `${baseURL}/items/${this.item_id}/binaries/${camera_id}`
@@ -136,7 +95,7 @@ export default {
         .catch(reason => {
           if (reason.response.status === 403) {
             console.log(reason.response.data);
-            this.error_message = reason.response.data["message"];
+            this.errorMessage = reason.response.data["message"];
             this.item_id = null;
           } else {
             console.log(reason.response.data);

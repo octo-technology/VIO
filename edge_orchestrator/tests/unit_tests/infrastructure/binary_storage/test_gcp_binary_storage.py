@@ -1,4 +1,3 @@
-from freezegun import freeze_time
 from unittest.mock import patch, Mock
 
 from edge_orchestrator.domain.models.item import Item
