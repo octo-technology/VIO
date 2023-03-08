@@ -6,7 +6,9 @@ const envHostname = process.env.VUE_APP_API_HOSTNAME;
 const hostname = envHostname !== "" ? envHostname : location.hostname;
 const envPort = process.env.VUE_APP_API_PORT;
 const port = envPort !== "" ? envPort : 8000;
-const apiURL = protocol == 'http' ? `${protocol}://${hostname}:${port}`
+const apiURL =
+  protocol == "http"
+    ? `${protocol}://${hostname}:${port}`
     : `${protocol}://${hostname}`;
 const completeApiURL = apiURL + "/api/v1";
 
