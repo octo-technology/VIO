@@ -36,7 +36,6 @@ class TestServer:
     @freeze_time(lambda: dt.datetime(year=2021, month=5, day=19, hour=15, minute=0, second=0))
     def test_get_item_metadata__should_return_expected_paylod_when_received_specific_item_id(
             self,
-            mock_get_metadata_storage,
             my_item_0,
             caplog):
         # Given
@@ -48,7 +47,7 @@ class TestServer:
                          'decision', 'state', 'error']
 
         # When
-        actual_response = client.get(f'/items/{test_item_id}')
+        actual_response = client.get(f'/api/v1/items/{test_item_id}')
 
         # Then
         assert actual_response.status_code == 200

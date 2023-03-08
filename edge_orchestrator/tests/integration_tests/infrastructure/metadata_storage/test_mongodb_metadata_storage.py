@@ -16,6 +16,8 @@ class TestMongoDbItemStorage:
         assert all_items_metadata == [
             {
                 '_id': 'd1adfc08-cb98-46d6-ae9c-b07c5d16a2ec',
+                'id': my_item_0.id,
+                'error': None,
                 'cameras': {
                     'camera_1': {'brightness': 100, 'exposition': 100, 'position': 'right'},
                     'camera_2': {'brightness': 100, 'exposition': 100, 'position': 'left'}},
@@ -42,6 +44,8 @@ class TestMongoDbItemStorage:
         # Then
         assert item_metadata == {
             '_id': 'd1adfc08-cb98-46d6-ae9c-b07c5d16a2ec',
+            'id': my_item_0.id,
+            'error': None,
             'cameras': {
                 'camera_1': {'brightness': 100, 'exposition': 100, 'position': 'right'},
                 'camera_2': {'brightness': 100, 'exposition': 100, 'position': 'left'}},
@@ -71,6 +75,8 @@ class TestMongoDbItemStorage:
         assert item_metadata == [
             {
                 '_id': 'd1adfc08-cb98-46d6-ae9c-b07c5d16a2ec',
+                'id': my_item_0.id,
+                'error': None,
                 'cameras': {
                     'camera_1': {'brightness': 100, 'exposition': 100, 'position': 'right'},
                     'camera_2': {'brightness': 100, 'exposition': 100, 'position': 'left'}
@@ -85,6 +91,8 @@ class TestMongoDbItemStorage:
             },
             {
                 '_id': 'af6b4922-8e4a-4dbc-ac9b-b5fd56ceaf25',
+                'id': my_item_2.id,
+                'error': None,
                 'cameras': {
                     'camera_3': {'brightness': 100, 'exposition': 100, 'position': 'top'}
                 },
