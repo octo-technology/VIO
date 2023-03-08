@@ -1,12 +1,16 @@
 import axios from "axios";
 
-const env_hostname = process.env.VUE_APP_API_HOSTNAME;
-const hostname = env_hostname !== "" ? env_hostname : location.hostname;
-const env_port = process.env.VUE_APP_API_PORT;
-const port = env_port !== "" ? env_port : 8000;
-const api_url = `http://${hostname}:${port}/api/v1`;
+const envProtocol = process.env.VUE_APP_PROTOCOL;
+const protocol = envProtocol !== "" ? envProtocol : "http";
+const envHostname = process.env.VUE_APP_API_HOSTNAME;
+const hostname = envHostname !== "" ? envHostname : location.hostname;
+const envPort = process.env.VUE_APP_API_PORT;
+const port = envPort !== "" ? envPort : 8000;
+const apiURL = protocol == 'http' ? `${protocol}://${hostname}:${port}`
+    : `${protocol}://${hostname}`;
+const completeApiURL = apiURL + "/api/v1";
 
-export const baseURL = api_url;
+export const baseURL = completeApiURL;
 console.log(`Server listening on: ${baseURL}`);
 
 export default () => {
