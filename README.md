@@ -10,41 +10,55 @@ Visual Inspection Orchestrator is a modular framework made to ease the deploymen
 
 VIO full documentation can be found [here](https://octo-technology.github.io/VIO/)
 
-
 The VIO modules are split between:
 
-** vio-edge modules **: The VIO edge modules are deployed close to the object to inspect
+**vio-edge modules**: The VIO edge modules are deployed close to the object to inspect
 
 - [The edge orchestrator](docs/edge_orchestrator.md)
 - [The edge interface](docs/edge_interface.md)
 - [The edge model serving](docs/edge_model_serving.md)
 - [The edge deployment playbook](docs/edge_deployment.md)
 
-** vio-hub modules **: The VIO hub modules are deployed in the cloud to collect data and orchestrate the edge fleet
+**vio-hub modules**: The VIO hub modules are deployed in the cloud to collect data and orchestrate the edge fleet
 
 - [The hub monitoring](docs/hub_monitoring.md)
 - [The hub deployment playbook](docs/hub_deployment.md)
 
+## Requirements
+
+- `docker` installed
+- `make` installed
 
 ## Install the framework
 
-`git clone git@github.com:octo-technology/VIO.git`
-
-Prerequisites: 
-- need docker installed
-- need make installed
+```shell
+git clone git@github.com:octo-technology/VIO.git
+```
 
 ## Run the stack
 
-To launch the stack you can use the [Makefile](../Makefile) on the root of the repository which define the different target based on the [docker-compose.yml](../docker-compose.yml):
+To launch the stack you can use the [Makefile](../Makefile) on the root of the repository which define the different
+target based on the [docker-compose.yml](../docker-compose.yml):
 
-- run all edge services (orchestrator, model-serving, interface, db) with local hub monitoring (grafana): `make vio-edge-up`
+### Start vio
 
-- stop and delete all running services : `make vio-edge-down`
+To start all edge services (orchestrator, model-serving, interface, db) with local hub monitoring (grafana):
+
+```shell
+make vio-edge-up
+```
+
+### Stop vio
+
+To stop and delete all running services :
+
+```shell
+make vio-edge-down
+```
 
 To check all services are up and running you can run the command `docker ps`, you should see something like below:
 
- ![stack-up-with-docker](docs/images/stack-up-with-docker.png)
+![stack-up-with-docker](docs/images/stack-up-with-docker.png)
 
 Once all services are up and running you can access:
 
@@ -53,15 +67,16 @@ Once all services are up and running you can access:
 - the hub monitoring: [http://localhost:4000/login](http://localhost:4000/login)
 - the edge interface: [http://localhost:8080](http://localhost:8080)
 
-From the edge interface you can load a configuration and run the trigger button that will trigger the Core API and launch the following actions:
+From the edge interface you can load a configuration and run the trigger button that will trigger the Core API and
+launch the following actions:
 
- ![vio-architecture-stack](docs/images/edge_orchestrator-actions.png)
+![vio-architecture-stack](docs/images/edge_orchestrator-actions.png)
 
-# Releases
+## Releases
 
-Build Type                    | Status                                                                                                                                                                           | Artifacts
------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------
-**Docker images** | [![Status](https://github.com/octo-technology/VIO/actions/workflows/publication_vio_images.yml/badge.svg)](https://github.com/octo-technology/VIO/actions/workflows/publication_vio_images.yml/badge.svg) | [Github registry](https://github.com/orgs/octo-technology/packages)
+ Build Type        | Status                                                                                                                                                                                                    | Artifacts                                                           
+-------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------
+ **Docker images** | [![Status](https://github.com/octo-technology/VIO/actions/workflows/publication_vio_images.yml/badge.svg)](https://github.com/octo-technology/VIO/actions/workflows/publication_vio_images.yml/badge.svg) | [Github registry](https://github.com/orgs/octo-technology/packages) 
 
 ## License
 
