@@ -17,6 +17,7 @@
       :errorMessage="errorMessage"
       :decision="decision"
     />
+
     <div v-if="errorMessage !== null" class="no_configuration">
       <v-alert color="red" dismissible elevation="10" type="warning"
         >{{ this.errorMessage }}
@@ -101,13 +102,6 @@ export default {
             console.log(reason.response.data);
           }
         });
-    },
-    getColor(status) {
-      if (this.statusList[status] > this.statusList[this.state]) {
-        return "red";
-      } else {
-        return "green";
-      }
     }
   }
 };

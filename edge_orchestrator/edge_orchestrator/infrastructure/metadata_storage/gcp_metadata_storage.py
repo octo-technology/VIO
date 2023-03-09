@@ -13,7 +13,7 @@ class GCPMetadataStorage(MetadataStorage):
         self.bucket = self.storage_client.get_bucket(os.getenv('GCP_BUCKET_NAME'))
 
     def save_item_metadata(self, item: Item):
-        item_metadata = json.dumps(item.get_metadata())
+        item_metadata = json.dumps(item.get_metadata(with_id = True))
         blob = self.bucket.blob(f"{item.id}/metadata.json")
         blob.upload_from_string(item_metadata, content_type="application/json")
 

@@ -25,14 +25,6 @@
         <h3>Received time:</h3>
         {{ get_received_time }}
       </div>
-      <div v-show="has_decision">
-        <h3>Internals:</h3>
-        <ul>
-          <!--          <li v-for="(element, key) in get_decision" :key="key">-->
-          <!--            {{ key }}: {{ element }}-->
-          <!--          </li>-->
-        </ul>
-      </div>
     </v-card-text>
   </v-card>
 </template>

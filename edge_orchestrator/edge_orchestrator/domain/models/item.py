@@ -43,9 +43,8 @@ class Item:
     def from_nothing(cls):
         return Item('serial_number', 'category', {}, {})
 
-    def get_metadata(self) -> Dict:
-        return {
-            'id': self.id,
+    def get_metadata(self, with_id: bool = False) -> Dict:
+        metadata = {
             'serial_number': self.serial_number,
             'category': self.category,
             'station_config': self.station_config,
@@ -56,6 +55,9 @@ class Item:
             'state': self.state,
             'error': self.error_message
         }
+        if with_id:
+            metadata["id"] = self.id
+        return metadata
 
     def __eq__(self, other) -> bool:
         return (self.id == other.id and self.received_time == other.received_time and

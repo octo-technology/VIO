@@ -14,7 +14,9 @@ class MongoDbMetadataStorage(MetadataStorage):
         self.items_metadata.update_one({'_id': item.id}, {'$set': item.get_metadata()}, upsert=True)
 
     def get_item_metadata(self, item_id: str) -> Dict:
-        return self.items_metadata.find_one({'_id': item_id})
+        mongo_output = self.items_metadata.find_one({'_id': item_id})
+        mongo_output['id'] = mongo_output['_id']
+        return mongo_output
 
     def get_item_state(self, item_id: str) -> str:
         item = self.items_metadata.find_one({'_id': item_id})

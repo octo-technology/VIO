@@ -211,13 +211,6 @@ export default {
           }
         });
     },
-    getColor(status) {
-      if (this.statusList[status] > this.statusList[this.state]) {
-        return "red";
-      } else {
-        return "green";
-      }
-    },
 
     onStarted(stream) {
       console.log("On Started Event", stream);
