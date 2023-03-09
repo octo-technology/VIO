@@ -13,11 +13,11 @@ class GCPBinaryStorage(BinaryStorage):
 
     def save_item_binaries(self, item: Item) -> None:
         for camera_id, binary in item.binaries.items():
-            if len(binary) == 0:
-                raise Exception("An image should be upload")
             blob = self.bucket.blob(
                 f"{item.id}/{camera_id}.jpg"
             )
+            if blob is None:
+                raise Exception("An image should be upload")
             blob.upload_from_string(binary, content_type="image/jpg")
 
     def get_item_binary(self, item_id: str, camera_id: str) -> bytes:

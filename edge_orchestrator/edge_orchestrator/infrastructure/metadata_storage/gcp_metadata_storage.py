@@ -20,6 +20,8 @@ class GCPMetadataStorage(MetadataStorage):
     def get_item_metadata(self, item_id: str) -> Dict:
         filename = f"{item_id}/metadata.json"
         blob = self.bucket.get_blob(filename)
+        if blob is None:
+            raise Exception("No file with this id exist")
         metadata = json.loads(blob.download_as_string())
         return metadata
 
@@ -28,7 +30,6 @@ class GCPMetadataStorage(MetadataStorage):
         return item_metadata["state"]
 
     def get_all_items_metadata(self) -> List[Dict]:
-
         metadatas = []
         for blob in self.bucket.list_blobs():
             if "metadata.json" in blob.name:
