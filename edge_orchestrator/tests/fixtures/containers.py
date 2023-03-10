@@ -13,8 +13,8 @@ from testcontainers.mongodb import MongoDbContainer
 from testcontainers.postgres import PostgresContainer
 from typing import Union, Tuple, Generator, Optional
 
-from tests.conftest import ROOT_REPOSITORY_PATH, EDGE_DB_IMG, EDGE_MODEL_SERVING_IMG, EDGE_TFLITE_SERVING_IMG, \
-    HUB_MONITORING_DB_IMG
+from tests.conftest import ROOT_REPOSITORY_PATH, EDGE_DB_IMG, HUB_MONITORING_DB_IMG, EDGE_MODEL_SERVING, \
+    EDGE_TFLITE_SERVING_IMG
 from tests.tf_serving_container import TfServingContainer
 
 config.MAX_TRIES = 5
@@ -24,12 +24,16 @@ def check_image_presence_or_pull_it_from_registry(image_name: str):
     client = docker.from_env()
     image_tags = [tag for image in client.images.list() for tag in image.tags]
     if image_name not in image_tags:
+        auth_config = None
         logging.info(f'Pulling docker image {image_name} from registry when running tests for the first time...')
-        if os.environ.get('REGISTRY_USERNAME') is None or os.environ.get('REGISTRY_PASSWORD') is None:
-            raise PermissionError('Please set your registry credentials with the following env vars: '
-                                  'REGISTRY_USERNAME & REGISTRY_PASSWORD')
-        client.images.pull(image_name, auth_config={'username': os.environ.get('REGISTRY_USERNAME'),
-                                                    'password': os.environ.get('REGISTRY_PASSWORD')})
+        if image_name.startswith('ghcr.io/octo-technology'):
+            if os.environ.get('REGISTRY_USERNAME') and os.environ.get('REGISTRY_PASSWORD'):
+                auth_config = {'username': os.environ.get('REGISTRY_USERNAME'),
+                               'password': os.environ.get('REGISTRY_PASSWORD')}
+            else:
+                raise PermissionError('Please set your registry credentials with the following env vars: '
+                                      'REGISTRY_USERNAME & REGISTRY_PASSWORD')
+        client.images.pull(image_name, auth_config=auth_config)
 
 
 def start_test_db(image_name: str, connection_url: Optional[str]) -> Tuple[str, MongoDbContainer]:
@@ -102,16 +106,12 @@ def start_test_tf_serving(image_name: str, starting_log: str, exposed_model_name
 
 @fixture(scope='session')
 def setup_test_tensorflow_serving(request: SubRequest) -> Generator[str, None, None]:
-    host_volume_path = (ROOT_REPOSITORY_PATH / 'edge_model_serving').as_posix()
-    container_volume_path = '/models'
-    image_name = EDGE_MODEL_SERVING_IMG  # noqa
-    starting_log = r'Entering the event loop ...'
     connection_url, tensorflow_serving_container = start_test_tf_serving(
-        image_name=image_name,
-        starting_log=starting_log,
+        image_name=EDGE_MODEL_SERVING['image_name'],
+        starting_log=r'Entering the event loop ...',
         exposed_model_name=request.param,
-        host_volume_path=host_volume_path,
-        container_volume_path=container_volume_path
+        host_volume_path=((ROOT_REPOSITORY_PATH / EDGE_MODEL_SERVING['host_volume_path_suffix']).as_posix()),
+        container_volume_path=EDGE_MODEL_SERVING['container_volume_path']
     )
     yield connection_url
     stop_test_container(tensorflow_serving_container)
@@ -119,11 +119,9 @@ def setup_test_tensorflow_serving(request: SubRequest) -> Generator[str, None, N
 
 @fixture(scope='session')
 def setup_test_tflite_serving(request: SubRequest) -> Generator[str, None, None]:
-    image_name = EDGE_TFLITE_SERVING_IMG  # noqa
-    starting_log = r'Uvicorn running on'
     connection_url, tflite_serving_container = start_test_tf_serving(
-        image_name=image_name,
-        starting_log=starting_log,
+        image_name=EDGE_TFLITE_SERVING_IMG,
+        starting_log=r'Uvicorn running on',
         exposed_model_name=request.param,
         tf_serving_host=os.environ.get('TFLITE_SERVING_HOST'),
         tf_serving_port=os.environ.get('TFLITE_SERVING_PORT')
