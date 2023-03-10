@@ -42,7 +42,7 @@ class UploadCameraService {
     let formData = new FormData();
 
     formData.append("image", blob, contentType);
-    return Api().post("/triggercamera", formData, {
+    return Api().post("/trigger/image", formData, {
       headers: {
         "content-Type": "multipart/form-data"
       }

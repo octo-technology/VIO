@@ -10,7 +10,7 @@ Feature: The client trigger a visual inspection and request the resulting metada
     Then item metadata like the following are captured
     """
     {
-      "_id": "[a-z0-9-_]{36}",
+      "id": "[a-z0-9-_]{36}",
       "cameras": {
         "camera_id3": {
           "brightness": null,
@@ -34,7 +34,7 @@ Feature: The client trigger a visual inspection and request the resulting metada
     And the item inference is computed
     """
     {
-      "_id": "[a-z0-9-_]{36}",
+      "id": "[a-z0-9-_]{36}",
       "cameras": {
         "camera_id3": {
           "brightness": null,
@@ -63,7 +63,7 @@ Feature: The client trigger a visual inspection and request the resulting metada
     And the item decision is made
     """
     {
-      "_id": "[a-z0-9-_]{36}",
+      "id": "[a-z0-9-_]{36}",
       "cameras": {
         "camera_id3": {
           "brightness": null,
@@ -93,7 +93,7 @@ Feature: The client trigger a visual inspection and request the resulting metada
     And the item state is set to done
     """
     {
-      "_id": "[a-z0-9-_]{36}",
+      "id": "[a-z0-9-_]{36}",
       "cameras": {
         "camera_id3": {
           "brightness": null,

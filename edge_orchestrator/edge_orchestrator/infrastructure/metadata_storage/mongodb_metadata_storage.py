@@ -15,7 +15,7 @@ class MongoDbMetadataStorage(MetadataStorage):
 
     def get_item_metadata(self, item_id: str) -> Dict:
         mongo_output = self.items_metadata.find_one({'_id': item_id})
-        mongo_output['id'] = mongo_output['_id']
+        mongo_output['id'] = mongo_output.pop('_id')
         return mongo_output
 
     def get_item_state(self, item_id: str) -> str:
@@ -23,4 +23,8 @@ class MongoDbMetadataStorage(MetadataStorage):
         return item["state"]
 
     def get_all_items_metadata(self) -> List[Dict]:
-        return [item for item in self.items_metadata.find()]
+        items = []
+        for item in self.items_metadata.find():
+            item['id'] = item.pop('_id')
+            items.append(item)
+        return items

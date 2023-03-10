@@ -24,8 +24,8 @@ async def trigger_job(background_tasks: BackgroundTasks = None):
         return {'item_id': item.id}
 
 
-@trigger_router.post('/triggercamera')
-async def triggercamera_job(image: UploadFile = File(...), background_tasks:
+@trigger_router.post('/trigger/image')
+async def trigger_image_job(image: UploadFile = File(...), background_tasks:
                             BackgroundTasks = None):
     item = Item.from_nothing()
     if supervisor.station_config.active_config is None:

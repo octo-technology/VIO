@@ -113,7 +113,7 @@ def check_state_is_done(context: Context):
 def check_metadata_is_stored(context: Context):
     response = context.test_client.get('/api/v1/items')
     assert response.status_code == HTTP_200_OK
-    assert context.item_id in [item['_id'] for item in response.json()]
+    assert context.item_id in [item['id'] for item in response.json()]
 
 
 @then("a telemetry message is stored")

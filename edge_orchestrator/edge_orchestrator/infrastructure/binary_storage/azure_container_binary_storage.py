@@ -1,6 +1,5 @@
 import os
 from typing import List
-from datetime import datetime
 
 from azure.core.exceptions import ResourceExistsError
 from azure.storage.blob import BlobServiceClient

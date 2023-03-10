@@ -16,19 +16,18 @@ class TestMemoryItemStorage:
         # Then
         assert metadata_storage.items_metadata == {
             my_item_0.id: {
-                'id': my_item_0.id,
-                'error': None,
-                'decision': {},
-                'inferences': {},
                 'serial_number': '123',
                 'category': 'tacos',
                 'station_config': None,
-                'received_time': '2021-05-19 15:00:00',
                 'cameras': {
                     'camera_1': {"brightness": 100, "exposition": 100, "position": "right"},
                     'camera_2': {"brightness": 100, "exposition": 100, "position": "left"}
                 },
-                'state': None
+                'received_time': '2021-05-19 15:00:00',
+                'inferences': {},
+                'decision': {},
+                'state': None,
+                'error': None
             }
         }
 
@@ -42,19 +41,18 @@ class TestMemoryItemStorage:
 
         # Then
         assert actual_item == {
-            'id': my_item_0.id,
-            'error': None,
-            'decision': {},
-            'inferences': {},
             'serial_number': '123',
             'category': 'tacos',
             'station_config': None,
-            'received_time': '2021-05-19 15:00:00',
             'cameras': {
                 'camera_1': {"brightness": 100, "exposition": 100, "position": "right"},
                 'camera_2': {"brightness": 100, "exposition": 100, "position": "left"}
             },
-            'state': None
+            'received_time': '2021-05-19 15:00:00',
+            'inferences': {},
+            'decision': {},
+            'state': None,
+            'error': None
         }
 
     def test_get_all_items_metadata_should_return_all_items(self, my_item_0, my_item_2):
@@ -69,32 +67,30 @@ class TestMemoryItemStorage:
         # Then
         assert list(actual_items) == [
             {
-                'id': my_item_0.id,
-                'error': None,
-                'decision': {},
-                'inferences': {},
                 'serial_number': '123',
                 'category': 'tacos',
                 'station_config': None,
-                'received_time': '2021-05-19 15:00:00',
                 'cameras': {
                     'camera_1': {"brightness": 100, "exposition": 100, "position": "right"},
                     'camera_2': {"brightness": 100, "exposition": 100, "position": "left"}
                 },
-                'state': None
+                'received_time': '2021-05-19 15:00:00',
+                'inferences': {},
+                'decision': {},
+                'state': None,
+                'error': None
             },
             {
-                'id': my_item_2.id,
-                'error': None,
-                'decision': {},
-                'inferences': {},
                 'serial_number': '123',
                 'category': 'tacos',
                 'station_config': None,
-                'received_time': '2021-05-19 15:00:00',
                 'cameras': {
                     'camera_3': {"brightness": 100, "exposition": 100, "position": "top"}
                 },
-                'state': None
+                'received_time': '2021-05-19 15:00:00',
+                'inferences': {},
+                'decision': {},
+                'state': None,
+                'error': None
             }
         ]

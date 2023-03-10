@@ -1,7 +1,6 @@
 import json
 import os
 from typing import Dict, List
-from datetime import datetime
 
 from azure.core.exceptions import ResourceExistsError
 from azure.storage.blob import BlobServiceClient

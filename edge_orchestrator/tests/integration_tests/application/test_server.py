@@ -43,7 +43,7 @@ class TestServer:
         metadata_storage.save_item_metadata(my_item_0)
         client = TestClient(server())
         test_item_id = my_item_0.id
-        keys_expected = ['id', 'serial_number', 'category', 'station_config', 'cameras', 'received_time', 'inferences',
+        keys_expected = ['serial_number', 'category', 'station_config', 'cameras', 'received_time', 'inferences',
                          'decision', 'state', 'error']
 
         # When
@@ -52,6 +52,5 @@ class TestServer:
         # Then
         assert actual_response.status_code == 200
         json_response = json.loads(actual_response.text)
-        assert len(json_response) == 10
-        assert json_response["id"] == test_item_id
+        assert len(json_response) == 9
         assert list(json_response.keys()) == keys_expected
