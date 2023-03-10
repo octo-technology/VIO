@@ -5,8 +5,8 @@ from shutil import rmtree
 from behave.runner import Context
 from fastapi.testclient import TestClient
 
-from tests.conftest import ROOT_REPOSITORY_PATH, TEST_DATA_FOLDER_PATH, EDGE_DB_IMG, EDGE_MODEL_SERVING_IMG, \
-    HUB_MONITORING_DB_IMG
+from tests.conftest import ROOT_REPOSITORY_PATH, TEST_DATA_FOLDER_PATH, EDGE_DB_IMG, HUB_MONITORING_DB_IMG, \
+    EDGE_MODEL_SERVING
 from tests.fixtures.containers import start_test_db, start_test_tf_serving, stop_test_container, apply_db_migrations
 
 
@@ -20,11 +20,11 @@ def before_all(context: Context):
     apply_db_migrations(context.postgres_db_uri)
 
     context.tensorflow_serving_url, context.tensorflow_serving_container = start_test_tf_serving(
-        image_name=EDGE_MODEL_SERVING_IMG,
+        image_name=EDGE_MODEL_SERVING['image_name'],
         starting_log=r'Entering the event loop ...',
         exposed_model_name="marker_quality_control",
-        host_volume_path=((ROOT_REPOSITORY_PATH / 'edge_model_serving').as_posix()),
-        container_volume_path='/models')
+        host_volume_path=((ROOT_REPOSITORY_PATH / EDGE_MODEL_SERVING['host_volume_path_suffix']).as_posix()),
+        container_volume_path=EDGE_MODEL_SERVING['container_volume_path'])
     os.environ['API_CONFIG'] = 'test'
     os.environ['MONGO_DB_URI'] = context.mongo_db_uri
     os.environ['POSTGRES_DB_URI'] = context.postgres_db_uri
