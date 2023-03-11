@@ -2,7 +2,7 @@ FROM python:3.8.16-slim
 
 WORKDIR /edge_orchestrator
 
-COPY setup.py ./setup.py
+COPY pyproject.toml ./pyproject.toml
 COPY edge_orchestrator ./edge_orchestrator
 
 RUN apt-get update

@@ -6,6 +6,9 @@ from behave import given
 from behave.runner import Context
 from starlette.status import HTTP_200_OK
 
+from edge_orchestrator.domain.models.decision import Decision
+from edge_orchestrator.domain.models.supervisor_state import SupervisorState
+
 
 @given("the app is up and running")
 def app_up_and_running(context: Context):
@@ -66,8 +69,6 @@ def assert_classification_inference_almost_equal(
 
 
 def assert_state_is_valid(actual_state: str, expected_state: Optional[str] = None):
-    from edge_orchestrator.domain.use_cases.supervisor import SupervisorState
-
     if expected_state:
         assert re.match(expected_state, actual_state)
     else:
@@ -80,6 +81,4 @@ def assert_decision_is_valid(
     if expected_decision:
         assert re.match(expected_decision, actual_decision)
     else:
-        from edge_orchestrator.domain.models.decision import Decision
-
         assert actual_decision in [decision.value for decision in Decision]

@@ -4,7 +4,6 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "tflite_serving"
-#dynamic = ["version"]
 version = "1.0.0"
 dependencies = [
     "fastapi==0.80.0",

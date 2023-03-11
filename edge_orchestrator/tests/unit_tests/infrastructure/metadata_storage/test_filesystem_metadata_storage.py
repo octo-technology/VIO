@@ -3,7 +3,7 @@ from pathlib import Path
 from unittest.mock import patch
 
 from edge_orchestrator.domain.models.item import Item
-from edge_orchestrator.domain.use_cases.supervisor import SupervisorState
+from edge_orchestrator.domain.models.supervisor_state import SupervisorState
 from edge_orchestrator.infrastructure.metadata_storage.filesystem_metadata_storage import (
     FileSystemMetadataStorage,
 )
