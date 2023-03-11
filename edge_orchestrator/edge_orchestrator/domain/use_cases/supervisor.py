@@ -2,7 +2,6 @@ import functools
 import io
 from abc import abstractmethod
 from collections import OrderedDict
-from enum import Enum
 from typing import Any, Dict, List, Union
 
 from PIL import Image
@@ -21,16 +20,10 @@ from edge_orchestrator.domain.models.camera import (
     get_last_inference_by_camera,
 )
 from edge_orchestrator.domain.models.decision import Decision
-from edge_orchestrator.domain.models.item import Item, get_item_rule
+from edge_orchestrator.domain.models.item import Item
+from edge_orchestrator.domain.models.item import get_item_rule
 from edge_orchestrator.domain.models.model_infos import ModelInfos
-
-
-class SupervisorState(Enum):
-    CAPTURE = "Capture"
-    SAVE_BINARIES = "Save Binaries"
-    INFERENCE = "Inference"
-    DECISION = "Decision"
-    DONE = "Done"
+from edge_orchestrator.domain.models.supervisor_state import SupervisorState
 
 
 def check_capture_according_to_config(item: Item, cameras: List[Dict]):

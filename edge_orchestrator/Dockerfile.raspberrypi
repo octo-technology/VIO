@@ -6,7 +6,7 @@ WORKDIR /edge_orchestrator
 COPY edge_orchestrator ./edge_orchestrator
 COPY config ./config
 COPY data ./data
-COPY setup.py ./setup.py
+COPY pyproject.toml ./pyproject.toml
 
 RUN apt-get update
 RUN apt-get install libatlas3-base libgfortran5 -y
