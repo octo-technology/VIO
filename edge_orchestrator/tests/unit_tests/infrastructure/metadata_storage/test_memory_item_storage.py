@@ -1,10 +1,6 @@
-import datetime as dt
-
-from freezegun import freeze_time
 from edge_orchestrator.infrastructure.metadata_storage.memory_metadata_storage import MemoryMetadataStorage
 
 
-@freeze_time(lambda: dt.datetime(year=2021, month=5, day=19, hour=15, minute=0, second=0))
 class TestMemoryItemStorage:
     def test_save_item_metadata_should_write_item_in_memory(self, my_item_0):
         # Given

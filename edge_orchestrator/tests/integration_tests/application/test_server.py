@@ -1,7 +1,5 @@
 import json
-import datetime as dt
 
-from freezegun import freeze_time
 from fastapi.testclient import TestClient
 
 from tests.conftest import TEST_DATA_FOLDER_PATH
@@ -29,11 +27,11 @@ class TestServer:
         for record in caplog.records:
             if record.funcName == "upload":
                 actual_logs.append(record.msg)
+
         # Then
         assert actual_response.status_code == 200
         assert actual_logs == expected_logs
 
-    @freeze_time(lambda: dt.datetime(year=2021, month=5, day=19, hour=15, minute=0, second=0))
     def test_get_item_metadata__should_return_expected_paylod_when_received_specific_item_id(
             self,
             my_item_0,
