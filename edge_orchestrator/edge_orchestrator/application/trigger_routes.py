@@ -10,7 +10,7 @@ supervisor = Supervisor()
 uploader = Uploader()
 
 
-@trigger_router.put('/trigger')
+@trigger_router.post('/trigger')
 async def trigger_job(image: UploadFile = None, background_tasks: BackgroundTasks = None):
     item = Item.from_nothing()
     if supervisor.station_config.active_config is None:

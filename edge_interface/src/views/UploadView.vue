@@ -33,10 +33,6 @@
             <code v-if="device">{{ device.label }}</code>
           </div>
           <div class="col-md-12">
-            <v-btn color="blue-grey" class="mr-4 white--text" @click="trigger">
-              Trigger
-              <v-icon right dark>mdi-cloud-upload</v-icon>
-            </v-btn>
             <v-btn color="error" class="mr-4" @click="upload">Upload</v-btn>
             <v-btn color="error" class="mr-4" @click="onStop">
               Stop Camera
@@ -55,12 +51,9 @@
       </div>
 
       <Inference
-        :predictedItem="predictedItem"
-        :statusList="statusList"
-        :state="state"
-        :itemId="itemId"
         :errorMessage="errorMessage"
-        :decision="decision"
+        :webcam="this.$refs.webcam"
+        @update-error-message="update"
       />
 
       <div v-if="errorMessage !== null" class="no_configuration">
@@ -81,8 +74,6 @@
 import UploadService from "@/services/UploadCameraService";
 import VideoCapture from "@/components/VideoCapture.vue";
 import Inference from "@/components/Inference";
-import ItemsService from "@/services/ItemsService";
-import { baseURL } from "@/services/api";
 
 export default {
   name: "UploadView",
@@ -90,15 +81,9 @@ export default {
     img: null,
     camera: null,
     deviceId: null,
-    itemId: null,
     errorMessage: null,
     doneStatus: null,
-    devices: [],
-
-    predictedItem: {},
-    state: undefined,
-    decision: undefined,
-    statusList: null
+    devices: []
   }),
   components: {
     VideoCapture,
@@ -133,8 +118,7 @@ export default {
   methods: {
     async upload() {
       await UploadService.upload(this.$refs.webcam.capture())
-        .then(async response => {
-          this.itemId = response.data["item_id"];
+        .then(() => {
           this.errorMessage = null;
           this.doneStatus = "Image upload trigger";
         })
@@ -142,64 +126,6 @@ export default {
           if (reason.response.status === 403) {
             console.log(reason.response.data);
             this.errorMessage = reason.response.data["message"];
-            this.itemId = null;
-          } else {
-            console.log(reason.response.data);
-          }
-        });
-    },
-
-    async waitForStateDone() {
-      const maxAttempts = 20;
-      let attempts = 0;
-      this.statusList = {
-        Capture: 0,
-        "Save Binaries": 1,
-        Inference: 2,
-        Decision: 3,
-        Done: 4
-      };
-      const executePoll = async (resolve, reject) => {
-        const result = await ItemsService.get_item_state_by_id(this.itemId);
-        this.state = result.data;
-        attempts++;
-
-        if (this.state === "Done") {
-          return resolve(result);
-        } else if (attempts === maxAttempts) {
-          return reject(new Error("L'inférence n'a pas pu être réalisée"));
-        } else {
-          setTimeout(executePoll, 800, resolve, reject);
-        }
-      };
-
-      return new Promise(executePoll);
-    },
-    async trigger() {
-      this.predictedItem = [];
-      await UploadService.inference(this.$refs.webcam.capture())
-        .then(async response => {
-          this.itemId = response.data["item_id"];
-          this.errorMessage = null;
-
-          await this.waitForStateDone();
-          const itemResponse = await ItemsService.get_item_by_id(this.itemId);
-          const item = itemResponse.data;
-          this.decision = item["decision"];
-          const inferences = item["inferences"];
-          Object.keys(inferences).forEach(camera_id => {
-            this.predictedItem.push({
-              camera_id: camera_id,
-              inferences: inferences[camera_id],
-              image_url: `${baseURL}/items/${this.itemId}/binaries/${camera_id}`
-            });
-          });
-        })
-        .catch(reason => {
-          if (reason.response.status === 403) {
-            console.log(reason.response.data);
-            this.errorMessage = reason.response.data["message"];
-            this.itemId = null;
           } else {
             console.log(reason.response.data);
           }
@@ -229,6 +155,9 @@ export default {
       this.deviceId = deviceId;
       this.camera = deviceId;
       console.log("On Camera Change Event", deviceId);
+    },
+    update(errorMessage){
+        this.errorMessage=errorMessage;
     }
   }
 };
