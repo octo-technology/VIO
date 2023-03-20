@@ -70,10 +70,7 @@ export default {
     this.$store.dispatch("load_items");
   },
   async mounted() {
-    const result = await ItemsService.get_item_binary_for_camera_by_id(
-      this.id,
-      0
-    );
+    const result = await ItemsService.getItemBinaryForCameraById(this.id, 0);
     this.img = this.arrayBufferToBase64(result.data);
   },
   computed: {

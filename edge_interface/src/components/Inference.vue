@@ -9,8 +9,8 @@
       </ol>
     </div>
 
-    <div v-if="item_id !== null">
-      <p class="resultat">Item id: {{ item_id }}</p>
+    <div v-if="itemId !== null">
+      <p class="resultat">Item id: {{ itemId }}</p>
       <p class="decision">{{ decision }}</p>
       <div class="result" v-for="(object, index) in predictedItem" :key="index">
         <h3>{{ object.camera_id }}</h3>
@@ -59,7 +59,7 @@ export default {
     "predictedItem",
     "statusList",
     "state",
-    "item_id",
+    "itemId",
     "errorMessage",
     "decision"
   ],

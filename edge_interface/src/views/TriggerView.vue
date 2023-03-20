@@ -13,7 +13,7 @@
       :predictedItem="predictedItem"
       :statusList="statusList"
       :state="state"
-      :item_id="item_id"
+      :itemId="itemId"
       :errorMessage="errorMessage"
       :decision="decision"
     />
@@ -39,7 +39,7 @@ export default {
     return {
       predictedItem: {},
       state: undefined,
-      item_id: null,
+      itemId: null,
       errorMessage: null,
       decision: undefined,
       statusList: null
@@ -58,7 +58,7 @@ export default {
         Done: 4
       };
       const executePoll = async (resolve, reject) => {
-        const result = await ItemsService.get_item_state_by_id(this.item_id);
+        const result = await ItemsService.get_item_state_by_id(this.itemId);
         this.state = result.data;
         attempts++;
 
@@ -77,11 +77,11 @@ export default {
       this.predictedItem = [];
       TriggerCaptureService.trigger()
         .then(async response => {
-          this.item_id = response.data["item_id"];
+          this.itemId = response.data["item_id"];
           this.errorMessage = null;
 
           await this.waitForStateDone();
-          const itemResponse = await ItemsService.get_item_by_id(this.item_id);
+          const itemResponse = await ItemsService.get_item_by_id(this.itemId);
           const item = itemResponse.data;
           this.decision = item["decision"];
           const inferences = item["inferences"];
@@ -89,7 +89,7 @@ export default {
             this.predictedItem.push({
               camera_id: camera_id,
               inferences: inferences[camera_id],
-              image_url: `${baseURL}/items/${this.item_id}/binaries/${camera_id}`
+              image_url: `${baseURL}/items/${this.itemId}/binaries/${camera_id}`
             });
           });
         })
@@ -97,7 +97,7 @@ export default {
           if (reason.response.status === 403) {
             console.log(reason.response.data);
             this.errorMessage = reason.response.data["message"];
-            this.item_id = null;
+            this.itemId = null;
           } else {
             console.log(reason.response.data);
           }
@@ -112,61 +112,8 @@ export default {
   text-align: center;
 }
 
-.result {
-  display: inline-block;
-  vertical-align: top;
-  padding: 0 5rem 0 5rem;
-}
-
-.decision {
-  font-weight: bold;
-  font-size: 3rem;
-}
-
-.box {
-  position: absolute;
-  border: 2px #f30b0b solid;
-}
-
-#image-wrapper {
-  background-repeat: no-repeat;
-  position: relative;
-}
-
 .no_configuration {
   padding: 6rem 0;
-}
-
-.timeline {
-  padding: 3rem;
-  white-space: nowrap;
-  overflow-x: hidden;
-}
-
-ol {
-  display: inline-block;
-  list-style: none;
-}
-
-.timeline ol li {
-  position: relative;
-  display: inline-block;
-  list-style-type: none;
-  width: 160px;
-  height: 3px;
-  background: #bfbfbf;
-}
-
-.line {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: calc(100% + 1px);
-  bottom: 0;
-  width: 12px;
-  height: 12px;
-  transform: translateY(-50%);
-  border-radius: 50%;
 }
 
 .red {

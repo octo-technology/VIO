@@ -13,7 +13,7 @@ class ItemsService {
     return await Api().get(`/items/${id}/state`);
   }
 
-  async get_item_binary_for_camera_by_id(id, camera_id) {
+  async getItemBinaryForCameraById(id, camera_id) {
     return await Api().get(`/items/${id}/binaries/${camera_id}`, {
       responseType: "arraybuffer"
     });

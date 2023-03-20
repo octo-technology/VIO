@@ -33,14 +33,11 @@
             <code v-if="device">{{ device.label }}</code>
           </div>
           <div class="col-md-12">
-            <v-btn color="error" class="mr-4" @click="onCapture">
-              Capture Photo</v-btn
-            >
             <v-btn color="blue-grey" class="mr-4 white--text" @click="trigger">
               Trigger
               <v-icon right dark>mdi-cloud-upload</v-icon>
             </v-btn>
-            <v-btn color="error" class="mr-4" @click="upload"> Upload</v-btn>
+            <v-btn color="error" class="mr-4" @click="upload">Upload</v-btn>
             <v-btn color="error" class="mr-4" @click="onStop">
               Stop Camera
             </v-btn>
@@ -61,7 +58,7 @@
         :predictedItem="predictedItem"
         :statusList="statusList"
         :state="state"
-        :item_id="item_id"
+        :itemId="itemId"
         :errorMessage="errorMessage"
         :decision="decision"
       />
@@ -71,9 +68,9 @@
           >{{ this.errorMessage }}
         </v-alert>
       </div>
-      <div v-if="done_status !== null" class="no_configuration">
+      <div v-if="doneStatus !== null" class="no_configuration">
         <v-alert color="green" dismissible elevation="10" type="success"
-          >{{ this.done_status }}
+          >{{ this.doneStatus }}
         </v-alert>
       </div>
     </v-row>
@@ -93,9 +90,9 @@ export default {
     img: null,
     camera: null,
     deviceId: null,
-    item_id: null,
+    itemId: null,
     errorMessage: null,
-    done_status: null,
+    doneStatus: null,
     devices: [],
 
     predictedItem: {},
@@ -125,30 +122,27 @@ export default {
         this.deviceId = first.deviceId;
       }
     },
-    done_status: function(new_val) {
-      if (new_val) {
+    doneStatus: function(newVal) {
+      if (newVal) {
         setTimeout(() => {
-          this.done_status = null;
+          this.doneStatus = null;
         }, 3000);
       }
     }
   },
   methods: {
-    onCapture() {
-      this.img = this.$refs.webcam.capture();
-    },
     async upload() {
       await UploadService.upload(this.$refs.webcam.capture())
         .then(async response => {
-          this.item_id = response.data["item_id"];
+          this.itemId = response.data["item_id"];
           this.errorMessage = null;
-          this.done_status = "Image upload trigger";
+          this.doneStatus = "Image upload trigger";
         })
         .catch(reason => {
           if (reason.response.status === 403) {
             console.log(reason.response.data);
             this.errorMessage = reason.response.data["message"];
-            this.item_id = null;
+            this.itemId = null;
           } else {
             console.log(reason.response.data);
           }
@@ -166,7 +160,7 @@ export default {
         Done: 4
       };
       const executePoll = async (resolve, reject) => {
-        const result = await ItemsService.get_item_state_by_id(this.item_id);
+        const result = await ItemsService.get_item_state_by_id(this.itemId);
         this.state = result.data;
         attempts++;
 
@@ -185,11 +179,11 @@ export default {
       this.predictedItem = [];
       await UploadService.inference(this.$refs.webcam.capture())
         .then(async response => {
-          this.item_id = response.data["item_id"];
+          this.itemId = response.data["item_id"];
           this.errorMessage = null;
 
           await this.waitForStateDone();
-          const itemResponse = await ItemsService.get_item_by_id(this.item_id);
+          const itemResponse = await ItemsService.get_item_by_id(this.itemId);
           const item = itemResponse.data;
           this.decision = item["decision"];
           const inferences = item["inferences"];
@@ -197,7 +191,7 @@ export default {
             this.predictedItem.push({
               camera_id: camera_id,
               inferences: inferences[camera_id],
-              image_url: `${baseURL}/items/${this.item_id}/binaries/${camera_id}`
+              image_url: `${baseURL}/items/${this.itemId}/binaries/${camera_id}`
             });
           });
         })
@@ -205,7 +199,7 @@ export default {
           if (reason.response.status === 403) {
             console.log(reason.response.data);
             this.errorMessage = reason.response.data["message"];
-            this.item_id = null;
+            this.itemId = null;
           } else {
             console.log(reason.response.data);
           }
@@ -245,61 +239,8 @@ export default {
   text-align: center;
 }
 
-.result {
-  display: inline-block;
-  vertical-align: top;
-  padding: 0 5rem 0 5rem;
-}
-
-.decision {
-  font-weight: bold;
-  font-size: 3rem;
-}
-
-.box {
-  position: absolute;
-  border: 2px #f30b0b solid;
-}
-
-#image-wrapper {
-  background-repeat: no-repeat;
-  position: relative;
-}
-
 .no_configuration {
   padding: 6rem 0;
-}
-
-.timeline {
-  padding: 3rem;
-  white-space: nowrap;
-  overflow-x: hidden;
-}
-
-ol {
-  display: inline-block;
-  list-style: none;
-}
-
-.timeline ol li {
-  position: relative;
-  display: inline-block;
-  list-style-type: none;
-  width: 160px;
-  height: 3px;
-  background: #bfbfbf;
-}
-
-.line {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: calc(100% + 1px);
-  bottom: 0;
-  width: 12px;
-  height: 12px;
-  transform: translateY(-50%);
-  border-radius: 50%;
 }
 
 .red {
