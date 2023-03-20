@@ -76,10 +76,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.container {
-  text-align: center;
-}
-
 .result {
   display: inline-block;
   vertical-align: top;
@@ -91,18 +87,9 @@ export default {
   font-size: 3rem;
 }
 
-.box {
-  position: absolute;
-  border: 2px #f30b0b solid;
-}
-
 #image-wrapper {
   background-repeat: no-repeat;
   position: relative;
-}
-
-.no_configuration {
-  padding: 6rem 0;
 }
 
 .timeline {

@@ -12,7 +12,14 @@
 
 <script>
 export default {
-  name: "Box",
+  name: "box",
   props: ["x-min", "y-min", "x-max", "y-max"]
 };
 </script>
+
+<style lang="scss" scoped>
+.box {
+  position: absolute;
+  border: 2px #f30b0b solid;
+}
+</style>
