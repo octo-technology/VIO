@@ -43,7 +43,7 @@ class Item:
     def from_nothing(cls):
         return Item('serial_number', 'category', {}, {})
 
-    def get_metadata(self, with_id: bool = False) -> Dict:
+    def get_metadata(self, with_id: bool = True) -> Dict:
         metadata = {
             'serial_number': self.serial_number,
             'category': self.category,

@@ -34,7 +34,7 @@ class TestMongoDbItemStorage:
         # Given
         my_item_0.id = 'd1adfc08-cb98-46d6-ae9c-b07c5d16a2ec'
         metadata_storage = MongoDbMetadataStorage(mongodb_uri=test_mongo_db_uri)
-        metadata_storage.items_metadata.update_one({'_id': my_item_0.id}, {'$set': my_item_0.get_metadata()},
+        metadata_storage.items_metadata.update_one({'_id': my_item_0.id}, {'$set': my_item_0.get_metadata(False)},
                                                    upsert=True)
 
         # When
@@ -61,9 +61,9 @@ class TestMongoDbItemStorage:
         my_item_0.id = 'd1adfc08-cb98-46d6-ae9c-b07c5d16a2ec'
         my_item_2.id = 'af6b4922-8e4a-4dbc-ac9b-b5fd56ceaf25'
         metadata_storage = MongoDbMetadataStorage(mongodb_uri=test_mongo_db_uri)
-        metadata_storage.items_metadata.update_one({'_id': my_item_0.id}, {'$set': my_item_0.get_metadata()},
+        metadata_storage.items_metadata.update_one({'_id': my_item_0.id}, {'$set': my_item_0.get_metadata(False)},
                                                    upsert=True)
-        metadata_storage.items_metadata.update_one({'_id': my_item_2.id}, {'$set': my_item_2.get_metadata()},
+        metadata_storage.items_metadata.update_one({'_id': my_item_2.id}, {'$set': my_item_2.get_metadata(False)},
                                                    upsert=True)
 
         # When

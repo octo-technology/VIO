@@ -26,6 +26,7 @@ async def trigger_job(image: UploadFile = None, background_tasks: BackgroundTask
         background_tasks.add_task(supervisor.inspect, item)
         return {'item_id': item.id}
 
+
 @trigger_router.post('/upload')
 async def upload_job(image: UploadFile = File(...), background_tasks:
                      BackgroundTasks = None):
