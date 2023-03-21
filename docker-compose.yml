@@ -8,16 +8,12 @@ services:
       - 27017:27017
 
   edge_model_serving:
-    container_name: edge_model_serving
+    container_name: edge_facerec_serving
     build:
-      context: edge_model_serving
-      dockerfile: tflite_serving/Dockerfile
-    environment:
-      - TF_CPP_MIN_VLOG_LEVEL=0
+      context: edge_facerec_serving
+      dockerfile: Dockerfile
     ports:
       - 8501:8501
-    volumes:
-      - ./edge_model_serving/models:/models
 
   edge_orchestrator:
     container_name: edge_orchestrator
