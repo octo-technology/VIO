@@ -64,10 +64,7 @@ import UploadService from "@/services/UploadCameraService";
 export default {
   name: "inference",
   components: { Box },
-  props: [
-    "errorMessage",
-    "webcam"
-  ],
+  props: ["errorMessage", "webcam"],
   data: () => ({
     predictedItem: {},
     itemId: null,
@@ -111,12 +108,12 @@ export default {
     },
     async trigger() {
       this.predictedItem = [];
-      if(this.webcam != undefined)
-        var trigger = UploadService.inference(this.webcam.capture())
-      else
-        trigger = TriggerCaptureService.trigger()
+      if (this.webcam != undefined)
+        var trigger = UploadService.inference(this.webcam.capture());
+      else trigger = TriggerCaptureService.trigger();
 
-      trigger.then(async response => {
+      trigger
+        .then(async response => {
           this.itemId = response.data["item_id"];
           this.$emit("update-error-message", null);
 

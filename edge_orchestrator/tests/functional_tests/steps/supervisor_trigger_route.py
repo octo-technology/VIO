@@ -46,7 +46,7 @@ def following_cameras_are_registered_in_the_configuration(context: Context):
 
 @when('the client triggers a visual inspection')
 def client_triggers_visual_inspection(context: Context):
-    response = context.test_client.put('/api/v1/trigger')
+    response = context.test_client.post('/api/v1/trigger')
     assert response.status_code == HTTP_200_OK
 
     context.item_id = response.json()['item_id']

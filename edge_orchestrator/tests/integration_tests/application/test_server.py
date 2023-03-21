@@ -42,7 +42,7 @@ class TestServer:
         client = TestClient(server())
         test_item_id = my_item_0.id
         keys_expected = ['serial_number', 'category', 'station_config', 'cameras', 'received_time', 'inferences',
-                         'decision', 'state', 'error']
+                         'decision', 'state', 'error', 'id']
 
         # When
         actual_response = client.get(f'/api/v1/items/{test_item_id}')
@@ -50,5 +50,5 @@ class TestServer:
         # Then
         assert actual_response.status_code == 200
         json_response = json.loads(actual_response.text)
-        assert len(json_response) == 9
+        assert len(json_response) == 10
         assert list(json_response.keys()) == keys_expected

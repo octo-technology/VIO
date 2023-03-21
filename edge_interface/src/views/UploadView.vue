@@ -156,8 +156,8 @@ export default {
       this.camera = deviceId;
       console.log("On Camera Change Event", deviceId);
     },
-    update(errorMessage){
-        this.errorMessage=errorMessage;
+    update(errorMessage) {
+      this.errorMessage = errorMessage;
     }
   }
 };

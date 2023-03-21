@@ -20,8 +20,8 @@ Feature: The client trigger a visual inspection and request the resulting metada
         }
       },
       "category": "category",
-      "inferences": {},
       "decision": null,
+      "inferences": {},
       "received_time": "%Y-%m-%d %H:%M:%S",
       "serial_number": "serial_number",
       "state": "Capture|Save Binaries|Inference|Decision|Done",

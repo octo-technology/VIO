@@ -5,10 +5,7 @@
       <h4>Just click on the button below, VIO will do the rest</h4>
     </div>
 
-    <Inference
-      :errorMessage="errorMessage"
-      @update-error-message="update"
-    />
+    <Inference :errorMessage="errorMessage" @update-error-message="update" />
 
     <div v-if="errorMessage !== null" class="no_configuration">
       <v-alert color="red" dismissible elevation="10" type="warning"
@@ -26,12 +23,12 @@ export default {
   components: { Inference },
   data() {
     return {
-      errorMessage: null,
+      errorMessage: null
     };
   },
   methods: {
-    update(errorMessage){
-        this.errorMessage=errorMessage;
+    update(errorMessage) {
+      this.errorMessage = errorMessage;
     }
   }
 };

@@ -12,6 +12,7 @@ class TestMemoryItemStorage:
         # Then
         assert metadata_storage.items_metadata == {
             my_item_0.id: {
+                'id': my_item_0.id,
                 'serial_number': '123',
                 'category': 'tacos',
                 'station_config': None,
@@ -37,6 +38,7 @@ class TestMemoryItemStorage:
 
         # Then
         assert actual_item == {
+            'id': my_item_0.id,
             'serial_number': '123',
             'category': 'tacos',
             'station_config': None,
@@ -63,6 +65,7 @@ class TestMemoryItemStorage:
         # Then
         assert list(actual_items) == [
             {
+                'id': my_item_0.id,
                 'serial_number': '123',
                 'category': 'tacos',
                 'station_config': None,
@@ -77,6 +80,7 @@ class TestMemoryItemStorage:
                 'error': None
             },
             {
+                'id': my_item_2.id,
                 'serial_number': '123',
                 'category': 'tacos',
                 'station_config': None,
