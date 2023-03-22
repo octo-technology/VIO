@@ -33,6 +33,7 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 #### API customization
 To set custom hostname and port you must create an `.env` file with this environment variables:
 ```
+VUE_APP_API_PROTOCOL=
 VUE_APP_API_HOSTNAME=
 VUE_APP_API_PORT=
 ```

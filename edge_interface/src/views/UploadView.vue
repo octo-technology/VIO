@@ -1,5 +1,5 @@
 <template>
-  <v-col cols="12">
+  <v-col class="container" cols="12">
     <v-row>
       <div class="col-md-6">
         <h2>Current Camera</h2>
@@ -33,10 +33,7 @@
             <code v-if="device">{{ device.label }}</code>
           </div>
           <div class="col-md-12">
-            <v-btn color="error" class="mr-4" @click="onCapture">
-              Capture Photo</v-btn
-            >
-            <v-btn color="error" class="mr-4" @click="upload"> Upload</v-btn>
+            <v-btn color="error" class="mr-4" @click="upload">Upload</v-btn>
             <v-btn color="error" class="mr-4" @click="onStop">
               Stop Camera
             </v-btn>
@@ -52,14 +49,21 @@
           <img :src="img" class="img-responsive" />
         </figure>
       </div>
-      <div v-if="error_message !== null" class="no_configuration">
+
+      <Inference
+        :errorMessage="errorMessage"
+        :webcam="this.$refs.webcam"
+        @update-error-message="update"
+      />
+
+      <div v-if="errorMessage !== null" class="no_configuration">
         <v-alert color="red" dismissible elevation="10" type="warning"
-          >{{ this.error_message }}
+          >{{ this.errorMessage }}
         </v-alert>
       </div>
-      <div v-if="done_status !== null" class="no_configuration">
+      <div v-if="doneStatus !== null" class="no_configuration">
         <v-alert color="green" dismissible elevation="10" type="success"
-          >{{ this.done_status }}
+          >{{ this.doneStatus }}
         </v-alert>
       </div>
     </v-row>
@@ -68,7 +72,8 @@
 
 <script>
 import UploadService from "@/services/UploadCameraService";
-import VideoCapture from "../components/VideoCapture.vue";
+import VideoCapture from "@/components/VideoCapture.vue";
+import Inference from "@/components/Inference";
 
 export default {
   name: "UploadView",
@@ -76,13 +81,13 @@ export default {
     img: null,
     camera: null,
     deviceId: null,
-    item_id: null,
-    error_message: null,
-    done_status: null,
+    errorMessage: null,
+    doneStatus: null,
     devices: []
   }),
   components: {
-    VideoCapture
+    VideoCapture,
+    Inference
   },
 
   computed: {
@@ -102,35 +107,31 @@ export default {
         this.deviceId = first.deviceId;
       }
     },
-    done_status: function(new_val) {
-      if (new_val) {
+    doneStatus: function(newVal) {
+      if (newVal) {
         setTimeout(() => {
-          this.done_status = null;
+          this.doneStatus = null;
         }, 3000);
       }
     }
   },
   methods: {
-    onCapture() {
-      this.img = this.$refs.webcam.capture();
-    },
     async upload() {
       await UploadService.upload(this.$refs.webcam.capture())
-        .then(async response => {
-          this.item_id = response.data["item_id"];
-          this.error_message = null;
-          this.done_status = "Image upload done";
+        .then(() => {
+          this.errorMessage = null;
+          this.doneStatus = "Image upload trigger";
         })
         .catch(reason => {
           if (reason.response.status === 403) {
             console.log(reason.response.data);
-            this.error_message = reason.response.data["message"];
-            this.item_id = null;
+            this.errorMessage = reason.response.data["message"];
           } else {
             console.log(reason.response.data);
           }
         });
     },
+
     onStarted(stream) {
       console.log("On Started Event", stream);
     },
@@ -154,7 +155,28 @@ export default {
       this.deviceId = deviceId;
       this.camera = deviceId;
       console.log("On Camera Change Event", deviceId);
+    },
+    update(errorMessage) {
+      this.errorMessage = errorMessage;
     }
   }
 };
 </script>
+
+<style lang="scss" scoped>
+.container {
+  text-align: center;
+}
+
+.no_configuration {
+  padding: 6rem 0;
+}
+
+.red {
+  background: #d41928;
+}
+
+.green {
+  background: #51d419;
+}
+</style>

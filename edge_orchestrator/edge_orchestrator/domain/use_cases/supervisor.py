@@ -56,7 +56,8 @@ class Supervisor:
     async def inspect(self, item: Item):
 
         item.station_config = self.station_config.active_config_name
-        self.edge_station.register_cameras(self.station_config)
+        if self.edge_station is not None:
+            self.edge_station.register_cameras(self.station_config)
 
         tasks = OrderedDict()
 

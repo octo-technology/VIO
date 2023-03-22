@@ -30,14 +30,14 @@
     </v-btn>
 
     <v-btn
-      v-if="item_id != ''"
+      v-if="itemId != ''"
       type="success"
       color="blue-grey"
       class="ma-2 white--text"
-      @click="goToDetails(item_id)"
+      @click="goToDetails(itemId)"
     >
       <v-icon left dark>mdi-google-analytics</v-icon>
-      Result page for item: {{ item_id }}
+      Result page for item: {{ itemId }}
     </v-btn>
 
     <v-alert v-if="error != ''" type="error">
@@ -56,14 +56,14 @@ export default {
       inputs: null,
       sensors: null,
       binaries: null,
-      item_id: "",
+      itemId: "",
       error: "",
       fileInfos: []
     };
   },
   computed: {
     isDisabled() {
-      return this.item_id == "";
+      return this.itemId == "";
     }
   },
   methods: {
@@ -76,9 +76,9 @@ export default {
     upload() {
       UploadService.upload(this.inputs, this.sensors, this.binaries).then(
         response => {
-          this.item_id = response.data;
+          this.itemId = response.data;
           if ("item_id" in response.data) {
-            this.item_id = response.data["item_id"];
+            this.itemId = response.data["item_id"];
           } else {
             this.error = response.data;
           }
@@ -90,7 +90,7 @@ export default {
       this.inputs = null;
       this.sensors = null;
       this.binaries = null;
-      (this.item_id = ""), (this.error = ""), (this.fileInfos = []);
+      (this.itemId = ""), (this.error = ""), (this.fileInfos = []);
     },
 
     goToDetails(id) {

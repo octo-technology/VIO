@@ -1,7 +1,6 @@
 import json
 import os
 from typing import Dict, List
-from datetime import datetime
 
 from azure.core.exceptions import ResourceExistsError
 from azure.storage.blob import BlobServiceClient
@@ -22,15 +21,14 @@ class AzureContainerMetadataStorage(MetadataStorage):
             pass
         self._container_client = self._blob_service_client.get_container_client(self.azure_container_name)
         self._transport_params = {'client': self._blob_service_client}
-        self.dt_string = datetime.now().strftime("%d-%m-%Y")
 
     def save_item_metadata(self, item: Item):
-        with open(f'azure://{self.azure_container_name}/{self.dt_string}_{item.id}/metadata.json',
+        with open(f'azure://{self.azure_container_name}/{item.id}/metadata.json',
                   'wb', transport_params=self._transport_params) as f:
             f.write(json.dumps(item.get_metadata()).encode('utf-8'))
 
     def get_item_metadata(self, item_id: str) -> Dict:
-        with open(f'azure://{self.azure_container_name}/{self.dt_string}_{item_id}/metadata.json',
+        with open(f'azure://{self.azure_container_name}/{item_id}/metadata.json',
                   'rb', transport_params=self._transport_params) as f:
             return json.loads(f.read())
 
