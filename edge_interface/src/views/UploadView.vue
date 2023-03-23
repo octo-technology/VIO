@@ -2,26 +2,27 @@
   <v-col class="container" cols="12">
     <v-row>
       <div class="col-md-6">
-        <h2>Current Camera</h2>
-      </div>
-      <div>
-        <div class="border">
-          <video-capture
-            ref="webcam"
-            :device-id="deviceId"
-            width="100%"
-            @started="onStarted"
-            @stopped="onStopped"
-            @error="onError"
-            @cameras="onCameras"
-            @camera-change="onCameraChange"
-          />
+        <div>
+          <h2 v-if="isStart">Current Camera</h2>
+          <div class="border">
+            <video-capture
+              ref="webcam"
+              :device-id="deviceId"
+              width="100%"
+              @started="onStarted"
+              @stopped="onStopped"
+              @error="onError"
+              @cameras="onCameras"
+              @camera-change="onCameraChange"
+            />
+          </div>
         </div>
 
         <div class="row">
-          <div class="col-md-12">
+          <div v-if="isStart" class="col-md-12">
             <v-select
               v-model="camera"
+              v-if="devices.length > 2"
               :items="devices"
               item-text="label"
               item-value="deviceId"
@@ -32,48 +33,69 @@
 
             <code v-if="device">{{ device.label }}</code>
           </div>
+
           <div class="col-md-12">
-            <v-btn color="error" class="mr-4" @click="upload">Upload</v-btn>
-            <v-btn color="error" class="mr-4" @click="onStop">
+            <v-btn
+              v-if="devices.length == 2"
+              color="blue-grey"
+              class="mr-4 white--text"
+              @click="onSwitchCamera"
+            >
+              <v-icon dark>mdi-swap-vertical</v-icon>
+            </v-btn>
+            <v-btn v-if="isStart" color="error" class="mr-4" @click="onCapture">
+              Capture Photo
+            </v-btn>
+            <v-btn v-if="isStart" color="error" class="mr-4" @click="onStop">
               Stop Camera
             </v-btn>
-            <v-btn color="error" class="mr-4" @click="onStart">
+            <v-btn v-if="!isStart" color="error" class="mr-4" @click="onStart">
               Start Camera
             </v-btn>
           </div>
         </div>
       </div>
-      <div class="col-md-6">
+      <div v-if="img" class="col-md-6">
         <h2>Captured Image</h2>
         <figure class="figure">
           <img :src="img" class="img-responsive" />
         </figure>
-      </div>
 
-      <Inference
-        :errorMessage="errorMessage"
-        :webcam="this.$refs.webcam"
-        @update-error-message="update"
-      />
-
-      <div v-if="errorMessage !== null" class="no_configuration">
-        <v-alert color="red" dismissible elevation="10" type="warning"
-          >{{ this.errorMessage }}
-        </v-alert>
-      </div>
-      <div v-if="doneStatus !== null" class="no_configuration">
-        <v-alert color="green" dismissible elevation="10" type="success"
-          >{{ this.doneStatus }}
-        </v-alert>
+        <div class="row">
+          <div class="col-md-12">
+            <UploadImage
+              :errorMessage="errorMessage"
+              :doneStatus="doneStatus"
+              :image="this.img"
+              @update-error-message="updateErrorMessage"
+              @update-done-status="updatedoneStatus"
+            />
+            <Inference
+              :errorMessage="errorMessage"
+              :image="this.img"
+              @update-error-message="updateErrorMessage"
+            />
+            <div v-if="errorMessage !== null" class="no_configuration">
+              <v-alert color="red" dismissible elevation="10" type="warning"
+                >{{ this.errorMessage }}
+              </v-alert>
+            </div>
+            <div v-if="doneStatus !== null" class="no_configuration">
+              <v-alert color="green" dismissible elevation="10" type="success"
+                >{{ this.doneStatus }}
+              </v-alert>
+            </div>
+          </div>
+        </div>
       </div>
     </v-row>
   </v-col>
 </template>
 
 <script>
-import UploadService from "@/services/UploadCameraService";
-import VideoCapture from "@/components/VideoCapture.vue";
+import VideoCapture from "@/components/VideoCapture";
 import Inference from "@/components/Inference";
+import UploadImage from "@/components/UploadImage";
 
 export default {
   name: "UploadView",
@@ -83,9 +105,11 @@ export default {
     deviceId: null,
     errorMessage: null,
     doneStatus: null,
-    devices: []
+    devices: [],
+    isStart: true
   }),
   components: {
+    UploadImage,
     VideoCapture,
     Inference
   },
@@ -111,27 +135,14 @@ export default {
       if (newVal) {
         setTimeout(() => {
           this.doneStatus = null;
-        }, 3000);
+        }, 5000);
       }
     }
   },
   methods: {
-    async upload() {
-      await UploadService.upload(this.$refs.webcam.capture())
-        .then(() => {
-          this.errorMessage = null;
-          this.doneStatus = "Image upload trigger";
-        })
-        .catch(reason => {
-          if (reason.response.status === 403) {
-            console.log(reason.response.data);
-            this.errorMessage = reason.response.data["message"];
-          } else {
-            console.log(reason.response.data);
-          }
-        });
+    onCapture() {
+      this.img = this.$refs.webcam.capture();
     },
-
     onStarted(stream) {
       console.log("On Started Event", stream);
     },
@@ -139,10 +150,22 @@ export default {
       console.log("On Stopped Event", stream);
     },
     onStop() {
+      this.isStart = false;
       this.$refs.webcam.stop();
     },
     onStart() {
+      this.isStart = true;
       this.$refs.webcam.start();
+    },
+    checkDeviceId(device) {
+      return device.deviceId == this.deviceId;
+    },
+    onSwitchCamera() {
+      const newIndex = 1 - this.devices.findIndex(this.checkDeviceId);
+      const newDeviceId = this.devices[newIndex].deviceId;
+      this.deviceId = newDeviceId;
+      this.camera = newDeviceId;
+      console.log("On Camera Change Event", this.deviceId);
     },
     onError(error) {
       console.log("On Error Event", error);
@@ -156,8 +179,11 @@ export default {
       this.camera = deviceId;
       console.log("On Camera Change Event", deviceId);
     },
-    update(errorMessage) {
+    updateErrorMessage(errorMessage) {
       this.errorMessage = errorMessage;
+    },
+    updatedoneStatus(doneStatus) {
+      this.doneStatus = doneStatus;
     }
   }
 };
@@ -168,15 +194,17 @@ export default {
   text-align: center;
 }
 
-.no_configuration {
-  padding: 6rem 0;
-}
-
 .red {
   background: #d41928;
 }
 
 .green {
   background: #51d419;
+}
+
+.img-responsive {
+  max-width: 400px;
+  width: 100%;
+  height: auto;
 }
 </style>
