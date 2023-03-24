@@ -1,6 +1,7 @@
 from http import HTTPStatus
 
 from fastapi import APIRouter, Depends, Response
+from fastapi.responses import JSONResponse
 
 from edge_orchestrator.api_config import get_metadata_storage, get_binary_storage, get_station_config, get_inventory
 from edge_orchestrator.application.dto.station_config_dto import StationConfigDto
@@ -62,5 +63,10 @@ def get_active_config(station_config: StationConfig = Depends(get_station_config
 @api_router.post('/configs/active')
 def set_station_config(station_config_dto: StationConfigDto,
                        station_config: StationConfig = Depends(get_station_config)):
+    if station_config_dto.config_name == '':
+        return JSONResponse(
+            status_code=403,
+            content={"message": "No configuration selected!"},
+        )
     station_config.set_station_config(station_config_dto.config_name)
     return station_config.active_config
