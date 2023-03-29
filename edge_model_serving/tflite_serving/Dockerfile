@@ -1,16 +1,12 @@
-FROM python:3.7
+FROM python:3.8.10-slim
 
 WORKDIR /tflite_serving
 
-COPY tflite_serving/requirements.txt .
+COPY tflite_serving/src/ src/
+COPY tflite_serving/pyproject.toml .
 
 RUN pip install --upgrade pip
-RUN pip install https://dl.google.com/coral/python/tflite_runtime-2.1.0.post1-cp37-cp37m-linux_x86_64.whl
-RUN pip install -r requirements.txt
+RUN pip install .
 
-COPY tflite_serving/src/tflite_server.py .
-COPY models/tflite ./models
-
-ENV TPU false
 EXPOSE 8501
-CMD [ "uvicorn", "tflite_server:app", "--reload", "--port", "8501", "--host", "0.0.0.0" ]
+CMD [ "uvicorn", "tflite_serving.tflite_server:app", "--reload", "--port", "8501", "--host", "0.0.0.0" ]

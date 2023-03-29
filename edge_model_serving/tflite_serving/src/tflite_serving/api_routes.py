@@ -1,51 +1,32 @@
 import logging
-import os
-from pathlib import Path
-from typing import Any, AnyStr, Dict, Union, List
-import tflite_runtime.interpreter as tflite
-from fastapi import FastAPI, HTTPException
+from typing import Union, Any, List, Dict, AnyStr
+
 import numpy as np
+from fastapi import APIRouter, HTTPException, Depends
+from tflite_runtime.interpreter import Interpreter
+
+from tflite_serving.tflite_interpreter import create_model_interpreters
 
 JSONObject = Dict[AnyStr, Any]
 JSONArray = List[Any]
 JSONStructure = Union[JSONArray, JSONObject]
 
-app = FastAPI()
-
-coral_tpu = os.environ.get('TPU', 'false')
+api_router = APIRouter()
 
 
-def create_interpreter(model_directory: Path):
-    model_path = str([filepath for filepath in model_directory.iterdir(
-    ) if '.tflite' in filepath.name][0])
-    interpreter = tflite.Interpreter(model_path=model_path)
-    interpreter.allocate_tensors()
-    return interpreter
-
-
-# Create the different interpreters
-model_interpreters = {}
-
-model_path = Path.cwd().parent.parent / 'models'
-
-for model_directory in model_path.iterdir():
-    if model_directory.is_dir():
-        model_interpreters[model_directory.name] = create_interpreter(
-            model_directory)
-
-
-@app.get("/")
+@api_router.get("/")
 async def info():
     return """tflite-server docs at ip:port/docs"""
 
 
-@app.get("/v1/models")
-async def get_models():
+@api_router.get("/models")
+async def get_models(model_interpreters: Dict[str, Interpreter] = Depends(create_model_interpreters)):
     return list(model_interpreters.keys())
 
 
-@app.get("/v1/models/{model_name}/versions/{model_version}/resolution")
-async def get_model_metadata(model_name: str, model_version: str):
+@api_router.get("/models/{model_name}/versions/{model_version}/resolution")
+async def get_model_metadata(model_name: str, model_version: str,
+                             model_interpreters: Dict[str, Interpreter] = Depends(create_model_interpreters)):
     interpreter = model_interpreters[model_name]
     input_details = interpreter.get_input_details()
     return {
@@ -53,15 +34,15 @@ async def get_model_metadata(model_name: str, model_version: str):
     }
 
 
-@app.post('/v1/models/{model_name}/versions/{model_version}:predict')
-async def predict(model_name: str, model_version: str, payload: JSONStructure):
+@api_router.post('/models/{model_name}/versions/{model_version}:predict')
+async def predict(model_name: str, model_version: str, payload: JSONStructure,
+                  model_interpreters: Dict[str, Interpreter] = Depends(create_model_interpreters)):
     interpreter = model_interpreters[model_name]
     input_details = interpreter.get_input_details()
     output_details = interpreter.get_output_details()
 
     input_dtype = input_details[0]["dtype"]
-    logging.info(
-        f'interpreting with {model_name} for input type {input_dtype}')
+    logging.info(f'interpreting with {model_name} for input type {input_dtype}')
     logging.warning(f'output details: {output_details}')
 
     try:

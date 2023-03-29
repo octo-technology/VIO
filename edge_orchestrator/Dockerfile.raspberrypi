@@ -23,7 +23,6 @@ RUN pip install ".[raspberry]"
 
 ENV API_CONFIG edge
 ENV LD_LIBRARY_PATH /opt/vc/lib
+EXPOSE 8000
 
 ENTRYPOINT ["python", "-m", "edge_orchestrator"]
-
-EXPOSE 8000
