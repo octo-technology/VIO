@@ -59,6 +59,9 @@ jobs:
           - dockerfile: ./edge_model_serving/tflite_serving/Dockerfile
             image: ghcr.io/${{ github.repository }}/edge_tflite_serving
             context: ./edge_model_serving
+          - dockerfile: ./edge_model_serving/tf_serving/Dockerfile
+            image: ghcr.io/${{ github.repository }}/edge_model_serving
+            context: ./edge_model_serving
     permissions:
       packages: write
       contents: read
@@ -104,6 +107,9 @@ jobs:
         include:
           - dockerfile: ./edge_model_serving/tflite_serving/Dockerfile.raspberrypi
             image: ghcr.io/${{ github.repository }}/edge_tflite_serving.raspberrypi
+            context: ./edge_model_serving
+          - dockerfile: ./edge_model_serving/tf_serving/Dockerfile.raspberrypi
+            image: ghcr.io/${{ github.repository }}/edge_model_serving.raspberrypi
             context: ./edge_model_serving
     permissions:
       packages: write
