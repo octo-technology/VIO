@@ -14,7 +14,9 @@ pytest_plugins = ['tests.fixtures.binaries', 'tests.fixtures.cameras_metadata',
                   'tests.fixtures.items', 'tests.fixtures.metadata',
                   'tests.fixtures.containers', 'tests.fixtures.items_config']
 
-EDGE_DB_IMG = "mongo:5.0.2"
-HUB_MONITORING_DB_IMG = "postgres:15.1"
-EDGE_MODEL_SERVING_IMG = "ghcr.io/octo-technology/vio/edge_model_serving:latest"
+EDGE_DB_IMG = 'mongo:5.0.2'
+HUB_MONITORING_DB_IMG = 'postgres:15.1'
+EDGE_MODEL_SERVING = {'image_name': 'ghcr.io/octo-technology/vio/edge_model_serving:latest',
+                      'container_volume_path': '/tf_serving',
+                      'host_volume_path_suffix': 'edge_model_serving'}
 EDGE_TFLITE_SERVING_IMG = "ghcr.io/octo-technology/vio/edge_tflite_serving:latest"

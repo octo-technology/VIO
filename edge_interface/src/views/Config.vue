@@ -94,6 +94,9 @@
       class="validation-button"
       >Valider
     </v-btn>
+    <v-snackbar v-model="snackbar" :color="color" :timeout="timeout">
+      {{ message }}
+    </v-snackbar>
   </div>
 </template>
 
@@ -107,7 +110,11 @@ export default {
     return {
       configs: {},
       inventory: {},
-      selected_item_category: ""
+      selected_item_category: "",
+      snackbar: false,
+      message: null,
+      timeout: 1000,
+      color: ""
     };
   },
 
@@ -121,7 +128,24 @@ export default {
   },
   methods: {
     changeConfiguration(item_category) {
-      ConfigService.set_active_config(item_category);
+      ConfigService.set_active_config(item_category)
+        .then(async response => {
+          this.message =
+            "Config " +
+            JSON.parse(response.config.data)["config_name"] +
+            " set";
+          this.color = "green";
+        })
+        .catch(reason => {
+          if (reason.response.status === 403) {
+            console.log(reason.response.data);
+            this.message = reason.response.data["message"];
+            this.color = "red";
+          } else {
+            console.log(reason.response.data);
+          }
+        });
+      this.snackbar = true;
     }
   }
 };

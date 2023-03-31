@@ -1,5 +1,7 @@
-images/
-ansible/roles/setup_iot_hub/files/*.json
-.env
-venv/
+/edge/images/
+
+/cloud/azure/ansible/roles/setup_iot_hub/files/*.json
+/hub/azure/.env
+**/venv*/
+
 grafvio_id_rsa

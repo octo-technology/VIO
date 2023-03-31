@@ -34,6 +34,20 @@ class UploadCameraService {
       }
     });
   }
+  inference(image) {
+    const splitComma = image.split(",");
+    const base64 = splitComma[1];
+    const contentType = splitComma[0].split(":")[1].split(";")[0];
+    const blob = b64toBlob(base64, contentType);
+    let formData = new FormData();
+
+    formData.append("image", blob, contentType);
+    return Api().post("/trigger", formData, {
+      headers: {
+        "content-Type": "multipart/form-data"
+      }
+    });
+  }
 }
 
 export default new UploadCameraService();

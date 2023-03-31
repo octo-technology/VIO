@@ -22,7 +22,7 @@ class EdgeStation:
         binaries = {}
         for camera in self.cameras:
             binaries[camera.id] = camera.capture()
-        cameras_metadata = dict(
-            [(camera.id, self.station_config.get_camera_settings(camera.id)) for camera in self.cameras]
-        )
+        cameras_metadata = {
+            camera.id: self.station_config.get_camera_settings(camera.id) for camera in self.cameras
+        }
         return cameras_metadata, binaries

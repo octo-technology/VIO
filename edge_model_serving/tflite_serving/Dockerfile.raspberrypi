@@ -1,0 +1,21 @@
+FROM --platform=linux/arm64 arm64v8/python:3.8.10
+
+WORKDIR /tflite_serving
+
+#RUN echo "deb https://packages.cloud.google.com/apt coral-edgetpu-stable main" | tee /etc/apt/sources.list.d/coral-edgetpu.list
+#RUN curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
+#RUN apt-get update && apt-get install python3-tflite-runtime -y
+#RUN ln -sf /usr/bin/python3 /usr/local/bin/python3
+#RUN curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+#RUN python3 get-pip.py --force-reinstall
+
+RUN echo "[global]\nextra-index-url=https://www.piwheels.org/simple" >> /etc/pip.conf
+
+COPY tflite_serving/src/ src/
+COPY tflite_serving/pyproject.toml .
+COPY models/tflite ./models
+RUN pip install ".[linux]"
+
+ENV TPU false
+EXPOSE 8501
+CMD [ "uvicorn", "tflite_serving.tflite_server:app", "--reload", "--port", "8501", "--host", "0.0.0.0" ]

@@ -16,16 +16,17 @@ class TestMongoDbItemStorage:
         assert all_items_metadata == [
             {
                 '_id': 'd1adfc08-cb98-46d6-ae9c-b07c5d16a2ec',
+                'serial_number': '123',
+                'category': 'tacos',
+                'station_config': None,
                 'cameras': {
                     'camera_1': {'brightness': 100, 'exposition': 100, 'position': 'right'},
                     'camera_2': {'brightness': 100, 'exposition': 100, 'position': 'left'}},
-                'category': 'tacos',
-                'station_config': None,
-                'decision': {},
-                'inferences': {},
                 'received_time': '2021-05-19 15:00:00',
-                'serial_number': '123',
-                'state': None
+                'inferences': {},
+                'decision': {},
+                'state': None,
+                'error': None
             }
         ]
 
@@ -33,7 +34,7 @@ class TestMongoDbItemStorage:
         # Given
         my_item_0.id = 'd1adfc08-cb98-46d6-ae9c-b07c5d16a2ec'
         metadata_storage = MongoDbMetadataStorage(mongodb_uri=test_mongo_db_uri)
-        metadata_storage.items_metadata.update_one({'_id': my_item_0.id}, {'$set': my_item_0.get_metadata()},
+        metadata_storage.items_metadata.update_one({'_id': my_item_0.id}, {'$set': my_item_0.get_metadata(False)},
                                                    upsert=True)
 
         # When
@@ -41,17 +42,18 @@ class TestMongoDbItemStorage:
 
         # Then
         assert item_metadata == {
-            '_id': 'd1adfc08-cb98-46d6-ae9c-b07c5d16a2ec',
+            'id': 'd1adfc08-cb98-46d6-ae9c-b07c5d16a2ec',
+            'serial_number': '123',
+            'category': 'tacos',
+            'station_config': None,
             'cameras': {
                 'camera_1': {'brightness': 100, 'exposition': 100, 'position': 'right'},
                 'camera_2': {'brightness': 100, 'exposition': 100, 'position': 'left'}},
-            'category': 'tacos',
-            'station_config': None,
-            'decision': {},
-            'inferences': {},
             'received_time': '2021-05-19 15:00:00',
-            'serial_number': '123',
-            'state': None
+            'inferences': {},
+            'decision': {},
+            'state': None,
+            'error': None
         }
 
     def test_get_all_items_metadata_should_return_all_items(self, test_mongo_db_uri, my_item_0, my_item_2):
@@ -59,9 +61,9 @@ class TestMongoDbItemStorage:
         my_item_0.id = 'd1adfc08-cb98-46d6-ae9c-b07c5d16a2ec'
         my_item_2.id = 'af6b4922-8e4a-4dbc-ac9b-b5fd56ceaf25'
         metadata_storage = MongoDbMetadataStorage(mongodb_uri=test_mongo_db_uri)
-        metadata_storage.items_metadata.update_one({'_id': my_item_0.id}, {'$set': my_item_0.get_metadata()},
+        metadata_storage.items_metadata.update_one({'_id': my_item_0.id}, {'$set': my_item_0.get_metadata(False)},
                                                    upsert=True)
-        metadata_storage.items_metadata.update_one({'_id': my_item_2.id}, {'$set': my_item_2.get_metadata()},
+        metadata_storage.items_metadata.update_one({'_id': my_item_2.id}, {'$set': my_item_2.get_metadata(False)},
                                                    upsert=True)
 
         # When
@@ -70,30 +72,31 @@ class TestMongoDbItemStorage:
         # Then
         assert item_metadata == [
             {
-                '_id': 'd1adfc08-cb98-46d6-ae9c-b07c5d16a2ec',
-                'cameras': {
-                    'camera_1': {'brightness': 100, 'exposition': 100, 'position': 'right'},
-                    'camera_2': {'brightness': 100, 'exposition': 100, 'position': 'left'}
-                },
+                'id': 'd1adfc08-cb98-46d6-ae9c-b07c5d16a2ec',
+                'serial_number': '123',
                 'category': 'tacos',
                 'station_config': None,
-                'decision': {},
-                'inferences': {},
+                'cameras': {
+                    'camera_1': {'brightness': 100, 'exposition': 100, 'position': 'right'},
+                    'camera_2': {'brightness': 100, 'exposition': 100, 'position': 'left'}},
                 'received_time': '2021-05-19 15:00:00',
-                'serial_number': '123',
-                'state': None
+                'inferences': {},
+                'decision': {},
+                'state': None,
+                'error': None
             },
             {
-                '_id': 'af6b4922-8e4a-4dbc-ac9b-b5fd56ceaf25',
+                'id': 'af6b4922-8e4a-4dbc-ac9b-b5fd56ceaf25',
+                'serial_number': '123',
+                'category': 'tacos',
+                'station_config': None,
                 'cameras': {
                     'camera_3': {'brightness': 100, 'exposition': 100, 'position': 'top'}
                 },
-                'category': 'tacos',
-                'station_config': None,
-                'decision': {},
-                'inferences': {},
                 'received_time': '2021-05-19 15:00:00',
-                'serial_number': '123',
-                'state': None
+                'inferences': {},
+                'decision': {},
+                'state': None,
+                'error': None
             }
         ]

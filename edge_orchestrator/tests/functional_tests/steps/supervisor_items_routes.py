@@ -6,8 +6,8 @@ use_step_matcher('re')
 
 @given("item '([a-zA-Z0-9-_]+)' is stored")
 def client_trigger_item_capture_and_storage(context: Context, item_id: str):
-    response = context.test_client.put('/api/v1/trigger',
-                                       json={'category': 'station_config_TEST', 'serial_number': 'serial_number'})
+    response = context.test_client.post('/api/v1/trigger',
+                                        json={'category': 'station_config_TEST', 'serial_number': 'serial_number'})
     assert response.status_code == 200
     context.item_id = response.json()['item_id']
 

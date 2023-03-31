@@ -1,7 +1,10 @@
-from fastapi.testclient import TestClient
-from tests.conftest import TEST_DATA_FOLDER_PATH
+import json
 
+from fastapi.testclient import TestClient
+
+from tests.conftest import TEST_DATA_FOLDER_PATH
 from edge_orchestrator.application.server import server
+from edge_orchestrator.api_config import get_metadata_storage
 
 
 class TestServer:
@@ -24,6 +27,28 @@ class TestServer:
         for record in caplog.records:
             if record.funcName == "upload":
                 actual_logs.append(record.msg)
+
         # Then
         assert actual_response.status_code == 200
         assert actual_logs == expected_logs
+
+    def test_get_item_metadata__should_return_expected_paylod_when_received_specific_item_id(
+            self,
+            my_item_0,
+            caplog):
+        # Given
+        metadata_storage = get_metadata_storage()
+        metadata_storage.save_item_metadata(my_item_0)
+        client = TestClient(server())
+        test_item_id = my_item_0.id
+        keys_expected = ['serial_number', 'category', 'station_config', 'cameras', 'received_time', 'inferences',
+                         'decision', 'state', 'error', 'id']
+
+        # When
+        actual_response = client.get(f'/api/v1/items/{test_item_id}')
+
+        # Then
+        assert actual_response.status_code == 200
+        json_response = json.loads(actual_response.text)
+        assert len(json_response) == 10
+        assert list(json_response.keys()) == keys_expected

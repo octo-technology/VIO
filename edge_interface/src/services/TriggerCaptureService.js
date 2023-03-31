@@ -2,7 +2,7 @@ import Api from "@/services/api";
 
 class TriggerCaptureService {
   trigger() {
-    return Api().put("/trigger");
+    return Api().post("/trigger");
   }
 }
 

@@ -7,7 +7,7 @@ function getUrlBinariesListByItem(item) {
   for (var key in sensorsDict) {
     let value = sensorsDict[key];
     console.log(value);
-    let urlBinary = getUrlBinary(item._id, value.binary_filename);
+    let urlBinary = getUrlBinary(item.id, value.binary_filename);
     urlBinariesList.push(urlBinary);
   }
   console.log(urlBinariesList);

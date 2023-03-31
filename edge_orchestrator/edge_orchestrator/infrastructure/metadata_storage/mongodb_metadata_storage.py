@@ -11,14 +11,20 @@ class MongoDbMetadataStorage(MetadataStorage):
         self.items_metadata = self.db['items']
 
     def save_item_metadata(self, item: Item):
-        self.items_metadata.update_one({'_id': item.id}, {'$set': item.get_metadata()}, upsert=True)
+        self.items_metadata.update_one({'_id': item.id}, {'$set': item.get_metadata(False)}, upsert=True)
 
     def get_item_metadata(self, item_id: str) -> Dict:
-        return self.items_metadata.find_one({'_id': item_id})
+        mongo_output = self.items_metadata.find_one({'_id': item_id})
+        mongo_output['id'] = mongo_output.pop('_id')
+        return mongo_output
 
     def get_item_state(self, item_id: str) -> str:
         item = self.items_metadata.find_one({'_id': item_id})
         return item["state"]
 
     def get_all_items_metadata(self) -> List[Dict]:
-        return [item for item in self.items_metadata.find()]
+        items = []
+        for item in self.items_metadata.find():
+            item['id'] = item.pop('_id')
+            items.append(item)
+        return items

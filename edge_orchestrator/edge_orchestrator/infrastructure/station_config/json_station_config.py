@@ -22,8 +22,13 @@ class JsonStationConfig(StationConfig):
         if not station_configs_folder.exists():
             raise FileNotFoundError(f'No station config folder found at "{station_configs_folder}"')
 
+        self.station_configs_folder = station_configs_folder
         self.all_configs = {}
-        for config in station_configs_folder.glob("*.json"):
+        self.load()
+
+    def load(self):
+        self.all_configs = {}
+        for config in self.station_configs_folder.glob("*.json"):
             with open(config, 'r') as station_config_file:
                 content = json.load(station_config_file)
                 self.all_configs[config.with_suffix("").name] = content

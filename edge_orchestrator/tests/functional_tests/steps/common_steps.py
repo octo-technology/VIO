@@ -16,7 +16,7 @@ def app_up_and_running(context: Context):
 def assert_metadata_almost_equal(actual_item_metadata: Dict[str, Union[Dict, str]],
                                  expected_item_metadata: Dict[str, Union[Dict, str]]):
     for expected_item_key, expected_item_value_or_pattern in expected_item_metadata.items():
-        if expected_item_key == '_id':
+        if expected_item_key == 'id':
             assert re.match(expected_item_value_or_pattern, actual_item_metadata[expected_item_key])
         elif expected_item_key == 'received_time':
             assert strptime(actual_item_metadata[expected_item_key], expected_item_value_or_pattern)

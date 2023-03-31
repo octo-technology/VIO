@@ -18,6 +18,18 @@ class TestFileSystemMetadataStorage:
                     binaries={})
         src_directory_path = Path(tmpdir.mkdir('metadata'))
         metadata_storage = FileSystemMetadataStorage(src_directory_path)
+        expected_response = {
+            'id': item.id,
+            'serial_number': item.serial_number,
+            'category': item.category,
+            'station_config': item.station_config,
+            'cameras': item.cameras_metadata,
+            'received_time': item.received_time.strftime('%Y-%m-%d %H:%M:%S'),
+            'inferences': item.inferences,
+            'decision': item.decision,
+            'state': item.state,
+            'error': item.error_message
+        }
 
         # When
         metadata_storage.save_item_metadata(item)
@@ -26,7 +38,7 @@ class TestFileSystemMetadataStorage:
         path_to_my_metadata = (src_directory_path / 'my_item_id' / 'metadata.json')
         assert path_to_my_metadata.is_file()
         actual_metadata = json.load(path_to_my_metadata.open('r'))
-        assert actual_metadata == item.get_metadata()
+        assert actual_metadata == expected_response
 
     def test_get_item_metadata_should_return_requested_item_metadata(self, tmpdir, my_cameras_metadata_0):
         # Given

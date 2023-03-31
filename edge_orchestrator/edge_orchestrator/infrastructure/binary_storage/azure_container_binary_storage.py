@@ -1,6 +1,5 @@
 import os
 from typing import List
-from datetime import datetime
 
 from azure.core.exceptions import ResourceExistsError
 from azure.storage.blob import BlobServiceClient
@@ -22,16 +21,15 @@ class AzureContainerBinaryStorage(BinaryStorage):
             pass
         self._container_client = self._blob_service_client.get_container_client(self.azure_container_name)
         self._transport_params = {'client': self._blob_service_client}
-        self.dt_string = datetime.now().strftime("%d-%m-%Y")
 
     def save_item_binaries(self, item: Item):
         for camera_id, binary in item.binaries.items():
-            with open(f'azure://{self.azure_container_name}/{self.dt_string}_{item.id}/{camera_id}.jpg',
+            with open(f'azure://{self.azure_container_name}/{item.id}/{camera_id}.jpg',
                       'wb', transport_params=self._transport_params) as f:
                 f.write(binary)
 
     def get_item_binary(self, item_id: str, camera_id: str) -> bytes:
-        with open(f'azure://{self.azure_container_name}/{self.dt_string}_{item_id}/{camera_id}.jpg',
+        with open(f'azure://{self.azure_container_name}/{item_id}/{camera_id}.jpg',
                   'rb', transport_params=self._transport_params) as f:
             return f.read()
 

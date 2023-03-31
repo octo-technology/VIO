@@ -10,14 +10,14 @@ services:
   edge_model_serving:
     container_name: edge_model_serving
     build:
-      context: edge_tflite_serving
-      dockerfile: Dockerfile
+      context: edge_model_serving
+      dockerfile: tflite_serving/Dockerfile
     environment:
       - TF_CPP_MIN_VLOG_LEVEL=0
     ports:
       - 8501:8501
     volumes:
-      - ./edge_model_serving:/models
+      - ./edge_model_serving/models:/models
 
   edge_orchestrator:
     container_name: edge_orchestrator
@@ -25,7 +25,8 @@ services:
       context: edge_orchestrator
       dockerfile: Dockerfile
     volumes:
-      - ./edge_orchestrator/data/storage:/edge_orchestrator/data/storage
+      - ./edge_orchestrator/data:/edge_orchestrator/data
+      - ./edge_orchestrator/config:/edge_orchestrator/config
     ports:
       - 8000:8000
     healthcheck:

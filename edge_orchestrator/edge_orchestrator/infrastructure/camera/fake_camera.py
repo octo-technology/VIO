@@ -14,6 +14,7 @@ class FakeCamera(Camera):
         self.id = id
         self.settings = settings
         self.data_folder_path = Config.ROOT_PATH / 'data'
+        self.image_extensions = ['*.jpg', '*.png']
 
     def capture(self) -> bytes:
         random_image_path = self.select_random_image()
@@ -21,7 +22,10 @@ class FakeCamera(Camera):
 
     def select_random_image(self) -> Path:
         input_images_folder = self.data_folder_path / self.settings['input_images_folder']
-        random_image_path = Path(random.choice(list(input_images_folder.glob('*.jpg'))))
+        selected_images = []
+        for extension in self.image_extensions:
+            selected_images += list(input_images_folder.glob(extension))
+        random_image_path = Path(random.choice(selected_images))
         logger.info(str(random_image_path))
         return random_image_path
 

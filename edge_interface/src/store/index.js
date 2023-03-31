@@ -25,7 +25,7 @@ const getters = {
   getItemById: state => id => {
     console.log(id);
     console.log(state.listItems);
-    return state.listItems.find(item => item._id === id);
+    return state.listItems.find(item => item.id === id);
   }
 };
 

@@ -6,6 +6,10 @@
 __pycache__/
 *.py[cod]
 *$py.class
+/venv-torch
+.vscode
+*.DS_Store
+
 
 # C extensions
 *.so
@@ -170,8 +174,7 @@ poetry.toml
 # End of https://www.toptal.com/developers/gitignore/api/python
 edge_orchestrator/data/storage/
 edge_orchestrator/reports
-
-.DS_Store
+edge_model_serving/models/torch
 
 # Local .terraform directories
 **/.terraform/*
