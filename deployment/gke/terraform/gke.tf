@@ -1,45 +1,6 @@
 # Copyright (c) HashiCorp, Inc.
 # SPDX-License-Identifier: MPL-2.0
 
-variable "project_id" {
-  type = string
-  description = "project id"
-}
-
-variable "region" {
-  type = string
-  description = "region"
-}
-
-provider "google" {
-  project = var.project_id
-  region  = var.region
-}
-
-
-variable "zone" {
-  description = "zone"
-}
-
-variable "vpc_name" {
-  description = "default vpc name"
-}
-
-variable "gke_username" {
-  default     = ""
-  description = "gke username"
-}
-
-variable "gke_password" {
-  default     = ""
-  description = "gke password"
-}
-
-variable "gke_num_nodes" {
-  default     = 1
-  description = "number of gke nodes"
-}
-
 # GKE cluster
 resource "google_container_cluster" "primary" {
   name     = "${var.project_id}-gke"
