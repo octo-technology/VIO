@@ -24,20 +24,20 @@ To convert models from model_serving, tensorflow .pb format to tflite fomat:
 ## Run and Usage
 Start the tflite-server on port 8501 :
 ```
-(venv) $ uvicorn tflite_server:app --reload --port 8501 --host 0.0.0.0
+(venv) $ uvicorn tflite_serving.tflite_server:app --reload --port 8501 --host 0.0.0.0
 ```
 
 Or via Docker:
 
 ```
 # Build for raspberry 
-docker build --file Dockerfile.raspberrypi --tag ghcr.io/octo-technology/vio/edge_tflite_serving.raspberrypi:latest .
+docker build --file tflite_serving/Dockerfile.raspberrypi --tag ghcr.io/octo-technology/vio/edge_tflite_serving.raspberrypi:latest .
 # Run
 docker run -p 8501:8501 ghcr.io/octo-technology/vio/edge_tflite_serving.raspberrypi:latest 
 ```
 ```
 # Build for mac
-docker build --file Dockerfile --tag ghcr.io/octo-technology/vio/edge_tflite_serving:latest .
+docker build --file tflite_serving/Dockerfile --tag ghcr.io/octo-technology/vio/edge_tflite_serving:latest .
 # Run for mac
 docker run -p 8501:8501 ghcr.io/octo-technology/vio/edge_tflite_serving:latest
 ```

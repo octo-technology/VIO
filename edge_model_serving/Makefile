@@ -18,9 +18,16 @@ help:
 .PHONY: tflite_env  ## 🐍 Create a Python conda environment
 tflite_env:
 	conda create --name tflite_env python=3.8 -y
-	pip install https://dl.google.com/coral/python/tflite_runtime-2.1.0.post1-cp37-cp37m-macosx_10_14_x86_64.whl && pip install -r requirements.txt
-	pip install -r tflite_serving/requirements.txt
-	pip install -r tflite_serving/requirements-dev.txt
+
+.PHONY: install_tflite_dependencies_linux  ## ⏬ Install tflite development dependencies on linux
+install_tflite_dependencies_linux:
+	python -m pip install --upgrade pip setuptools
+	cd tflite_serving && pip install -e .[dev,linux] && pip list --outdated
+
+.PHONY: install_tflite_dependencies_mac  ## ⏬ Install tflite development dependencies on mac
+install_tflite_dependencies_mac:
+	python -m pip install --upgrade pip setuptools
+	cd tflite_serving && pip install -e .[dev,mac] && pip list --outdated
 
 .PHONY: torch_env ## setup conda env
 torch_env:
@@ -29,20 +36,19 @@ torch_env:
 
 .PHONY: lint  ## 🐍 Lint Python files to conform to the PEP 8 style guide
 lint:
-	flake8 --count --show-source --statistics --exclude venv*
+	flake8 --count --show-source --statistics
 
 .PHONY: autopep8  ## 🐍 Automatically formats Python code to conform to the PEP 8 style guide
 autopep8:
 	autopep8 --in-place --aggressive -r tflite_serving
 
-.PHONY: tests  ## ✅ Launch the unit tests
-tests:
-	pytest tests
+.PHONY: tflite_tests  ## ✅ Launch the unit tflite_tests
+tflite_tests:
+	cd tflite_serving && pytest -v --cov=src --junitxml=reports/tests-report.xml tests/
 
 .PHONY: edge_tflite_serving  ## ✅ Launch the serving app
 edge_tflite_serving:
-	cd tflite_serving/src
-	uvicorn tflite_server:app --reload --port 8501 --host 0.0.0.0
+	cd tflite_serving && uvicorn tflite_serving.tflite_server:app --reload --port 8501 --host 0.0.0.0
 
 .PHONY: edge_torch_serving  ## ✅ Launch the serving app
 edge_torch_serving:

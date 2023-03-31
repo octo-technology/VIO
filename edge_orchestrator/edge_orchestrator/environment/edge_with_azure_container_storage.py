@@ -1,3 +1,5 @@
+import os
+
 from edge_orchestrator.domain.models.edge_station import EdgeStation
 from edge_orchestrator.environment.config import Config
 from edge_orchestrator.infrastructure.binary_storage.azure_container_binary_storage import \
@@ -11,7 +13,7 @@ from edge_orchestrator.infrastructure.telemetry_sink.azure_iot_hub_telemetry_sin
 
 
 class EdgeWithAzureContainerStorage(Config):
-    SERVING_MODEL_URL = 'http://edge_model_serving:8501'
+    SERVING_MODEL_URL = os.environ.get('SERVING_MODEL_URL', 'http://edge_model_serving:8501')
 
     def __init__(self):
         self.metadata_storage = AzureContainerMetadataStorage()

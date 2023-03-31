@@ -12,7 +12,7 @@ from edge_orchestrator.infrastructure.telemetry_sink.azure_iot_hub_telemetry_sin
 
 class EdgeWithMongoDbMetadataStorage(Config):
     MONGO_DB_URI = os.environ.get('MONGO_DB_URI', 'mongodb://edge_db:27017/')
-    SERVING_MODEL_URL = 'http://edge_model_serving:8501'
+    SERVING_MODEL_URL = os.environ.get('SERVING_MODEL_URL', 'http://edge_model_serving:8501')
 
     def __init__(self):
         self.metadata_storage = MongoDbMetadataStorage(self.MONGO_DB_URI)
