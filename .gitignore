@@ -172,3 +172,10 @@ edge_orchestrator/data/storage/
 edge_orchestrator/reports
 
 .DS_Store
+
+# Local .terraform directories
+**/.terraform/*
+
+# .tfstate files
+*.tfstate
+*.tfstate.*
