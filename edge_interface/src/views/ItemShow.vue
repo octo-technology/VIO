@@ -7,7 +7,7 @@
         </v-btn>
         <item-card v-bind:item="loadItem"></item-card>
 
-        <figure v-show="img" class="figure">
+        <figure v-show="img" class="mt-2 figure">
           <img :src="'data:image/png;base64,' + img" class="img-responsive" />
         </figure>
       </v-col>
@@ -84,4 +84,10 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.img-responsive {
+  max-width: 400px;
+  width: 100%;
+  height: auto;
+}
+</style>

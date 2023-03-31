@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="mr-4 container">
     <v-btn color="blue-grey" class="ma-2 white--text" @click="trigger">
       Trigger
       <v-icon right dark>mdi-cloud-upload</v-icon>
@@ -15,15 +15,12 @@
     </div>
 
     <div v-if="itemId !== null">
-      <p class="resultat">Item id: {{ itemId }}</p>
+      <p>Item id: {{ itemId }}</p>
       <p class="decision">{{ decision }}</p>
-      <div class="result" v-for="(object, index) in predictedItem" :key="index">
+      <div v-for="(object, index) in predictedItem" :key="index">
         <h3>{{ object.camera_id }}</h3>
-        <div
-          id="image-wrapper"
-          :style="{ backgroundImage: `url(${object.image_url})` }"
-        >
-          <img :src="object.image_url" style="visibility: hidden;" />
+        <div>
+          <img class="img-responsive" :src="object.image_url" />
           <div
             v-for="(inference, model_id) in object.inferences"
             :key="model_id"
@@ -64,7 +61,7 @@ import UploadService from "@/services/UploadCameraService";
 export default {
   name: "inference",
   components: { Box },
-  props: ["errorMessage", "webcam"],
+  props: ["errorMessage", "image"],
   data: () => ({
     predictedItem: {},
     itemId: null,
@@ -108,8 +105,8 @@ export default {
     },
     async trigger() {
       this.predictedItem = [];
-      if (this.webcam != undefined)
-        var trigger = UploadService.inference(this.webcam.capture());
+      if (this.image != undefined)
+        var trigger = UploadService.inference(this.image);
       else trigger = TriggerCaptureService.trigger();
 
       trigger
@@ -152,23 +149,28 @@ export default {
   padding: 0 5rem 0 5rem;
 }
 
+.container {
+  text-align: center;
+}
+
 .decision {
   font-weight: bold;
   font-size: 3rem;
 }
 
-#image-wrapper {
-  background-repeat: no-repeat;
-  position: relative;
-}
-
 .timeline {
-  padding: 3rem;
-  white-space: nowrap;
+  padding: 1rem;
   overflow-x: hidden;
 }
 
+.img-responsive {
+  max-width: 400px;
+  width: 100%;
+  height: auto;
+}
+
 ol {
+  margin-bottom: 5px;
   display: inline-block;
   list-style: none;
 }
