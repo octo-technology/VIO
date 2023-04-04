@@ -26,17 +26,16 @@ variable "vpc_name" {
   description = "default vpc name"
 }
 
-variable "gke_username" {
-  default     = ""
-  description = "gke username"
-}
-
-variable "gke_password" {
-  default     = ""
-  description = "gke password"
+variable "vpc_subnetwork" {
+  description = "default vpc subnetwork name"
 }
 
 variable "gke_num_nodes" {
   default     = 1
   description = "number of gke nodes"
+}
+
+variable "default_tags" {
+  default     = []
+  description = "default tags"
 }
