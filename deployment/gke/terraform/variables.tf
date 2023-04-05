@@ -39,3 +39,8 @@ variable "default_tags" {
   default     = []
   description = "default tags"
 }
+
+variable "domain" {
+  type = string
+  description = "domain name"
+}

@@ -16,11 +16,19 @@ resource "google_container_cluster" "primary" {
   subnetwork = var.vpc_subnetwork
 
   node_config {
-    machine_type = "e2-small"
-    oauth_scopes    = [
-      "https://www.googleapis.com/auth/cloud-platform"
+    machine_type = "e2-medium"
+    oauth_scopes = [
+      "https://www.googleapis.com/auth/cloud-platform",
     ]
-    tags = var.default_tags
+
+    tags         = var.default_tags
+    labels       = {
+      env = var.project_id
+    }
+
+    metadata     = {
+      disable-legacy-endpoints = "true"
+    }
   }
 }
 
@@ -31,17 +39,17 @@ resource "google_container_node_pool" "primary_nodes" {
   cluster    = google_container_cluster.primary.name
   node_count = var.gke_num_nodes
   node_config {
+    machine_type = "e2-medium"
     oauth_scopes = [
       "https://www.googleapis.com/auth/cloud-platform",
     ]
 
-    labels = {
+    tags         = var.default_tags
+    labels       = {
       env = var.project_id
     }
 
-    machine_type = "e2-medium"
-    tags         = var.default_tags
-    metadata = {
+    metadata     = {
       disable-legacy-endpoints = "true"
     }
   }
