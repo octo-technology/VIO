@@ -1,0 +1,6 @@
+- name: Tag and push to gcp artifact registery
+  community.docker.docker_image:
+    name: europe-west1-docker.pkg.dev/acn-gcp-octo-sas/airbus-test/edge_interface:0.5.1
+    repository: europe-west1-docker.pkg.dev/acn-gcp-octo-sas/tf-airbus-vio-artifacts/edge_interface:0.5.1
+    push: true
+    source: local

@@ -1,0 +1,4 @@
+---
+- include_tasks: create_pod.yml
+- include_tasks: create_service.yml
+- include_tasks: create_ingress.yml

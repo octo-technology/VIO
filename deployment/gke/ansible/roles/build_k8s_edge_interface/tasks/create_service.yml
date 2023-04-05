@@ -1,0 +1,38 @@
+---
+- name: Create service for edge-interface
+  kubernetes.core.k8s:
+    state: present
+    definition:
+      apiVersion: v1
+      kind: Service
+      metadata:
+        annotations:
+          cloud.google.com/neg: '{"ingress":true}'
+        finalizers:
+          - service.kubernetes.io/load-balancer-cleanup
+        labels:
+          app: "{{ app }}"
+          app.kubernetes.io/instance: "{{ namespace }}"
+          app.kubernetes.io/name: "{{ namespace }}"
+          app.kubernetes.io/component: front
+        name: "{{ app }}-service"
+        namespace: "{{ namespace }}"
+      spec:
+        allocateLoadBalancerNodePorts: true
+        clusterIP: 10.151.240.19
+
+        ports:
+          - port: 80
+            targetPort: 80
+            name: http
+        externalTrafficPolicy: Cluster
+        internalTrafficPolicy: Cluster
+        ipFamilies:
+          - IPv4
+        ipFamilyPolicy: SingleStack
+        selector:
+          app.kubernetes.io/instance: "{{ namespace }}"
+          app.kubernetes.io/name: "{{ namespace }}"
+          app.kubernetes.io/component: front
+        sessionAffinity: None
+        type: LoadBalancer
