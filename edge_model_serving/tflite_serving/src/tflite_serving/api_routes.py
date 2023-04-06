@@ -2,10 +2,7 @@ import logging
 from typing import Union, Any, List, Dict, AnyStr
 
 import numpy as np
-from fastapi import APIRouter, HTTPException, Depends
-from tflite_runtime.interpreter import Interpreter
-
-from tflite_serving.tflite_interpreter import create_model_interpreters
+from fastapi import APIRouter, HTTPException, Request
 
 JSONObject = Dict[AnyStr, Any]
 JSONArray = List[Any]
@@ -20,14 +17,13 @@ async def info():
 
 
 @api_router.get("/models")
-async def get_models(model_interpreters: Dict[str, Interpreter] = Depends(create_model_interpreters)):
-    return list(model_interpreters.keys())
+async def get_models(request: Request):
+    return list(request.app.state.model_interpreters.keys())
 
 
 @api_router.get("/models/{model_name}/versions/{model_version}/resolution")
-async def get_model_metadata(model_name: str, model_version: str,
-                             model_interpreters: Dict[str, Interpreter] = Depends(create_model_interpreters)):
-    interpreter = model_interpreters[model_name]
+async def get_model_metadata(model_name: str, model_version: str, request: Request):
+    interpreter = request.app.state.model_interpreters[model_name]
     input_details = interpreter.get_input_details()
     return {
         'inputs_shape': input_details[0]['shape'].tolist()
@@ -35,9 +31,8 @@ async def get_model_metadata(model_name: str, model_version: str,
 
 
 @api_router.post('/models/{model_name}/versions/{model_version}:predict')
-async def predict(model_name: str, model_version: str, payload: JSONStructure,
-                  model_interpreters: Dict[str, Interpreter] = Depends(create_model_interpreters)):
-    interpreter = model_interpreters[model_name]
+async def predict(model_name: str, model_version: str, payload: JSONStructure, request: Request):
+    interpreter = request.app.state.model_interpreters[model_name]
     input_details = interpreter.get_input_details()
     output_details = interpreter.get_output_details()
 

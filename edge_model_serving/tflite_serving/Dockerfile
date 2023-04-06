@@ -8,5 +8,8 @@ COPY tflite_serving/pyproject.toml .
 RUN pip install --upgrade pip
 RUN pip install -e ".[linux]"
 
+ENV MODELS_PATH=/models
+COPY models/tflite/ $MODELS_PATH/tflite/
+
 EXPOSE 8501
 CMD [ "uvicorn", "tflite_serving.tflite_server:app", "--reload", "--port", "8501", "--host", "0.0.0.0" ]

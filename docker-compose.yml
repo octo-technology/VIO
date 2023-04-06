@@ -16,8 +16,8 @@ services:
       - TF_CPP_MIN_VLOG_LEVEL=0
     ports:
       - 8501:8501
-    volumes:
-      - ./edge_model_serving/models:/models
+#    volumes:
+#      - ./edge_model_serving/models:/models
 
   edge_orchestrator:
     container_name: edge_orchestrator

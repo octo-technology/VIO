@@ -1,13 +1,16 @@
+import os
+from pathlib import Path
+
 import numpy as np
 from fastapi.testclient import TestClient
-
-from tflite_serving.tflite_server import app
 
 
 class TestTfliteServing:
     base_url = 'http://localhost:8501/v1'
     image_test_path = 'tests/data/mask_people_dataset/person_without_mask.jpg'
     binary_test = open(image_test_path, 'rb')
+    os.environ["MODELS_PATH"] = (Path.cwd().parent / "models").as_posix()
+    from tflite_serving.tflite_server import app
     test_client = TestClient(app)
 
     def test_get_home_should_return_link_to_docs(self):
