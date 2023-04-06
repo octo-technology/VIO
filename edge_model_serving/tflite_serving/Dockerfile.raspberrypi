@@ -11,9 +11,9 @@ WORKDIR /tflite_serving
 
 RUN echo "[global]\nextra-index-url=https://www.piwheels.org/simple" >> /etc/pip.conf
 
+COPY models/tflite/ /models/tflite/
 COPY tflite_serving/src/ src/
 COPY tflite_serving/pyproject.toml .
-COPY models/tflite ./models
 RUN pip install ".[linux]"
 
 ENV TPU false
