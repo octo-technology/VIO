@@ -54,3 +54,13 @@ resource "google_container_node_pool" "primary_nodes" {
     }
   }
 }
+
+# Create GKE Namespace
+resource "kubernetes_namespace" "custom" {
+  metadata {
+    annotations = {
+      name = var.namespace
+    }
+    name = var.namespace
+  }
+}
