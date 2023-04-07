@@ -1,13 +1,13 @@
 resource "kubernetes_service" "airbus_vio_interface" {
   metadata {
-    name      = "${var.name}-service"
+    name      = "${var.name}-front"
     namespace = var.namespace
 
     labels = {
       app = var.name
       "app.kubernetes.io/component" = "front"
       "app.kubernetes.io/instance" = var.namespace
-      "app.kubernetes.io/name" = var.namespace
+      "app.kubernetes.io/name" = "${var.name}-front"
     }
 
     annotations = {
@@ -26,7 +26,7 @@ resource "kubernetes_service" "airbus_vio_interface" {
     selector = {
       "app.kubernetes.io/component" = "front"
       "app.kubernetes.io/instance" = var.namespace
-      "app.kubernetes.io/name" = var.namespace
+      "app.kubernetes.io/name" = "${var.name}-front"
     }
 
     type                    = "LoadBalancer"
