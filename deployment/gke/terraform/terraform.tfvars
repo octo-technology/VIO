@@ -14,3 +14,5 @@ vpc_subnetwork = "europe-west1-sn"
 default_tags = ["allow-http", "allow-https", "ssh-from-home-whitelist", "ssh-from-innovate"]
 
 domain = "vio.octo.tools"
+
+namespace = "airbus-vio"

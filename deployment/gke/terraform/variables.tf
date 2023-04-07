@@ -44,3 +44,8 @@ variable "domain" {
   type = string
   description = "domain name"
 }
+
+variable "namespace" {
+  type = string
+  description = "namespace name"
+}
