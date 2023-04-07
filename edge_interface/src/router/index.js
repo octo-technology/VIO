@@ -1,5 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
+import VUploadView from "../views/VUploadView/VUploadView.vue";
+import VConfig from "../views/VConfig/VConfig.vue";
 
 Vue.use(VueRouter);
 
@@ -16,6 +18,12 @@ const routes = [
       import(/* webpackChunkName: "about" */ "../views/ItemShow.vue")
   },
   {
+    path: "/test",
+    props: true,
+    name: "VUploadView",
+    component: VUploadView
+  },
+  {
     path: "/item-list",
     name: "Item-list",
     component: () =>
@@ -25,11 +33,6 @@ const routes = [
     path: "/upload-camera",
     name: "Upload Camera",
     component: () => import("../views/UploadView.vue")
-  },
-  {
-    path: "/upload-files",
-    name: "Upload Files",
-    component: () => import("../views/UploadFilesView.vue")
   },
   {
     path: "/trigger",
@@ -42,9 +45,9 @@ const routes = [
     component: () => import("../views/Config.vue")
   },
   {
-    path: "/about",
-    name: "About",
-    component: () => import("../views/About.vue")
+    path: "/test_config",
+    name: "Config",
+    component: VConfig
   }
 ];
 

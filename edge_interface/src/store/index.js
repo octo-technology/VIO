@@ -5,7 +5,12 @@ import createPersistedState from "vuex-persistedstate";
 Vue.use(Vuex);
 import ItemsService from "@/services/ItemsService";
 
-const mutations = {
+export const state = {
+  listItems: [],
+  imagePath: null
+}
+
+export const mutations = {
   SET_ITEMS(state, list_items) {
     // Sort list from more recent to oldest
     list_items.sort((recent, old) => {
@@ -14,10 +19,13 @@ const mutations = {
       return date_old - date_recent;
     });
     state.listItems = list_items;
+  },
+  SET_IMAGE_PATH(state, imagePath) {
+    state.imagePath = imagePath
   }
 };
 
-const actions = {
+export const actions = {
   async load_items({ commit }) {
     ItemsService.get_items()
       .then(r => r.data)
@@ -27,22 +35,19 @@ const actions = {
   }
 };
 
-const getters = {
+export const getters = {
   getItemById: state => id => {
-    console.log(id);
-    console.log(state.listItems);
     return state.listItems.find(item => item.id === id);
+  },
+  imagePath(state) {
+    return state.imagePath
   }
 };
 
 export default new Vuex.Store({
-  state: {
-    listItems: []
-  },
+  state,
   plugins: [createPersistedState({ storage: window.sessionStorage })],
   actions,
   mutations,
   getters
 });
-
-// https://www.npmjs.com/package/vuex-persistedstate

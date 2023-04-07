@@ -1,5 +1,5 @@
 <template>
-  <v-app id="inspire">
+  <v-app id="main">
     <v-navigation-drawer v-model="drawer" app clipped>
       <v-list dense>
         <v-list-item link to="/">
@@ -12,13 +12,13 @@
             </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item link to="/upload-files">
+        <v-list-item link to="/test">
           <v-list-item-action>
-            <v-icon>mdi-cloud-upload</v-icon>
+            <v-icon>mdi-cog</v-icon>
           </v-list-item-action>
           <v-list-item-content>
             <v-list-item-title>
-              Upload
+              Test Caméra
             </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
@@ -52,13 +52,13 @@
             </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item link to="/about">
+        <v-list-item link to="/test_config">
           <v-list-item-action>
-            <v-icon>mdi-view-dashboard</v-icon>
+            <v-icon>mdi-cog</v-icon>
           </v-list-item-action>
           <v-list-item-content>
             <v-list-item-title>
-              About
+              Test config
             </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
@@ -70,13 +70,13 @@
       <v-toolbar-title>VIO UI</v-toolbar-title>
     </v-app-bar>
 
-    <v-content>
+    <v-main>
       <v-container fluid>
         <v-row align="start">
           <router-view></router-view>
         </v-row>
       </v-container>
-    </v-content>
+    </v-main>
 
     <v-footer app>
       <span>&copy; 2021</span>
@@ -93,10 +93,6 @@ export default {
 
   data: () => ({
     drawer: false
-  }),
-
-  created() {
-    this.$vuetify.theme.dark = false;
-  }
+  })
 };
 </script>
