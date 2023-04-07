@@ -2,9 +2,9 @@ data "google_compute_global_address" "static" {
   name = "tf-${var.project_name}-ip"
 }
 
-resource "kubernetes_ingress_v1" "front_ingress" {
+resource "kubernetes_ingress_v1" "airbus_vio_interface" {
   metadata {
-    name      = "${var.name}-ingress"
+    name      = "${var.name}-front"
     namespace = var.namespace
 
     annotations = {

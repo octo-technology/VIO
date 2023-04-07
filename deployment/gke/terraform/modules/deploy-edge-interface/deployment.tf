@@ -1,4 +1,4 @@
-resource "kubernetes_deployment" "edge_interface" {
+resource "kubernetes_deployment" "airbus_vio_interface" {
   metadata {
     name      = var.name
     namespace = var.namespace
@@ -14,7 +14,7 @@ resource "kubernetes_deployment" "edge_interface" {
       match_labels = {
         "app.kubernetes.io/component" = "front"
         "app.kubernetes.io/instance" = var.namespace
-        "app.kubernetes.io/name" = var.namespace
+        "app.kubernetes.io/name" = var.name
       }
     }
 
@@ -23,7 +23,7 @@ resource "kubernetes_deployment" "edge_interface" {
         labels = {
           "app.kubernetes.io/component" = "front"
           "app.kubernetes.io/instance" = var.namespace
-          "app.kubernetes.io/name" = var.namespace
+          "app.kubernetes.io/name" = var.name
         }
       }
 
@@ -37,22 +37,22 @@ resource "kubernetes_deployment" "edge_interface" {
             container_port = 80
             protocol       = "TCP"
           }
-          liveness_probe {
-            http_get {
-              path = "/"
-              port = "http"
-            }
-            initial_delay_seconds = 30
-            period_seconds        = 5
-          }
-          readiness_probe {
-            http_get {
-              path = "/"
-              port = "http"
-            }
-            initial_delay_seconds = 30
-            period_seconds        = 5
-          }
+#          liveness_probe {
+#            http_get {
+#              path = "/"
+#              port = "http"
+#            }
+#            initial_delay_seconds = 30
+#            period_seconds        = 5
+#          }
+#          readiness_probe {
+#            http_get {
+#              path = "/"
+#              port = "http"
+#            }
+#            initial_delay_seconds = 30
+#            period_seconds        = 5
+#          }
           image_pull_policy = "IfNotPresent"
         }
         restart_policy = "Always"
