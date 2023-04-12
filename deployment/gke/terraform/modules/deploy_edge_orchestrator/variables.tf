@@ -13,7 +13,7 @@ variable "namespace" {
   description = "namespace name"
 }
 
-locals {
-  static_ip_name = "tf-${var.project_name}-ip"
-  managed_certificate_name = "tf-${var.project_name}-cert"
+variable "gcp_bucket_name" {
+  type = string
+  description = "gcp bucket name"
 }

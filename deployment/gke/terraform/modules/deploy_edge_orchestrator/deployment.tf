@@ -9,12 +9,12 @@ resource "kubernetes_deployment" "airbus_vio_orchestrator" {
   }
 
   spec {
-    replicas = 2
+    replicas = 1
     selector {
       match_labels = {
         "app.kubernetes.io/component" = "back"
         "app.kubernetes.io/instance" = var.namespace
-        "app.kubernetes.io/name" = var.namespace
+        "app.kubernetes.io/name" = var.name
       }
     }
 
@@ -23,7 +23,7 @@ resource "kubernetes_deployment" "airbus_vio_orchestrator" {
         labels = {
           "app.kubernetes.io/component" = "back"
           "app.kubernetes.io/instance" = var.namespace
-          "app.kubernetes.io/name" = var.namespace
+          "app.kubernetes.io/name" = var.name
         }
       }
 
@@ -40,7 +40,7 @@ resource "kubernetes_deployment" "airbus_vio_orchestrator" {
         }
         container {
           name  = var.name
-          image = "europe-west1-docker.pkg.dev/acn-gcp-octo-sas/tf-airbus-vio-artifacts/edge_orchestrator:0.5.1"
+          image = "europe-west1-docker.pkg.dev/acn-gcp-octo-sas/tf-airbus-vio-artifacts/edge_orchestrator:0.6.2"
 
           port {
             name           = "http"
@@ -58,7 +58,7 @@ resource "kubernetes_deployment" "airbus_vio_orchestrator" {
           }
           env {
             name  = "GCP_BUCKET_NAME"
-            value = "airbus-vio-storage"
+            value = var.gcp_bucket_name
           }
 
           volume_mount {
@@ -69,30 +69,30 @@ resource "kubernetes_deployment" "airbus_vio_orchestrator" {
 
           liveness_probe {
             http_get {
-              path = "/"
+              path = "/api/v1"
               port = "http"
             }
 
             initial_delay_seconds = 30
-            period_seconds        = 5
+            period_seconds        = 10
           }
           readiness_probe {
             http_get {
-              path = "/"
+              path = "/api/v1"
               port = "http"
             }
 
             initial_delay_seconds = 30
-            period_seconds        = 5
+            period_seconds        = 10
           }
           startup_probe {
             http_get {
-              path = "/"
+              path = "/api/v1"
               port = "http"
             }
 
-            initial_delay_seconds = 10
-            period_seconds        = 5
+            initial_delay_seconds = 30
+            period_seconds        = 10
             success_threshold     = 1
             failure_threshold     = 60
           }

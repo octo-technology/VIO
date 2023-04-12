@@ -1,7 +1,3 @@
-data "google_compute_global_address" "static" {
-  name = "tf-${var.project_name}-ip"
-}
-
 resource "kubernetes_ingress_v1" "airbus_vio_interface" {
   metadata {
     name      = "${var.name}-front"
@@ -17,9 +13,25 @@ resource "kubernetes_ingress_v1" "airbus_vio_interface" {
   spec {
     default_backend {
       service {
-        name = "${var.name}-service"
+        name = "${var.name}-front"
         port {
           number = 80
+        }
+      }
+    }
+    rule {
+      http {
+        path {
+          backend {
+            service {
+              name = "${var.name}-api"
+              port {
+                number = 8000
+              }
+            }
+          }
+
+          path = "/api"
         }
       }
     }

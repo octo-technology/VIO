@@ -7,7 +7,7 @@ resource "kubernetes_service" "airbus_vio_orchestrator" {
       app = var.name
       "app.kubernetes.io/component" = "back"
       "app.kubernetes.io/instance" = var.namespace
-      "app.kubernetes.io/name" = var.namespace
+      "app.kubernetes.io/name" = var.name
     }
 
     annotations = {
@@ -21,12 +21,11 @@ resource "kubernetes_service" "airbus_vio_orchestrator" {
       port        = 8000
       target_port = "8000"
     }
-    cluster_ip = "10.151.240.20"
 
     selector = {
       "app.kubernetes.io/component" = "back"
       "app.kubernetes.io/instance" = var.namespace
-      "app.kubernetes.io/name" = var.namespace
+      "app.kubernetes.io/name" = var.name
     }
 
     type                    = "LoadBalancer"
