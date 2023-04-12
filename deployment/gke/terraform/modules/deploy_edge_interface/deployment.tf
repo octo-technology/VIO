@@ -37,22 +37,22 @@ resource "kubernetes_deployment" "airbus_vio_interface" {
             container_port = 80
             protocol       = "TCP"
           }
-#          liveness_probe {
-#            http_get {
-#              path = "/"
-#              port = "http"
-#            }
-#            initial_delay_seconds = 30
-#            period_seconds        = 5
-#          }
-#          readiness_probe {
-#            http_get {
-#              path = "/"
-#              port = "http"
-#            }
-#            initial_delay_seconds = 30
-#            period_seconds        = 5
-#          }
+          liveness_probe {
+            http_get {
+              path = "/"
+              port = "http"
+            }
+            initial_delay_seconds = 30
+            period_seconds        = 10
+          }
+          readiness_probe {
+            http_get {
+              path = "/"
+              port = "http"
+            }
+            initial_delay_seconds = 30
+            period_seconds        = 10
+          }
           image_pull_policy = "IfNotPresent"
         }
         restart_policy = "Always"
