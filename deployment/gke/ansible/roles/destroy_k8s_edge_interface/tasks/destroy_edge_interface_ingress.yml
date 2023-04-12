@@ -1,8 +1,0 @@
----
-- name: Remove edge-interface Service
-  kubernetes.core.k8s:
-    state: absent
-    api_version: v1
-    kind: Ingress
-    namespace: "{{ namespace }}"
-    name: "{{ app }}-ingress"

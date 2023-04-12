@@ -1,3 +1,0 @@
----
-app: edge-interface
-image: nginx:1.19.9-alpine

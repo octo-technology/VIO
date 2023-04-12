@@ -1,4 +1,0 @@
----
-- include_tasks: destroy_edge_interface_pod.yml
-- include_tasks: destroy_edge_interface_service.yml
-- include_tasks: destroy_edge_interface_ingress.yml
