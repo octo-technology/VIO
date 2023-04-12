@@ -29,7 +29,7 @@ module "edge_interface" {
 
   name           = "edge-interface"
   project_name   = var.project_name
-  namespace      = var.namespace
+  namespace      = module.create_infra_ressources.custom_namespace
 }
 
 module "edge_orchestrator" {
@@ -37,6 +37,6 @@ module "edge_orchestrator" {
 
   name            = "edge-orchestrator"
   project_name    = var.project_name
-  namespace       = var.namespace
+  namespace       = module.create_infra_ressources.custom_namespace
   gcp_bucket_name = var.gcp_bucket_name
 }
