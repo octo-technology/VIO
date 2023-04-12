@@ -85,17 +85,6 @@ resource "kubernetes_deployment" "airbus_vio_orchestrator" {
             initial_delay_seconds = 30
             period_seconds        = 10
           }
-          startup_probe {
-            http_get {
-              path = "/api/v1"
-              port = "http"
-            }
-
-            initial_delay_seconds = 30
-            period_seconds        = 10
-            success_threshold     = 1
-            failure_threshold     = 60
-          }
           image_pull_policy = "IfNotPresent"
         }
         restart_policy = "Always"
