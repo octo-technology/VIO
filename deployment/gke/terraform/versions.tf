@@ -2,6 +2,11 @@
 # SPDX-License-Identifier: MPL-2.0
 
 terraform {
+  backend "gcs" {
+    bucket  = "tf-state-airbus-vio-prod"
+    prefix  = "terraform/state"
+  }
+
   required_providers {
     google = {
       source  = "hashicorp/google"

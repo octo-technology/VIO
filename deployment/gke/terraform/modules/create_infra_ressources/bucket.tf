@@ -1,5 +1,5 @@
 resource "google_storage_bucket" "basic" {
-  name     = "tf-${var.project_name}-bucket"
+  name     = var.gcp_bucket_name
   location = var.region
   force_destroy = true
 }

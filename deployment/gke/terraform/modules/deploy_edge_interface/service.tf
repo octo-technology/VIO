@@ -7,7 +7,7 @@ resource "kubernetes_service" "airbus_vio_interface" {
       app = var.name
       "app.kubernetes.io/component" = "front"
       "app.kubernetes.io/instance" = var.namespace
-      "app.kubernetes.io/name" = "${var.name}-front"
+      "app.kubernetes.io/name" = var.name
     }
 
     annotations = {
@@ -21,12 +21,11 @@ resource "kubernetes_service" "airbus_vio_interface" {
       port        = 80
       target_port = "80"
     }
-    cluster_ip = "10.151.240.19"
 
     selector = {
       "app.kubernetes.io/component" = "front"
       "app.kubernetes.io/instance" = var.namespace
-      "app.kubernetes.io/name" = "${var.name}-front"
+      "app.kubernetes.io/name" = var.name
     }
 
     type                    = "LoadBalancer"

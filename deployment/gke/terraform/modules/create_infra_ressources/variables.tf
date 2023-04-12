@@ -40,11 +40,6 @@ variable "default_tags" {
   description = "default tags"
 }
 
-variable "domain" {
-  type = string
-  description = "domain name"
-}
-
 variable "namespace" {
   type = string
   description = "namespace name"
@@ -53,14 +48,4 @@ variable "namespace" {
 variable "gcp_bucket_name" {
   type = string
   description = "gcp bucket name"
-}
-
-variable "tf_state_bucket_name" {
-  type = string
-  description = "bucket name for prod tf state"
-}
-
-locals {
-  static_ip_name = "tf-${var.project_name}-ip"
-  managed_certificate_name = "tf-${var.project_name}-cert"
 }
