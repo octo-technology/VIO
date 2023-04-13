@@ -4,9 +4,10 @@ resource "kubernetes_ingress_v1" "airbus_vio_interface" {
     namespace = var.namespace
 
     annotations = {
-      "ingress.kubernetes.io/ingress.allow-http" = "false"
+      "ingress.kubernetes.io/ingress.allow-http" = "true"
       "kubernetes.io/ingress.global-static-ip-name" = local.static_ip_name
-      "networking.gke.io/managed-certificates" = local.managed_certificate_name
+#      "networking.gke.io/managed-certificates" = local.managed_certificate_name
+      "ingress.gcp.kubernetes.io/pre-shared-cert"   = local.managed_certificate_name
     }
   }
 
@@ -20,11 +21,24 @@ resource "kubernetes_ingress_v1" "airbus_vio_interface" {
       }
     }
     rule {
+      host = "vio.octo.tools"
       http {
         path {
           backend {
             service {
-              name = "${var.name}-api"
+              name = "${var.name}-front"
+              port {
+                number = 80
+              }
+            }
+          }
+
+          path = "/*"
+        }
+        path {
+          backend {
+            service {
+              name = "${var.api_name}-api"
               port {
                 number = 8000
               }

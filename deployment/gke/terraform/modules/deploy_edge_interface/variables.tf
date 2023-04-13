@@ -8,6 +8,11 @@ variable "name" {
   description = "app name"
 }
 
+variable "api_name" {
+  type = string
+  description = "api name"
+}
+
 variable "namespace" {
   type = string
   description = "namespace name"
@@ -15,5 +20,6 @@ variable "namespace" {
 
 locals {
   static_ip_name = "tf-${var.project_name}-ip"
-  managed_certificate_name = "tf-${var.project_name}-cert"
+#  static_ip_name = "tempo"
+  managed_certificate_name = "vio"
 }
