@@ -17,3 +17,12 @@ variable "gcp_bucket_name" {
   type = string
   description = "gcp bucket name"
 }
+
+variable "secret_name" {
+  type = string
+  description = "service account name"
+}
+
+locals {
+  secret_volume_name = "${var.secret_name}-volume"
+}

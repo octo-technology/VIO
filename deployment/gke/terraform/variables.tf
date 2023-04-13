@@ -64,3 +64,8 @@ locals {
   static_ip_name = "tf-${var.project_name}-ip"
   managed_certificate_name = "tf-${var.project_name}-cert"
 }
+
+variable "secret_name" {
+  type = string
+  description = "service account name"
+}

@@ -15,4 +15,6 @@ domain               = "vio.octo.tools"
 
 namespace            = "airbus-vio"
 gcp_bucket_name      = "tf-airbus-vio-bucket"
+secret_name          = "service-account-credentials"
+
 tf_state_bucket_name = "tf-state-prod"

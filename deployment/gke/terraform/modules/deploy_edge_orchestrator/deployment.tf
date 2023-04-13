@@ -29,9 +29,9 @@ resource "kubernetes_deployment" "airbus_vio_orchestrator" {
 
       spec {
         volume {
-          name = "service-account-credentials-volume"
+          name = local.secret_volume_name
           secret {
-            secret_name = "service-account-credentials"
+            secret_name = var.secret_name
             items {
               key  = "sa_json"
               path = "sa_credentials.json"
@@ -62,7 +62,7 @@ resource "kubernetes_deployment" "airbus_vio_orchestrator" {
           }
 
           volume_mount {
-            name       = "service-account-credentials-volume"
+            name       = local.secret_volume_name
             read_only  = true
             mount_path = "/etc/gcp"
           }

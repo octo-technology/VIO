@@ -28,6 +28,7 @@ module "edge_interface" {
   source         = "./modules/deploy_edge_interface"
 
   name           = "edge-interface"
+  api_name       = "edge-orchestrator"
   project_name   = var.project_name
   namespace      = module.create_infra_ressources.custom_namespace
 }
@@ -38,5 +39,6 @@ module "edge_orchestrator" {
   name            = "edge-orchestrator"
   project_name    = var.project_name
   namespace       = module.create_infra_ressources.custom_namespace
-  gcp_bucket_name = var.gcp_bucket_name
+  gcp_bucket_name = module.create_infra_ressources.gcp_bucket_name
+  secret_name     = var.secret_name
 }
