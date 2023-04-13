@@ -17,12 +17,17 @@ services:
 
   edge_orchestrator:
     container_name: edge_orchestrator
+    environment:
+      GOOGLE_APPLICATION_CREDENTIALS: /tmp/keys/stil_vio_creds.json
+      API_CONFIG: upload-gcp
+      GCP_BUCKET_NAME: stil_vio_test
     build:
       context: edge_orchestrator
       dockerfile: Dockerfile
     volumes:
       - ./edge_orchestrator/data:/edge_orchestrator/data
       - ./edge_orchestrator/config:/edge_orchestrator/config
+      - ./stil_vio_creds.json:/tmp/keys/stil_vio_creds.json
     ports:
       - 8000:8000
     healthcheck:
@@ -63,6 +68,5 @@ services:
     volumes:
       - vio-postgresql-data:/var/lib/postgresql/data
       - ./hub_monitoring/docker/init-db.sh:/docker-entrypoint-initdb.d/init-db.sh
-
 volumes:
   vio-postgresql-data:

@@ -5,7 +5,7 @@ from edge_orchestrator.infrastructure.inventory.json_inventory import JsonInvent
 from edge_orchestrator.infrastructure.station_config.json_station_config import JsonStationConfig
 from edge_orchestrator.infrastructure.model_forward.fake_model_forward import FakeModelForward
 from edge_orchestrator.infrastructure.telemetry_sink.fake_telemetry_sink import FakeTelemetrySink
-
+from edge_orchestrator.domain.models.edge_station import EdgeStation
 
 class UploadWithGCPBucket(Config):
 
@@ -13,7 +13,11 @@ class UploadWithGCPBucket(Config):
         self.metadata_storage = GCPMetadataStorage()
         self.binary_storage = GCPBinaryStorage()
         self.inventory = JsonInventory(self.ROOT_PATH / 'config' / 'inventory.json')
-        self.station_config = JsonStationConfig(self.ROOT_PATH / 'config' / 'station_configs',
-                                                self.inventory, self.ROOT_PATH / 'data')
+        self.station_config = JsonStationConfig(
+            station_configs_folder=self.ROOT_PATH / 'config' / 'station_configs',
+            inventory=self.inventory,
+            data_folder=self.ROOT_PATH / 'data'
+        )
+        self.edge_station = EdgeStation(self.station_config, self.ROOT_PATH / 'data')
         self.model_forward = FakeModelForward()
         self.telemetry_sink = FakeTelemetrySink()
