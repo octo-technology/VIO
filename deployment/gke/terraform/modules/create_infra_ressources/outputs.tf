@@ -1,6 +1,3 @@
-# Copyright (c) HashiCorp, Inc.
-# SPDX-License-Identifier: MPL-2.0
-
 output "cluster_name" {
   value       = google_container_cluster.main.name
   description = "Cluster name"

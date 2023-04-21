@@ -1,13 +1,13 @@
 resource "kubernetes_service" "airbus_vio_orchestrator" {
   metadata {
-    name      = "${var.name}-api"
+    name      = "${var.name}"
     namespace = var.namespace
 
     labels = {
       app = var.name
       "app.kubernetes.io/component" = "back"
-      "app.kubernetes.io/instance" = var.namespace
-      "app.kubernetes.io/name" = var.name
+      "app.kubernetes.io/instance"  = var.namespace
+      "app.kubernetes.io/name"      = var.name
     }
 
     annotations = {
@@ -24,8 +24,8 @@ resource "kubernetes_service" "airbus_vio_orchestrator" {
 
     selector = {
       "app.kubernetes.io/component" = "back"
-      "app.kubernetes.io/instance" = var.namespace
-      "app.kubernetes.io/name" = var.name
+      "app.kubernetes.io/instance"  = var.namespace
+      "app.kubernetes.io/name"      = var.name
     }
 
     type                    = "LoadBalancer"

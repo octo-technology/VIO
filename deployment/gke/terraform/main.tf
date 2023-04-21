@@ -33,28 +33,29 @@ provider "kubernetes" {
 }
 
 module "create_roles" {
-  source          = "./modules/create_roles"
+  source               = "./modules/create_roles"
 
-  project_id      = var.project_id
+  project_id           = var.project_id
+  service_account_name = var.service_account_name
 }
 
 module "create_infra_ressources" {
-  source          = "./modules/create_infra_ressources"
+  source                = "./modules/create_infra_ressources"
 
-  project_id      = var.project_id
-  project_name    = var.project_name
-  region          = var.region
-  zone            = var.zone
+  project_id            = var.project_id
+  project_name          = var.project_name
+  region                = var.region
+  zone                  = var.zone
 
-  custom_vpc      = var.custom_vpc
-  vpc_name        = var.vpc_name
-  vpc_subnetwork  = var.vpc_subnetwork
-  default_tags    = var.default_tags
+  custom_vpc            = var.custom_vpc
+  vpc_name              = var.vpc_name
+  vpc_subnetwork        = var.vpc_subnetwork
+  default_tags          = var.default_tags
 
-  namespace       = var.namespace
-  gcp_bucket_name = var.gcp_bucket_name
+  namespace             = var.namespace
+  gcp_bucket_name       = var.gcp_bucket_name
 
-  service_account_name = module.create_roles.service_account_name
+  service_account_name  = var.service_account_name
   service_account_email = module.create_roles.service_account_email
 
   depends_on = [
@@ -66,7 +67,7 @@ module "create_infra_ressources" {
 module "edge_orchestrator" {
   source          = "./modules/deploy_edge_orchestrator"
 
-  name            = "edge-orchestrator"
+  name            = var.api_name
   project_name    = var.project_name
   namespace       = var.namespace
   gcp_bucket_name = module.create_infra_ressources.gcp_bucket_name
@@ -77,8 +78,8 @@ module "edge_interface" {
   source         = "./modules/deploy_edge_interface"
 
   ingress_name   = "airbus-vio"
-  app_name       = "edge-interface"
-  api_name       = "edge-orchestrator"
+  app_name       = var.app_name
+  api_name       = var.api_name
   project_name   = var.project_name
   cluster_name   = module.create_infra_ressources.cluster_name
   namespace      = var.namespace

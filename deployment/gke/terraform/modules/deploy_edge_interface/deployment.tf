@@ -13,8 +13,8 @@ resource "kubernetes_deployment" "airbus_vio_interface" {
     selector {
       match_labels = {
         "app.kubernetes.io/component" = "front"
-        "app.kubernetes.io/instance" = var.namespace
-        "app.kubernetes.io/name" = var.app_name
+        "app.kubernetes.io/instance"  = var.namespace
+        "app.kubernetes.io/name"      = var.app_name
       }
     }
 
@@ -22,8 +22,8 @@ resource "kubernetes_deployment" "airbus_vio_interface" {
       metadata {
         labels = {
           "app.kubernetes.io/component" = "front"
-          "app.kubernetes.io/instance" = var.namespace
-          "app.kubernetes.io/name" = var.app_name
+          "app.kubernetes.io/instance"  = var.namespace
+          "app.kubernetes.io/name"      = var.app_name
         }
       }
 
