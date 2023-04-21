@@ -7,7 +7,7 @@ custom_vpc           = false
 vpc_name             = "sas-network"
 vpc_subnetwork       = "europe-west1-sn"
 default_tags         = ["allow-http", "allow-https", "ssh-from-home-whitelist", "ssh-from-innovate"]
-
+gke_num_nodes        = 2
 domain               = "vio.octo.tools"
 
 app_name             = "edge-interface"
