@@ -1,6 +1,6 @@
 resource "google_service_account" "service_account" {
-  display_name = "tf-service-account"
-  account_id   = "tf-service-account"
+  display_name = var.service_account_name
+  account_id   = var.service_account_name
   project      = var.project_id
 }
 

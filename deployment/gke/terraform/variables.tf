@@ -69,3 +69,18 @@ variable "secret_name" {
   type = string
   description = "service account name"
 }
+
+variable "service_account_name" {
+  type = string
+  description = "service account name"
+}
+
+variable "app_name" {
+  type = string
+  description = "front app name"
+}
+
+variable "api_name" {
+  type = string
+  description = "back api name"
+}

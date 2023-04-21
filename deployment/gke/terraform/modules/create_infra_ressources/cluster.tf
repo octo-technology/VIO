@@ -1,6 +1,3 @@
-# Copyright (c) HashiCorp, Inc.
-# SPDX-License-Identifier: MPL-2.0
-
 # GKE cluster
 resource "google_container_cluster" "main" {
   name     = "tf-${var.project_name}-gke"

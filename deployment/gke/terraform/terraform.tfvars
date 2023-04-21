@@ -1,6 +1,3 @@
-# Copyright (c) HashiCorp, Inc.
-# SPDX-License-Identifier: MPL-2.0
-
 project_id           = "acn-gcp-octo-sas"
 project_name         = "airbus-vio"
 region               = "europe-west1"
@@ -13,8 +10,12 @@ default_tags         = ["allow-http", "allow-https", "ssh-from-home-whitelist", 
 
 domain               = "vio.octo.tools"
 
+app_name             = "edge-interface"
+api_name             = "edge-orchestrator"
+
 namespace            = "airbus-vio"
 gcp_bucket_name      = "tf-airbus-vio-bucket"
 secret_name          = "service-account-credentials"
 
 tf_state_bucket_name = "tf-state-prod"
+service_account_name = "tf-service-account"
