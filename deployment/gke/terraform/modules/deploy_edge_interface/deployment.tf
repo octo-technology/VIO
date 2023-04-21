@@ -1,10 +1,10 @@
 resource "kubernetes_deployment" "airbus_vio_interface" {
   metadata {
-    name      = var.name
+    name      = var.app_name
     namespace = var.namespace
 
     labels = {
-      app = var.name
+      app = var.app_name
     }
   }
 
@@ -14,7 +14,7 @@ resource "kubernetes_deployment" "airbus_vio_interface" {
       match_labels = {
         "app.kubernetes.io/component" = "front"
         "app.kubernetes.io/instance" = var.namespace
-        "app.kubernetes.io/name" = var.name
+        "app.kubernetes.io/name" = var.app_name
       }
     }
 
@@ -23,13 +23,13 @@ resource "kubernetes_deployment" "airbus_vio_interface" {
         labels = {
           "app.kubernetes.io/component" = "front"
           "app.kubernetes.io/instance" = var.namespace
-          "app.kubernetes.io/name" = var.name
+          "app.kubernetes.io/name" = var.app_name
         }
       }
 
       spec {
         container {
-          name  = var.name
+          name  = var.app_name
           image = "europe-west1-docker.pkg.dev/acn-gcp-octo-sas/tf-airbus-vio-artifacts/edge_interface:0.5.1"
 
           port {
