@@ -51,6 +51,7 @@ module "create_infra_ressources" {
   vpc_name              = var.vpc_name
   vpc_subnetwork        = var.vpc_subnetwork
   default_tags          = var.default_tags
+  gke_num_nodes         = var.gke_num_nodes
 
   namespace             = var.namespace
   gcp_bucket_name       = var.gcp_bucket_name
@@ -70,7 +71,7 @@ module "edge_orchestrator" {
   name            = var.api_name
   project_name    = var.project_name
   namespace       = var.namespace
-  gcp_bucket_name = module.create_infra_ressources.gcp_bucket_name
+  gcp_bucket_name = var.gcp_bucket_name
   secret_name     = var.secret_name
 }
 

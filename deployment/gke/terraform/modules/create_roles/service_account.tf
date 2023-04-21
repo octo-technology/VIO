@@ -9,7 +9,8 @@ locals {
     "roles/iam.serviceAccountTokenCreator",
     "roles/container.serviceAgent",
     "roles/container.nodeServiceAccount",
-#    "roles/artifactregistry.serviceAgent"
+    "roles/storage.objectAdmin",
+    "roles/artifactregistry.serviceAgent"
   ])
 }
 
