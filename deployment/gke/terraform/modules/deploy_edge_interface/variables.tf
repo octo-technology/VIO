@@ -3,7 +3,17 @@ variable "project_name" {
   description = "project name"
 }
 
-variable "name" {
+variable "cluster_name" {
+  type = string
+  description = "cluster name"
+}
+
+variable "ingress_name" {
+  type = string
+  description = "ingress name"
+}
+
+variable "app_name" {
   type = string
   description = "app name"
 }

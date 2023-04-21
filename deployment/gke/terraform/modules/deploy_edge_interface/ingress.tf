@@ -1,6 +1,6 @@
 resource "kubernetes_ingress_v1" "airbus_vio_interface" {
   metadata {
-    name      = "${var.name}-front"
+    name      = "${var.ingress_name}"
     namespace = var.namespace
 
     annotations = {
@@ -14,7 +14,7 @@ resource "kubernetes_ingress_v1" "airbus_vio_interface" {
   spec {
     default_backend {
       service {
-        name = "${var.name}-front"
+        name = "${var.app_name}-front"
         port {
           number = 80
         }
@@ -26,7 +26,7 @@ resource "kubernetes_ingress_v1" "airbus_vio_interface" {
         path {
           backend {
             service {
-              name = "${var.name}-front"
+              name = "${var.app_name}-front"
               port {
                 number = 80
               }

@@ -1,6 +1,6 @@
-resource "kubernetes_secret" "service_account_credentials" {
+resource "kubernetes_secret" "airbus_vio_orchestrator" {
   metadata {
-    name      = "service-account-credentials"
+    name      = var.secret_name
     namespace = var.namespace
   }
 
