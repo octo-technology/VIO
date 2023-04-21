@@ -49,3 +49,13 @@ variable "gcp_bucket_name" {
   type = string
   description = "gcp bucket name"
 }
+
+variable "service_account_name" {
+  type = string
+  description = "Service account name"
+}
+
+variable "service_account_email" {
+  type = string
+  description = "Service account email"
+}

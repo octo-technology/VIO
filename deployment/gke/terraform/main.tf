@@ -3,8 +3,39 @@ provider "google" {
   region  = var.region
 }
 
+data "google_service_account_access_token" "default" {
+  target_service_account = module.create_roles.service_account_email
+  scopes                 = ["userinfo-email", "cloud-platform"]
+  lifetime               = "3600s"
+
+  depends_on = [
+    module.create_roles
+  ]
+}
+
+#provider "google" {
+#  alias        = "impersonated"
+#  access_token = data.google_service_account_access_token.default.access_token
+#}
+#
+#data "google_client_openid_userinfo" "me" {
+#  provider = google.impersonated
+#}
+#
+#output "target-email" {
+#  value = data.google_client_openid_userinfo.me.email
+#}
 provider "kubernetes" {
-  config_path = "~/.kube/config"
+  host                   = "https://${module.create_infra_ressources.endpoint}"
+  token                  = data.google_service_account_access_token.default.access_token
+  cluster_ca_certificate = base64decode(module.create_infra_ressources.ca_certificate
+  )
+}
+
+module "create_roles" {
+  source          = "./modules/create_roles"
+
+  project_id      = var.project_id
 }
 
 module "create_infra_ressources" {
@@ -22,23 +53,37 @@ module "create_infra_ressources" {
 
   namespace       = var.namespace
   gcp_bucket_name = var.gcp_bucket_name
+
+  service_account_name = module.create_roles.service_account_name
+  service_account_email = module.create_roles.service_account_email
+
+  depends_on = [
+    module.create_roles
+  ]
 }
 
-module "edge_interface" {
-  source         = "./modules/deploy_edge_interface"
-
-  name           = "edge-interface"
-  api_name       = "edge-orchestrator"
-  project_name   = var.project_name
-  namespace      = module.create_infra_ressources.custom_namespace
-}
 
 module "edge_orchestrator" {
   source          = "./modules/deploy_edge_orchestrator"
 
   name            = "edge-orchestrator"
   project_name    = var.project_name
-  namespace       = module.create_infra_ressources.custom_namespace
+  namespace       = var.namespace
   gcp_bucket_name = module.create_infra_ressources.gcp_bucket_name
   secret_name     = var.secret_name
+}
+
+module "edge_interface" {
+  source         = "./modules/deploy_edge_interface"
+
+  ingress_name   = "airbus-vio"
+  app_name       = "edge-interface"
+  api_name       = "edge-orchestrator"
+  project_name   = var.project_name
+  cluster_name   = module.create_infra_ressources.cluster_name
+  namespace      = var.namespace
+
+  depends_on = [
+    module.edge_orchestrator
+  ]
 }
