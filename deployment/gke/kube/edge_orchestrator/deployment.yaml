@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: edge-interface
+  name: edge-interface
+  namespace: airbus-vio
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 2
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: front
+      app.kubernetes.io/instance: airbus-vio
+      app.kubernetes.io/name: edge-interface
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: front
+        app.kubernetes.io/instance: airbus-vio
+        app.kubernetes.io/name: edge-interface
+    spec:
+      containers:
+      - name: edge-interface
+        image: ghcr.io/octo-technology/vio/edge_interface:0.5.1
+        imagePullPolicy: IfNotPresent
+        ports:
+          - containerPort: 80
+            name: http
+            protocol: TCP
+        readinessProbe:
+          httpGet:
+            port: http
+            path: /
+          initialDelaySeconds: 30
+          periodSeconds: 5
+        livenessProbe:
+          httpGet:
+            port: http
+            path: /
+          initialDelaySeconds: 30
+          periodSeconds: 5
+      imagePullSecrets:
+        - name: github-container-registry
+      restartPolicy: Always
