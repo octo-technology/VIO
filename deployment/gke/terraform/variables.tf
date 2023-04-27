@@ -60,11 +60,6 @@ variable "tf_state_bucket_name" {
   description = "bucket name for prod tf state"
 }
 
-locals {
-  static_ip_name = "tf-${var.project_name}-ip"
-  managed_certificate_name = "tf-${var.project_name}-cert"
-}
-
 variable "secret_name" {
   type = string
   description = "service account name"
@@ -83,4 +78,9 @@ variable "app_name" {
 variable "api_name" {
   type = string
   description = "back api name"
+}
+
+variable "managed_certificate_name" {
+  type = string
+  description = "certificate name"
 }

@@ -1,6 +1,6 @@
 # GKE cluster
 resource "google_container_cluster" "main" {
-  name     = "tf-${var.project_name}-gke"
+  name     = local.cluster_name
   location = var.zone
 
   network    = var.vpc_name

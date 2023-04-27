@@ -13,18 +13,6 @@ data "google_service_account_access_token" "default" {
   ]
 }
 
-#provider "google" {
-#  alias        = "impersonated"
-#  access_token = data.google_service_account_access_token.default.access_token
-#}
-#
-#data "google_client_openid_userinfo" "me" {
-#  provider = google.impersonated
-#}
-#
-#output "target-email" {
-#  value = data.google_client_openid_userinfo.me.email
-#}
 provider "kubernetes" {
   host                   = "https://${module.create_infra_ressources.endpoint}"
   token                  = data.google_service_account_access_token.default.access_token
@@ -84,6 +72,8 @@ module "edge_interface" {
   project_name   = var.project_name
   cluster_name   = module.create_infra_ressources.cluster_name
   namespace      = var.namespace
+
+  managed_certificate_name = var.managed_certificate_name
 
   depends_on = [
     module.edge_orchestrator

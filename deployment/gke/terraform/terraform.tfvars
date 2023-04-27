@@ -17,5 +17,7 @@ namespace            = "airbus-vio"
 gcp_bucket_name      = "tf-airbus-vio-bucket"
 secret_name          = "service-account-credentials"
 
-tf_state_bucket_name = "tf-state-prod"
-service_account_name = "tf-service-account"
+tf_state_bucket_name = "tf-state-prod" # tf-airbus-state-prof
+service_account_name = "tf-service-account" # tf-airbus-vio
+
+managed_certificate_name = "vio"

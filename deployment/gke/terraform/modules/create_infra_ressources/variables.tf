@@ -58,3 +58,8 @@ variable "service_account_email" {
   type = string
   description = "Service account email"
 }
+
+locals {
+  cluster_name = "tf-${var.project_name}-gke"
+  repo_id = "tf-${var.project_name}-artifacts"
+}
