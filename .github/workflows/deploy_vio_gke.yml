@@ -4,8 +4,7 @@ run-name: Deploy VIO to GKE
 on:
   workflow_run:
     workflows: ["build_and_push_images"]
-    types:
-      - completed
+    types: [completed]
   workflow_dispatch:
     inputs:
       new_tag:
@@ -73,7 +72,9 @@ jobs:
       # Deploy the Docker image to the GKE cluster
       - name: 'Deploy'
         run: |-
-          ./kustomize edit set image ${{ matrix.image }}:${{ matrix.new_tag }}
+          pushd ./deployment/gke/kube/ &&
+          ./kustomize edit set image ${{ matrix.image }}:${{ matrix.new_tag }} &&
           ./kustomize build . | kubectl apply -f -
+          popd
           kubectl rollout status deployment/${{ matrix.deployment_name }}
           kubectl get services -o wide
