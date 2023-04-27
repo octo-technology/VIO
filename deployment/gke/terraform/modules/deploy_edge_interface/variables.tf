@@ -28,8 +28,11 @@ variable "namespace" {
   description = "namespace name"
 }
 
+variable "managed_certificate_name" {
+  type = string
+  description = "certificate name"
+}
+
 locals {
   static_ip_name = "tf-${var.project_name}-ip"
-#  static_ip_name = "tempo"
-  managed_certificate_name = "vio"
 }
