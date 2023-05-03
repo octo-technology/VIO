@@ -1,4 +1,6 @@
-torch==1.13.1
-torchserve==0.7.0
-torchvision==0.14.1
-
+# opencv-python
+fastapi==0.65.2
+uvicorn==0.11.7
+python-multipart==0.0.5
+torch
+torchvision

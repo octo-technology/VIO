@@ -7,9 +7,7 @@ COPY requirements.txt .
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 
-RUN download-models
-RUN build-mar-file
+COPY src .
 
-COPY ../models/torch ./models
-
-RUN torchserve --start --model-store ../models --models fastrcnn=fastrcnn.mar
+EXPOSE 8501
+CMD [ "uvicorn", "fast_serving:app", "--reload", "--port", "8501", "--host", "0.0.0.0" ]
