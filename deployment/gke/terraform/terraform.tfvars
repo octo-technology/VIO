@@ -1,5 +1,5 @@
 project_id           = "acn-gcp-octo-sas"
-project_name         = "airbus-vio"
+project_name         = "vio"
 region               = "europe-west1"
 zone                 = "europe-west1-b"
 
@@ -13,11 +13,11 @@ domain               = "vio.octo.tools"
 app_name             = "edge-interface"
 api_name             = "edge-orchestrator"
 
-namespace            = "airbus-vio"
-gcp_bucket_name      = "tf-airbus-vio-bucket"
+namespace            = "vio"
+gcp_bucket_name      = "tf-vio-bucket"
 secret_name          = "service-account-credentials"
 
-tf_state_bucket_name = "tf-state-prod" # tf-airbus-state-prof
-service_account_name = "tf-service-account" # tf-airbus-vio
+tf_state_bucket_name = "tf-state-vio-prod"
+service_account_name = "tf-service-account"
 
 managed_certificate_name = "vio"

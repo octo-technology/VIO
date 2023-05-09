@@ -1,6 +1,6 @@
 terraform {
   backend "gcs" {
-    bucket  = "tf-state-airbus-vio-prod"
+    bucket  = "tf-state-vio-prod"
     prefix  = "terraform/state"
   }
 

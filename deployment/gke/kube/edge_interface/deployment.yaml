@@ -4,7 +4,7 @@ metadata:
   labels:
     app: edge-interface
   name: edge-interface
-  namespace: airbus-vio
+  namespace: vio
 spec:
   progressDeadlineSeconds: 600
   replicas: 2
@@ -12,7 +12,7 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/component: front
-      app.kubernetes.io/instance: airbus-vio
+      app.kubernetes.io/instance: vio
       app.kubernetes.io/name: edge-interface
   strategy:
     rollingUpdate:
@@ -23,7 +23,7 @@ spec:
     metadata:
       labels:
         app.kubernetes.io/component: front
-        app.kubernetes.io/instance: airbus-vio
+        app.kubernetes.io/instance: vio
         app.kubernetes.io/name: edge-interface
     spec:
       containers:
