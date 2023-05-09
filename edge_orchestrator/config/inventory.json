@@ -84,9 +84,21 @@
         "objectness_scores": "detection_scores",
         "detection_classes": "detection_classes"
       },
+      "objectness_threshold": 0.3
+    },
+    "yolo": {
+      "category": "object_detection",
+      "version": 1,
+      "pb_file_path": null,
+      "class_names_path": "face_labels.txt",
+      "output": {
+        "boxes_coordinates": null,
+        "objectness_scores": "confidence",
+        "detection_classes": "class"
+      },
       "image_resolution": [
-        320,
-        320
+        640,
+        640
       ],
       "objectness_threshold": 0.3
     },
