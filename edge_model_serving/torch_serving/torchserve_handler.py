@@ -10,6 +10,21 @@ import io
 from PIL import Image
 
 
+def isBase64(sb):
+    try:
+        if isinstance(sb, str):
+        # If there's any unicode here, an exception will be thrown and the function will return false
+            sb_bytes = bytes(sb, 'ascii')
+        if isinstance(sb, bytearray):
+            sb_bytes = bytes(sb)
+        elif isinstance(sb, bytes):
+            sb_bytes = sb
+        else:
+            raise ValueError("Argument must be string or bytes")
+        return base64.b64encode(base64.b64decode(sb_bytes)) == sb_bytes
+    except Exception:
+        return False
+
 class ModelHandler(BaseHandler):
     """
     A custom model handler implementation.
@@ -47,7 +62,7 @@ class ModelHandler(BaseHandler):
             # Compat layer: normally the envelope should just return the data
             # directly, but older versions of Torchserve didn't have envelope.
             image = row.get("data") or row.get("body")
-            if isinstance(image, str):
+            if isBase64(image):
                 # if the image is a string of bytesarray.
                 image = base64.b64decode(image)
 
