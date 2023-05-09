@@ -174,6 +174,8 @@ class Supervisor:
                     'parameters']  # noqa
 
                 last_model_inferences = get_last_inference_by_camera(item.inferences[camera_id])
+                if last_model_inferences == 'NO_DECISION':
+                    return 'NO_DECISION'
                 labels_of_last_model_inferences = get_labels(last_model_inferences)
 
                 item_camera_rule = get_camera_rule(camera_rule_name)(**camera_rule_parameters)

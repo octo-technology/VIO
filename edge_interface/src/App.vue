@@ -79,7 +79,7 @@
     </v-content>
 
     <v-footer app>
-      <span>&copy; 2021</span>
+      <span>&copy; 2023</span>
     </v-footer>
   </v-app>
 </template>
