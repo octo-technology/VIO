@@ -4,7 +4,7 @@
     ```bash
     python -m venv .env
     source .env/bin/activate
-    pip install --pre torch torchvision torchaudio --index-url https://download.pytorch.org/whl/nightly/cpu
+    pip install --pre torch torchvision --index-url https://download.pytorch.org/whl/nightly/cpu
     pip install -r requirements.txt
     ```
 
@@ -22,10 +22,11 @@
 	  --version 2.1 \
 	  --serialized-file model_path.torchscript.pt \
 	  --handler ./torchserve_handler.py \
-	  --extra-files ../models/torch/index_to_name.json,./torchserve_handler.py
+	  --extra-files ../models/torch/yolo_to_name.json,./torchserve_handler.py
     mkdir model_store
     mv model_name.mar model_store/
-    torchserve --start --model-store model_store --models yolo5=model_name.mar
+    torchserve --start --model-store model_store --models yolo5=model_name.mar --ts-config ./config.properties --foreground
     curl http://127.0.0.1:8080/predictions/yolo5 -T examples/object_detector/persons.jpg
     ```
+
 * Note : The objects detected have scores greater than "0.5". This threshold value is set in object_detector handler. 
