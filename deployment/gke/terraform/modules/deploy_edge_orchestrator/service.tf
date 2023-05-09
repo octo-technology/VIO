@@ -1,4 +1,4 @@
-resource "kubernetes_service" "airbus_vio_orchestrator" {
+resource "kubernetes_service" "vio_orchestrator" {
   metadata {
     name      = "${var.name}"
     namespace = var.namespace
@@ -19,7 +19,7 @@ resource "kubernetes_service" "airbus_vio_orchestrator" {
     port {
       name        = "http"
       port        = 8000
-      target_port = "8000"
+      target_port = 8000
     }
 
     selector = {

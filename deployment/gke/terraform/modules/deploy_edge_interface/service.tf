@@ -1,4 +1,4 @@
-resource "kubernetes_service" "airbus_vio_interface" {
+resource "kubernetes_service" "vio_interface" {
   metadata {
     name      = "${var.app_name}"
     namespace = var.namespace
@@ -19,7 +19,7 @@ resource "kubernetes_service" "airbus_vio_interface" {
     port {
       name        = "http"
       port        = 80
-      target_port = "80"
+      target_port = 80
     }
 
     selector = {

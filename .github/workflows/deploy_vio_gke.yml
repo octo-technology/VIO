@@ -12,10 +12,10 @@ on:
 
 env:
   PROJECT_ID: ${{ secrets.GKE_PROJECT_ID }}
-  GKE_CLUSTER: tf-airbus-vio-gke
+  GKE_CLUSTER: tf-vio-gke
   GKE_ZONE: europe-west1-b
   GITHUB_REPO: octo-technology/vio
-  NAMESPACE: airbus-vio
+  NAMESPACE: vio
 
 jobs:
   deploy_on_cluster_gke:
@@ -62,7 +62,7 @@ jobs:
           curl -sfLo kustomize https://github.com/kubernetes-sigs/kustomize/releases/download/v3.1.0/kustomize_3.1.0_linux_amd64
           chmod u+x ./kustomize
 
-      # Set up kustomize
+      # Set up kubectl
       - name: 'Set up Kubectl'
         run: |-
           curl -sfLO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
