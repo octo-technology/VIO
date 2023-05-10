@@ -26,12 +26,14 @@ spec:
       containers:
       - env:
         - name: API_CONFIG
-          value: upload-gcp
+          value: edge-gcp
+        - name: SERVING_MODEL_URL
+          value: http://35.195.148.20:8080/
         - name: GOOGLE_APPLICATION_CREDENTIALS
           value: /etc/gcp/sa_credentials.json
         - name: GCP_BUCKET_NAME
           value: tf-vio-bucket
-        image: europe-west1-docker.pkg.dev/acn-gcp-octo-sas/tf-vio-artifacts/edge_orchestrator:0.1
+        image: europe-west1-docker.pkg.dev/acn-gcp-octo-sas/tf-vio-artifacts/edge_orchestrator:0.2
         imagePullPolicy: IfNotPresent
         name: edge-orchestrator
         ports:
