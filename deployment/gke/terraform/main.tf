@@ -51,31 +51,3 @@ module "create_infra_ressources" {
     module.create_roles
   ]
 }
-
-
-module "edge_orchestrator" {
-  source          = "./modules/deploy_edge_orchestrator"
-
-  name            = var.api_name
-  project_name    = var.project_name
-  namespace       = var.namespace
-  gcp_bucket_name = var.gcp_bucket_name
-  secret_name     = var.secret_name
-}
-
-module "edge_interface" {
-  source         = "./modules/deploy_edge_interface"
-
-  ingress_name   = "airbus-vio"
-  app_name       = var.app_name
-  api_name       = var.api_name
-  project_name   = var.project_name
-  cluster_name   = module.create_infra_ressources.cluster_name
-  namespace      = var.namespace
-
-  managed_certificate_name = var.managed_certificate_name
-
-  depends_on = [
-    module.edge_orchestrator
-  ]
-}

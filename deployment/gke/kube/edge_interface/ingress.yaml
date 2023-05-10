@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    ingress.gcp.kubernetes.io/pre-shared-cert: vio
+    ingress.kubernetes.io/ingress.allow-http: "false"
+    kubernetes.io/ingress.global-static-ip-name: tf-airbus-vio-ip
+  name: edge-interface
+  namespace: vio
+spec:
+  defaultBackend:
+    service:
+      name: edge-interface
+      port:
+        number: 80
+  rules:
+  - host: vio.octo.tools
+    http:
+      paths:
+        - path: /*
+          pathType: ImplementationSpecific
+          backend:
+            service:
+              name: edge-interface
+              port:
+                number: 80

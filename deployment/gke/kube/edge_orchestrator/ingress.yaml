@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+#    ingress.kubernetes.io/ingress.allow-http: "false"
+  name: edge-orchestrator
+  namespace: vio
+spec:
+  defaultBackend:
+    service:
+      name: edge-orchestrator
+      port:
+        number: 8000
+#  rules:
+#  - host: api.vio.octo.tools
+#    http:
+#      paths:
+#      - backend:
+#          service:
+#            name: edge-orchestrator
+#            port:
+#              number: 8000
+#        path: /*
