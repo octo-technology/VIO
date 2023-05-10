@@ -1,3 +1,4 @@
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
@@ -5,9 +6,6 @@ metadata:
   name: edge-orchestrator
   namespace: vio
 spec:
-  progressDeadlineSeconds: 600
-  replicas: 2
-  revisionHistoryLimit: 10
   selector:
     matchLabels:
       app.kubernetes.io/component: back
@@ -33,7 +31,7 @@ spec:
           value: /etc/gcp/sa_credentials.json
         - name: GCP_BUCKET_NAME
           value: tf-vio-bucket
-        image: ghcr.io/octo-technology/vio/edge_orchestrator:0.5.1
+        image: europe-west1-docker.pkg.dev/acn-gcp-octo-sas/tf-vio-artifacts/edge_orchestrator:0.1
         imagePullPolicy: IfNotPresent
         name: edge-orchestrator
         ports:
@@ -57,8 +55,8 @@ spec:
           mountPropagation: None
           name: service-account-credentials-volume
           readOnly: true
-      imagePullSecrets:
-        - name: github-container-registry
+#      imagePullSecrets:
+#        - name: github-container-registry
       restartPolicy: Always
       volumes:
       - name: service-account-credentials-volume

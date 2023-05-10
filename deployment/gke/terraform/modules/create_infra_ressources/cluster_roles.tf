@@ -34,4 +34,9 @@ resource "kubernetes_cluster_role_binding" "main" {
     name      = var.service_account_name
     namespace = var.namespace
   }
+  subject {
+    kind      = "ServiceAccount"
+    name      = "github-actions"
+    namespace = var.namespace
+  }
 }
