@@ -1,5 +1,4 @@
-FROM node:12.2.0-alpine as build-stage
-
+FROM node:16.20.0-alpine as build-stage
 WORKDIR /edge_interface
 COPY package*.json ./
 RUN npm install
