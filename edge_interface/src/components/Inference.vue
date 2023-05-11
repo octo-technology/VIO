@@ -19,8 +19,7 @@
       <p class="decision">{{ decision }}</p>
       <div v-for="(object, index) in predictedItem" :key="index">
         <h3>{{ object.camera_id }}</h3>
-        <div>
-          <img class="img-responsive" :src="object.image_url" />
+        <div class="inference_image">
           <div
             v-for="(inference, model_id) in object.inferences"
             :key="model_id"
@@ -36,6 +35,7 @@
               </div>
             </div>
           </div>
+          <img class="img-responsive" :src="object.image_url" />
         </div>
         <div v-for="(inference, model_id) in object.inferences" :key="model_id">
           <h4>{{ model_id }}</h4>
@@ -143,10 +143,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.result {
+.inference_image {
   display: inline-block;
-  vertical-align: top;
-  padding: 0 5rem 0 5rem;
+  position: relative;
 }
 
 .container {
