@@ -40,6 +40,7 @@
               </div>
             </div>
           </div>
+          <img class="img-responsive" :src="object.image_url" />
         </div>
         <div v-for="(inference, model_id) in object.inferences" :key="model_id">
           <h4>{{ model_id }}</h4>
@@ -156,7 +157,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.result {
+.inference_image {
   display: inline-block;
   position: relative;
 }
