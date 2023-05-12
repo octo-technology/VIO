@@ -8,18 +8,14 @@ metadata:
   name: edge-orchestrator
   namespace: vio
 spec:
-  defaultBackend:
-    service:
-      name: edge-orchestrator
-      port:
-        number: 8000
-#  rules:
-#  - host: api.vio.octo.tools
-#    http:
-#      paths:
-#      - backend:
-#          service:
-#            name: edge-orchestrator
-#            port:
-#              number: 8000
-#        path: /*
+  rules:
+  - host: api.vio.octo.tools
+    http:
+      paths:
+      - backend:
+          service:
+            name: edge-orchestrator
+            port:
+              number: 8000
+        path: /
+        pathType: Prefix
