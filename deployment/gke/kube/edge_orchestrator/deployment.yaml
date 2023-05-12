@@ -28,12 +28,12 @@ spec:
         - name: API_CONFIG
           value: edge-gcp
         - name: SERVING_MODEL_URL
-          value: https://vio.octo.tools/predictions
+          value: https://predictions.vio.octo.tools
         - name: GOOGLE_APPLICATION_CREDENTIALS
           value: /etc/gcp/sa_credentials.json
         - name: GCP_BUCKET_NAME
           value: tf-vio-bucket
-        image: europe-west1-docker.pkg.dev/acn-gcp-octo-sas/tf-vio-artifacts/edge_orchestrator:0.3
+        image: europe-west1-docker.pkg.dev/acn-gcp-octo-sas/tf-vio-artifacts/edge_orchestrator:1.0
         imagePullPolicy: IfNotPresent
         name: edge-orchestrator
         ports:

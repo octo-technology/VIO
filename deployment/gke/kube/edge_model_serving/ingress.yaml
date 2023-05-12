@@ -8,18 +8,14 @@ metadata:
   name: edge-model-serving
   namespace: vio
 spec:
-  defaultBackend:
-    service:
-      name: edge-model-serving
-      port:
-        number: 8080
-#  rules:
-#  - host: inference.vio.octo.tools
-#    http:
-#      paths:
-#      - backend:
-#          service:
-#            name: edge-model-serving
-#            port:
-#              number: 8080
-#        path: /*
+  rules:
+  - host: inference.vio.octo.tools
+    http:
+      paths:
+      - backend:
+          service:
+            name: edge-model-serving
+            port:
+              number: 8080
+        path: /
+        pathType: Prefix
