@@ -31,7 +31,7 @@ build-mar-file:
 	--version 2.1 \
 	--serialized-file ../models/torch/yolo5_v2.1.torchscript.pt \
 	--handler ./torchserve_handler.py \
-	--extra-files ../models/torch/yolo_to_name.json,./torchserve_handler.py
+	--extra-files ../models/torch/index_to_name.json,./torchserve_handler.py
 
 .PHONY: serve
 serve:
@@ -39,4 +39,4 @@ serve:
 
 .PHONY: test
 test:
-	curl http://127.0.0.1:8080/predictions/yolo -T ../tests/L1\ front.jpg
+	curl http://localhost:8080/predictions/yolo -T ../tests/L1\ front.jpg

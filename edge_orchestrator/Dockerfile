@@ -16,3 +16,4 @@ ENV API_CONFIG docker
 
 EXPOSE 8000
 ENTRYPOINT ["python", "-m", "edge_orchestrator"]
+
