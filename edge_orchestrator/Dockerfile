@@ -7,8 +7,7 @@ COPY edge_orchestrator ./edge_orchestrator
 COPY config ./config
 COPY data ./data
 
-RUN pip install --upgrade pip
-RUN pip install .
+RUN pip install --upgrade pip && pip install .
 
 ENV API_CONFIG docker
 EXPOSE 8000
