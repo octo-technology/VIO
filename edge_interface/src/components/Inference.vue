@@ -27,15 +27,21 @@
             <div v-for="(result, object_id) in inference" :key="object_id">
               <div v-if="'location' in result">
                 <Box
-                  v-bind:x-min="result['location'][0]"
-                  v-bind:y-min="result['location'][1]"
-                  v-bind:x-max="result['location'][2]"
-                  v-bind:y-max="result['location'][3]"
+                  v-if="imgLoaded"
+                  v-bind:x-min="result['location'][0] * width"
+                  v-bind:y-min="result['location'][1] * height"
+                  v-bind:x-max="result['location'][2] * width"
+                  v-bind:y-max="result['location'][3] * height"
                 />
               </div>
             </div>
           </div>
-          <img class="img-responsive" :src="object.image_url" />
+          <img
+            class="img-responsive"
+            ref="image"
+            :src="object.image_url"
+            @load="on_image_loaded"
+          />
         </div>
         <div v-for="(inference, model_id) in object.inferences" :key="model_id">
           <h4>{{ model_id }}</h4>
@@ -67,9 +73,19 @@ export default {
     itemId: null,
     statusList: null,
     state: undefined,
-    decision: undefined
+    decision: undefined,
+    imgLoaded: false,
+    height: null,
+    width: null
   }),
   methods: {
+    on_image_loaded() {
+      let img = this.$refs.image[0];
+      this.height = img.height;
+      this.width = img.width;
+      console.log("Image size : ", this.height, this.width);
+      this.imgLoaded = true;
+    },
     getColor(status) {
       if (this.statusList[status] > this.statusList[this.state]) {
         return "red";
