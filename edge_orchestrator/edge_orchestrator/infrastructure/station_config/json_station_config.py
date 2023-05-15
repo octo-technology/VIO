@@ -1,4 +1,5 @@
 import json
+import os
 from pathlib import Path
 from typing import List, Dict, Union, Type
 
@@ -16,15 +17,20 @@ class JsonStationConfig(StationConfig):
 
     def __init__(self, station_configs_folder: Path, inventory: Inventory, data_folder: Path):
         self.inventory = inventory
-        self.active_config = None
         self.data_folder = data_folder
 
         if not station_configs_folder.exists():
             raise FileNotFoundError(f'No station config folder found at "{station_configs_folder}"')
 
         self.station_configs_folder = station_configs_folder
-        self.all_configs = {}
         self.load()
+
+        self.active_config = None
+        config_name = os.environ.get('ACTIVE_CONFIG_NAME', None)
+        if config_name != None:
+            self.set_station_config(config_name)
+        else:
+            self.active_config = None
 
     def load(self):
         self.all_configs = {}
