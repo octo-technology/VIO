@@ -40,7 +40,12 @@
               </div>
             </div>
           </div>
-          <img class="img-responsive" :src="object.image_url" />
+          <img
+            class="img-responsive"
+            ref="image"
+            :src="object.image_url"
+            @load="on_image_loaded"
+          />
         </div>
         <div v-for="(inference, model_id) in object.inferences" :key="model_id">
           <h4>{{ model_id }}</h4>
