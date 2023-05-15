@@ -2,9 +2,9 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   annotations:
-#    ingress.gcp.kubernetes.io/pre-shared-cert: vio
-#    ingress.kubernetes.io/ingress.allow-http: "false"
-#    kubernetes.io/ingress.global-static-ip-name: tf-vio-edge-model-serving
+    ingress.gcp.kubernetes.io/pre-shared-cert: vio
+    ingress.kubernetes.io/ingress.allow-http: "false"
+    kubernetes.io/ingress.global-static-ip-name: tf-vio-edge-model-serving
   name: edge-model-serving
   namespace: vio
 spec:

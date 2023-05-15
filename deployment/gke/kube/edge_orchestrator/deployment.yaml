@@ -33,7 +33,7 @@ spec:
           value: /etc/gcp/sa_credentials.json
         - name: GCP_BUCKET_NAME
           value: tf-vio-bucket
-        image: europe-west1-docker.pkg.dev/acn-gcp-octo-sas/tf-vio-artifacts/edge_orchestrator:1.0
+        image: europe-west1-docker.pkg.dev/acn-gcp-octo-sas/tf-vio-artifacts/edge_orchestrator:1.1
         imagePullPolicy: IfNotPresent
         name: edge-orchestrator
         ports:
@@ -43,13 +43,13 @@ spec:
         readinessProbe:
           httpGet:
             port: http
-            path: /api/v1
+            path: /api/v1/
           initialDelaySeconds: 30
           periodSeconds: 5
         livenessProbe:
           httpGet:
             port: http
-            path: /api/v1
+            path: /api/v1/
           initialDelaySeconds: 30
           periodSeconds: 5
         volumeMounts:

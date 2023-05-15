@@ -26,7 +26,7 @@ spec:
       containers:
       - name: edge-interface
 #        image: ghcr.io/octo-technology/vio/edge_interface:latest
-        image: europe-west1-docker.pkg.dev/acn-gcp-octo-sas/tf-vio-artifacts/edge_interface:0.2
+        image: europe-west1-docker.pkg.dev/acn-gcp-octo-sas/tf-vio-artifacts/edge_interface:0.3
         imagePullPolicy: IfNotPresent
         ports:
           - containerPort: 80
