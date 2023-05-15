@@ -59,7 +59,7 @@ export default {
       return this.item;
     },
     changeSensorsIdList() {
-      if (this.item == null)
+      if (this.sensorsIdList == null)
         this.sensorsIdList = getSensorsIdList(this.loadItem);
       return this.sensorsIdList;
     }
