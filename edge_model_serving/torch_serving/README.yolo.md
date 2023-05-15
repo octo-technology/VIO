@@ -22,7 +22,7 @@
 	  --version 2.1 \
 	  --serialized-file model_path.torchscript.pt \
 	  --handler ./torchserve_handler.py \
-	  --extra-files ../models/torch/yolo_to_name.json,./torchserve_handler.py
+	  --extra-files ../models/torch/index_to_name.json,./torchserve_handler.py
     mkdir model_store
     mv model_name.mar model_store/
     torchserve --start --model-store model_store --models yolo5=model_name.mar --ts-config ./config.properties --foreground

@@ -29,26 +29,8 @@ class TorchServingDetectionClassificationWrapper(ModelForward):
         model_url = f'{self.base_url}/predictions/{model.name}'
 
         try:
-            # response = requests.post(model_url, data=payload)
-            # json_data = response.json()
-            json_data = [
-                          {
-                            "x1": 0.29686468839645386,
-                            "y1": 0.5216227173805237,
-                            "x2": 0.3705231845378876,
-                            "y2": 0.5948795080184937,
-                            "confidence": 0.7182416915893555,
-                            "class": "wrinkle"
-                          },
-                          {
-                            "x1": 0.6872881054878235,
-                            "y1": 0.45187169313430786,
-                            "x2": 0.7481648325920105,
-                            "y2": 0.4979567527770996,
-                            "confidence": 0.598881185054779,
-                            "class": "wrinkle"
-                          }
-                        ]
+            response = requests.post(model_url, data=payload)
+            json_data = response.json()
             logger.info(f'response received {json_data}')
             if len(json_data) == 0:
                 return 'NO_DECISION'
@@ -97,8 +79,8 @@ class TorchServingDetectionClassificationWrapper(ModelForward):
             height = self.image_shape[0]
             width = self.image_shape[1]
             original_dims = np.array([width, height, width, height])
-            box_coordinates_in_current_image = box_coordinates_in_current_image * original_dims
-            box_coordinates_in_current_image = box_coordinates_in_current_image.astype(int).tolist()
+            # box_coordinates_in_current_image = box_coordinates_in_current_image * original_dims
+            box_coordinates_in_current_image = box_coordinates_in_current_image.astype(float).tolist()
 
             box_objectness_score_in_current_image = objectness_scores[box_index]
 
