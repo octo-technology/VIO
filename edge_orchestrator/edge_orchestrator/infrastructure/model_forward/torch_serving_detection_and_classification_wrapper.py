@@ -29,7 +29,7 @@ class TorchServingDetectionClassificationWrapper(ModelForward):
         model_url = f'{self.base_url}/predictions/{model.name}'
 
         try:
-            response = requests.post(model_url, data=payload)
+            response = requests.post(model_url, data=payload, timeout=10)
             json_data = response.json()
             logger.info(f'response received {json_data}')
             if len(json_data) == 0:
