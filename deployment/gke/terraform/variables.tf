@@ -40,11 +40,6 @@ variable "default_tags" {
   description = "default tags"
 }
 
-variable "domain" {
-  type = string
-  description = "domain name"
-}
-
 variable "namespace" {
   type = string
   description = "namespace name"
@@ -55,32 +50,7 @@ variable "gcp_bucket_name" {
   description = "gcp bucket name"
 }
 
-variable "tf_state_bucket_name" {
-  type = string
-  description = "bucket name for prod tf state"
-}
-
-variable "secret_name" {
-  type = string
-  description = "service account name"
-}
-
 variable "service_account_name" {
   type = string
   description = "service account name"
-}
-
-variable "app_name" {
-  type = string
-  description = "front app name"
-}
-
-variable "api_name" {
-  type = string
-  description = "back api name"
-}
-
-variable "managed_certificate_name" {
-  type = string
-  description = "certificate name"
 }
