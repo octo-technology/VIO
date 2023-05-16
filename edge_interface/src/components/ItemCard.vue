@@ -63,12 +63,12 @@ export default {
       return (
         this.item != null &&
         this.item != undefined &&
-        this.item.serial_number != undefined &&
-        this.item.serial_number != null
+        this.item.id != undefined &&
+        this.item.id != null
       );
     },
     serial_number() {
-      if (this.has_serial_number) return this.item.serial_number;
+      if (this.has_serial_number) return this.item.id;
       else return "UNKNOW_SERIAL";
     },
     get_category() {

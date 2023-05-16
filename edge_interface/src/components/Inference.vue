@@ -19,7 +19,7 @@
       <p class="decision">{{ decision }}</p>
       <div v-for="(object, index) in predictedItem" :key="index">
         <h3>{{ object.camera_id }}</h3>
-        <div class="inference_image">
+        <div class="inference-image">
           <div
             v-for="(inference, model_id) in object.inferences"
             :key="model_id"
@@ -159,7 +159,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.inference_image {
+.inference-image {
   display: inline-block;
   position: relative;
 }
