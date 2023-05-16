@@ -9,13 +9,37 @@ metadata:
   namespace: vio
 spec:
   rules:
+#  - host: vio.octo.tools
+#    http:
+#      paths:
+#      - backend:
+#          service:
+#            name: edge-interface
+#            port:
+#              number: 80
+#        path: /
+#        pathType: Prefix
   - host: vio.octo.tools
     http:
       paths:
-      - backend:
-          service:
-            name: edge-interface
-            port:
-              number: 80
-        path: /
-        pathType: Prefix
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: edge-interface
+              port:
+                number: 80
+        - path: /api
+          pathType: Prefix
+          backend:
+            service:
+              name: edge-orchestrator
+              port:
+                number: 8000
+        - path: /predictions
+          pathType: Prefix
+          backend:
+            service:
+              name: edge-model-serving
+              port:
+                number: 8080

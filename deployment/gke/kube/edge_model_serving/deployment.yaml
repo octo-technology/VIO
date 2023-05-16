@@ -36,13 +36,15 @@ spec:
             port: http
             path: /ping
           initialDelaySeconds: 30
-          periodSeconds: 5
+          periodSeconds: 30
+          failureThreshold: 3
         livenessProbe:
           httpGet:
             port: http
             path: /ping
           initialDelaySeconds: 30
-          periodSeconds: 5
+          periodSeconds: 30
+          failureThreshold: 3
 #      imagePullSecrets:
 #        - name: github-container-registry
       restartPolicy: Always
