@@ -28,12 +28,14 @@ spec:
         - name: API_CONFIG
           value: edge-gcp
         - name: SERVING_MODEL_URL
-          value: https://predictions.vio.octo.tools
+          value: https://vio.octo.tools
         - name: GOOGLE_APPLICATION_CREDENTIALS
           value: /etc/gcp/sa_credentials.json
         - name: GCP_BUCKET_NAME
           value: tf-vio-bucket
-        image: europe-west1-docker.pkg.dev/acn-gcp-octo-sas/tf-vio-artifacts/edge_orchestrator:1.1
+        - name: ACTIVE_CONFIG_NAME
+          value: yolo_with_upload_camera
+        image: europe-west1-docker.pkg.dev/acn-gcp-octo-sas/tf-vio-artifacts/edge_orchestrator:1.3
         imagePullPolicy: IfNotPresent
         name: edge-orchestrator
         ports:
@@ -45,13 +47,15 @@ spec:
             port: http
             path: /api/v1/
           initialDelaySeconds: 30
-          periodSeconds: 5
+          periodSeconds: 30
+          failureThreshold: 3
         livenessProbe:
           httpGet:
             port: http
             path: /api/v1/
           initialDelaySeconds: 30
-          periodSeconds: 5
+          periodSeconds: 30
+          failureThreshold: 3
         volumeMounts:
         - mountPath: /etc/gcp
           mountPropagation: None
