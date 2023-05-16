@@ -162,7 +162,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.inference_image {
+.inference-image {
   display: inline-block;
   position: relative;
 }
