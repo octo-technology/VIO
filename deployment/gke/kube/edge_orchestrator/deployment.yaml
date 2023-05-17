@@ -6,6 +6,7 @@ metadata:
   name: edge-orchestrator
   namespace: vio
 spec:
+  replicas: 2
   selector:
     matchLabels:
       app.kubernetes.io/component: back
