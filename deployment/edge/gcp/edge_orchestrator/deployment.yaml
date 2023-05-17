@@ -70,7 +70,7 @@ spec:
         secret:
           defaultMode: 420
           items:
-          - key: sa_json
+          - key: key.json
             path: sa_credentials.json
           optional: false
           secretName: service-account-credentials
