@@ -24,15 +24,18 @@
             v-for="(inference, model_id) in object.inferences"
             :key="model_id"
           >
-            <div v-for="(result, object_id) in inference" :key="object_id">
-              <div v-if="'location' in result">
-                <Box
-                  v-if="imgLoaded"
-                  v-bind:x-min="result['location'][0] * width"
-                  v-bind:y-min="result['location'][1] * height"
-                  v-bind:x-max="result['location'][2] * width"
-                  v-bind:y-max="result['location'][3] * height"
-                />
+            <div v-if="inference !== 'NO_DECISION'">
+              <h1>{{ inference }}</h1>
+              <div v-for="(result, object_id) in inference" :key="object_id">
+                <div v-if="'location' in result">
+                  <Box
+                    v-if="imgLoaded"
+                    v-bind:x-min="result['location'][0] * width"
+                    v-bind:y-min="result['location'][1] * height"
+                    v-bind:x-max="result['location'][2] * width"
+                    v-bind:y-max="result['location'][3] * height"
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -45,10 +48,12 @@
         </div>
         <div v-for="(inference, model_id) in object.inferences" :key="model_id">
           <h4>{{ model_id }}</h4>
-          <div v-for="(result, object_id) in inference" :key="object_id">
-            <span>{{ object_id }}</span>
-            <div v-for="(value, key) in result" :key="key">
-              <span>{{ key }}: {{ value }}</span>
+          <div v-if="inference !== 'NO_DECISION'">
+            <div v-for="(result, object_id) in inference" :key="object_id">
+              <span>{{ object_id }}</span>
+              <div v-for="(value, key) in result" :key="key">
+                <span>{{ key }}: {{ value }}</span>
+              </div>
             </div>
           </div>
         </div>
@@ -133,8 +138,10 @@ export default {
           await this.waitForStateDone();
           const itemResponse = await ItemsService.get_item_by_id(this.itemId);
           const item = itemResponse.data;
+          console.log(item);
           this.decision = item["decision"];
           const inferences = item["inferences"];
+          console.log(this.decision, inferences);
           Object.keys(inferences).forEach(camera_id => {
             this.predictedItem.push({
               camera_id: camera_id,
@@ -142,6 +149,7 @@ export default {
               image_url: `${baseURL}/items/${this.itemId}/binaries/${camera_id}`
             });
           });
+          console.log(this.predictedItem);
         })
         .catch(reason => {
           if (reason.response.status === 403) {
