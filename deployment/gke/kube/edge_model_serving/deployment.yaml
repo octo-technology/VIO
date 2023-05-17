@@ -6,6 +6,7 @@ metadata:
   name: edge-model-serving
   namespace: vio
 spec:
+  replicas: 2
   selector:
     matchLabels:
       app.kubernetes.io/component: inference
