@@ -27,9 +27,10 @@ class TorchServingDetectionClassificationWrapper(ModelForward):
         logger.debug(f'Processed image size: {processed_img.shape}')
         payload = {'data': base64.b64encode(binary_data)}
         model_url = f'{self.base_url}/predictions/{model.name}'
+        logger.debug(f'Model url {model_url}')
 
         try:
-            response = requests.post(model_url, data=payload, timeout=10)
+            response = requests.post(model_url, data=payload, timeout=20)
             json_data = response.json()
             logger.info(f'response received {json_data}')
             if len(json_data) == 0:
