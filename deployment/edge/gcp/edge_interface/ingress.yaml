@@ -5,7 +5,7 @@ metadata:
     ingress.gcp.kubernetes.io/pre-shared-cert: vio
     ingress.kubernetes.io/ingress.allow-http: "false"
     kubernetes.io/ingress.global-static-ip-name: tf-airbus-vio-ip
-  name: edge-interface
+  name: vio
   namespace: vio
 spec:
   defaultBackend:
@@ -14,16 +14,6 @@ spec:
       port:
         number: 80
   rules:
-#  - host: vio.octo.tools
-#    http:
-#      paths:
-#      - backend:
-#          service:
-#            name: edge-interface
-#            port:
-#              number: 80
-#        path: /
-#        pathType: Prefix
   - host: vio.octo.tools
     http:
       paths:
@@ -41,10 +31,3 @@ spec:
               name: edge-orchestrator
               port:
                 number: 8000
-        - path: /predictions
-          pathType: Prefix
-          backend:
-            service:
-              name: edge-model-serving
-              port:
-                number: 8080

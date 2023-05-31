@@ -18,4 +18,4 @@ spec:
     app.kubernetes.io/component: front
     app.kubernetes.io/instance: vio
     app.kubernetes.io/name: edge-interface
-  type: LoadBalancer
+  type: ClusterIP

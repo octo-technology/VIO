@@ -18,4 +18,4 @@ spec:
     app.kubernetes.io/component: back
     app.kubernetes.io/instance: vio
     app.kubernetes.io/name: edge-orchestrator
-  type: LoadBalancer
+  type: ClusterIP
