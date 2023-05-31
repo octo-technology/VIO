@@ -1,0 +1,31 @@
+{
+  "cameras": {
+    "0": {
+      "type": "usb_camera",
+      "position": "front",
+      "exposition": 100,
+      "models_graph": {
+        "model_id1": {
+          "metadata": "screw_control",
+          "depends_on": []
+        },
+        "model_id2": {
+          "metadata": "barcode_control",
+          "depends_on": []
+        }
+      },
+      "camera_rule": {
+        "name": "expected_label_rule",
+        "parameters": {
+          "expected_label": ["OK"]
+        }
+      }
+    }
+  },
+  "item_rule": {
+    "name": "min_threshold_KO_rule",
+    "parameters": {
+      "threshold": 1
+    }
+  }
+}
