@@ -7,8 +7,6 @@ resources:
 
 - edge_orchestrator/deployment.yaml
 - edge_orchestrator/service.yaml
-#- edge_orchestrator/ingress.yaml
 
 - edge_model_serving/deployment.yaml
 - edge_model_serving/service.yaml
-#- edge_model_serving/ingress.yaml
