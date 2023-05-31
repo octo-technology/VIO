@@ -138,10 +138,8 @@ export default {
           await this.waitForStateDone();
           const itemResponse = await ItemsService.get_item_by_id(this.itemId);
           const item = itemResponse.data;
-          console.log(item);
           this.decision = item["decision"];
           const inferences = item["inferences"];
-          console.log(this.decision, inferences);
           Object.keys(inferences).forEach(camera_id => {
             this.predictedItem.push({
               camera_id: camera_id,
@@ -149,7 +147,6 @@ export default {
               image_url: `${baseURL}/items/${this.itemId}/binaries/${camera_id}`
             });
           });
-          console.log(this.predictedItem);
         })
         .catch(reason => {
           if (reason.response.status === 403) {
