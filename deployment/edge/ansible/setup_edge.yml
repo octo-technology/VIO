@@ -1,0 +1,19 @@
+- name: "Install Minikube"
+  hosts: localhost
+  tasks:
+  - community.general.homebrew:
+      name: minikube
+      state: present
+
+  - shell: minikube start --driver=docker
+
+  - kubernetes.core.k8s:
+      name: vio
+      api_version: v1
+      kind: Namespace
+      state: present
+
+  - kubernetes.core.k8s_info:
+     kind: Pod
+     namespace: vio
+    register: pod_list
