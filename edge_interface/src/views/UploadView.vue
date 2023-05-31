@@ -32,8 +32,8 @@
               required
             />
 
-            <code v-if="device">{{ device.label }}</code>
-          </div>
+          <code v-if="device">{{ device.label }}</code>
+        </div>
 
           <div class="col-md-12">
             <v-btn v-if="devices.length == 2" color="blue-grey" class="mr-4 white--text" @click="onSwitchCamera">
@@ -56,11 +56,39 @@
           </div>
         </div>
       </div>
-      <div v-if="img" class="col-md-6">
-        <h2>Captured Image</h2>
-        <figure class="figure">
-          <img :src="img" class="img-responsive" />
-        </figure>
+    </div>
+    <div>
+      <v-fab-transition>
+        <v-btn
+          v-show="!isTrigger"
+          color="blue darken-3"
+          dark
+          absolute
+          bottom
+          right
+          fab
+          style="bottom:16px"
+          @click="trigger"
+        >
+          <v-icon>mdi-camera-outline</v-icon>
+        </v-btn>
+      </v-fab-transition>
+
+      <v-fab-transition>
+        <v-btn
+          v-show="isTrigger"
+          color="blue darken-3"
+          dark
+          absolute
+          bottom
+          right
+          fab
+          style="bottom:16px"
+          @click="backCamera"
+        >
+          <v-icon>mdi-arrow-left</v-icon>
+        </v-btn>
+      </v-fab-transition>
 
         <div class="row">
           <div class="col-md-12">
@@ -85,7 +113,7 @@
           </div>
         </div>
       </div>
-    </v-row>
+    </div>
   </v-col>
 </template>
 
@@ -108,7 +136,15 @@ export default {
     errorMessage: null,
     doneStatus: null,
     devices: [],
-    isStart: true
+    isStart: true,
+
+    loading: false,
+    isTrigger: false,
+    predictedItem: {},
+    itemId: null,
+    statusList: null,
+    state: undefined,
+    decision: undefined
   }),
 
   computed: {
@@ -201,6 +237,8 @@ export default {
 <style lang="scss" scoped>
 .container {
   text-align: center;
+  //background-color: black;
+  height: 100vh;
 }
 
 .red {
@@ -209,11 +247,5 @@ export default {
 
 .green {
   background: #51d419;
-}
-
-.img-responsive {
-  max-width: 400px;
-  width: 100%;
-  height: auto;
 }
 </style>

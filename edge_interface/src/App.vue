@@ -23,9 +23,9 @@
       </v-container>
     </v-main>
 
-    <v-footer app>
-      <span>&copy; 2023</span>
-    </v-footer>
+    <!--    <v-footer app>-->
+    <!--      <span>&copy; 2023</span>-->
+    <!--    </v-footer>-->
   </v-app>
 </template>
 

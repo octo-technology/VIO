@@ -47,18 +47,13 @@
             @load="on_image_loaded"
           />
         </div>
-        <div v-for="(inference, model_id) in object.inferences" :key="model_id">
-          <h4>{{ model_id }}</h4>
-          <div v-if="inference !== 'NO_DECISION'">
-            <div v-for="(result, object_id) in inference" :key="object_id">
-              <span>{{ object_id }}</span>
-              <div v-for="(value, key) in result" :key="key">
-                <span>{{ key }}: {{ value }}</span>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
+    </div>
+
+    <div v-if="doneStatus" class="no_configuration">
+      <v-alert color="green" dismissible elevation="10" type="success"
+        >{{ this.doneStatus }}
+      </v-alert>
     </div>
   </div>
 </template>
@@ -75,11 +70,6 @@ export default {
   components: { Box },
   props: ['errorMessage', 'image'],
   data: () => ({
-    predictedItem: {},
-    itemId: null,
-    statusList: null,
-    state: undefined,
-    decision: undefined,
     imgLoaded: false,
     height: null,
     width: null,
