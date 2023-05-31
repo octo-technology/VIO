@@ -6,7 +6,8 @@ Vue.use(VueRouter);
 const routes = [
   {
     path: "/",
-    redirect: "/item-list"
+    name: "Home Camera",
+    component: () => import("../views/UploadView.vue")
   },
   {
     path: "/item-show/:id",
