@@ -11,9 +11,9 @@ metadata:
 spec:
   ports:
   - name: http
-    port: 8080
+    port: 8501
     protocol: TCP
-    targetPort: 8080
+    targetPort: 8501
   selector:
     app.kubernetes.io/component: inference
     app.kubernetes.io/instance: vio

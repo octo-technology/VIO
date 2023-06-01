@@ -5,7 +5,7 @@
       name: minikube
       state: present
 
-  - shell: minikube start --driver=docker
+  - shell: minikube start --driver=docker --extra-config=apiserver.service-node-port-range=32760-32767 --ports=127.0.0.1:32760-32767:32760-32767
 
   - kubernetes.core.k8s:
       name: vio
@@ -17,3 +17,5 @@
      kind: Pod
      namespace: vio
     register: pod_list
+
+  - shell: kubectl config set-context --current --namespace=vio

@@ -1,26 +1,6 @@
 - name: "Deploy VIO on edge"
   hosts: localhost
   tasks:
-  - shell:
-      kubectl create secret generic service-account-credentials \
-      --namespace=vio \
-      --from-file=key.json="{{ EDGE_ORCHESTRATOR_SA }}"
-
-  - shell:
-      kubectl create secret docker-registry artifact-registry \
-      --namespace=vio \
-      --docker-server=https://europe-west1-docker.pkg.dev \
-      --docker-email=tf-service-account@acn-gcp-octo-sas.iam.gserviceaccount.com \
-      --docker-username=_json_key \
-      --docker-password="$(cat "{{ REGISTERY_SA }}")"
-
-  - shell:
-      kubectl create secret docker-registry github-registry \
-      --namespace=vio \
-      --docker-server=ghcr.io \
-      --docker-username="{{ GITHUB_USERNAME }}" \
-      --docker-password="{{ GITHUB_TOKEN }}"
-
   - name: Create kubernetes resources for lookup output
     k8s:
       definition: "{{ lookup('kubernetes.core.kustomize', dir='../gcp') }}"
