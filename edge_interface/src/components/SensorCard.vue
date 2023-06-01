@@ -2,31 +2,33 @@
   <v-card tile>
     <v-card-title class="img-title mb-0 pb-0">
       <img ref="card_image" :src="urlBinary" width="100%" @load="on_image_loaded" />
-      <canvas ref="card_canvas" v-bind:class="{ loaded: isImageLoaded }"> </canvas>
+      <canvas ref="card_canvas" :class="{ loaded: isImageLoaded }" />
     </v-card-title>
 
     <v-list-item>
       <v-list-item-content>
-        <v-list-item-title class="headline mb-1">{{ sensor_id }}</v-list-item-title>
+        <v-list-item-title class="headline mb-1">
+          {{ sensor_id }}
+        </v-list-item-title>
       </v-list-item-content>
 
       <div v-show="has_decision">
-        <v-list-item-avatar tile size="40" :color="getDecisionState === 'OK' ? 'green' : 'red'" class="mr-0"
-          >{{ getDecisionState }}
+        <v-list-item-avatar tile size="40" :color="getDecisionState === 'OK' ? 'green' : 'red'" class="mr-0">
+          {{ getDecisionState }}
         </v-list-item-avatar>
       </div>
     </v-list-item>
 
     <div v-show="has_decision">
-      <v-alert tile type="error" text v-for="(errors, index) in getErrors" :key="index" border="right" colored-border>
+      <v-alert v-for="(errors, index) in getErrors" :key="index" tile type="error" text border="right" colored-border>
         {{ errors }}
       </v-alert>
     </div>
     <v-card-actions>
-      <v-btn @click="zoom_on_card" text>
+      <v-btn text @click="zoom_on_card">
         Zoom
       </v-btn>
-      <v-spacer></v-spacer>
+      <v-spacer />
       <v-btn icon @click="show = !show">
         <v-icon>{{ show ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
       </v-btn>
@@ -34,7 +36,7 @@
 
     <v-expand-transition>
       <div v-show="show">
-        <v-divider></v-divider>
+        <v-divider />
         <v-card-text class="text--primary">
           <ul>
             <li>Decision: {{ getDecision }}</li>
@@ -54,13 +56,7 @@
 import { getUrlBinary } from '@/services/methods'
 
 export default {
-  name: 'sensorcard',
-  data() {
-    return {
-      isImageLoaded: false,
-      show: false
-    }
-  },
+  name: 'Sensorcard',
 
   props: {
     item: {
@@ -70,6 +66,12 @@ export default {
     sensor_id: {
       type: String,
       required: true
+    }
+  },
+  data() {
+    return {
+      isImageLoaded: false,
+      show: false
     }
   },
 
@@ -129,13 +131,10 @@ export default {
 
       const inferences = this.getInference
       if (inferences === 'Fail to get inferences') return
-      for (const [model_name, inference] of Object.entries(inferences)) {
-        console.log(model_name, inference)
-        if (inference.model.category == 'object_detection') {
-          console.log('object detection !!')
+      for (const [model_name, inference] of Object.entries(inferences)) { // eslint-disable-line
+        if (inference.model.category === 'object_detection') {
           context.beginPath()
-          for (const [object_id, properties] of Object.entries(inference.output)) {
-            console.debug(object_id)
+          for (const [_, properties] of Object.entries(inference.output)) { // eslint-disable-line
             const { location } = properties
             const x = location[0] * width
             const y = location[1] * height
@@ -150,7 +149,7 @@ export default {
     },
 
     zoom_on_card(/* event */) {
-      alert('Not Implemented')
+      alert('Not Implemented') // eslint-disable-line
     }
   }
 }

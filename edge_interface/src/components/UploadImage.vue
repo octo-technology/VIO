@@ -1,5 +1,7 @@
 <template>
-  <v-btn color="error" class="mr-4" @click="upload">Upload</v-btn>
+  <v-btn color="error" class="mr-4" @click="upload">
+    Upload
+  </v-btn>
 </template>
 <script>
 import UploadService from '@/services/UploadCameraService'
@@ -16,10 +18,7 @@ export default {
         })
         .catch(reason => {
           if (reason.response.status === 403) {
-            console.log(reason.response.data)
             this.$emit('update-error-message', reason.response.data.message)
-          } else {
-            console.log(reason.response.data)
           }
         })
     }

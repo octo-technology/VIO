@@ -25,18 +25,18 @@
 </template>
 
 <script>
-import VideoCapture from '@/components/VideoCapture'
+import VideoCapture from '@/components/VideoCapture.vue'
 import { mapGetters } from 'vuex'
 
 export default {
   name: 'VUploadView',
+  components: {
+    VideoCapture
+  },
   data: () => ({
     deviceId: null,
     devices: []
   }),
-  components: {
-    VideoCapture
-  },
 
   computed: {
     device() {

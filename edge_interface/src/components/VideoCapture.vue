@@ -88,7 +88,7 @@ export default {
         }
 
         // Otherwise, wrap the call to the old navigator.getUserMedia with a Promise
-        return new Promise(function(resolve, reject) {
+        return new Promise(function callUserMedia(resolve, reject) {
           getUserMedia.call(navigator, constraints, resolve, reject)
         })
       }

@@ -1,7 +1,8 @@
+/* eslint-disable no-shadow */
 import Vue from 'vue'
 import Vuex from 'vuex'
 import createPersistedState from 'vuex-persistedstate'
-import ItemsService from '@/services/ItemsService'
+import ItemsService from '@/services/ItemsService.js'
 
 Vue.use(Vuex)
 
@@ -11,18 +12,8 @@ export const state = {
 }
 
 export const mutations = {
-  SET_ITEMS(state, list_items) {
-<<<<<<< HEAD
-    // Sort list from more recent to oldest
-    list_items.sort((recent, old) => {
-      let date_recent = new Date(recent.received_time),
-        date_old = new Date(old.received_time);
-      return date_old - date_recent;
-    });
-    state.listItems = list_items;
-=======
-    state.listItems = list_items
->>>>>>> feat: Add linter rules, Add new ui for hosting page
+  SET_ITEMS(state, listItems) {
+    state.listItems = listItems
   },
   SET_IMAGE_PATH(state, imagePath) {
     state.imagePath = imagePath
@@ -31,7 +22,7 @@ export const mutations = {
 
 export const actions = {
   async load_items({ commit }) {
-    ItemsService.get_items()
+    ItemsService.getItems()
       .then(r => r.data)
       .then(items => {
         commit('SET_ITEMS', items)

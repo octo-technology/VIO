@@ -1,4 +1,4 @@
-import ConfigApiService from './configApi.service'
+import ConfigApiService from './configApi.service.js'
 
 window.env = window.env || {}
 
@@ -6,4 +6,4 @@ const configApiHost = window.env.CONFIG_API_HOST ? window.env.CONFIG_API_HOST : 
 
 const configApiService = new ConfigApiService({ configApiHost })
 
-export { configApiService }
+export default { configApiService }

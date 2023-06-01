@@ -1,4 +1,4 @@
-import Api from '@/services/api'
+import Api from '@/services/api.js'
 
 const b64toBlob = (b64Data, contentType = '', sliceSize = 512) => {
   const byteCharacters = atob(b64Data)
@@ -8,7 +8,7 @@ const b64toBlob = (b64Data, contentType = '', sliceSize = 512) => {
     const slice = byteCharacters.slice(offset, offset + sliceSize)
 
     const byteNumbers = new Array(slice.length)
-    for (let i = 0; i < slice.length; i++) {
+    for (let i = 0; i < slice.length; i++) { // eslint-disable-line
       byteNumbers[i] = slice.charCodeAt(i)
     }
 
@@ -35,7 +35,7 @@ class UploadCameraService {
     })
   }
 
-  inference(image) {
+  inference(image) { // eslint-disable-line
     const splitComma = image.split(',')
     const base64 = splitComma[1]
     const contentType = splitComma[0].split(':')[1].split(';')[0]

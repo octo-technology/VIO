@@ -1,7 +1,9 @@
 <template>
   <div class="container">
-    <h1 class="title">Acquisition history</h1>
-    <v-data-table :headers="columns" :items="listItems" :items-per-page="10" @click:row="goToDetails"> </v-data-table>
+    <h1 class="title">
+      Acquisition history
+    </h1>
+    <v-data-table :headers="columns" :items="listItems" :items-per-page="10" @click:row="goToDetails" />
   </div>
 </template>
 
@@ -9,7 +11,7 @@
 import { mapState } from 'vuex'
 
 export default {
-  name: 'item-list',
+  name: 'ItemList',
 
   data() {
     return {

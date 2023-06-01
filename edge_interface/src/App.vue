@@ -66,14 +66,14 @@
     </v-navigation-drawer>
 
     <v-app-bar app clipped-left>
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+      <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <v-toolbar-title>VIO UI</v-toolbar-title>
     </v-app-bar>
 
     <v-main>
       <v-container fluid>
         <v-row align="start">
-          <router-view></router-view>
+          <router-view />
         </v-row>
       </v-container>
     </v-main>

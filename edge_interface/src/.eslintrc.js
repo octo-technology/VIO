@@ -7,7 +7,10 @@ module.exports = {
   extends: ['plugin:vue/essential', '@vue/standard', '@vue/airbnb', 'plugin:prettier/recommended'],
   rules: {
     'import/no-extraneous-dependencies': 'off',
-    'import/extensions': ['error', 'ignorePackages', { vue: 'always' }],
+    'no-shadow': 'off',
+    'class-methods-use-this': 'off',
+    'no-plusplus': 'off',
+    'import/extensions': 'off',
     'prettier/prettier': [
       'error',
       {

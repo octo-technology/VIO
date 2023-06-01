@@ -3,7 +3,9 @@
     <v-row>
       <div class="col-md-6">
         <div>
-          <h2 v-if="isStart">Current Camera</h2>
+          <h2 v-if="isStart">
+            Current Camera
+          </h2>
           <div class="border">
             <video-capture
               ref="webcam"
@@ -21,22 +23,23 @@
         <div class="row">
           <div v-if="isStart" class="col-md-12">
             <v-select
-              v-model="camera"
               v-if="devices.length > 2"
+              v-model="camera"
               :items="devices"
               item-text="label"
               item-value="deviceId"
               label="Camera"
               required
-            >
-            </v-select>
+            />
 
             <code v-if="device">{{ device.label }}</code>
           </div>
 
           <div class="col-md-12">
             <v-btn v-if="devices.length == 2" color="blue-grey" class="mr-4 white--text" @click="onSwitchCamera">
-              <v-icon dark>mdi-swap-vertical</v-icon>
+              <v-icon dark>
+                mdi-swap-vertical
+              </v-icon>
             </v-btn>
             <v-btn v-if="isStart" color="error" class="mr-4" @click="onCapture">
               Capture Photo
@@ -59,18 +62,22 @@
         <div class="row">
           <div class="col-md-12">
             <UploadImage
-              :errorMessage="errorMessage"
-              :doneStatus="doneStatus"
+              :error-message="errorMessage"
+              :done-status="doneStatus"
               :image="this.img"
               @update-error-message="updateErrorMessage"
               @update-done-status="updatedoneStatus"
             />
-            <Inference :errorMessage="errorMessage" :image="this.img" @update-error-message="updateErrorMessage" />
+            <Inference :error-message="errorMessage" :image="this.img" @update-error-message="updateErrorMessage" />
             <div v-if="errorMessage !== null" class="no_configuration">
-              <v-alert color="red" dismissible elevation="10" type="warning">{{ this.errorMessage }} </v-alert>
+              <v-alert color="red" dismissible elevation="10" type="warning">
+                {{ this.errorMessage }}
+              </v-alert>
             </div>
             <div v-if="doneStatus !== null" class="no_configuration">
-              <v-alert color="green" dismissible elevation="10" type="success">{{ this.doneStatus }} </v-alert>
+              <v-alert color="green" dismissible elevation="10" type="success">
+                {{ this.doneStatus }}
+              </v-alert>
             </div>
           </div>
         </div>
@@ -80,12 +87,17 @@
 </template>
 
 <script>
-import VideoCapture from '@/components/VideoCapture'
-import Inference from '@/components/Inference'
-import UploadImage from '@/components/UploadImage'
-
+import VideoCapture from '@/components/VideoCapture.vue'
+import Inference from '@/components/Inference.vue'
+import UploadImage from '@/components/UploadImage.vue'
+/* eslint-disable no-console */
 export default {
   name: 'UploadView',
+  components: {
+    UploadImage,
+    VideoCapture,
+    Inference
+  },
   data: () => ({
     img: null,
     camera: null,
@@ -95,11 +107,6 @@ export default {
     devices: [],
     isStart: true
   }),
-  components: {
-    UploadImage,
-    VideoCapture,
-    Inference
-  },
 
   computed: {
     device() {
@@ -145,7 +152,7 @@ export default {
       this.$refs.webcam.start()
     },
     checkDeviceId(device) {
-      return device.deviceId == this.deviceId
+      return device.deviceId === this.deviceId
     },
     onSwitchCamera() {
       const newIndex = 1 - this.devices.findIndex(this.checkDeviceId)

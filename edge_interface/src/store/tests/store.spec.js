@@ -1,4 +1,4 @@
-import { mutations, getters } from '@/store'
+import { mutations, getters } from '@/store' // eslint-disable-line
 
 describe('mutations', () => {
   describe('SET_IMAGE_PATH', () => {
