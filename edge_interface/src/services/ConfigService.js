@@ -12,7 +12,7 @@ class ConfigService {
   }
 
   async setActiveConfig(configName) {
-    const body = { configName }
+    const body = { config_name: configName }
     const activeConfig = await Api().post('/configs/active', body)
     return activeConfig
   }

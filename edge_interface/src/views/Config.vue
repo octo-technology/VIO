@@ -110,13 +110,15 @@ export default {
   },
   methods: {
     changeConfiguration(itemCategory) {
+      console.log('HEYYYY')
+      console.log(itemCategory)
       ConfigService.setActiveConfig(itemCategory)
         .then(async response => {
           this.message = `Config ${JSON.parse(response.config.data).config_name} set`
           this.color = 'green'
         })
         .catch(reason => {
-          console.log(reason.response.data) // eslint-disable-line
+          console.log(reason) // eslint-disable-line
           if (reason.response.status === 403) {
             this.message = reason.response.data.message
             this.color = 'red'

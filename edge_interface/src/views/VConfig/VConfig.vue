@@ -112,6 +112,9 @@ export default {
   },
   methods: {
     changeConfiguration(itemCategory) {
+      console.log("HEEEEEYYYYY")
+      console.log("HEEEEEYYYYY")
+      console.log(itemCategory)
       configApiService
         .setActiveConfig(itemCategory)
         .then(async response => {

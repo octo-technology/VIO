@@ -4,6 +4,14 @@
       Acquisition history
     </h1>
     <v-data-table :headers="columns" :items="listItems" :items-per-page="10" @click:row="goToDetails" />
+    <div>
+      <v-btn color="blue-grey" class="ma-2 white--text" to="/upload-camera">
+        New acquisition with Camera
+      </v-btn>
+      <v-btn color="blue-grey" class="ma-2 white--text" to="/trigger">
+        New acquisition Without Camera
+      </v-btn>
+    </div>
   </div>
 </template>
 
