@@ -21,10 +21,7 @@
         <h3>{{ object.camera_id }}</h3>
         <div>
           <img class="img-responsive" :src="object.image_url" />
-          <div
-            v-for="(inference, model_id) in object.inferences"
-            :key="model_id"
-          >
+          <div v-for="(inference, model_id) in object.inferences" :key="model_id">
             <div v-for="(result, object_id) in inference" :key="object_id">
               <div v-if="'location' in result">
                 <Box
@@ -52,16 +49,16 @@
 </template>
 
 <script>
-import Box from "@/views/Box";
-import ItemsService from "@/services/ItemsService";
-import TriggerCaptureService from "@/services/TriggerCaptureService";
-import { baseURL } from "@/services/api";
-import UploadService from "@/services/UploadCameraService";
+import Box from '@/views/Box'
+import ItemsService from '@/services/ItemsService'
+import TriggerCaptureService from '@/services/TriggerCaptureService'
+import { baseURL } from '@/services/api'
+import UploadService from '@/services/UploadCameraService'
 
 export default {
-  name: "inference",
+  name: 'inference',
   components: { Box },
-  props: ["errorMessage", "image"],
+  props: ['errorMessage', 'image'],
   data: () => ({
     predictedItem: {},
     itemId: null,
@@ -72,74 +69,72 @@ export default {
   methods: {
     getColor(status) {
       if (this.statusList[status] > this.statusList[this.state]) {
-        return "red";
-      } else {
-        return "green";
+        return 'red'
       }
+      return 'green'
     },
     async waitForStateDone() {
-      const maxAttempts = 20;
-      let attempts = 0;
+      const maxAttempts = 20
+      let attempts = 0
       this.statusList = {
         Capture: 0,
-        "Save Binaries": 1,
+        'Save Binaries': 1,
         Inference: 2,
         Decision: 3,
         Done: 4
-      };
+      }
       const executePoll = async (resolve, reject) => {
-        const result = await ItemsService.get_item_state_by_id(this.itemId);
-        this.state = result.data;
-        attempts++;
+        const result = await ItemsService.get_item_state_by_id(this.itemId)
+        this.state = result.data
+        attempts++
 
-        if (this.state === "Done") {
-          return resolve(result);
-        } else if (attempts === maxAttempts) {
-          return reject(new Error("L'inférence n'a pas pu être réalisée"));
-        } else {
-          setTimeout(executePoll, 800, resolve, reject);
+        if (this.state === 'Done') {
+          return resolve(result)
         }
-      };
+        if (attempts === maxAttempts) {
+          return reject(new Error("L'inférence n'a pas pu être réalisée"))
+        }
+        setTimeout(executePoll, 800, resolve, reject)
+      }
 
-      return new Promise(executePoll);
+      return new Promise(executePoll)
     },
     async trigger() {
-      this.predictedItem = [];
-      if (this.image != undefined)
-        var trigger = UploadService.inference(this.image);
-      else trigger = TriggerCaptureService.trigger();
+      this.predictedItem = []
+      if (this.image != undefined) var trigger = UploadService.inference(this.image)
+      else trigger = TriggerCaptureService.trigger()
 
       trigger
         .then(async response => {
-          this.itemId = response.data["item_id"];
-          this.$emit("update-error-message", null);
+          this.itemId = response.data.item_id
+          this.$emit('update-error-message', null)
 
-          await this.waitForStateDone();
-          const itemResponse = await ItemsService.get_item_by_id(this.itemId);
-          const item = itemResponse.data;
-          this.decision = item["decision"];
-          const inferences = item["inferences"];
+          await this.waitForStateDone()
+          const itemResponse = await ItemsService.get_item_by_id(this.itemId)
+          const item = itemResponse.data
+          this.decision = item.decision
+          const { inferences } = item
           Object.keys(inferences).forEach(camera_id => {
             this.predictedItem.push({
-              camera_id: camera_id,
+              camera_id,
               inferences: inferences[camera_id],
               image_url: `${baseURL}/items/${this.itemId}/binaries/${camera_id}`
-            });
-          });
+            })
+          })
         })
         .catch(reason => {
           if (reason.response.status === 403) {
-            console.log(reason.response.data);
-            this.$emit("update-error-message", reason.response.data["message"]);
+            console.log(reason.response.data)
+            this.$emit('update-error-message', reason.response.data.message)
 
-            this.itemId = null;
+            this.itemId = null
           } else {
-            console.log(reason.response.data);
+            console.log(reason.response.data)
           }
-        });
+        })
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>
@@ -185,7 +180,7 @@ ol {
 }
 
 .line {
-  content: "";
+  content: '';
   position: absolute;
   top: 50%;
   left: calc(100% + 1px);

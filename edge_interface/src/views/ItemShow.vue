@@ -68,13 +68,11 @@ export default {
   beforeMount: function() {
     this.$store.dispatch("load_items");
   },
-  async mounted() {
-    const camera_ids = Object.keys(this.item.cameras);
-    camera_ids.forEach(async (camera_id) => {
-       const result = await ItemsService.getItemBinaryForCameraById(this.id, camera_id);
-       this.imgs.push(this.arrayBufferToBase64(result.data));
-    })
-  },
+  // async mounted() {
+  //   const camera_id_list = this.item.cameras.keys;
+  //   const binarries = await ItemsService.getItemBinaryForCameraById(this.id, camera_id_list[0]);
+  //   this.img = this.arrayBufferToBase64(binarries.data);
+  // },
   computed: {
     loadItem() {
       return this.changeItem();

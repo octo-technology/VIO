@@ -1,4 +1,5 @@
 import { mutations, getters } from '@/store'
+
 describe('mutations', () => {
   describe('SET_IMAGE_PATH', () => {
     it('should set the imagePath store prop to an_image', () => {
@@ -18,7 +19,7 @@ describe('getters', () => {
     it('should return an_image', () => {
       // Given
       const imagePath = 'an_image'
-      const state = { imagePath: imagePath }
+      const state = { imagePath }
       // When
       const result = getters.imagePath(state)
       // Then
@@ -26,4 +27,3 @@ describe('getters', () => {
     })
   })
 })
-

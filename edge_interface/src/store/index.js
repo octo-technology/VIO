@@ -1,9 +1,9 @@
-import Vue from "vue";
-import Vuex from "vuex";
-import createPersistedState from "vuex-persistedstate";
+import Vue from 'vue'
+import Vuex from 'vuex'
+import createPersistedState from 'vuex-persistedstate'
+import ItemsService from '@/services/ItemsService'
 
-Vue.use(Vuex);
-import ItemsService from "@/services/ItemsService";
+Vue.use(Vuex)
 
 export const state = {
   listItems: [],
@@ -12,6 +12,7 @@ export const state = {
 
 export const mutations = {
   SET_ITEMS(state, list_items) {
+<<<<<<< HEAD
     // Sort list from more recent to oldest
     list_items.sort((recent, old) => {
       let date_recent = new Date(recent.received_time),
@@ -19,30 +20,33 @@ export const mutations = {
       return date_old - date_recent;
     });
     state.listItems = list_items;
+=======
+    state.listItems = list_items
+>>>>>>> feat: Add linter rules, Add new ui for hosting page
   },
   SET_IMAGE_PATH(state, imagePath) {
     state.imagePath = imagePath
   }
-};
+}
 
 export const actions = {
   async load_items({ commit }) {
     ItemsService.get_items()
       .then(r => r.data)
       .then(items => {
-        commit("SET_ITEMS", items);
-      });
+        commit('SET_ITEMS', items)
+      })
   }
-};
+}
 
 export const getters = {
   getItemById: state => id => {
-    return state.listItems.find(item => item.id === id);
+    return state.listItems.find(item => item.id === id)
   },
   imagePath(state) {
     return state.imagePath
   }
-};
+}
 
 export default new Vuex.Store({
   state,
@@ -50,4 +54,4 @@ export default new Vuex.Store({
   actions,
   mutations,
   getters
-});
+})

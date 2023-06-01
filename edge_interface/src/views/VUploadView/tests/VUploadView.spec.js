@@ -1,22 +1,22 @@
 import { shallowMount } from '@vue/test-utils'
 import Vuex from 'vuex'
 import Vue from 'vue'
-import Vuetify from "vuetify";
+import Vuetify from 'vuetify'
 import VUploadView from '../VUploadView.vue'
 
 Vue.use(Vuex)
-Vue.use(Vuetify);
+Vue.use(Vuetify)
 
 let wrapper
 describe('VUploadView.vue', () => {
   beforeEach(() => {
     wrapper = shallowMount(VUploadView, {
       mocks: {
-      $store: new Vuex.Store({
-        getters: {
-          imagePath: () => null,
-        }
-      }),
+        $store: new Vuex.Store({
+          getters: {
+            imagePath: () => null
+          }
+        })
       }
     })
   })
@@ -29,7 +29,7 @@ describe('VUploadView.vue', () => {
   describe('#methods', () => {
     it('#getCameraDevices', () => {
       // GIVEN
-      const devicesUpdate = ["device1"]
+      const devicesUpdate = ['device1']
 
       // WHEN
       wrapper.vm.getCameraDevices(devicesUpdate)
@@ -39,7 +39,7 @@ describe('VUploadView.vue', () => {
     })
     it('#onCameraDeviceChange', () => {
       // GIVEN
-      const deviceIdUpdate = "device1"
+      const deviceIdUpdate = 'device1'
 
       // WHEN
       wrapper.vm.onCameraDeviceChange(deviceIdUpdate)
@@ -50,17 +50,17 @@ describe('VUploadView.vue', () => {
     describe('#onCaptureImage', () => {
       it('should update imagePath in store when imagePath is null', () => {
         // GIVEN
-        let setImagePathStub = jest.fn()
+        const setImagePathStub = jest.fn()
         wrapper = shallowMount(VUploadView, {
           mocks: {
-          $store: new Vuex.Store({
-            getters: {
-              imagePath: () => null,
-            },
-            mutations: {
-              'SET_IMAGE_PATH': setImagePathStub
-            }
-          }),
+            $store: new Vuex.Store({
+              getters: {
+                imagePath: () => null
+              },
+              mutations: {
+                SET_IMAGE_PATH: setImagePathStub
+              }
+            })
           },
           methods: { captureImage: () => 'an_image' }
         })
@@ -74,17 +74,17 @@ describe('VUploadView.vue', () => {
       })
       it('should reset imagePath to null in store when imagePath is not null', () => {
         // GIVEN
-        let setImagePathStub = jest.fn()
+        const setImagePathStub = jest.fn()
         wrapper = shallowMount(VUploadView, {
           mocks: {
-          $store: new Vuex.Store({
-            getters: {
-              imagePath: () => 'an_image_there',
-            },
-            mutations: {
-              'SET_IMAGE_PATH': setImagePathStub
-            }
-          }),
+            $store: new Vuex.Store({
+              getters: {
+                imagePath: () => 'an_image_there'
+              },
+              mutations: {
+                SET_IMAGE_PATH: setImagePathStub
+              }
+            })
           },
           methods: { captureImage: () => 'an_image' }
         })
@@ -98,13 +98,13 @@ describe('VUploadView.vue', () => {
       })
     })
   })
-  describe("#computed", () => {
+  describe('#computed', () => {
     it('#device', () => {
       // GIVEN
-      let devices = [{ deviceId: "bapo"}, { devideId: "totocto" }]
-      let deviceId = "bapo"
-      wrapper.setData({ devices: devices, deviceId: deviceId })
-      let expectedDevice = { deviceId: "bapo" }
+      const devices = [{ deviceId: 'bapo' }, { devideId: 'totocto' }]
+      const deviceId = 'bapo'
+      wrapper.setData({ devices, deviceId })
+      const expectedDevice = { deviceId: 'bapo' }
 
       // THEN
       expect(wrapper.vm.device).toEqual(expectedDevice)
@@ -116,12 +116,13 @@ describe('VUploadView.vue', () => {
       it('#isAnyImageCaptured should return True when imagePath is not null', () => {
         wrapper = shallowMount(VUploadView, {
           mocks: {
-          $store: new Vuex.Store({
-            getters: {
-              imagePath: () => 'an_image',
-            }
-          })
-        }})
+            $store: new Vuex.Store({
+              getters: {
+                imagePath: () => 'an_image'
+              }
+            })
+          }
+        })
         expect(wrapper.vm.isAnyImageCaptured).toBeTrue()
       })
     })

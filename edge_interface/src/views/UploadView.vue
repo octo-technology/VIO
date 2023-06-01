@@ -35,12 +35,7 @@
           </div>
 
           <div class="col-md-12">
-            <v-btn
-              v-if="devices.length == 2"
-              color="blue-grey"
-              class="mr-4 white--text"
-              @click="onSwitchCamera"
-            >
+            <v-btn v-if="devices.length == 2" color="blue-grey" class="mr-4 white--text" @click="onSwitchCamera">
               <v-icon dark>mdi-swap-vertical</v-icon>
             </v-btn>
             <v-btn v-if="isStart" color="error" class="mr-4" @click="onCapture">
@@ -70,20 +65,12 @@
               @update-error-message="updateErrorMessage"
               @update-done-status="updatedoneStatus"
             />
-            <Inference
-              :errorMessage="errorMessage"
-              :image="this.img"
-              @update-error-message="updateErrorMessage"
-            />
+            <Inference :errorMessage="errorMessage" :image="this.img" @update-error-message="updateErrorMessage" />
             <div v-if="errorMessage !== null" class="no_configuration">
-              <v-alert color="red" dismissible elevation="10" type="warning"
-                >{{ this.errorMessage }}
-              </v-alert>
+              <v-alert color="red" dismissible elevation="10" type="warning">{{ this.errorMessage }} </v-alert>
             </div>
             <div v-if="doneStatus !== null" class="no_configuration">
-              <v-alert color="green" dismissible elevation="10" type="success"
-                >{{ this.doneStatus }}
-              </v-alert>
+              <v-alert color="green" dismissible elevation="10" type="success">{{ this.doneStatus }} </v-alert>
             </div>
           </div>
         </div>
@@ -93,12 +80,12 @@
 </template>
 
 <script>
-import VideoCapture from "@/components/VideoCapture";
-import Inference from "@/components/Inference";
-import UploadImage from "@/components/UploadImage";
+import VideoCapture from '@/components/VideoCapture'
+import Inference from '@/components/Inference'
+import UploadImage from '@/components/UploadImage'
 
 export default {
-  name: "UploadView",
+  name: 'UploadView',
   data: () => ({
     img: null,
     camera: null,
@@ -115,78 +102,78 @@ export default {
   },
 
   computed: {
-    device: function() {
-      return this.devices.find(n => n.deviceId === this.deviceId);
+    device() {
+      return this.devices.find(n => n.deviceId === this.deviceId)
     }
   },
   watch: {
-    camera: function(id) {
-      this.deviceId = id;
+    camera(id) {
+      this.deviceId = id
     },
-    devices: function() {
+    devices() {
       // Once we have a list select the first one
-      const first = this.devices[0];
+      const first = this.devices[0]
       if (first) {
-        this.camera = first.deviceId;
-        this.deviceId = first.deviceId;
+        this.camera = first.deviceId
+        this.deviceId = first.deviceId
       }
     },
-    doneStatus: function(newVal) {
+    doneStatus(newVal) {
       if (newVal) {
         setTimeout(() => {
-          this.doneStatus = null;
-        }, 5000);
+          this.doneStatus = null
+        }, 5000)
       }
     }
   },
   methods: {
     onCapture() {
-      this.img = this.$refs.webcam.capture();
+      this.img = this.$refs.webcam.capture()
     },
     onStarted(stream) {
-      console.log("On Started Event", stream);
+      console.log('On Started Event', stream)
     },
     onStopped(stream) {
-      console.log("On Stopped Event", stream);
+      console.log('On Stopped Event', stream)
     },
     onStop() {
-      this.isStart = false;
-      this.$refs.webcam.stop();
+      this.isStart = false
+      this.$refs.webcam.stop()
     },
     onStart() {
-      this.isStart = true;
-      this.$refs.webcam.start();
+      this.isStart = true
+      this.$refs.webcam.start()
     },
     checkDeviceId(device) {
-      return device.deviceId == this.deviceId;
+      return device.deviceId == this.deviceId
     },
     onSwitchCamera() {
-      const newIndex = 1 - this.devices.findIndex(this.checkDeviceId);
-      const newDeviceId = this.devices[newIndex].deviceId;
-      this.deviceId = newDeviceId;
-      this.camera = newDeviceId;
-      console.log("On Camera Change Event", this.deviceId);
+      const newIndex = 1 - this.devices.findIndex(this.checkDeviceId)
+      const newDeviceId = this.devices[newIndex].deviceId
+      this.deviceId = newDeviceId
+      this.camera = newDeviceId
+      console.log('On Camera Change Event', this.deviceId)
     },
     onError(error) {
-      console.log("On Error Event", error);
+      console.log('On Error Event', error)
     },
     onCameras(cameras) {
-      this.devices = cameras;
-      console.log("On Cameras Event", cameras);
+      this.devices = cameras
+      console.log('On Cameras Event', cameras)
     },
     onCameraChange(deviceId) {
-      this.deviceId = deviceId;
-      this.camera = deviceId;
-      console.log("On Camera Change Event", deviceId);
+      this.deviceId = deviceId
+      this.camera = deviceId
+      console.log('On Camera Change Event', deviceId)
     },
     updateErrorMessage(errorMessage) {
-      this.errorMessage = errorMessage;
+      this.errorMessage = errorMessage
     },
     updatedoneStatus(doneStatus) {
-      this.doneStatus = doneStatus;
+      this.doneStatus = doneStatus
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

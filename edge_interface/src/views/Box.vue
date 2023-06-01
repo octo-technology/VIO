@@ -12,9 +12,9 @@
 
 <script>
 export default {
-  name: "box",
-  props: ["x-min", "y-min", "x-max", "y-max"]
-};
+  name: 'box',
+  props: ['x-min', 'y-min', 'x-max', 'y-max']
+}
 </script>
 
 <style lang="scss" scoped>

@@ -10,12 +10,12 @@
 </template>
 
 <script>
-import UploadFiles from "@/components/UploadFiles";
+import UploadFiles from '@/components/UploadFiles'
 
 export default {
-  name: "item-upload",
+  name: 'item-upload',
   components: {
     UploadFiles
   }
-};
+}
 </script>
