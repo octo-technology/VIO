@@ -36,24 +36,23 @@ spec:
           value: tf-vio-bucket
         - name: ACTIVE_CONFIG_NAME
           value: yolo_with_upload_camera
-#          image: ghcr.io/octo-technology/vio/edge_orchestrator:latest
         image: europe-west1-docker.pkg.dev/acn-gcp-octo-sas/tf-vio-artifacts/edge_orchestrator:1.4
         imagePullPolicy: IfNotPresent
         name: edge-orchestrator
         ports:
         - containerPort: 8000
-          name: http
+          name: portNumber
           protocol: TCP
         readinessProbe:
           httpGet:
-            port: http
+            port: portNumber
             path: /api/v1/
           initialDelaySeconds: 30
           periodSeconds: 30
           failureThreshold: 3
         livenessProbe:
           httpGet:
-            port: http
+            port: portNumber
             path: /api/v1/
           initialDelaySeconds: 30
           periodSeconds: 30
@@ -63,8 +62,6 @@ spec:
           mountPropagation: None
           name: service-account-credentials-volume
           readOnly: true
-#      imagePullSecrets:
-#        - name: artifact-registry
       restartPolicy: Always
       volumes:
       - name: service-account-credentials-volume

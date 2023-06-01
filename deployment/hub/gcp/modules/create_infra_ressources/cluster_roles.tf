@@ -21,22 +21,12 @@ resource "kubernetes_cluster_role_binding" "main" {
   }
   subject {
     kind      = "User"
-    name      = "gireg.roussel@octo.com"
+    name      = var.user_email_role_binding
     api_group = "rbac.authorization.k8s.io"
   }
   subject {
     kind      = "ServiceAccount"
-    name      = "default"
-    namespace = "kube-system"
-  }
-  subject {
-    kind      = "ServiceAccount"
     name      = var.service_account_name
-    namespace = var.namespace
-  }
-  subject {
-    kind      = "ServiceAccount"
-    name      = "github-actions"
     namespace = var.namespace
   }
 }

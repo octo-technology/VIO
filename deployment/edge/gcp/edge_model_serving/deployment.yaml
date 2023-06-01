@@ -30,22 +30,20 @@ spec:
         imagePullPolicy: IfNotPresent
         ports:
           - containerPort: 8080
-            name: http
+            name: portNumber
             protocol: TCP
         readinessProbe:
           httpGet:
-            port: http
+            port: portNumber
             path: /ping
           initialDelaySeconds: 30
           periodSeconds: 30
           failureThreshold: 3
         livenessProbe:
           httpGet:
-            port: http
+            port: portNumber
             path: /ping
           initialDelaySeconds: 30
           periodSeconds: 30
           failureThreshold: 3
-#      imagePullSecrets:
-#        - name: artifact-registry
       restartPolicy: Always

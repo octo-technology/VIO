@@ -26,27 +26,24 @@ spec:
     spec:
       containers:
       - name: edge-interface
-        #        image: ghcr.io/octo-technology/vio/edge_interface:latest
         image: europe-west1-docker.pkg.dev/acn-gcp-octo-sas/tf-vio-artifacts/edge_interface:0.1.2
         imagePullPolicy: IfNotPresent
         ports:
           - containerPort: 80
-            name: http
+            name: portNumber
             protocol: TCP
         readinessProbe:
           httpGet:
-            port: http
+            port: portNumber
             path: /
           initialDelaySeconds: 30
           periodSeconds: 30
           failureThreshold: 3
         livenessProbe:
           httpGet:
-            port: http
+            port: portNumber
             path: /
           initialDelaySeconds: 30
           periodSeconds: 30
           failureThreshold: 3
-      imagePullSecrets:
-        - name: artifact-registry
       restartPolicy: Always

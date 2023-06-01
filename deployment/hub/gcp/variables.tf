@@ -30,6 +30,11 @@ variable "vpc_subnetwork" {
   description = "default vpc subnetwork name"
 }
 
+variable "gke_node_pool_name" {
+  type = string
+  description = "GKE node pool name"
+}
+
 variable "gke_num_nodes" {
   default     = 1
   description = "number of gke nodes"
@@ -38,6 +43,11 @@ variable "gke_num_nodes" {
 variable "default_tags" {
   default     = []
   description = "default tags"
+}
+
+variable "user_email_role_binding" {
+  type        = string
+  description = "user email for role binding"
 }
 
 variable "namespace" {
@@ -53,4 +63,9 @@ variable "gcp_bucket_name" {
 variable "service_account_name" {
   type = string
   description = "service account name"
+}
+
+variable "static_ip" {
+  type = string
+  description = "Static ip name"
 }

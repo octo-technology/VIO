@@ -36,7 +36,7 @@ resource "google_container_cluster" "main" {
 
 # Separately Managed Node Pool
 resource "google_container_node_pool" "main" {
-  name       = "tf-node-pool-gke"
+  name       = var.gke_node_pool_name
   location   = var.zone
   cluster    = google_container_cluster.main.name
   node_count = var.gke_num_nodes
