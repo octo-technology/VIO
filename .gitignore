@@ -175,3 +175,8 @@ poetry.toml
 edge_orchestrator/data/storage/
 edge_orchestrator/reports
 edge_model_serving/models/torch
+
+edge_model_serving/models/tflite/barcode_control/
+edge_model_serving/models/tflite/screw_control/
+edge_orchestrator/data/barcode_dataset/
+edge_orchestrator/data/screw_dataset/
