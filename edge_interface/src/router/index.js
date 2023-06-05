@@ -6,7 +6,21 @@ Vue.use(VueRouter);
 const routes = [
   {
     path: "/",
-    name: "Home Camera",
+    redirect: () => ('/camera')
+  },
+  {
+    path: "/camera",
+    name: "Simple-Camera",
+    component: () => import("../views/SimpleCameraView.vue")
+  },
+  {
+    path: "/result/:itemId",
+    name: "Simple-Result",
+    component: () => import("../views/SimpleResultView.vue")
+  },
+  {
+    path: "/home",
+    name: "Home-Camera",
     component: () => import("../views/UploadView.vue")
   },
   {
@@ -21,6 +35,12 @@ const routes = [
     name: "Item-list",
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/ItemList.vue")
+  },
+  {
+    path: "/item-gallery",
+    name: "Item-gallery",
+    component: () =>
+      import(/* webpackChunkName: "about" */ "../views/ItemGallery.vue")
   },
   {
     path: "/upload-camera",
@@ -38,9 +58,14 @@ const routes = [
     component: () => import("../views/TriggerView.vue")
   },
   {
+    path: "/shopfloor",
+    name: "Shopfloor UI",
+    component: () => import("../views/Shopfloor.vue")
+  },
+  {
     path: "/config",
     name: "Config",
-    component: () => import("../views/Config.vue")
+    component: () => import("../views/Config2.vue")
   },
   {
     path: "/about",

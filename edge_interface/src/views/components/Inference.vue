@@ -42,7 +42,7 @@
 </template>
 
 <script>
-import Box from "@/views/Box";
+import Box from "./Box";
 
 export default {
   name: "inference",

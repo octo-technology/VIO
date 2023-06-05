@@ -5,15 +5,20 @@
       top: yMin + 'px',
       left: xMin + 'px',
       width: xMax - xMin + 'px',
-      height: yMax - yMin + 'px'
+      height: yMax - yMin + 'px',
     }"
   ></div>
 </template>
 
 <script>
 export default {
-  name: "box",
-  props: ["x-min", "y-min", "x-max", "y-max"]
+  name: "Box",
+  props: {
+    "x-min": Number,
+    "y-min": Number,
+    "x-max": Number,
+    "y-max": Number,
+  },
 };
 </script>
 

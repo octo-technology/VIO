@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import Inference from "@/components/Inference";
+import Inference from "@/views/components/Inference";
 
 export default {
   name: "item-trigger",
