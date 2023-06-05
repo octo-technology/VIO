@@ -125,3 +125,8 @@ json_data = [
               }
             ]
 ```
+
+
+VUE_APP_API_PROTOCOL=http
+VUE_APP_API_HOSTNAME=edge-orchestrator.vio.svc.cluster.local
+VUE_APP_API_PORT=8000

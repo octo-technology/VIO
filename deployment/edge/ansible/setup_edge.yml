@@ -1,21 +1,36 @@
-- name: "Install Minikube"
-  hosts: localhost
+- name: "Install repo"
+  hosts: edge_1
   tasks:
-  - community.general.homebrew:
-      name: minikube
-      state: present
+    - ansible.builtin.git:
+        repo: https://github.com/octo-technology/VIO.git
+        dest: ~/Desktop/vio
+        single_branch: yes
+        version: deploy_vio_on_edge
+        force: true
 
-  - shell: minikube start --driver=docker --extra-config=apiserver.service-node-port-range=32760-32767 --ports=127.0.0.1:32760-32767:32760-32767
+    - name: Copy config on the remote machine
+      ansible.builtin.copy:
+        src:  ~/Desktop/airbus/VIO/deployment/edge/ansible/acn-gcp-octo-sas-ee685c40af79.json
+        dest: ~/Desktop/vio/edge_orchestrator/config
 
-  - kubernetes.core.k8s:
-      name: vio
-      api_version: v1
-      kind: Namespace
-      state: present
+    - name: Create model directory
+      file:
+        path: ~/Desktop/vio/edge_model_serving/models/tflite/screw_control/
+        state: directory
 
-  - kubernetes.core.k8s_info:
-     kind: Pod
-     namespace: vio
-    register: pod_list
+    - name: Copy model file on the remote machine
+      ansible.builtin.copy:
+        src:  ~/Desktop/airbus/VIO/deployment/edge/ansible/screw_control.tflite
+        dest: ~/Desktop/vio/edge_model_serving/models/tflite/screw_control/
 
-  - shell: kubectl config set-context --current --namespace=vio
+
+    - name: Create model directory
+      file:
+        path: ~/Desktop/vio/edge_model_serving/models/tflite/barcode_control/
+        state: directory
+
+    - name: Copy model file on the remote machine
+      ansible.builtin.copy:
+        src:  ~/Desktop/airbus/VIO/deployment/edge/ansible/barcode_control.tflite
+        dest: ~/Desktop/vio/edge_model_serving/models/tflite/barcode_control/
+

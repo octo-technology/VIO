@@ -1,6 +1,7 @@
 - name: "Deploy VIO on edge"
-  hosts: localhost
+  hosts: edge_1
   tasks:
-  - name: Create kubernetes resources for lookup output
-    k8s:
-      definition: "{{ lookup('kubernetes.core.kustomize', dir='../gcp') }}"
+  - name: Build 'all' target with a custom Makefile
+    make:
+      chdir: ~/Desktop/vio/
+      target: vio-edge-up

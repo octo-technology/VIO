@@ -1,4 +1,5 @@
 from pathlib import Path
+import os
 from typing import Dict, Union
 import subprocess
 
@@ -13,10 +14,19 @@ class UsbCamera(Camera):
         self.id = id
         self.settings = settings
 
+    def exists(path):
+        """Test whether a path exists.  Returns False for broken symbolic links"""
+        try:
+            os.stat(path)
+        except OSError:
+            return False
+        return True
+
     def capture(self) -> bytes:
         resolution = '640x640'
         img_save_path = "./test.jpg"
-        cmd = f'fswebcam -r {resolution} -S 3 --jpeg 50 --save {img_save_path}'
+        source = self.settings['source']
+        cmd = f'fswebcam -r {resolution} -S 3 --jpeg 50 --save {img_save_path} -d {source}'
         cmd_feedback = subprocess.run([cmd], shell=True)
         logger.info(f"Camera exit code: {cmd_feedback.returncode}")
         return Path(img_save_path).open('rb').read()

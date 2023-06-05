@@ -1,6 +1,6 @@
 .PHONY: ping-edge
 ping-edge:
-	ansible localhost -i inventory.ini -m ping
+	ansible edge_1 -i inventory.ini -m ping
 
 setup-ansible:
 	ansible-galaxy collection install kubernetes.core

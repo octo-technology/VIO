@@ -1,0 +1,50 @@
+{
+  "cameras": {
+    "camera_id1": {
+      "type": "usb_camera",
+      "position": "front",
+      "exposition": 100,
+      "source": "/dev/video0",
+      "models_graph": {
+        "model_id5": {
+          "metadata": "screw_control",
+          "depends_on": [],
+          "class_to_detect": ["OK"]
+        }
+      },
+      "camera_rule": {
+        "name": "min_nb_objects_rule",
+        "parameters": {
+          "class_to_detect": ["OK"],
+           "min_threshold": 1
+        }
+      }
+    },
+    "camera_id2": {
+      "type": "usb_camera",
+      "position": "front",
+      "exposition": 100,
+      "source": "/dev/video2",
+      "models_graph": {
+        "model_id5": {
+          "metadata": "screw_control",
+          "depends_on": [],
+          "class_to_detect": ["OK"]
+        }
+      },
+      "camera_rule": {
+        "name": "min_nb_objects_rule",
+        "parameters": {
+          "class_to_detect": ["OK"],
+           "min_threshold": 1
+        }
+      }
+    }
+  },
+  "item_rule": {
+    "name": "min_threshold_KO_rule",
+    "parameters": {
+      "threshold": 1
+    }
+  }
+}

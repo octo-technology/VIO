@@ -1,3 +1,4 @@
+import os
 import json
 from pathlib import Path
 from typing import List, Dict, Union, Type
@@ -16,7 +17,6 @@ class JsonStationConfig(StationConfig):
 
     def __init__(self, station_configs_folder: Path, inventory: Inventory, data_folder: Path):
         self.inventory = inventory
-        self.active_config = None
         self.data_folder = data_folder
 
         if not station_configs_folder.exists():
@@ -25,6 +25,11 @@ class JsonStationConfig(StationConfig):
         self.station_configs_folder = station_configs_folder
         self.all_configs = {}
         self.load()
+
+        self.active_config = None
+        config_name = os.environ.get('ACTIVE_CONFIG_NAME', None)
+        if config_name != None:
+            self.set_station_config(config_name)
 
     def load(self):
         self.all_configs = {}
@@ -75,6 +80,7 @@ class JsonStationConfig(StationConfig):
             camera_settings['brightness'] = camera_config.get('brightness')
             camera_settings['exposition'] = camera_config.get('exposition')
             camera_settings['position'] = camera_config.get('position')
+            camera_settings['source'] = camera_config.get('source')
             camera_settings['input_images_folder'] = camera_config.get('input_images_folder')
         return camera_settings
 
@@ -83,12 +89,12 @@ class JsonStationConfig(StationConfig):
         for camera_id, camera_conf in content['cameras'].items():
             camera_type = camera_conf["type"]
             if camera_type not in self.inventory.cameras:
-                raise ValueError(f'Camera type ({camera_type}) is not supported.')
+                raise ValueError(f'Camera type {camera_type} is not supported.')
             self._check_business_rule(camera_conf, "camera")
             for model_id, model_conf in camera_conf["models_graph"].items():
                 model = model_conf["metadata"]
                 if model not in self.inventory.models:
-                    raise ValueError(f'Model type ({model}) is not supported.')
+                    raise ValueError(f'Model type {model} is not supported.')
                 self._check_business_rule(model_conf, "model")
 
     def _check_business_rule(self, conf: Dict, conf_level: str):
