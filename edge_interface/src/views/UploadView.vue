@@ -32,7 +32,15 @@
               required
             />
 
-          <code v-if="device">{{ device.label }}</code>
+                    <code v-if="device">{{ device.label }}</code>
+                </div>
+
+                <div class="col-md-12">
+                    <v-btn v-if="devices.length == 2" color="blue-grey" class="mr-4 white--text" @click="onSwitchCamera">
+                        <v-icon dark>mdi-swap-vertical</v-icon>
+                    </v-btn>
+                </div>
+            </div>
         </div>
 
           <div class="col-md-12">
@@ -74,21 +82,12 @@
         </v-btn>
       </v-fab-transition>
 
-      <v-fab-transition>
-        <v-btn
-          v-show="isTrigger"
-          color="blue darken-3"
-          dark
-          absolute
-          bottom
-          right
-          fab
-          style="bottom:16px"
-          @click="backCamera"
-        >
-          <v-icon>mdi-arrow-left</v-icon>
-        </v-btn>
-      </v-fab-transition>
+            <v-fab-transition>
+                <v-btn v-show="isTrigger" color="blue darken-3" dark absolute bottom right fab style="bottom: 16px"
+                    @click="backCamera">
+                    <v-icon>mdi-arrow-left</v-icon>
+                </v-btn>
+            </v-fab-transition>
 
         <div class="row">
           <div class="col-md-12">
@@ -112,9 +111,7 @@
             </div>
           </div>
         </div>
-      </div>
-    </div>
-  </v-col>
+    </v-col>
 </template>
 
 <script>
@@ -236,16 +233,16 @@ export default {
 
 <style lang="scss" scoped>
 .container {
-  text-align: center;
-  //background-color: black;
-  height: 100vh;
+    text-align: center;
+    //background-color: black;
+    height: 100vh;
 }
 
 .red {
-  background: #d41928;
+    background: #d41928;
 }
 
 .green {
-  background: #51d419;
+    background: #51d419;
 }
 </style>

@@ -5,7 +5,7 @@
       top: yMin + 'px',
       left: xMin + 'px',
       width: xMax - xMin + 'px',
-      height: yMax - yMin + 'px'
+      height: yMax - yMin + 'px',
     }"
   />
 </template>

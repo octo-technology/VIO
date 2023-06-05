@@ -12,6 +12,11 @@
         <figure v-for="(image, index) in images" :key="index">
           <img :src="'data:image/png;base64,' + image" class="img-responsive" />
         </figure>
+
+        <div v-for="(camera, index) in item.predictedItems" :key="index">
+            <ImageWithBoxes :camera="camera"></ImageWithBoxes>
+        </div>
+
       </v-col>
     </v-row>
     <v-row>
@@ -31,7 +36,15 @@ import ItemsService from '@/services/ItemsService.js'
 export default {
   components: {
     ItemCard,
-    SensorCard
+    SensorCard,
+    ImageWithBoxes
+  },
+  beforeMount: function () {
+    this.$store.dispatch("load_items");
+    this.item = this.$store.getters.getItemById(this.id);
+    this.sensorsIdList = getSensorsIdList(this.item);
+    // console.log("item", this.item)
+    // console.log("sensors", this.sensorsIdList)
   },
   props: ['id'],
   data: () => ({

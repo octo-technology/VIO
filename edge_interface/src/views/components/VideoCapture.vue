@@ -122,6 +122,8 @@ export default {
               this.cameras.push(deviceInfo)
             }
           }
+
+          // console.log("cam",this.cameras)
         })
         .then(() => {
           if (!this.camerasListEmitted) {
@@ -280,3 +282,9 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.v-speed-dial__list  {
+  align-items: left;
+}
+</style>

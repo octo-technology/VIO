@@ -20,9 +20,15 @@
         <v-row align="start">
           <router-view />
         </v-row>
+        <!-- <v-btn fab absolute top left tile @click.stop="drawer = !drawer"
+          class="btn-invisible"><v-icon>mdi-menu</v-icon></v-btn> -->
       </v-container>
+
     </v-main>
 
+    <v-dialog v-model="dialog" fullscreen hide-overlay>
+      <modal-profile @close="onClose($event)"></modal-profile>
+    </v-dialog>
     <!--    <v-footer app>-->
     <!--      <span>&copy; 2023</span>-->
     <!--    </v-footer>-->
@@ -30,14 +36,24 @@
 </template>
 
 <script>
+import ModalProfile from './views/components/ModalProfile.vue';
+import SidePanel from "./views/navigation/SidePanel.vue"
+
 export default {
   name: 'App',
   props: {
     source: String
   },
-
+  components: { SidePanel, ModalProfile },
   data: () => ({
     drawer: false
   })
 }
 </script>
+
+<style scoped>
+.btn-invisible {
+  margin-top: 30px;
+  background-color: transparent !important;
+}
+</style>
