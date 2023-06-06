@@ -81,7 +81,6 @@ class JsonStationConfig(StationConfig):
             camera_settings['exposition'] = camera_config.get('exposition')
             camera_settings['position'] = camera_config.get('position')
             camera_settings['source'] = camera_config.get('source')
-            camera_settings['input_images_folder'] = camera_config.get('input_images_folder')
         return camera_settings
 
     def _check_station_config_based_on_inventory(self, content):

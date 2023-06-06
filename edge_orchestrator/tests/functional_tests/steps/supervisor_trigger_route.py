@@ -39,7 +39,7 @@ def following_cameras_are_registered_in_the_configuration(context: Context):
         current_camera_conf = response_content['cameras'][row['camera_id']]
         cameras[row['camera_id']] = current_camera_conf
         assert current_camera_conf['type'] == row['camera_type']
-        assert current_camera_conf['input_images_folder'] == row['input_images_folder']
+        assert current_camera_conf['source'] == row['source']
     context.cameras = cameras
     assert len(response_content['cameras'].keys()) == len(context.table.rows)
 
@@ -72,7 +72,7 @@ def check_item_binaries_are_stored(context: Context):
         assert f'{row["binary_name"]}.{row["binary_extension"]}' in response_1_content
 
         path_to_tests_images = context.test_directory / 'data' / context.cameras[row['binary_name']][
-            'input_images_folder']
+            'source']
         tests_images = [filepath.open('rb').read() for filepath in path_to_tests_images.iterdir()
                         if filepath.suffix == '.jpg']
 

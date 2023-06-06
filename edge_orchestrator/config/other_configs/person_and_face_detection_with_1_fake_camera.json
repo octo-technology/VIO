@@ -2,7 +2,7 @@
   "cameras": {
     "camera_id1": {
       "type": "fake",
-      "input_images_folder": "people_dataset",
+      "sourcetaset",
       "position": "front",
       "exposition": 100,
       "models_graph": {

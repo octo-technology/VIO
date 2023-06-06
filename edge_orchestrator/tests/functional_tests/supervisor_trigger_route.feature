@@ -4,7 +4,7 @@ Feature: The client trigger a visual inspection and request the resulting metada
     Given the app is up and running
     And the config 'station_config_TEST' is activated
     And the following cameras are registered in the configuration
-      | camera_id  | camera_type | input_images_folder |
+      | camera_id  | camera_type | source |
       | camera_id3 | fake        | marker_images       |
     When the client triggers a visual inspection
     Then item metadata like the following are captured
@@ -16,7 +16,7 @@ Feature: The client trigger a visual inspection and request the resulting metada
           "brightness": null,
           "exposition": 100,
           "position": "back",
-          "input_images_folder": "marker_images"
+          "source": "marker_images"
         }
       },
       "category": "category",
@@ -40,7 +40,7 @@ Feature: The client trigger a visual inspection and request the resulting metada
           "brightness": null,
           "exposition": 100,
           "position": "back",
-          "input_images_folder": "marker_images"
+          "source": "marker_images"
         }
       },
       "category": "category",
@@ -69,7 +69,7 @@ Feature: The client trigger a visual inspection and request the resulting metada
           "brightness": null,
           "exposition": 100,
           "position": "back",
-          "input_images_folder": "marker_images"
+          "source": "marker_images"
         }
       },
       "category": "category",
@@ -99,7 +99,7 @@ Feature: The client trigger a visual inspection and request the resulting metada
           "brightness": null,
           "exposition": 100,
           "position": "back",
-          "input_images_folder": "marker_images"
+          "source": "marker_images"
         }
       },
       "category": "category",

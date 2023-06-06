@@ -25,7 +25,7 @@ Feature: The client set an active configuration
       "cameras": {
         "camera_id3": {
           "type": "fake",
-          "input_images_folder": "marker_images",
+          "source": "marker_images",
           "position": "back",
           "exposition": 100,
           "models_graph": {
