@@ -3,34 +3,19 @@
   tasks:
     - ansible.builtin.git:
         repo: https://github.com/octo-technology/VIO.git
-        dest: ~/Desktop/vio
+        dest: "{{ REMOTE_VIO_DIR }}"
         single_branch: yes
         version: deploy_vio_on_edge
         force: true
 
     - name: Copy config on the remote machine
       ansible.builtin.copy:
-        src:  ~/Desktop/airbus/VIO/deployment/edge/ansible/acn-gcp-octo-sas-ee685c40af79.json
-        dest: ~/Desktop/vio/edge_orchestrator/config
+        src:  "{{ LOCAL_VIO_DIR }}/edge_orchestrator/config/secrets/acn-gcp-octo-sas-ee685c40af79.json"
+        dest: "{{ REMOTE_VIO_DIR }}/edge_orchestrator/config/secrets"
 
-    - name: Create model directory
-      file:
-        path: ~/Desktop/vio/edge_model_serving/models/tflite/screw_control/
-        state: directory
 
     - name: Copy model file on the remote machine
       ansible.builtin.copy:
-        src:  ~/Desktop/airbus/VIO/deployment/edge/ansible/screw_control.tflite
-        dest: ~/Desktop/vio/edge_model_serving/models/tflite/screw_control/
-
-
-    - name: Create model directory
-      file:
-        path: ~/Desktop/vio/edge_model_serving/models/tflite/barcode_control/
-        state: directory
-
-    - name: Copy model file on the remote machine
-      ansible.builtin.copy:
-        src:  ~/Desktop/airbus/VIO/deployment/edge/ansible/barcode_control.tflite
-        dest: ~/Desktop/vio/edge_model_serving/models/tflite/barcode_control/
+        src:  "{{ LOCAL_VIO_DIR }}/edge_model_serving/models/tflite"
+        dest: "{{ REMOTE_VIO_DIR }}/edge_model_serving/models/tflite"
 

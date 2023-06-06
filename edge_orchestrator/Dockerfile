@@ -13,7 +13,7 @@ COPY edge_orchestrator ./edge_orchestrator
 
 ENV API_CONFIG upload-gcp
 ENV SERVING_MODEL_URL http://edge_model_serving:8501
-ENV GOOGLE_APPLICATION_CREDENTIALS /edge_orchestrator/config/acn-gcp-octo-sas-ee685c40af79.json
+ENV GOOGLE_APPLICATION_CREDENTIALS /edge_orchestrator/config/secrets/acn-gcp-octo-sas-ee685c40af79.json
 ENV GCP_BUCKET_NAME tf-vio-bucket
 ENV ACTIVE_CONFIG_NAME barcode_detection_with_usbcamera
 

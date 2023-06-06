@@ -182,3 +182,7 @@ edge_model_serving/models/torch
 # .tfstate files
 *.tfstate
 *.tfstate.*
+
+edge_model_serving/models/*
+edge_orchestrator/data/*
+edge_orchestrator/config/secrets

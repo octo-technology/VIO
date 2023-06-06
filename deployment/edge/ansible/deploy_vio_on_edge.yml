@@ -3,5 +3,5 @@
   tasks:
   - name: Build 'all' target with a custom Makefile
     make:
-      chdir: ~/Desktop/vio/
+      chdir: "{{ REMOTE_VIO_DIR }}"
       target: vio-edge-up
