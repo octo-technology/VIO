@@ -175,3 +175,10 @@ poetry.toml
 edge_orchestrator/data/storage/
 edge_orchestrator/reports
 edge_model_serving/models/torch
+
+# Local .terraform directories
+**/.terraform/*
+
+# .tfstate files
+*.tfstate
+*.tfstate.*

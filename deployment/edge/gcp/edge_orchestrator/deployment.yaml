@@ -1,0 +1,74 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: edge-orchestrator
+  name: edge-orchestrator
+  namespace: vio
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: back
+      app.kubernetes.io/instance: vio
+      app.kubernetes.io/name: edge-orchestrator
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: back
+        app.kubernetes.io/instance: vio
+        app.kubernetes.io/name: edge-orchestrator
+    spec:
+      containers:
+      - env:
+        - name: API_CONFIG
+          value: edge-gcp
+        - name: SERVING_MODEL_URL
+          value: https://vio.octo.tools
+        - name: GOOGLE_APPLICATION_CREDENTIALS
+          value: /etc/gcp/sa_credentials.json
+        - name: GCP_BUCKET_NAME
+          value: tf-vio-bucket
+        - name: ACTIVE_CONFIG_NAME
+          value: yolo_with_upload_camera
+        image: europe-west1-docker.pkg.dev/acn-gcp-octo-sas/tf-vio-artifacts/edge_orchestrator:1.4
+        imagePullPolicy: IfNotPresent
+        name: edge-orchestrator
+        ports:
+        - containerPort: 8000
+          name: portNumber
+          protocol: TCP
+        readinessProbe:
+          httpGet:
+            port: portNumber
+            path: /api/v1/
+          initialDelaySeconds: 30
+          periodSeconds: 30
+          failureThreshold: 3
+        livenessProbe:
+          httpGet:
+            port: portNumber
+            path: /api/v1/
+          initialDelaySeconds: 30
+          periodSeconds: 30
+          failureThreshold: 3
+        volumeMounts:
+        - mountPath: /etc/gcp
+          mountPropagation: None
+          name: service-account-credentials-volume
+          readOnly: true
+      restartPolicy: Always
+      volumes:
+      - name: service-account-credentials-volume
+        secret:
+          defaultMode: 420
+          items:
+          - key: key.json
+            path: sa_credentials.json
+          optional: false
+          secretName: service-account-credentials
