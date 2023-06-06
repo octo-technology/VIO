@@ -4,4 +4,4 @@
   - name: Build 'all' target with a custom Makefile
     make:
       chdir: "{{ REMOTE_VIO_DIR }}"
-      target: vio-edge-up
+      target: vio-edge-up-intel

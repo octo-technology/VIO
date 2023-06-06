@@ -1,12 +1,6 @@
 version: '3'
 
 services:
-  edge_db:
-    image: mongo:5.0.2
-    container_name: edge_db
-    ports:
-      - 27017:27017
-
   edge_model_serving:
     container_name: edge_model_serving
     build:
@@ -17,7 +11,7 @@ services:
     ports:
       - 8501:8501
     volumes:
-      - /home/devkit/Desktop/vio/edge_model_serving/models:/models
+      - ./edge_model_serving/models:/models
 
   edge_orchestrator:
     container_name: edge_orchestrator
@@ -25,8 +19,8 @@ services:
       context: edge_orchestrator
       dockerfile: Dockerfile
     volumes:
-      - /home/devkit/Desktop/vio/edge_orchestrator/data:/edge_orchestrator/data
-      - /home/devkit/Desktop/vio/edge_orchestrator/config:/edge_orchestrator/config
+      - ./edge_orchestrator/data:/edge_orchestrator/data
+      - ./edge_orchestrator/config:/edge_orchestrator/config
     devices:
       - /dev/video0:/dev/video0
 #      - /dev/video2:/dev/video2
