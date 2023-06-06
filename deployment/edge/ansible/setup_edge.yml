@@ -1,5 +1,5 @@
 - name: "Install repo"
-  hosts: edge_1
+  hosts: all
   tasks:
     - ansible.builtin.git:
         repo: https://github.com/octo-technology/VIO.git

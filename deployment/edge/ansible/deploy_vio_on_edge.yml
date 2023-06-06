@@ -1,5 +1,5 @@
 - name: "Deploy VIO on edge"
-  hosts: edge_1
+  hosts: all
   tasks:
   - name: Build 'all' target with a custom Makefile
     make:
