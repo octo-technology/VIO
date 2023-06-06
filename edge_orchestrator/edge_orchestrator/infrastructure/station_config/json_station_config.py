@@ -28,7 +28,7 @@ class JsonStationConfig(StationConfig):
 
         self.active_config = None
         config_name = os.environ.get('ACTIVE_CONFIG_NAME', None)
-        if config_name != None:
+        if config_name is not None:
             self.set_station_config(config_name)
 
     def load(self):
