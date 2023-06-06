@@ -1,6 +1,6 @@
 .PHONY: ping-edge
 ping-edge:
-	ansible edge_2 -i inventory.ini -m ping
+	ansible all -i inventory.ini -m ping
 
 setup-edge:
 	ansible-playbook -v -i inventory.ini setup_edge.yml

@@ -1,5 +1,4 @@
 from pathlib import Path
-import os
 from typing import Dict, Union
 import subprocess
 
@@ -13,14 +12,6 @@ class UsbCamera(Camera):
         super().__init__(id, settings)
         self.id = id
         self.settings = settings
-
-    def exists(path):
-        """Test whether a path exists.  Returns False for broken symbolic links"""
-        try:
-            os.stat(path)
-        except OSError:
-            return False
-        return True
 
     def capture(self) -> bytes:
         resolution = '640x640'
