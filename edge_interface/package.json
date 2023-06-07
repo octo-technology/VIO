@@ -50,7 +50,6 @@
     "jest-extended": "^0.11.2",
     "jest-localstorage-mock": "^2.4.0",
     "nock": "9.6.1",
-    "node-sass": "^4.13.0",
     "prettier": "^1.19.1",
     "sass-loader": "8.0.0",
     "sinon": "^6.1.5",
