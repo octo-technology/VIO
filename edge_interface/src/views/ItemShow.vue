@@ -6,8 +6,7 @@
           <v-icon left>mdi-arrow-left</v-icon> Back to Item List
         </v-btn>
         <item-card v-bind:item="loadItem"></item-card>
-
-        <figure v-show="img" class="mt-2 figure">
+        <figure v-for="img in imgs" :key="img" v-show="img" class="mt-2 figure">
           <img :src="'data:image/png;base64,' + img" class="img-responsive" />
         </figure>
       </v-col>
@@ -32,7 +31,7 @@ import ItemsService from "@/services/ItemsService";
 
 export default {
   data: () => ({
-    img: null,
+    imgs: [],
     item: null,
     sensorsIdList: null
   }),
@@ -70,8 +69,11 @@ export default {
     this.$store.dispatch("load_items");
   },
   async mounted() {
-    const result = await ItemsService.getItemBinaryForCameraById(this.id, 0);
-    this.img = this.arrayBufferToBase64(result.data);
+    const camera_ids = Object.keys(this.item.cameras);
+    camera_ids.forEach(async (camera_id) => {
+       const result = await ItemsService.getItemBinaryForCameraById(this.id, camera_id);
+       this.imgs.push(this.arrayBufferToBase64(result.data));
+    })
   },
   computed: {
     loadItem() {
