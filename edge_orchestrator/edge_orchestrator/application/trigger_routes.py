@@ -22,7 +22,8 @@ async def trigger_job(image: UploadFile = None, background_tasks: BackgroundTask
     else:
         if image:
             contents = image.file.read()
-            item.binaries = {'0': contents}
+            camera_id = supervisor.station_config.get_cameras()[0]
+            item.binaries = {camera_id: contents}
         background_tasks.add_task(supervisor.inspect, item)
         return {'item_id': item.id}
 

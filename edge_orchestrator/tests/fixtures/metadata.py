@@ -23,4 +23,4 @@ def bottom_camera_metadata():
 
 @fixture(scope='function')
 def back_camera_metadata():
-    return {'brightness': None, 'exposition': 100, 'position': 'back', 'input_images_folder': 'marker_images'}
+    return {'brightness': None, 'exposition': 100, 'position': 'back', 'source': 'marker_images'}

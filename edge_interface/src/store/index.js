@@ -7,6 +7,12 @@ import ItemsService from "@/services/ItemsService";
 
 const mutations = {
   SET_ITEMS(state, list_items) {
+    // Sort list from more recent to oldest
+    list_items.sort((recent, old) => {
+      let date_recent = new Date(recent.received_time),
+        date_old = new Date(old.received_time);
+      return date_old - date_recent;
+    });
     state.listItems = list_items;
   }
 };

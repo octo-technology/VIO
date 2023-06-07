@@ -1,0 +1,43 @@
+version: '3'
+
+services:
+  edge_model_serving:
+    container_name: edge_model_serving
+    build:
+      context: edge_model_serving
+      dockerfile: tflite_serving/Dockerfile
+    environment:
+      - TF_CPP_MIN_VLOG_LEVEL=0
+    ports:
+      - 8501:8501
+    volumes:
+      - ./edge_model_serving/models:/models
+
+  edge_orchestrator:
+    container_name: edge_orchestrator
+    build:
+      context: edge_orchestrator
+      dockerfile: Dockerfile
+    volumes:
+      - ./edge_orchestrator/data:/edge_orchestrator/data
+      - ./edge_orchestrator/config:/edge_orchestrator/config
+    devices:
+      - /dev/video0:/dev/video0
+#      - /dev/video2:/dev/video2
+    ports:
+      - 8000:8000
+    environment:
+      EDGE_NAME: "{{ EDGE_NAME }}"
+      API_CONFIG: upload-gcp
+      SERVING_MODEL_URL: http://edge_model_serving:8501
+      GOOGLE_APPLICATION_CREDENTIALS: /edge_orchestrator/config/secrets/credentials.json
+      GCP_BUCKET_NAME: tf-vio-bucket
+      ACTIVE_CONFIG_NAME: marker_classification_with_1_fake_camera
+
+  edge_interface:
+    container_name: edge_interface
+    build:
+      context: edge_interface
+      dockerfile: Dockerfile
+    ports:
+      - 8080:80

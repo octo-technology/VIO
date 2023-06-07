@@ -13,6 +13,7 @@ from edge_orchestrator.domain.models.camera import get_last_inference_by_camera,
 from edge_orchestrator.domain.models.item import get_item_rule
 from edge_orchestrator.domain.models.item import Item
 from edge_orchestrator.domain.models.model_infos import ModelInfos
+from edge_orchestrator.domain.models.decision import Decision
 
 
 class SupervisorState(Enum):
@@ -164,8 +165,8 @@ class Supervisor:
     def apply_business_rules(self, item: Item) -> str:
         camera_decisions = {}
 
-        if item.inferences == 'NO_DECISION':
-            return 'NO_DECISION'
+        if item.inferences == Decision.NO_DECISION:
+            return Decision.NO_DECISION
 
         else:
             for camera_id in item.inferences:
@@ -174,6 +175,8 @@ class Supervisor:
                     'parameters']  # noqa
 
                 last_model_inferences = get_last_inference_by_camera(item.inferences[camera_id])
+                if last_model_inferences == Decision.NO_DECISION:
+                    return Decision.NO_DECISION
                 labels_of_last_model_inferences = get_labels(last_model_inferences)
 
                 item_camera_rule = get_camera_rule(camera_rule_name)(**camera_rule_parameters)

@@ -2,7 +2,7 @@
   "cameras": {
     "camera_id3": {
       "type": "fake",
-      "input_images_folder": "cellphone_dataset",
+      "source": "cellphone_dataset",
       "position": "front",
       "exposition": 100,
       "models_graph": {

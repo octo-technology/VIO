@@ -4,12 +4,13 @@ WORKDIR /edge_orchestrator
 
 COPY setup.py ./setup.py
 COPY edge_orchestrator ./edge_orchestrator
-COPY config ./config
-COPY data ./data
 
+RUN apt-get update
+RUN apt-get install fswebcam -y
 RUN pip install --upgrade pip
 RUN pip install .
 
 ENV API_CONFIG docker
+
 EXPOSE 8000
 ENTRYPOINT ["python", "-m", "edge_orchestrator"]

@@ -2,7 +2,7 @@
   "cameras": {
     "camera_id3": {
       "type": "fake",
-      "input_images_folder": "fake_item",
+      "source": "fake_item",
       "position": "front",
       "exposition": 100,
       "models_graph": {

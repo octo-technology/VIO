@@ -21,10 +21,10 @@ class FakeCamera(Camera):
         return random_image_path.open('rb').read()
 
     def select_random_image(self) -> Path:
-        input_images_folder = self.data_folder_path / self.settings['input_images_folder']
+        source = self.data_folder_path / self.settings['source']
         selected_images = []
         for extension in self.image_extensions:
-            selected_images += list(input_images_folder.glob(extension))
+            selected_images += list(source.glob(extension))
         random_image_path = Path(random.choice(selected_images))
         logger.info(str(random_image_path))
         return random_image_path
