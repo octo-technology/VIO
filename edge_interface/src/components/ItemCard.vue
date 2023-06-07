@@ -53,12 +53,7 @@ export default {
       )
     },
     has_item_id() {
-      return (
-        this.item !== null &&
-        this.item !== undefined &&
-        this.item.id !== undefined &&
-        this.item.id !== null
-      )
+      return this.item !== null && this.item !== undefined && this.item.id !== undefined && this.item.id !== null
     },
     item_id() {
       if (this.has_item_id) return this.item.id

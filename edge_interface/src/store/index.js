@@ -12,14 +12,14 @@ export const state = {
 }
 
 export const mutations = {
-  SET_ITEMS(state, list_items) {
+  SET_ITEMS(state, listItems) {
     // Sort list from more recent to oldest
-    list_items.sort((recent, old) => {
-      let date_recent = new Date(recent.received_time),
-        date_old = new Date(old.received_time);
-      return date_old - date_recent;
-    });
-    state.listItems = list_items;
+    listItems.sort((recent, old) => {
+      const dateRecent = new Date(recent.received_time)
+      const dateOld = new Date(old.received_time)
+      return dateOld - dateRecent
+    })
+    state.listItems = listItems
   },
   SET_IMAGE_PATH(state, imagePath) {
     state.imagePath = imagePath
