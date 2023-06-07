@@ -15,8 +15,8 @@ class UsbCamera(Camera):
 
     def capture(self) -> bytes:
         resolution = '640x640'
-        img_save_path = "./test.jpg"
         source = self.settings['source']
+        img_save_path = f"{source}.jpg".replace('/', '')
         cmd = f'fswebcam -r {resolution} -S 3 --jpeg 50 --save {img_save_path} -d {source}'
         cmd_feedback = subprocess.run([cmd], shell=True)
         logger.info(f"Camera exit code: {cmd_feedback.returncode}")

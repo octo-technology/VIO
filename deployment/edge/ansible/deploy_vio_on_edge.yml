@@ -6,7 +6,7 @@
         repo: https://github.com/octo-technology/VIO.git
         dest: "{{ REMOTE_VIO_DIR }}"
         single_branch: yes
-        version: deploy_vio_on_edge
+        version: main
         force: true
 
     - name: Copy config on the remote machine
