@@ -1,7 +1,8 @@
 - name: "Install repo"
   hosts: all
   tasks:
-    - ansible.builtin.git:
+    - name: Clone vio git repo
+      ansible.builtin.git:
         repo: https://github.com/octo-technology/VIO.git
         dest: "{{ REMOTE_VIO_DIR }}"
         single_branch: yes

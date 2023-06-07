@@ -16,8 +16,8 @@ services:
       - TF_CPP_MIN_VLOG_LEVEL=0
     ports:
       - 8501:8501
-    volumes:
-      - ./edge_model_serving/models:/models
+#    volumes:
+#      - ./edge_model_serving/models:/models
 
   edge_orchestrator:
     container_name: edge_orchestrator
@@ -27,16 +27,8 @@ services:
     volumes:
       - ./edge_orchestrator/data:/edge_orchestrator/data
       - ./edge_orchestrator/config:/edge_orchestrator/config
-#    devices:
-#      - /dev/video0:/dev/video0
-#      - /dev/video2:/dev/video2
     ports:
       - 8000:8000
-    healthcheck:
-      test: [ "CMD-SHELL", "nc -zv 0.0.0.0 5432" ]
-      interval: 5s
-      timeout: 5s
-      retries: 5
 
   edge_interface:
     container_name: edge_interface

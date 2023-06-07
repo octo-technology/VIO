@@ -1,7 +1,7 @@
 - name: "Deploy VIO on edge"
   hosts: all
   tasks:
-  - name: Build 'all' target with a custom Makefile
+  - name: Start all edge services on intel (model_serving, orchestrator, interface)
     make:
       chdir: "{{ REMOTE_VIO_DIR }}"
       target: vio-edge-up-intel

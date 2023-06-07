@@ -36,11 +36,11 @@ vio-edge-up:
 
 .PHONY: vio-edge-up-intel ## 🐳 Start all edge services on intel (model_serving, orchestrator, interface)
 vio-edge-up-intel:
-	docker-compose -f docker-compose.intel.yml up -d
+	docker-compose -f docker-compose.intel.yml up -d --build
 
 .PHONY: vio-edge-up-raspberrypi ## 🐳 Start all edge services on RaspberryPI (db, model_serving, orchestrator, interface)
 vio-edge-up-raspberrypi:
-	docker-compose -f docker-compose.raspberrypi.yml up -d
+	docker-compose -f docker-compose.raspberrypi.yml up -d --build
 
 .PHONY: vio-edge-down ## ❌ Stop all services (model_serving, edge_orchestrator, ui)
 vio-edge-down:

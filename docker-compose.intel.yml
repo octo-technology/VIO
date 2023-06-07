@@ -26,11 +26,6 @@ services:
 #      - /dev/video2:/dev/video2
     ports:
       - 8000:8000
-    healthcheck:
-      test: [ "CMD-SHELL", "nc -zv 0.0.0.0 5432" ]
-      interval: 5s
-      timeout: 5s
-      retries: 5
 
   edge_interface:
     container_name: edge_interface
