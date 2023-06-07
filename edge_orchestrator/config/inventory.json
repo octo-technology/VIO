@@ -102,49 +102,6 @@
         224,
         224
       ]
-    },
-    "barcode_control": {
-      "category": "classification",
-      "version": 1,
-      "pb_file_path": "modelforward/barcode_control",
-      "class_names": [
-        "OK",
-        "KO"
-      ],
-      "image_resolution": [
-        224,
-        224
-      ]
-    },
-    "screw_control": {
-      "category": "classification",
-      "version": 1,
-      "pb_file_path": "modelforward/screw_control",
-      "class_names": [
-        "OK",
-        "KO"
-      ],
-      "image_resolution": [
-        224,
-        224
-      ]
-    },
-    "screw_detection": {
-      "category": "object_detection",
-      "version": 1,
-      "pb_file_path": "modelforward/screw_detection",
-      "class_names_path": "labels.txt",
-      "output": {
-        "boxes_coordinates": "detection_boxes",
-        "objectness_scores": "detection_scores",
-        "number_of_boxes": "num_detections",
-        "detection_classes": "detection_classes"
-      },
-      "image_resolution": [
-        640,
-        640
-      ],
-      "objectness_threshold": 0.5
     }
   },
   "camera_rules": [
