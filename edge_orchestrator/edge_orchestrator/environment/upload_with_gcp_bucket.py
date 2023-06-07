@@ -15,5 +15,5 @@ class UploadWithGCPBucket(Config):
         self.inventory = JsonInventory(self.ROOT_PATH / 'config' / 'inventory.json')
         self.station_config = JsonStationConfig(self.ROOT_PATH / 'config' / 'station_configs',
                                                 self.inventory, self.ROOT_PATH / 'data')
-        self.model_forward = FakeModelForward()                                                                        self.ROOT_PATH / 'data' / 'yolo_class.txt', 640)
+        self.model_forward = FakeModelForward()
         self.telemetry_sink = FakeTelemetrySink()
