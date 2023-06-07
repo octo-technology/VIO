@@ -16,6 +16,9 @@ class ConfigService {
     const activeConfig = await Api().post('/configs/active', body)
     return activeConfig
   }
+  async get_active_config(config_name) {
+    return await Api().get("/configs/active");
+  }
 }
 
 export default new ConfigService()
