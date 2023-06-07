@@ -10,15 +10,18 @@ from edge_orchestrator.domain.ports.metadata_storage import MetadataStorage
 class GCPMetadataStorage(MetadataStorage):
     def __init__(self):
         self.storage_client = storage.Client()
+        self.prefix = os.environ.get('EDGE_NAME', '')
         self.bucket = self.storage_client.get_bucket(os.getenv('GCP_BUCKET_NAME'))
 
     def save_item_metadata(self, item: Item):
         item_metadata = json.dumps(item.get_metadata())
-        blob = self.bucket.blob(f"{item.id}/metadata.json")
+        blob = self.bucket.blob(
+                os.path.join(self.prefix, item.id, "metadata.json")
+        )
         blob.upload_from_string(item_metadata, content_type="application/json")
 
     def get_item_metadata(self, item_id: str) -> Dict:
-        filename = f"{item_id}/metadata.json"
+        filename = os.path.join(self.prefix, item_id, "metadata.json")
         blob = self.bucket.get_blob(filename)
         if blob is None:
             raise Exception("No file with this id exist")
@@ -32,7 +35,7 @@ class GCPMetadataStorage(MetadataStorage):
     def get_all_items_metadata(self) -> List[Dict]:
         metadatas = []
         for blob in self.bucket.list_blobs():
-            if "metadata.json" in blob.name:
+            if self.prefix in blob.name and "metadata.json" in blob.name:
                 metadata = json.loads(blob.download_as_string())
                 metadatas.append(metadata)
         return metadatas
