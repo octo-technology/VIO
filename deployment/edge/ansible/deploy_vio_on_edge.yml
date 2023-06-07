@@ -1,7 +1,30 @@
-- name: "Deploy VIO on edge"
+- name: "Deploy vio on edge and launch"
   hosts: all
   tasks:
-  - name: Start all edge services on intel (model_serving, orchestrator, interface)
-    make:
-      chdir: "{{ REMOTE_VIO_DIR }}"
-      target: vio-edge-up-intel
+    - name: Clone vio git repo
+      ansible.builtin.git:
+        repo: https://github.com/octo-technology/VIO.git
+        dest: "{{ REMOTE_VIO_DIR }}"
+        single_branch: yes
+        version: deploy_vio_on_edge
+        force: true
+
+    - name: Copy config on the remote machine
+      ansible.builtin.copy:
+        src:  "{{ LOCAL_VIO_DIR }}/edge_orchestrator/config"
+        dest: "{{ REMOTE_VIO_DIR }}/edge_orchestrator/"
+
+    - name: Copy model file on the remote machine
+      ansible.builtin.copy:
+        src:  "{{ LOCAL_VIO_DIR }}/edge_model_serving/models/tflite"
+        dest: "{{ REMOTE_VIO_DIR }}/edge_model_serving/models/"
+
+    - name: Template docker compose
+      ansible.builtin.template:
+        src: "{{ LOCAL_VIO_DIR }}/deployment/edge/ansible/files/docker-compose.template.yml"
+        dest: "{{ REMOTE_VIO_DIR }}/docker-compose.yml"
+
+    - name: Start all edge services on intel (model_serving, orchestrator, interface)
+      make:
+        chdir: "{{ REMOTE_VIO_DIR }}"
+        target: vio-edge-up

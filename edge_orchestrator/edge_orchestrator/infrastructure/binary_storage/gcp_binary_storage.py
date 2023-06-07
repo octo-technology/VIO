@@ -9,19 +9,20 @@ from google.cloud import storage
 class GCPBinaryStorage(BinaryStorage):
     def __init__(self):
         self.storage_client = storage.Client()
+        self.prefix = os.environ.get('EDGE_NAME', '')
         self.bucket = self.storage_client.get_bucket(os.getenv('GCP_BUCKET_NAME'))
 
     def save_item_binaries(self, item: Item) -> None:
         for camera_id, binary in item.binaries.items():
             blob = self.bucket.blob(
-                f"{item.id}/{camera_id}.jpg"
+                os.path.join(self.prefix, item.id, f"{camera_id}.jpg")
             )
             if blob is None:
                 raise Exception("An image should be upload")
             blob.upload_from_string(binary, content_type="image/jpg")
 
     def get_item_binary(self, item_id: str, camera_id: str) -> bytes:
-        filename = f"{item_id}/{camera_id}.jpg"
+        filename = os.path.join(self.prefix, item_id, f"{camera_id}.jpg")
         blob = self.bucket.get_blob(filename)
         if blob is None:
             return None

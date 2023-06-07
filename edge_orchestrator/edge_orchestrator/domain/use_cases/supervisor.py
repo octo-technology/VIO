@@ -13,6 +13,7 @@ from edge_orchestrator.domain.models.camera import get_last_inference_by_camera,
 from edge_orchestrator.domain.models.item import get_item_rule
 from edge_orchestrator.domain.models.item import Item
 from edge_orchestrator.domain.models.model_infos import ModelInfos
+from edge_orchestrator.domain.models.decision import Decision
 
 
 class SupervisorState(Enum):

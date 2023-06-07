@@ -26,6 +26,13 @@ services:
 #      - /dev/video2:/dev/video2
     ports:
       - 8000:8000
+    environment:
+      EDGE_NAME: "{{ EDGE_NAME }}"
+      API_CONFIG: upload-gcp
+      SERVING_MODEL_URL: http://edge_model_serving:8501
+      GOOGLE_APPLICATION_CREDENTIALS: /edge_orchestrator/config/secrets/credentials.json
+      GCP_BUCKET_NAME: tf-vio-bucket
+      ACTIVE_CONFIG_NAME: marker_classification_with_1_fake_camera
 
   edge_interface:
     container_name: edge_interface
