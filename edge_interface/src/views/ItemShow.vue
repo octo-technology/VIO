@@ -8,9 +8,9 @@
           </v-icon>
           Back to Item List
         </v-btn>
-        <item-card v-bind:item="loadItem"></item-card>
-        <figure v-for="img in imgs" :key="img" v-show="img" class="mt-2 figure">
-          <img :src="'data:image/png;base64,' + img" class="img-responsive" />
+        <item-card :item="loadItem" />
+        <figure v-for="(image, index) in images" :key="index">
+          <img :src="'data:image/png;base64,' + image" class="img-responsive" />
         </figure>
       </v-col>
     </v-row>
@@ -26,7 +26,7 @@
 import ItemCard from '@/components/ItemCard.vue'
 import SensorCard from '@/components/SensorCard.vue'
 import { getSensorsIdList } from '@/services/methods.js'
-// import ItemsService from '@/services/ItemsService.vue'
+import ItemsService from '@/services/ItemsService.js'
 
 export default {
   components: {
@@ -35,15 +35,21 @@ export default {
   },
   props: ['id'],
   data: () => ({
-    imgs: [],
+    images: [],
     item: null,
     sensorsIdList: null
   }),
-  // async mounted() {
-  //   const camera_id_list = this.item.cameras.keys;
-  //   const binarries = await ItemsService.getItemBinaryForCameraById(this.id, camera_id_list[0]);
-  //   this.img = this.arrayBufferToBase64(binarries.data);
-  // },
+  async mounted() {
+    const cameraIdList = Object.keys(this.item.cameras)
+    if (cameraIdList && cameraIdList.length > 0) {
+      const binariesList = await Promise.all(
+        cameraIdList.map(
+        async cameraId => await ItemsService.getItemBinaryForCameraById(this.id, cameraId)  // eslint-disable-line
+        )
+      )
+      this.images = binariesList.map(binnaries => this.arrayBufferToBase64(binnaries.data))
+    }
+  },
   computed: {
     loadItem() {
       return this.changeItem()

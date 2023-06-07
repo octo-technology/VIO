@@ -52,7 +52,7 @@ export default {
         Object.keys(this.item.decision).length !== 0
       )
     },
-    has_item_id() {
+    has_serial_number() {
       return (
         this.item !== null &&
         this.item !== undefined &&

@@ -1,15 +1,15 @@
 <template>
   <div class="container">
     <h1 class="title">
-      Acquisition history
+      History
     </h1>
     <v-data-table :headers="columns" :items="listItems" :items-per-page="10" @click:row="goToDetails" />
     <div>
       <v-btn color="blue-grey" class="ma-2 white--text" to="/upload-camera">
-        New acquisition with Camera
+        Acquisition from webcam
       </v-btn>
       <v-btn color="blue-grey" class="ma-2 white--text" to="/trigger">
-        New acquisition Without Camera
+        Acquisition from specific camera
       </v-btn>
     </div>
   </div>
