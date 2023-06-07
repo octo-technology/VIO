@@ -3,7 +3,7 @@
     <v-list-item>
       <v-list-item-content>
         <v-list-item-title class="headline mb-1">
-          {{ serial_number }}
+          {{ item_id }}
         </v-list-item-title>
       </v-list-item-content>
 
@@ -52,16 +52,16 @@ export default {
         Object.keys(this.item.decision).length !== 0
       )
     },
-    has_serial_number() {
+    has_item_id() {
       return (
         this.item !== null &&
         this.item !== undefined &&
-        this.item.serial_number !== undefined &&
-        this.item.serial_number !== null
+        this.item.id !== undefined &&
+        this.item.id !== null
       )
     },
-    serial_number() {
-      if (this.has_serial_number) return this.item.serial_number
+    item_id() {
+      if (this.has_item_id) return this.item.id
       return 'UNKNOW_SERIAL'
     },
     get_category() {
