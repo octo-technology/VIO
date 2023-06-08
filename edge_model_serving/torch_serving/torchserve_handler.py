@@ -10,7 +10,7 @@ import io
 from PIL import Image
 
 
-def isBase64(sb):
+def is_base64(sb: str | bytearray | bytes) -> bool:
     try:
         if isinstance(sb, str):
         # If there's any unicode here, an exception will be thrown and the function will return false
@@ -30,7 +30,7 @@ class ModelHandler(BaseHandler):
     A custom model handler implementation.
     """
 
-    img_size = 640
+    IMG_SIZE = 640
     """Image size (px). Images will be resized to this resolution before inference.
     """
 
@@ -38,7 +38,7 @@ class ModelHandler(BaseHandler):
         # call superclass initializer
         super().__init__()
 
-    def preprocess(self, data):
+    def preprocess(self, data: list[object]) -> torch.Tensor:
         """Converts input images to float tensors.
 
         Args:
@@ -51,7 +51,7 @@ class ModelHandler(BaseHandler):
 
         transform = tf.Compose([
             tf.ToTensor(),
-            tf.Resize((self.img_size, self.img_size))
+            tf.Resize((self.IMG_SIZE, self.IMG_SIZE))
         ])
 
         # load images
@@ -62,7 +62,7 @@ class ModelHandler(BaseHandler):
             # Compat layer: normally the envelope should just return the data
             # directly, but older versions of Torchserve didn't have envelope.
             image = row.get("data") or row.get("body")
-            if isBase64(image):
+            if is_base64(image):
                 # if the image is a string of bytesarray.
                 image = base64.b64decode(image)
 
@@ -74,7 +74,7 @@ class ModelHandler(BaseHandler):
                 image = torch.FloatTensor(image)
 
             # force convert to tensor
-            # and resize to [img_size, img_size]
+            # and resize to [IMG_SIZE, IMG_SIZE]
             image = transform(image)
 
             images.append(image)
@@ -85,7 +85,7 @@ class ModelHandler(BaseHandler):
 
         return images_tensor
 
-    def postprocess(self, inference_output):
+    def postprocess(self, inference_output: list[object]) -> list[object]:
         # perform NMS (nonmax suppression) on model outputs
         pred = non_max_suppression(inference_output[0])
 
@@ -95,7 +95,7 @@ class ModelHandler(BaseHandler):
         for i, image_detections in enumerate(pred):  # axis 0: for each image
             for det in image_detections:  # axis 1: for each detection
                 # x1,y1,x2,y2 in normalized image coordinates (i.e. 0.0-1.0)
-                xyxy = det[:4] / self.img_size
+                xyxy = det[:4] / self.IMG_SIZE
                 # confidence value
                 conf = det[4].item()
                 # index of predicted class
@@ -118,7 +118,7 @@ class ModelHandler(BaseHandler):
 
 
 def non_max_suppression(prediction, conf_thres=0.25, iou_thres=0.45, classes=None, agnostic=False, multi_label=False,
-                        labels=(), max_det=300):
+                        labels=(), max_det=300) -> list[object]:
     """Runs Non-Maximum Suppression (NMS) on inference results
 
     Returns:
