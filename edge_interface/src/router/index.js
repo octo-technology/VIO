@@ -44,7 +44,7 @@ const routes = [
   },
   {
     path: '/test_config',
-    name: 'Config',
+    name: 'VConfig',
     component: VConfig
   }
 ]

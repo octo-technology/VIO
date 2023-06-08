@@ -110,8 +110,6 @@ export default {
   },
   methods: {
     changeConfiguration(itemCategory) {
-      console.log('HEYYYY')
-      console.log(itemCategory)
       ConfigService.setActiveConfig(itemCategory)
         .then(async response => {
           this.message = `Config ${JSON.parse(response.config.data).config_name} set`
