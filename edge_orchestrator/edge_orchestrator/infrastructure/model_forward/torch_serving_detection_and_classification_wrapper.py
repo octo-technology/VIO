@@ -1,8 +1,8 @@
 import io
+import copy
+import base64
 from pathlib import Path
 from typing import Dict
-
-import aiohttp
 import requests
 import numpy as np
 from PIL import Image
@@ -11,9 +11,6 @@ from edge_orchestrator import logger
 from edge_orchestrator.domain.models.model_infos import ModelInfos
 from edge_orchestrator.domain.ports.model_forward import ModelForward
 
-import base64
-import json
-import copy
 
 class TorchServingDetectionClassificationWrapper(ModelForward):
 
@@ -51,7 +48,7 @@ class TorchServingDetectionClassificationWrapper(ModelForward):
     def perform_post_processing(self, model: ModelInfos, json_outputs: dict) -> dict:
         inference_output = {}
         class_names = []
-        if model.boxes_coordinates == None:
+        if model.boxes_coordinates is None:
             json_outputs_copy = copy.deepcopy(json_outputs)
             for row in json_outputs_copy:
                 row.pop(model.objectness_scores, None)
@@ -77,9 +74,11 @@ class TorchServingDetectionClassificationWrapper(ModelForward):
             # Hence, the switch here
             logger.info(f"box {box_coordinates_in_current_image} - image {self.image_shape}")
 
-            height = self.image_shape[0]
-            width = self.image_shape[1]
-            original_dims = np.array([width, height, width, height])
+            # info: old way to display bounding box directly in the backend
+            # not compatible with an image size different between front and back
+            # height = self.image_shape[0]
+            # width = self.image_shape[1]
+            # original_dims = np.array([width, height, width, height])
             # box_coordinates_in_current_image = box_coordinates_in_current_image * original_dims
             box_coordinates_in_current_image = box_coordinates_in_current_image.astype(float).tolist()
 
@@ -91,7 +90,7 @@ class TorchServingDetectionClassificationWrapper(ModelForward):
                 inference_output[f'object_{box_index + 1}'] = {
                     'location': box_coordinates_in_current_image,
                     'score': box_objectness_score_in_current_image,
-                    'label': boxes_detected_in_current_image_labels
+                    'label': class_names[int(boxes_detected_in_current_image_labels)]
                 }
 
         return inference_output
