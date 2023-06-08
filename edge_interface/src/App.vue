@@ -70,16 +70,16 @@
       <v-toolbar-title>VIO UI</v-toolbar-title>
     </v-app-bar>
 
-    <v-content>
+    <v-main>
       <v-container fluid>
         <v-row align="start">
           <router-view></router-view>
         </v-row>
       </v-container>
-    </v-content>
+    </v-main>
 
     <v-footer app>
-      <span>&copy; 2021</span>
+      <span>&copy; 2023</span>
     </v-footer>
   </v-app>
 </template>

@@ -1,15 +1,25 @@
-FROM python:3.7
+FROM python:3.8-slim
 
 WORKDIR /torch_serving
 
-COPY requirements.txt .
+ENV VIRTUAL_ENV=/opt/venv
+RUN python -m venv $VIRTUAL_ENV
+ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
-RUN pip install --upgrade pip
+# Install OpenJDK
+RUN apt-get update && \
+    apt-get install -y openjdk-11-jdk && \
+    apt-get clean;
+
+RUN pip install --upgrade pip && \
+    pip install --pre torch torchvision --index-url https://download.pytorch.org/whl/nightly/cpu
+
+COPY requirements.txt .
 RUN pip install -r requirements.txt
 
-RUN download-models
-RUN build-mar-file
+COPY ./config.properties ./config.properties
+COPY ./models ./models
 
-COPY ../models/torch ./models
+EXPOSE 8080
 
-RUN torchserve --start --model-store ../models --models fastrcnn=fastrcnn.mar
+CMD torchserve --start --model-store ./models --models yolo=yolo5.mar --ts-config ./config.properties --foreground
