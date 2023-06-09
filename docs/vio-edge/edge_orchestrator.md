@@ -8,7 +8,7 @@ The edge_orchestrator orchestrates the following steps as soon as it is triggere
 4. model inference on images
 5. saving results
 
- ![vio-architecture-stack](images/edge_orchestrator-actions.png)
+ ![vio-architecture-stack](../images/edge_orchestrator-actions.png)
 
 ## Set up your development environment
 

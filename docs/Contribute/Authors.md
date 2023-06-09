@@ -1,4 +1,5 @@
-This AI asset was designed by Accenture Technology in collaboration with Octo Technology, if you have any interest please make sure to drop us an email:
+This AI asset was designed by Accenture Technology in collaboration with Octo Technology, if you have any interest
+please make sure to drop us an email:
 
     octo.data-ai.augi@accenture.com
 
