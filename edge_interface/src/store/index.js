@@ -1,48 +1,54 @@
-import Vue from "vue";
-import Vuex from "vuex";
-import createPersistedState from "vuex-persistedstate";
+/* eslint-disable no-shadow */
+import Vue from 'vue'
+import Vuex from 'vuex'
+import createPersistedState from 'vuex-persistedstate'
+import ItemsService from '@/services/ItemsService.js'
 
-Vue.use(Vuex);
-import ItemsService from "@/services/ItemsService";
+Vue.use(Vuex)
 
-const mutations = {
-  SET_ITEMS(state, list_items) {
+export const state = {
+  listItems: [],
+  imagePath: null
+}
+
+export const mutations = {
+  SET_ITEMS(state, listItems) {
     // Sort list from more recent to oldest
-    list_items.sort((recent, old) => {
-      let date_recent = new Date(recent.received_time),
-        date_old = new Date(old.received_time);
-      return date_old - date_recent;
-    });
-    state.listItems = list_items;
+    listItems.sort((recent, old) => {
+      const dateRecent = new Date(recent.received_time)
+      const dateOld = new Date(old.received_time)
+      return dateOld - dateRecent
+    })
+    state.listItems = listItems
+  },
+  SET_IMAGE_PATH(state, imagePath) {
+    state.imagePath = imagePath
   }
-};
+}
 
-const actions = {
+export const actions = {
   async load_items({ commit }) {
-    ItemsService.get_items()
+    ItemsService.getItems()
       .then(r => r.data)
       .then(items => {
-        commit("SET_ITEMS", items);
-      });
+        commit('SET_ITEMS', items)
+      })
   }
-};
+}
 
-const getters = {
+export const getters = {
   getItemById: state => id => {
-    console.log(id);
-    console.log(state.listItems);
-    return state.listItems.find(item => item.id === id);
+    return state.listItems.find(item => item.id === id)
+  },
+  imagePath(state) {
+    return state.imagePath
   }
-};
+}
 
 export default new Vuex.Store({
-  state: {
-    listItems: []
-  },
+  state,
   plugins: [createPersistedState({ storage: window.sessionStorage })],
   actions,
   mutations,
   getters
-});
-
-// https://www.npmjs.com/package/vuex-persistedstate
+})

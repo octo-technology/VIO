@@ -1,4 +1,4 @@
-import axios from 'axios'
+import ConfigApiService from './configApi.service.js'
 
 function isEnvVariableDefine(envVariable) {
   return envVariable === '' || envVariable === undefined
@@ -13,17 +13,10 @@ const hostname = isEnvVariableDefine(envHostname) ? location.hostname : envHostn
 const envPort = process.env.VUE_APP_API_PORT
 const port = isEnvVariableDefine(envPort) ? 8000 : envPort
 
-const apiURL = protocol === 'http' ? `${protocol}://${hostname}:${port}` : `${protocol}://${hostname}`
+const configApiUrl = protocol === 'http' ? `${protocol}://${hostname}:${port}` : `${protocol}://${hostname}`
 
-export const baseURL = `${apiURL}/api/v1`
+export const configApiHost = `${configApiUrl}/api/v1`
 
-export default () => {
-  return axios.create({
-    baseURL,
-    withCredentials: false,
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json'
-    }
-  })
-}
+const configApiService = new ConfigApiService({ configApiHost })
+
+export default { configApiService }

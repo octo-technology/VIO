@@ -7,14 +7,14 @@
       width: xMax - xMin + 'px',
       height: yMax - yMin + 'px'
     }"
-  ></div>
+  />
 </template>
 
 <script>
 export default {
-  name: "box",
-  props: ["x-min", "y-min", "x-max", "y-max"]
-};
+  name: 'Box',
+  props: ['x-min', 'y-min', 'x-max', 'y-max']
+}
 </script>
 
 <style lang="scss" scoped>

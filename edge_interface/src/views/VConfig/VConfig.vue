@@ -87,10 +87,10 @@
 </template>
 
 <script>
-import ConfigService from '@/services/ConfigService.js'
+import { configApiService } from '@/services' // eslint-disable-line
 
 export default {
-  name: 'Config',
+  name: 'VConfig',
 
   data() {
     return {
@@ -105,18 +105,23 @@ export default {
   },
 
   created() {
-    ConfigService.getConfigs().then(response => (this.configs = response.data)) // eslint-disable-line
-    ConfigService.getInventory().then(response => (this.inventory = response.data)) // eslint-disable-line
+    /* eslint-disable */
+    configApiService.getConfigs().then(configs => (this.configs = configs))
+    configApiService.getInventory().then(inventory => (this.inventory = inventory))
+    /* eslint-disable */
   },
   methods: {
     changeConfiguration(itemCategory) {
-      ConfigService.setActiveConfig(itemCategory)
+      console.log("HEEEEEYYYYY")
+      console.log("HEEEEEYYYYY")
+      console.log(itemCategory)
+      configApiService
+        .setActiveConfig(itemCategory)
         .then(async response => {
           this.message = `Config ${JSON.parse(response.config.data).config_name} set`
           this.color = 'green'
         })
         .catch(reason => {
-          console.log(reason) // eslint-disable-line
           if (reason.response.status === 403) {
             this.message = reason.response.data.message
             this.color = 'red'

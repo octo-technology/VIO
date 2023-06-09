@@ -5,17 +5,17 @@
       <h4>Upload the needed files to get a decision</h4>
     </div>
 
-    <upload-files></upload-files>
+    <upload-files />
   </div>
 </template>
 
 <script>
-import UploadFiles from "@/components/UploadFiles";
+import UploadFiles from '@/components/UploadFiles.vue'
 
 export default {
-  name: "item-upload",
+  name: 'ItemUpload',
   components: {
     UploadFiles
   }
-};
+}
 </script>

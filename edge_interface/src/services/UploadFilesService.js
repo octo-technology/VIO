@@ -1,22 +1,16 @@
-import Api from "@/services/api";
+import Api from '@/services/api.js'
 
 class UploadFilesService {
-  upload(inputs, sensors, binaries) {
-    let formData = new FormData();
-    formData.append("inputs", inputs);
-    formData.append("sensors", sensors);
-    //formData.append("binaries", binaries);
+  upload(inputs, sensors, binaries) { // eslint-disable-line
+    const formData = new FormData()
+    formData.append('inputs', inputs)
+    formData.append('sensors', sensors)
 
-    for (let i = 0; i < binaries.length; i++) {
-      formData.append("binaries", binaries[i]);
+    for (let i = 0; i < binaries.length; i++) { // eslint-disable-line
+      formData.append('binaries', binaries[i])
     }
-
-    for (let value of formData.values()) {
-      console.log(value);
-    }
-
-    return Api().put("/items", formData);
+    return Api().put('/items', formData)
   }
 }
 
-export default new UploadFilesService();
+export default new UploadFilesService()

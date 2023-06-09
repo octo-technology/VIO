@@ -1,16 +1,21 @@
-import Api from "@/services/api";
+import Api from '@/services/api.js'
 
 class ConfigService {
-  async get_configs() {
-    return await Api().get("/configs");
+  async getConfigs() {
+    const configs = await Api().get('/configs')
+    return configs
   }
-  async get_inventory() {
-    return await Api().get("/inventory");
+
+  async getInventory() {
+    const inventory = await Api().get('/inventory')
+    return inventory
   }
-  async set_active_config(config_name) {
-    const body = { config_name: config_name };
-    return await Api().post("/configs/active", body);
+
+  async setActiveConfig(configName) {
+    const body = { config_name: configName }
+    const activeConfig = await Api().post('/configs/active', body)
+    return activeConfig
   }
 }
 
-export default new ConfigService();
+export default new ConfigService()

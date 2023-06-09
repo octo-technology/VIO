@@ -1,55 +1,56 @@
-import Vue from "vue";
-import VueRouter from "vue-router";
+import Vue from 'vue'
+import VueRouter from 'vue-router'
+import VUploadView from '../views/VUploadView/VUploadView.vue'
+import VConfig from '../views/VConfig/VConfig.vue'
 
-Vue.use(VueRouter);
+Vue.use(VueRouter)
 
 const routes = [
   {
-    path: "/",
-    redirect: "/item-list"
+    path: '/',
+    redirect: '/item-list'
   },
   {
-    path: "/item-show/:id",
+    path: '/item-show/:id',
     props: true,
-    name: "item-show",
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/ItemShow.vue")
+    name: 'item-show',
+    component: () => import(/* webpackChunkName: "about" */ '../views/ItemShow.vue')
   },
   {
-    path: "/item-list",
-    name: "Item-list",
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/ItemList.vue")
+    path: '/test',
+    props: true,
+    name: 'VUploadView',
+    component: VUploadView
   },
   {
-    path: "/upload-camera",
-    name: "Upload Camera",
-    component: () => import("../views/UploadView.vue")
+    path: '/item-list',
+    name: 'Item-list',
+    component: () => import(/* webpackChunkName: "about" */ '../views/ItemList.vue')
   },
   {
-    path: "/upload-files",
-    name: "Upload Files",
-    component: () => import("../views/UploadFilesView.vue")
+    path: '/upload-camera',
+    name: 'Upload Camera',
+    component: () => import('../views/UploadView.vue')
   },
   {
-    path: "/trigger",
-    name: "Trigger Capture",
-    component: () => import("../views/TriggerView.vue")
+    path: '/trigger',
+    name: 'Trigger Capture',
+    component: () => import('../views/TriggerView.vue')
   },
   {
-    path: "/config",
-    name: "Config",
-    component: () => import("../views/Config.vue")
+    path: '/config',
+    name: 'Config',
+    component: () => import('../views/Config.vue')
   },
   {
-    path: "/about",
-    name: "About",
-    component: () => import("../views/About.vue")
+    path: '/test_config',
+    name: 'VConfig',
+    component: VConfig
   }
-];
+]
 
 const router = new VueRouter({
   routes
-});
+})
 
-export default router;
+export default router

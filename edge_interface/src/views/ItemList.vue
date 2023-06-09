@@ -1,83 +1,51 @@
 <template>
-  <v-col cols="12">
-    <v-row align="start">
-      <v-col cols="12">
-        <h1 class="title">Item List</h1>
-      </v-col>
-    </v-row>
-    <v-row align="start">
-      <v-col cols="12">
-        <v-card tile>
-          <v-simple-table>
-            <template v-slot:default>
-              <thead>
-                <tr>
-                  <th v-for="(col, index) in columns" :key="index">
-                    {{ col }}
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr
-                  v-for="item in listItems"
-                  :key="item.id"
-                  @click="goToDetails(item.id)"
-                >
-                  <td v-for="(col, index) in columns" :key="index">
-                    {{ getItemLine(item)[col] }}
-                  </td>
-                </tr>
-              </tbody>
-            </template>
-          </v-simple-table>
-        </v-card>
-      </v-col>
-    </v-row>
-  </v-col>
+  <div class="container">
+    <h1 class="title">
+      History
+    </h1>
+    <v-data-table :headers="columns" :items="listItems" :items-per-page="10" @click:row="goToDetails" />
+    <div>
+      <v-btn color="blue-grey" class="ma-2 white--text" to="/upload-camera">
+        Acquisition from webcam
+      </v-btn>
+      <v-btn color="blue-grey" class="ma-2 white--text" to="/trigger">
+        Acquisition from specific camera
+      </v-btn>
+    </div>
+  </div>
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState } from 'vuex'
 
 export default {
-  name: "item-list",
+  name: 'ItemList',
 
   data() {
     return {
       columns: [
-        "id",
-        "station configuration",
-        "state",
-        "error",
-        "received at",
-        "decision"
+        { text: 'Acquisition Id', value: 'id' },
+        { text: 'Configuration', value: 'station_config' },
+        { text: 'Status', value: 'state' },
+        { text: 'Error', value: 'error' },
+        { text: 'Reception Timestamp', value: 'received_time' },
+        { text: 'Decision', value: 'decision' }
       ]
-    };
+    }
   },
 
-  computed: mapState(["listItems"]),
+  computed: mapState(['listItems']),
 
-  beforeMount: function() {
-    this.$store.dispatch("load_items");
+  beforeMount() {
+    this.$store.dispatch('load_items')
   },
 
   methods: {
-    goToDetails(id) {
-      this.$router.push({ name: "item-show", params: { id: id } });
-    },
-    getItemLine(item) {
-      let itemLine = {
-        id: item.id,
-        "station configuration": item.station_config,
-        state: item.state,
-        error: item.error,
-        "received at": item.received_time,
-        decision: item.decision // getSensorsInferences(item)
-      };
-      return itemLine;
+    goToDetails(item) {
+      this.$router.push({ name: 'item-show', params: { id: item.id } })
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

@@ -1,23 +1,27 @@
-import Api from "@/services/api";
+import Api from '@/services/api.js'
 
 class ItemsService {
-  async get_items() {
-    return await Api().get("/items");
+  async getItems() {
+    const items = await Api().get('/items')
+    return items
   }
 
-  async get_item_by_id(id) {
-    return await Api().get(`/items/${id}`);
+  async getItemById(id) {
+    const itemsById = await Api().get(`/items/${id}`)
+    return itemsById
   }
 
-  async get_item_state_by_id(id) {
-    return await Api().get(`/items/${id}/state`);
+  async getItemStateById(id) {
+    const itemsResponse = await Api().get(`/items/${id}/state`)
+    return itemsResponse
   }
 
-  async getItemBinaryForCameraById(id, camera_id) {
-    return await Api().get(`/items/${id}/binaries/${camera_id}`, {
-      responseType: "arraybuffer"
-    });
+  async getItemBinaryForCameraById(id, cameraId) {
+    const itemBynaryForCamera = await Api().get(`/items/${id}/binaries/${cameraId}`, {
+      responseType: 'arraybuffer'
+    })
+    return itemBynaryForCamera
   }
 }
 
-export default new ItemsService();
+export default new ItemsService()

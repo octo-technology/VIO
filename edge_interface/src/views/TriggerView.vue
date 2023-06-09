@@ -5,33 +5,33 @@
       <h4>Just click on the button below, VIO will do the rest</h4>
     </div>
 
-    <Inference :errorMessage="errorMessage" @update-error-message="update" />
+    <Inference :error-message="errorMessage" @update-error-message="update" />
 
     <div v-if="errorMessage !== null" class="no_configuration">
-      <v-alert color="red" dismissible elevation="10" type="warning"
-        >{{ this.errorMessage }}
+      <v-alert color="red" dismissible elevation="10" type="warning">
+        {{ this.errorMessage }}
       </v-alert>
     </div>
   </div>
 </template>
 
 <script>
-import Inference from "@/components/Inference";
+import Inference from '@/components/Inference.vue'
 
 export default {
-  name: "item-trigger",
+  name: 'ItemTrigger',
   components: { Inference },
   data() {
     return {
       errorMessage: null
-    };
+    }
   },
   methods: {
     update(errorMessage) {
-      this.errorMessage = errorMessage;
+      this.errorMessage = errorMessage
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>
