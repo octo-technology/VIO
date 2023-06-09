@@ -1,41 +1,21 @@
 <template>
   <div>
     <v-file-input accept=".json" v-model="inputs" label="inputs"></v-file-input>
-    <v-file-input
-      accept=".json"
-      v-model="sensors"
-      label="sensors"
-    ></v-file-input>
-    <v-file-input
-      accept="image/png, image/jpeg, image/bmp"
-      v-model="binaries"
-      label="binaries"
-      prepend-icon="mdi-camera"
-      multiple
-    ></v-file-input>
+    <v-file-input accept=".json" v-model="sensors" label="sensors"></v-file-input>
+    <v-file-input accept="image/png, image/jpeg, image/bmp" v-model="binaries" label="binaries" prepend-icon="mdi-camera"
+      multiple></v-file-input>
 
     <v-btn color="blue-grey" class="ma-2 white--text" @click="upload">
       Upload
       <v-icon right dark>mdi-cloud-upload</v-icon>
     </v-btn>
 
-    <v-btn
-      color="blue"
-      class="ma-2 white--text"
-      @click="uploadNew"
-      :disabled="isDisabled"
-    >
+    <v-btn color="blue" class="ma-2 white--text" @click="uploadNew" :disabled="isDisabled">
       <v-icon left dark>mdi-refresh</v-icon>
       Upload new item
     </v-btn>
 
-    <v-btn
-      v-if="itemId != ''"
-      type="success"
-      color="blue-grey"
-      class="ma-2 white--text"
-      @click="goToDetails(itemId)"
-    >
+    <v-btn v-if="itemId != ''" type="success" color="blue-grey" class="ma-2 white--text" @click="goToDetails(itemId)">
       <v-icon left dark>mdi-google-analytics</v-icon>
       Result page for item: {{ itemId }}
     </v-btn>

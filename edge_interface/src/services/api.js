@@ -20,7 +20,9 @@ const apiURL =
     ? `${protocol}://${hostname}:${port}`
     : `${protocol}://${hostname}`;
 
-export const baseURL = apiURL + "/api/v1";
+export let baseURL = apiURL + "/api/v1";
+// baseURL = "http://localhost:8010/api/v1";
+
 console.log(`Server listening on: ${baseURL}`);
 
 export default () => {

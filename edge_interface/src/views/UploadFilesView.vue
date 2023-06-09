@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import UploadFiles from "@/components/UploadFiles";
+import UploadFiles from "@/views/components/UploadFiles";
 
 export default {
   name: "item-upload",

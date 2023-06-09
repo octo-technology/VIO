@@ -1,12 +1,7 @@
 <template>
   <v-card tile>
     <v-card-title class="img-title mb-0 pb-0">
-      <img
-        ref="card_image"
-        :src="urlBinary"
-        width="100%"
-        @load="on_image_loaded"
-      />
+      <img ref="card_image" :src="urlBinary" width="100%" @load="on_image_loaded" />
       <canvas ref="card_canvas" v-bind:class="{ loaded: isImageLoaded }">
       </canvas>
     </v-card-title>
@@ -19,26 +14,14 @@
       </v-list-item-content>
 
       <div v-show="has_decision">
-        <v-list-item-avatar
-          tile
-          size="40"
-          :color="getDecisionState === 'OK' ? 'green' : 'red'"
-          class="mr-0"
-          >{{ getDecisionState }}
+        <v-list-item-avatar tile size="40" :color="getDecisionState === 'OK' ? 'green' : 'red'" class="mr-0">{{
+          getDecisionState }}
         </v-list-item-avatar>
       </div>
     </v-list-item>
 
     <div v-show="has_decision">
-      <v-alert
-        tile
-        type="error"
-        text
-        v-for="(errors, index) in getErrors"
-        :key="index"
-        border="right"
-        colored-border
-      >
+      <v-alert tile type="error" text v-for="(errors, index) in getErrors" :key="index" border="right" colored-border>
         {{ errors }}
       </v-alert>
     </div>
@@ -75,7 +58,7 @@ import { getUrlBinary } from "@/services/methods";
 
 export default {
   name: "sensorcard",
-  data: function() {
+  data: function () {
     return {
       isImageLoaded: false,
       show: false

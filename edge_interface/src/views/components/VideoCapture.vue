@@ -1,12 +1,31 @@
 <template>
-  <video
-    ref="video"
-    :width="width"
-    :height="height"
-    :src="source"
-    :autoplay="autoplay"
-    :playsinline="playsinline"
-  />
+  <div>
+    <video ref="video" :width="width" :height="height" :src="source" :autoplay="autoplay" :playsinline="playsinline" />
+    <v-fab-transition>
+      <!-- <v-btn color="grey" outline absolute bottom text left fab style="bottom: 40px" @click="trigger">
+        <v-icon>mdi-cog</v-icon>
+      </v-btn> -->
+
+      <v-speed-dial v-model="fab" outlined absolute bottom left text direction="top" transition="slide y reverse">
+        <template v-slot:activator>
+          <v-btn v-model="fab" color="gray darken-2" dark fab text>
+            <v-icon v-if="fab">
+              mdi-close
+            </v-icon>
+            <v-icon v-else>
+              mdi-cog
+            </v-icon>
+          </v-btn>
+        </template>
+
+        <v-btn v-for="cam, index in cameras" :key="index" rounded dark color="grey darken-2" absolute bottom style="left: -5px" @click="changeCamera(cam.id)">
+          <v-icon>mdi-camera</v-icon>{{cam.label}}
+        </v-btn>
+
+
+      </v-speed-dial>
+    </v-fab-transition>
+  </div>
 </template>
 
 <script>
@@ -14,34 +33,13 @@ export default {
   name: "VideoCapture",
 
   props: {
-    width: {
-      type: [Number, String],
-      default: "100%"
-    },
-    height: {
-      type: [Number, String],
-      default: 500
-    },
-    autoplay: {
-      type: Boolean,
-      default: true
-    },
-    screenshotFormat: {
-      type: String,
-      default: "image/jpeg"
-    },
-    selectFirstDevice: {
-      type: Boolean,
-      default: false
-    },
-    deviceId: {
-      type: String,
-      default: null
-    },
-    playsinline: {
-      type: Boolean,
-      default: true
-    },
+    width: { type: [Number, String], default: "100%" },
+    height: { type: [Number, String], default: "400" },
+    autoplay: { type: Boolean, default: true },
+    screenshotFormat: { type: String, default: "image/jpeg" },
+    selectFirstDevice: { type: Boolean, default: false },
+    deviceId: { type: String, default: null },
+    playsinline: { type: Boolean, default: true },
     resolution: {
       type: Object,
       default: null,
@@ -56,12 +54,13 @@ export default {
       source: null,
       canvas: null,
       camerasListEmitted: false,
-      cameras: []
+      cameras: [],
+      fab: false,
     };
   },
 
   watch: {
-    deviceId: function(id) {
+    deviceId: function (id) {
       this.changeCamera(id);
     }
   },
@@ -97,7 +96,7 @@ export default {
         }
 
         // Otherwise, wrap the call to the old navigator.getUserMedia with a Promise
-        return new Promise(function(resolve, reject) {
+        return new Promise(function (resolve, reject) {
           getUserMedia.call(navigator, constraints, resolve, reject);
         });
       };
@@ -131,6 +130,8 @@ export default {
               this.cameras.push(deviceInfo);
             }
           }
+
+          // console.log("cam",this.cameras)
         })
         .then(() => {
           if (!this.camerasListEmitted) {
@@ -289,3 +290,9 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.v-speed-dial__list  {
+  align-items: left;
+}
+</style>

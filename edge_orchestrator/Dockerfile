@@ -7,8 +7,7 @@ COPY edge_orchestrator ./edge_orchestrator
 
 RUN apt-get update
 RUN apt-get install fswebcam -y
-RUN pip install --upgrade pip
-RUN pip install .
+RUN pip install --upgrade pip  && pip install .
 
 ENV API_CONFIG docker
 
