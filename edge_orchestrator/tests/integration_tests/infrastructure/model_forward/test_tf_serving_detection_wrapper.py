@@ -40,7 +40,7 @@ class TestTFServingDetectionWrapper:
         )
 
         expected_model_output = {
-            'object_1': {'label': 'cat', 'location': [370, 2, 738, 340], 'score': 0.653498411}
+            'object_1': {'label': 'cat', 'location': [370, 2, 738, 340], 'score': 0.652510464}
         }
 
         # When

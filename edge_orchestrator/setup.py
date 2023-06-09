@@ -25,7 +25,7 @@ setup(
         'azure-iot-device==2.12.0',
         'fastapi==0.80.0',
         'numpy==1.24.1',
-        'Pillow==8.4.0',
+        'Pillow==9.3.0',
         'psycopg2-binary==2.9.5',
         'pymongo==4.3.3',
         'uvicorn==0.20.0',
