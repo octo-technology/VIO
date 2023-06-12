@@ -1,6 +1,7 @@
 """Custom TorchServe model handler for YOLOv5 models.
 """
 from ts.torch_handler.base_handler import BaseHandler
+from typing import Union, List
 import numpy as np
 import base64
 import torch
@@ -10,10 +11,10 @@ import io
 from PIL import Image
 
 
-def is_base64(sb: str | bytearray | bytes) -> bool:
+def is_base64(sb: Union[str, bytearray, bytes]) -> bool:
     try:
         if isinstance(sb, str):
-        # If there's any unicode here, an exception will be thrown and the function will return false
+            # If there's any unicode here, an exception will be thrown and the function will return false
             sb_bytes = bytes(sb, 'ascii')
         if isinstance(sb, bytearray):
             sb_bytes = bytes(sb)
@@ -24,6 +25,7 @@ def is_base64(sb: str | bytearray | bytes) -> bool:
         return base64.b64encode(base64.b64decode(sb_bytes)) == sb_bytes
     except Exception:
         return False
+
 
 class ModelHandler(BaseHandler):
     """
@@ -38,7 +40,7 @@ class ModelHandler(BaseHandler):
         # call superclass initializer
         super().__init__()
 
-    def preprocess(self, data: list[object]) -> torch.Tensor:
+    def preprocess(self, data: List[torch.Tensor]) -> torch.Tensor:
         """Converts input images to float tensors.
 
         Args:
@@ -85,7 +87,7 @@ class ModelHandler(BaseHandler):
 
         return images_tensor
 
-    def postprocess(self, inference_output: list[object]) -> list[object]:
+    def postprocess(self, inference_output: List[object]) -> List[object]:
         # perform NMS (nonmax suppression) on model outputs
         pred = non_max_suppression(inference_output[0])
 
@@ -118,19 +120,20 @@ class ModelHandler(BaseHandler):
 
 
 def non_max_suppression(prediction, conf_thres=0.25, iou_thres=0.45, classes=None, agnostic=False, multi_label=False,
-                        labels=(), max_det=300) -> list[object]:
-    """Runs Non-Maximum Suppression (NMS) on inference results
+                        labels=(), max_det=300) -> List[object]:
+    """
+    Runs Non-Maximum Suppression (NMS) on inference results
+    NMS is a computer vision method that selects a single entity out of many overlapping entities
 
     Returns:
          list of detections, on (n,6) tensor per image [xyxy, conf, cls]
     """
 
-    nc = prediction.shape[2] - 5  # number of classes
-    xc = prediction[..., 4] > conf_thres  # candidates
+    number_classes = prediction.shape[2] - 5  # number of classes
+    boxes_candidates = prediction[..., 4] > conf_thres  # candidates
 
     # Checks
-    assert 0 <= conf_thres <= 1, f'Invalid Confidence threshold {conf_thres}, valid values are between 0.0 and 1.0'
-    assert 0 <= iou_thres <= 1, f'Invalid IoU {iou_thres}, valid values are between 0.0 and 1.0'
+    non_max_suppression_parameters_checks(conf_thres, iou_thres)
 
     # Settings
     # (pixels) minimum and maximum box width and height
@@ -138,87 +141,92 @@ def non_max_suppression(prediction, conf_thres=0.25, iou_thres=0.45, classes=Non
     max_nms = 30000  # maximum number of boxes into torchvision.ops.nms()
     time_limit = 10.0  # seconds to quit after
     redundant = True  # require redundant detections
-    multi_label &= nc > 1  # multiple labels per box (adds 0.5ms/img)
+    multi_label &= number_classes > 1  # multiple labels per box (adds 0.5ms/img)
     merge = False  # use merge-NMS
 
     output = [torch.zeros((0, 6), device=prediction.device)
               ] * prediction.shape[0]
-    for xi, x in enumerate(prediction):  # image index, image inference
+    for index, inference in enumerate(prediction):  # image index, image inference
         # Apply constraints
-        # x[((x[..., 2:4] < min_wh) | (x[..., 2:4] > max_wh)).any(1), 4] = 0  # width-height
-        x = x[xc[xi]]  # confidence
+        # inference[((inference[..., 2:4] < min_wh) | (inference[..., 2:4] > max_wh)).any(1), 4] = 0  # width-height
+        inference = inference[boxes_candidates[index]]  # confidence
 
         # Cat apriori labels if autolabelling
-        if labels and len(labels[xi]):
-            l = labels[xi]
-            v = torch.zeros((len(l), nc + 5), device=x.device)
-            v[:, :4] = l[:, 1:5]  # box
+        if labels and len(labels[index]):
+            label = labels[index]
+            v = torch.zeros((len(label), number_classes + 5), device=inference.device)
+            v[:, :4] = label[:, 1:5]  # box
             v[:, 4] = 1.0  # conf
-            v[range(len(l)), l[:, 0].long() + 5] = 1.0  # cls
-            x = torch.cat((x, v), 0)
+            v[range(len(label)), label[:, 0].long() + 5] = 1.0  # cls
+            inference = torch.cat((inference, v), 0)
 
         # If none remain process next image
-        if not x.shape[0]:
+        if not inference.shape[0]:
             continue
 
         # Compute conf
-        x[:, 5:] *= x[:, 4:5]  # conf = obj_conf * cls_conf
+        inference[:, 5:] *= inference[:, 4:5]  # conf = obj_conf * cls_conf
 
         # Box (center x, center y, width, height) to (x1, y1, x2, y2)
-        box = xywh2xyxy(x[:, :4])
+        box = convert_box_definition(inference[:, :4])
 
         # Detections matrix nx6 (xyxy, conf, cls)
         if multi_label:
-            i, j = (x[:, 5:] > conf_thres).nonzero(as_tuple=False).T
-            x = torch.cat((box[i], x[i, j + 5, None], j[:, None].float()), 1)
+            i, j = (inference[:, 5:] > conf_thres).nonzero(as_tuple=False).T
+            inference = torch.cat((box[i], inference[i, j + 5, None], j[:, None].float()), 1)
         else:  # best class only
-            conf, j = x[:, 5:].max(1, keepdim=True)
-            x = torch.cat((box, conf, j.float()), 1)[
+            conf, j = inference[:, 5:].max(1, keepdim=True)
+            inference = torch.cat((box, conf, j.float()), 1)[
                 conf.view(-1) > conf_thres]
 
         # Filter by class
         if classes is not None:
-            x = x[(x[:, 5:6] == torch.tensor(classes, device=x.device)).any(1)]
+            inference = inference[(inference[:, 5:6] == torch.tensor(classes, device=inference.device)).any(1)]
 
         # Apply finite constraint
-        # if not torch.isfinite(x).all():
-        #     x = x[torch.isfinite(x).all(1)]
+        # if not torch.isfinite(inference).all():
+        #     inference = inference[torch.isfinite(inference).all(1)]
 
         # Check shape
-        n = x.shape[0]  # number of boxes
-        if not n:  # no boxes
+        number_boxes = inference.shape[0]  # number of boxes
+        if not number_boxes:  # no boxes
             continue
-        elif n > max_nms:  # excess boxes
+        elif number_boxes > max_nms:  # excess boxes
             # sort by confidence
-            x = x[x[:, 4].argsort(descending=True)[:max_nms]]
+            inference = inference[inference[:, 4].argsort(descending=True)[:max_nms]]
 
         # Batched NMS
-        c = x[:, 5:6] * (0 if agnostic else max_wh)  # classes
+        classes = inference[:, 5:6] * (0 if agnostic else max_wh)  # classes
         # boxes (offset by class), scores
-        boxes, scores = x[:, :4] + c, x[:, 4]
+        boxes, scores = inference[:, :4] + classes, inference[:, 4]
         i = torchvision.ops.nms(boxes, scores, iou_thres)  # NMS
         if i.shape[0] > max_det:  # limit detections
             i = i[:max_det]
-        if merge and (1 < n < 3E3):  # Merge NMS (boxes merged using weighted mean)
-            # update boxes as boxes(i,4) = weights(i,n) * boxes(n,4)
+        if merge and (1 < number_boxes < 3E3):  # Merge NMS (boxes merged using weighted mean)
+            # update boxes as boxes(i,4) = weights(i,number_boxes) * boxes(number_boxes,4)
             iou = torchvision.box_iou(
                 boxes[i], boxes) > iou_thres  # iou matrix
             weights = iou * scores[None]  # box weights
-            x[i, :4] = torch.mm(weights, x[:, :4]).float(
+            inference[i, :4] = torch.mm(weights, inference[:, :4]).float(
             ) / weights.sum(1, keepdim=True)  # merged boxes
             if redundant:
                 i = i[iou.sum(1) > 1]  # require redundancy
 
-        output[xi] = x[i]
+        output[index] = inference[i]
 
     return output
 
 
-def xywh2xyxy(x):
+def non_max_suppression_parameters_checks(conf_thres, iou_thres):
+    assert 0 <= conf_thres <= 1, f'Invalid Confidence threshold {conf_thres}, valid values are between 0.0 and 1.0'
+    assert 0 <= iou_thres <= 1, f'Invalid IoU {iou_thres}, valid values are between 0.0 and 1.0'
+
+
+def convert_box_definition(inference):
     # Convert nx4 boxes from [x, y, w, h] to [x1, y1, x2, y2] where xy1=top-left, xy2=bottom-right
-    y = x.clone() if isinstance(x, torch.Tensor) else np.copy(x)
-    y[:, 0] = x[:, 0] - x[:, 2] / 2  # top left x
-    y[:, 1] = x[:, 1] - x[:, 3] / 2  # top left y
-    y[:, 2] = x[:, 0] + x[:, 2] / 2  # bottom right x
-    y[:, 3] = x[:, 1] + x[:, 3] / 2  # bottom right y
+    y = inference.clone() if isinstance(inference, torch.Tensor) else np.copy(inference)
+    y[:, 0] = inference[:, 0] - inference[:, 2] / 2  # top left inference
+    y[:, 1] = inference[:, 1] - inference[:, 3] / 2  # top left y
+    y[:, 2] = inference[:, 0] + inference[:, 2] / 2  # bottom right inference
+    y[:, 3] = inference[:, 1] + inference[:, 3] / 2  # bottom right y
     return y
