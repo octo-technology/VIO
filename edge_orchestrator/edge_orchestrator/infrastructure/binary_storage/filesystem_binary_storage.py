@@ -6,7 +6,6 @@ from edge_orchestrator.domain.ports.binary_storage import BinaryStorage
 
 
 class FileSystemBinaryStorage(BinaryStorage):
-
     def __init__(self, src_directory_path: Path):
         self.folder = src_directory_path
 
@@ -15,18 +14,18 @@ class FileSystemBinaryStorage(BinaryStorage):
         path.mkdir(parents=True, exist_ok=True)
         for camera_id, binary in item.binaries.items():
             filepath = _get_filepath(self.folder, item.id, camera_id)
-            with filepath.open('wb') as f:
+            with filepath.open("wb") as f:
                 f.write(binary)
 
     def get_item_binary(self, item_id: str, camera_id: str) -> bytes:
         filepath = _get_filepath(self.folder, item_id, camera_id)
-        with filepath.open('rb') as f:
+        with filepath.open("rb") as f:
             return f.read()
 
     def get_item_binaries(self, item_id: str) -> List[str]:
         filepath = self.folder / item_id
-        return [binary_path.name for binary_path in filepath.glob('*')]
+        return [binary_path.name for binary_path in filepath.glob("*")]
 
 
 def _get_filepath(folder: Path, item_id: str, camera_id: str) -> Path:
-    return folder / item_id / (camera_id + '.jpg')
+    return folder / item_id / (camera_id + ".jpg")

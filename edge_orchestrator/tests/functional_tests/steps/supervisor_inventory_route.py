@@ -1,6 +1,6 @@
 import json
 
-from behave import when, then, use_step_matcher
+from behave import then, use_step_matcher, when
 from behave.runner import Context
 from starlette.status import HTTP_200_OK
 

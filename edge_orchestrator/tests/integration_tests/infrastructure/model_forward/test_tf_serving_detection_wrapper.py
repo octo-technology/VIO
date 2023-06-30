@@ -1,5 +1,6 @@
-import pytest
 import os
+
+import pytest
 
 from edge_orchestrator.domain.models.model_infos import ModelInfos
 from edge_orchestrator.infrastructure.model_forward.tf_serving_detection_wrapper import (
@@ -13,11 +14,13 @@ class TestTFServingDetectionWrapper:
     @pytest.mark.parametrize(
         "setup_test_tensorflow_serving", ["mobilenet_v1_640x640"], indirect=True
     )
-    async def test_perform_inference_should_detected_a_cat(self, test_tensorflow_serving_base_url, my_binaries_0):
+    async def test_perform_inference_should_detected_a_cat(
+        self, test_tensorflow_serving_base_url, my_binaries_0
+    ):
         # Given
         tf_serving_model_forwarder = TFServingDetectionWrapper(
             base_url=test_tensorflow_serving_base_url,
-            class_names_path=TEST_DATA_FOLDER_PATH / "test_detection_labels"
+            class_names_path=TEST_DATA_FOLDER_PATH / "test_detection_labels",
         )
 
         model_inference_version = ModelInfos(
@@ -36,11 +39,15 @@ class TestTFServingDetectionWrapper:
             class_names_path=os.path.join(
                 TEST_DATA_FOLDER_PATH, "test_detection_labels"
             ),
-            objectness_threshold=0.5
+            objectness_threshold=0.5,
         )
 
         expected_model_output = {
-            'object_1': {'label': 'cat', 'location': [370, 2, 738, 340], 'score': 0.652510464}
+            "object_1": {
+                "label": "cat",
+                "location": [370, 2, 738, 340],
+                "score": 0.652510464,
+            }
         }
 
         # When
@@ -53,17 +60,20 @@ class TestTFServingDetectionWrapper:
         for object_id, output in actual_model_output.items():
             assert output["label"] == expected_model_output[object_id]["label"]
             assert output["location"] == expected_model_output[object_id]["location"]
-            assert round(output["score"], 5) == round(expected_model_output[object_id]["score"], 5)
+            assert round(output["score"], 5) == round(
+                expected_model_output[object_id]["score"], 5
+            )
 
     @pytest.mark.parametrize(
         "setup_test_tensorflow_serving", ["mobilenet_v1_640x640"], indirect=True
     )
-    async def test_perform_inference_should_detected_a_cat_and_a_dog(self, test_tensorflow_serving_base_url,
-                                                                     my_binaries_0):  # noqa
+    async def test_perform_inference_should_detected_a_cat_and_a_dog(
+        self, test_tensorflow_serving_base_url, my_binaries_0
+    ):  # noqa
         # Given
         tf_serving_model_forwarder = TFServingDetectionWrapper(
             base_url=test_tensorflow_serving_base_url,
-            class_names_path=TEST_DATA_FOLDER_PATH / "test_detection_labels"
+            class_names_path=TEST_DATA_FOLDER_PATH / "test_detection_labels",
         )
 
         model_inference_version = ModelInfos(
@@ -82,12 +92,20 @@ class TestTFServingDetectionWrapper:
             class_names_path=os.path.join(
                 TEST_DATA_FOLDER_PATH, "test_detection_labels"
             ),
-            objectness_threshold=0.5
+            objectness_threshold=0.5,
         )
 
         expected_model_output = {
-            'object_1': {'label': 'dog', 'location': [234, 13, 778, 911], 'score': 0.717056394},
-            'object_2': {'label': 'cat', 'location': [796, 124, 1371, 935], 'score': 0.682666183}
+            "object_1": {
+                "label": "dog",
+                "location": [234, 13, 778, 911],
+                "score": 0.717056394,
+            },
+            "object_2": {
+                "label": "cat",
+                "location": [796, 124, 1371, 935],
+                "score": 0.682666183,
+            },
         }
 
         # When
@@ -100,4 +118,6 @@ class TestTFServingDetectionWrapper:
         for object_id, output in actual_model_output.items():
             assert output["label"] == expected_model_output[object_id]["label"]
             assert output["location"] == expected_model_output[object_id]["location"]
-            assert round(output["score"], 5) == round(expected_model_output[object_id]["score"], 5)
+            assert round(output["score"], 5) == round(
+                expected_model_output[object_id]["score"], 5
+            )

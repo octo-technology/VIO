@@ -1,12 +1,11 @@
 from abc import abstractmethod
-from typing import Dict, List, Type, Union, Optional
+from typing import Dict, List, Optional, Type, Union
 
 from edge_orchestrator.domain.models.camera import Camera
 from edge_orchestrator.domain.models.model_infos import ModelInfos
 
 
 class StationConfig:
-
     all_configs: dict
     active_config_name: Optional[str]
     active_config: Optional[dict]

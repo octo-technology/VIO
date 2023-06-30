@@ -30,7 +30,7 @@ jobs:
         run: make install_tflite_dependencies_linux
         working-directory: ./edge_model_serving
 
-      - name: Lint with flake8
+      - name: Lint with flake8 and black
         run: make lint
         working-directory: ./edge_model_serving
 

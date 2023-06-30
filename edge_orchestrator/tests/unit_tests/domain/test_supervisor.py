@@ -8,16 +8,30 @@ import pytest
 from edge_orchestrator.domain.models.item import Item
 from edge_orchestrator.domain.models.model_infos import ModelInfos
 from edge_orchestrator.domain.use_cases.supervisor import Supervisor, crop_image
-from edge_orchestrator.infrastructure.binary_storage.memory_binary_storage import MemoryBinaryStorage
+from edge_orchestrator.infrastructure.binary_storage.memory_binary_storage import (
+    MemoryBinaryStorage,
+)
 from edge_orchestrator.infrastructure.inventory.json_inventory import JsonInventory
-from edge_orchestrator.infrastructure.metadata_storage.memory_metadata_storage import MemoryMetadataStorage
-from edge_orchestrator.infrastructure.model_forward.fake_model_forward import FakeModelForward
+from edge_orchestrator.infrastructure.metadata_storage.memory_metadata_storage import (
+    MemoryMetadataStorage,
+)
+from edge_orchestrator.infrastructure.model_forward.fake_model_forward import (
+    FakeModelForward,
+)
 from edge_orchestrator.infrastructure.station_config.json_station_config import (
     JsonStationConfig,
 )
-from edge_orchestrator.infrastructure.telemetry_sink.fake_telemetry_sink import FakeTelemetrySink
-from edge_orchestrator.infrastructure.telemetry_sink.postgresql_telemetry_sink import PostgresTelemetrySink
-from tests.conftest import TEST_DATA_FOLDER_PATH, TEST_INVENTORY_PATH, TEST_STATION_CONFIGS_FOLDER_PATH
+from edge_orchestrator.infrastructure.telemetry_sink.fake_telemetry_sink import (
+    FakeTelemetrySink,
+)
+from edge_orchestrator.infrastructure.telemetry_sink.postgresql_telemetry_sink import (
+    PostgresTelemetrySink,
+)
+from tests.conftest import (
+    TEST_DATA_FOLDER_PATH,
+    TEST_INVENTORY_PATH,
+    TEST_STATION_CONFIGS_FOLDER_PATH,
+)
 
 
 @pytest.mark.asyncio
@@ -113,7 +127,7 @@ class TestSupervisor:
         "camera_id", ["camera_id1", "camera_id2", "camera_id3", "camera_id4"]
     )
     async def test_get_prediction_for_camera_should_return_2_predicted_objects_by_one_object_detection_model(
-            self, model_config_mocked, camera_id, my_item_1
+        self, model_config_mocked, camera_id, my_item_1
     ):
         # Given
         np.random.seed(42)
@@ -156,7 +170,7 @@ class TestSupervisor:
         "camera_id", ["camera_id1", "camera_id2", "camera_id3", "camera_id4"]
     )
     async def test_get_prediction_for_camera_should_return_1_predicted_object_by_one_classification_model(
-            self, model_config_mocked, camera_id, my_item_1
+        self, model_config_mocked, camera_id, my_item_1
     ):
         # Given
         np.random.seed(42)
@@ -191,11 +205,11 @@ class TestSupervisor:
         "camera_id", ["camera_id1", "camera_id2", "camera_id3", "camera_id4"]
     )
     async def test_get_prediction_for_camera_returns_2_objects_with_label_for_object_detection_followed_by_classif(
-            # noqa
-            self,
-            model_config_mocked,
-            camera_id,
-            my_item_1,
+        # noqa
+        self,
+        model_config_mocked,
+        camera_id,
+        my_item_1,
     ):
         # Given
         np.random.seed(42)
@@ -258,11 +272,11 @@ class TestSupervisor:
         "camera_id", ["camera_id1", "camera_id2", "camera_id3", "camera_id4"]
     )
     async def test_get_prediction_for_camera_returns_2_objects_with_label_for_object_detection_with_classif_model(
-            # noqa
-            self,
-            model_config_mocked,
-            camera_id,
-            my_item_1,
+        # noqa
+        self,
+        model_config_mocked,
+        camera_id,
+        my_item_1,
     ):
         # Given
         np.random.seed(42)
@@ -310,11 +324,11 @@ class TestSupervisor:
         "camera_id", ["camera_id1", "camera_id2", "camera_id3", "camera_id4"]
     )
     async def test_get_prediction_for_camera_should_return_1_output_by_model_and_among_them_1_is_classification(
-            # noqa
-            self,
-            model_config_mocked,
-            camera_id,
-            my_item_1,
+        # noqa
+        self,
+        model_config_mocked,
+        camera_id,
+        my_item_1,
     ):
         # Given
         np.random.seed(42)
@@ -411,11 +425,11 @@ class TestSupervisor:
         "camera_id", ["camera_id1", "camera_id2", "camera_id3", "camera_id4"]
     )
     async def test_get_prediction_for_camera_should_return_1_output_by_model_and_among_them_2_are_classification(
-            # noqa
-            self,
-            model_config_mocked,
-            camera_id,
-            my_item_1,
+        # noqa
+        self,
+        model_config_mocked,
+        camera_id,
+        my_item_1,
     ):
         # Given
         np.random.seed(42)
@@ -537,7 +551,7 @@ class TestSupervisor:
         assert actual == expected_cropped_picture
 
     def test_apply_crop_function_with_incorrect_box_should_log_an_error_and_return_the_same_picture(
-            self, caplog
+        self, caplog
     ):
         # Given
         original_picture = (
@@ -553,59 +567,82 @@ class TestSupervisor:
         # Then
         assert actual == original_picture
         assert (
-                caplog.records[0].msg
-                == "Informations for cropping are incorrect, the initial picture is used"
+            caplog.records[0].msg
+            == "Informations for cropping are incorrect, the initial picture is used"
         )
         assert caplog.records[1].msg == "xmin (=554) is greater than xmax (=553)"
 
-    @patch.object(PostgresTelemetrySink, 'send')
-    async def test_set_decision_should_send_final_decision_to_telemetry_sink(self, mock_send):
+    @patch.object(PostgresTelemetrySink, "send")
+    async def test_set_decision_should_send_final_decision_to_telemetry_sink(
+        self, mock_send
+    ):
         # Given
-        item = Item(serial_number='', category='', cameras_metadata={}, binaries={})
-        item.id = 'item_id'
+        item = Item(serial_number="", category="", cameras_metadata={}, binaries={})
+        item.id = "item_id"
         inventory = JsonInventory(TEST_INVENTORY_PATH)
-        station_config = JsonStationConfig(TEST_STATION_CONFIGS_FOLDER_PATH,
-                                           inventory, TEST_DATA_FOLDER_PATH)
-        station_config.set_station_config('station_config_TEST')
-        supervisor = Supervisor(station_config=station_config, metadata_storage=MemoryMetadataStorage(),
-                                model_forward=FakeModelForward(), binary_storage=MemoryBinaryStorage())
+        station_config = JsonStationConfig(
+            TEST_STATION_CONFIGS_FOLDER_PATH, inventory, TEST_DATA_FOLDER_PATH
+        )
+        station_config.set_station_config("station_config_TEST")
+        supervisor = Supervisor(
+            station_config=station_config,
+            metadata_storage=MemoryMetadataStorage(),
+            model_forward=FakeModelForward(),
+            binary_storage=MemoryBinaryStorage(),
+        )
 
         # When
         await supervisor.inspect(item)
 
         # Then
-        msg_dict = {'item_id': 'item_id', 'config': 'station_config_TEST', 'decision': 'OK'}
+        msg_dict = {
+            "item_id": "item_id",
+            "config": "station_config_TEST",
+            "decision": "OK",
+        }
         mock_send.assert_called_once_with(msg_dict)
 
-    async def test_inspect_should_log_information_about_item_processing(self, caplog, my_fake_item):
+    async def test_inspect_should_log_information_about_item_processing(
+        self, caplog, my_fake_item
+    ):
         # Given
-        expected_messages = ['Activated the configuration station_config_TEST',
-                             'Starting Capture',
-                             'Entering try Capture',
-                             'End of Capture',
-                             'Starting Save Binaries',
-                             'Entering try Save Binaries',
-                             'End of Save Binaries',
-                             'Starting Inference',
-                             'Entering try Inference',
-                             'Getting inference for model model_id4',
-                             'End of Inference',
-                             'Starting Decision',
-                             'Entering try Decision',
-                             'End of Decision']
+        expected_messages = [
+            "Activated the configuration station_config_TEST",
+            "Starting Capture",
+            "Entering try Capture",
+            "End of Capture",
+            "Starting Save Binaries",
+            "Entering try Save Binaries",
+            "End of Save Binaries",
+            "Starting Inference",
+            "Entering try Inference",
+            "Getting inference for model model_id4",
+            "End of Inference",
+            "Starting Decision",
+            "Entering try Decision",
+            "End of Decision",
+        ]
         inventory = JsonInventory(TEST_INVENTORY_PATH)
-        station_config = JsonStationConfig(TEST_STATION_CONFIGS_FOLDER_PATH,
-                                           inventory, TEST_DATA_FOLDER_PATH)
-        station_config.set_station_config('station_config_TEST')
-        supervisor = Supervisor(station_config=station_config, metadata_storage=MemoryMetadataStorage(),
-                                model_forward=FakeModelForward(), binary_storage=MemoryBinaryStorage(),
-                                telemetry_sink=FakeTelemetrySink())
+        station_config = JsonStationConfig(
+            TEST_STATION_CONFIGS_FOLDER_PATH, inventory, TEST_DATA_FOLDER_PATH
+        )
+        station_config.set_station_config("station_config_TEST")
+        supervisor = Supervisor(
+            station_config=station_config,
+            metadata_storage=MemoryMetadataStorage(),
+            model_forward=FakeModelForward(),
+            binary_storage=MemoryBinaryStorage(),
+            telemetry_sink=FakeTelemetrySink(),
+        )
 
         # When
         with caplog.at_level(logging.INFO, logger="edge_orchestrator"):
             await supervisor.inspect(my_fake_item)
 
         # Then
-        actual_messages = [logger_msg for logger_name, logger_level, logger_msg in caplog.record_tuples if
-                           logger_name == "edge_orchestrator"]
+        actual_messages = [
+            logger_msg
+            for logger_name, logger_level, logger_msg in caplog.record_tuples
+            if logger_name == "edge_orchestrator"
+        ]
         assert expected_messages == actual_messages

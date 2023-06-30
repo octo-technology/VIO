@@ -5,7 +5,6 @@ from edge_orchestrator.domain.ports.binary_storage import BinaryStorage
 
 
 class MemoryBinaryStorage(BinaryStorage):
-
     def __init__(self):
         self.binaries = {}
 

@@ -1,8 +1,7 @@
+from edge_orchestrator.domain.models.model_infos import ModelInfos
 from edge_orchestrator.infrastructure.model_forward.tf_serving_classification_wrapper import (
     TFServingClassificationWrapper,
 )
-from edge_orchestrator.domain.models.model_infos import ModelInfos
-
 from tests.conftest import TEST_DATA_FOLDER_PATH
 
 

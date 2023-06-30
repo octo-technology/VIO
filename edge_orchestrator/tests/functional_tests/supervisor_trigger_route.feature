@@ -4,8 +4,8 @@ Feature: The client trigger a visual inspection and request the resulting metada
     Given the app is up and running
     And the config 'station_config_TEST' is activated
     And the following cameras are registered in the configuration
-      | camera_id  | camera_type | source |
-      | camera_id3 | fake        | marker_images       |
+      | camera_id  | camera_type | source        |
+      | camera_id3 | fake        | marker_images |
     When the client triggers a visual inspection
     Then item metadata like the following are captured
     """

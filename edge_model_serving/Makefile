@@ -37,6 +37,7 @@ torch_env:
 .PHONY: lint  ## 🐍 Lint Python files to conform to the PEP 8 style guide
 lint:
 	flake8 --count --show-source --statistics
+	black . --check
 
 .PHONY: autopep8  ## 🐍 Automatically formats Python code to conform to the PEP 8 style guide
 autopep8:
