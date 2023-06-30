@@ -1,11 +1,10 @@
 from abc import abstractmethod
-from typing import List, Dict
+from typing import Dict, List
 
 from edge_orchestrator.domain.models.item import Item
 
 
 class MetadataStorage:
-
     @abstractmethod
     def save_item_metadata(self, item: Item):
         pass

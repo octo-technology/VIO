@@ -5,7 +5,6 @@ from edge_orchestrator.domain.models.item import Item
 
 
 class BinaryStorage:
-
     @abstractmethod
     def save_item_binaries(self, item: Item):
         pass

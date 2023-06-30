@@ -1,5 +1,6 @@
-import pytest
 import os
+
+import pytest
 
 from edge_orchestrator.domain.models.model_infos import ModelInfos
 from edge_orchestrator.infrastructure.model_forward.tf_serving_detection_wrapper import (
@@ -14,12 +15,12 @@ class TestTFServingDetectionWrapper:
         "setup_test_tflite_serving", ["mobilenet_ssd_v2_coco"], indirect=True
     )
     async def test_perform_inference_should_detect_a_bear(
-            self, test_tflite_serving_base_url, my_binaries_0
+        self, test_tflite_serving_base_url, my_binaries_0
     ):
         # Given
         tf_serving_model_forwarder = TFServingDetectionWrapper(
             base_url=test_tflite_serving_base_url,
-            class_names_path=TEST_DATA_FOLDER_PATH / "test_detection_labels"
+            class_names_path=TEST_DATA_FOLDER_PATH / "test_detection_labels",
         )
 
         model_inference_version = ModelInfos(
@@ -38,11 +39,15 @@ class TestTFServingDetectionWrapper:
             class_names_path=os.path.join(
                 TEST_DATA_FOLDER_PATH, "test_detection_labels"
             ),
-            objectness_threshold=0.5
+            objectness_threshold=0.5,
         )
 
         expected_model_output = {
-            'object_1': {'label': 'bear', 'location': [376, 4, 722, 339], 'score': 0.87890625}
+            "object_1": {
+                "label": "bear",
+                "location": [376, 4, 722, 339],
+                "score": 0.87890625,
+            }
         }
 
         # When
@@ -55,18 +60,20 @@ class TestTFServingDetectionWrapper:
         for object_id, output in actual_model_output.items():
             assert output["label"] == expected_model_output[object_id]["label"]
             assert output["location"] == expected_model_output[object_id]["location"]
-            assert round(output["score"], 5) == round(expected_model_output[object_id]["score"], 5)
+            assert round(output["score"], 5) == round(
+                expected_model_output[object_id]["score"], 5
+            )
 
     @pytest.mark.parametrize(
         "setup_test_tflite_serving", ["mobilenet_ssd_v2_coco"], indirect=True
     )
     async def test_perform_inference_should_detect_a_cat_and_a_dog(
-            self, test_tflite_serving_base_url, my_binaries_0
+        self, test_tflite_serving_base_url, my_binaries_0
     ):
         # Given
         tf_serving_model_forwarder = TFServingDetectionWrapper(
             base_url=test_tflite_serving_base_url,
-            class_names_path=TEST_DATA_FOLDER_PATH / "test_detection_labels"
+            class_names_path=TEST_DATA_FOLDER_PATH / "test_detection_labels",
         )
 
         model_inference_version = ModelInfos(
@@ -85,12 +92,20 @@ class TestTFServingDetectionWrapper:
             class_names_path=os.path.join(
                 TEST_DATA_FOLDER_PATH, "test_detection_labels"
             ),
-            objectness_threshold=0.5
+            objectness_threshold=0.5,
         )
 
         expected_model_output = {
-            'object_1': {'label': 'cat', 'location': [774, 132, 1377, 946], 'score': 0.93359375},
-            'object_2': {'label': 'dog', 'location': [225, 6, 796, 915], 'score': 0.91015625}
+            "object_1": {
+                "label": "cat",
+                "location": [774, 132, 1377, 946],
+                "score": 0.93359375,
+            },
+            "object_2": {
+                "label": "dog",
+                "location": [225, 6, 796, 915],
+                "score": 0.91015625,
+            },
         }
 
         # When
@@ -103,4 +118,6 @@ class TestTFServingDetectionWrapper:
         for object_id, output in actual_model_output.items():
             assert output["label"] == expected_model_output[object_id]["label"]
             assert output["location"] == expected_model_output[object_id]["location"]
-            assert round(output["score"], 5) == round(expected_model_output[object_id]["score"], 5)
+            assert round(output["score"], 5) == round(
+                expected_model_output[object_id]["score"], 5
+            )

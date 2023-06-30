@@ -1,7 +1,7 @@
 from typing import Dict, Union
 
-from edge_orchestrator.domain.models.decision import Decision
 from edge_orchestrator.domain.models.business_rules.camera_rule import CameraRule
+from edge_orchestrator.domain.models.decision import Decision
 
 
 class MinNbObjectsRule(CameraRule):
@@ -10,7 +10,6 @@ class MinNbObjectsRule(CameraRule):
         self.min_threshold = min_threshold
 
     def get_camera_decision(self, inference: Dict[str, Union[str, Dict]]) -> Decision:
-
         objects_of_interest = [obj for obj in inference if obj in self.class_to_detect]
 
         if len(objects_of_interest) < self.min_threshold:

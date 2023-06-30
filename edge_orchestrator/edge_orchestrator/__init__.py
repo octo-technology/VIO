@@ -8,8 +8,8 @@ fileConfig(
     disable_existing_loggers=False,
     defaults={
         "edge_orchestrator_level": "INFO",
-        "edge_orchestrator_formatter": "classic"
-    }
+        "edge_orchestrator_formatter": "classic",
+    },
 )
 
 logger = logging.getLogger("edge_orchestrator")

@@ -1,11 +1,10 @@
 from pathlib import Path
-from typing import Tuple, Dict
+from typing import Dict, Tuple
 
 from edge_orchestrator.domain.ports.station_config import StationConfig
 
 
 class EdgeStation:
-
     def __init__(self, station_config: StationConfig, storage: Path):
         self.station_config = station_config
         self.storage = storage
@@ -23,6 +22,7 @@ class EdgeStation:
         for camera in self.cameras:
             binaries[camera.id] = camera.capture()
         cameras_metadata = {
-            camera.id: self.station_config.get_camera_settings(camera.id) for camera in self.cameras
+            camera.id: self.station_config.get_camera_settings(camera.id)
+            for camera in self.cameras
         }
         return cameras_metadata, binaries

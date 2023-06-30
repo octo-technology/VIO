@@ -58,7 +58,7 @@ jobs:
         run: make install
         working-directory: ./edge_orchestrator
 
-      - name: Lint with flake8
+      - name: Lint with flake8 and black
         run: make lint
         working-directory: ./edge_orchestrator
 

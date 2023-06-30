@@ -8,20 +8,19 @@ from edge_orchestrator.environment.config import Config
 
 
 class FakeCamera(Camera):
-
     def __init__(self, id: str, settings: Dict[str, Union[str, Dict]]):
         super().__init__(id, settings)
         self.id = id
         self.settings = settings
-        self.data_folder_path = Config.ROOT_PATH / 'data'
-        self.image_extensions = ['*.jpg', '*.png']
+        self.data_folder_path = Config.ROOT_PATH / "data"
+        self.image_extensions = ["*.jpg", "*.png"]
 
     def capture(self) -> bytes:
         random_image_path = self.select_random_image()
-        return random_image_path.open('rb').read()
+        return random_image_path.open("rb").read()
 
     def select_random_image(self) -> Path:
-        source = self.data_folder_path / self.settings['source']
+        source = self.data_folder_path / self.settings["source"]
         selected_images = []
         for extension in self.image_extensions:
             selected_images += list(source.glob(extension))

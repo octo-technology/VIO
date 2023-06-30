@@ -6,7 +6,6 @@
 __pycache__/
 *.py[cod]
 *$py.class
-/venv-torch
 .vscode
 *.DS_Store
 
@@ -131,7 +130,7 @@ celerybeat.pid
 .env
 .venv
 env/
-venv/
+venv*
 ENV/
 *.bak/
 
