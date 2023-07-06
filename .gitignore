@@ -57,6 +57,7 @@ coverage.xml
 .hypothesis/
 .pytest_cache/
 cover/
+reports/
 
 # Translations
 *.mo
@@ -130,7 +131,7 @@ celerybeat.pid
 .env
 .venv
 env/
-venv*
+venv*/
 ENV/
 *.bak/
 
@@ -164,16 +165,30 @@ cython_debug/
 #  and can be added to the global gitignore or merged into this file.  For a more nuclear
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 .idea/
+*.iml
 
 ### Python Patch ###
 # Poetry local configuration file - https://python-poetry.org/docs/configuration/#local-configuration
 poetry.toml
 
-
 # End of https://www.toptal.com/developers/gitignore/api/python
-edge_orchestrator/data/storage/
-edge_orchestrator/reports
-edge_model_serving/models/torch
+
+# Node modules
+node_modules
+
+# local env files
+.env.local
+.env.*.local
+
+# Log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Deployment
+edge/images/
+hub/azure/ansible/roles/setup_iot_hub/files/*.json
+grafvio_id_rsa
 
 # Local .terraform directories
 **/.terraform/*
@@ -185,3 +200,4 @@ edge_model_serving/models/torch
 edge_model_serving/models/*
 edge_orchestrator/data/*
 edge_orchestrator/config/secrets
+/deployment/edge/images/
