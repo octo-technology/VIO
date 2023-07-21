@@ -1,14 +1,18 @@
 import json
 from pathlib import Path
-from typing import Dict, List
+from typing import Dict, List, Optional
 
 from edge_orchestrator.domain.models.item import Item
 from edge_orchestrator.domain.ports.metadata_storage import MetadataStorage
+from edge_orchestrator.infrastructure.filesystem_helpers import get_tmp_path
 
 
 class FileSystemMetadataStorage(MetadataStorage):
-    def __init__(self, src_directory_path: Path):
-        self.folder = src_directory_path
+    def __init__(self, src_directory: Optional[str] = None):
+        if src_directory is None:
+            self.folder = get_tmp_path()
+        else:
+            self.folder = Path(src_directory)
 
     def save_item_metadata(self, item: Item):
         (self.folder / item.id).mkdir(parents=True, exist_ok=True)

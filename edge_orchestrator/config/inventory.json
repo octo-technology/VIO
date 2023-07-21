@@ -1,13 +1,35 @@
 {
+  "binary_storages": [
+    "azure_container",
+    "filesystem",
+    "gcp_bucket",
+    "in_memory"
+  ],
   "cameras": [
     "fake",
     "pi_camera",
     "usb_camera"
   ],
+  "metadata_storages": [
+    "azure_container",
+    "filesystem",
+    "gcp_bucket",
+    "in_memory",
+    "mongo_db"
+  ],
+  "model_forwards": [
+    "fake",
+    "tf_serving"
+  ],
+  "telemetry_sinks": [
+    "azure_iot_hub",
+    "fake",
+    "postgresql"
+  ],
   "models": {
     "marker_quality_control": {
       "category": "classification",
-      "version": 1,
+      "version": "1",
       "class_names": [
         "OK",
         "KO"
@@ -19,7 +41,7 @@
     },
     "pin_detection": {
       "category": "classification",
-      "version": 1,
+      "version": "1",
       "class_names": [
         "OK",
         "NOK"
@@ -31,7 +53,7 @@
     },
     "mobilenet_ssd_v2_coco": {
       "category": "object_detection",
-      "version": 1,
+      "version": "1",
       "class_names_path": "coco_labels_originals.txt",
       "output": {
         "boxes_coordinates": "detection_boxes",
@@ -46,7 +68,7 @@
     },
     "mobilenet_ssd_v2_face": {
       "category": "object_detection",
-      "version": 1,
+      "version": "1",
       "class_names_path": "face_labels.txt",
       "output": {
         "boxes_coordinates": "detection_boxes",

@@ -2,11 +2,9 @@ import functools
 from collections import OrderedDict
 from enum import Enum
 
-from edge_orchestrator.api_config import (
-    get_binary_storage,
-    get_metadata_storage,
-    logger,
-)
+from domain.ports.binary_storage import BinaryStorage
+from domain.ports.metadata_storage import MetadataStorage
+from edge_orchestrator import logger
 from edge_orchestrator.domain.models.item import Item
 
 
@@ -18,8 +16,8 @@ class UploaderState(Enum):
 class Uploader:
     def __init__(
         self,
-        metadata_storage=get_metadata_storage(),
-        binary_storage=get_binary_storage(),
+        metadata_storage: MetadataStorage,
+        binary_storage: BinaryStorage,
     ):
         self.metadata_storage = metadata_storage
         self.binary_storage = binary_storage

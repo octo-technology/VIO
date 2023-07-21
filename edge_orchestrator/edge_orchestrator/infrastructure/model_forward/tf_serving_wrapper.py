@@ -1,3 +1,6 @@
+import os
+from typing import Optional
+
 from edge_orchestrator import logger
 from edge_orchestrator.domain.models.model_infos import ModelInfos, ModelTypes
 from edge_orchestrator.domain.ports.model_forward import ModelForward
@@ -13,10 +16,13 @@ from edge_orchestrator.infrastructure.model_forward.tf_serving_detection_wrapper
 
 
 class TFServingWrapper(ModelForward):
-    def __init__(self, serving_model_url, inventory, station_config):
+    def __init__(self, serving_model_url: Optional[str] = None):
+        if serving_model_url is None:
+            serving_model_url = os.environ.get(
+                "SERVING_MODEL_URL", "http://edge_model_serving:8501"
+            )
+
         self.serving_model_url = serving_model_url
-        self.inventory = inventory
-        self.station_config = station_config
 
     async def perform_inference(
         self, model: ModelInfos, binary_data: bytes, binary_name: str

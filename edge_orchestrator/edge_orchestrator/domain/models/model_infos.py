@@ -1,9 +1,6 @@
-import os
 from enum import Enum
 from pathlib import Path
 from typing import Dict, List, Optional
-
-from edge_orchestrator.domain.ports.inventory import Inventory
 
 
 class ModelInfos:
@@ -47,30 +44,21 @@ class ModelInfos:
         camera_id: str,
         model_id: str,
         model: Dict,
-        inventory: Inventory,
         data_folder: Path,
     ):
         model_name = model["name"]
-        class_names = inventory.models[model_name].get("class_names")
+        class_names = model.get("class_names")
         class_to_detect = model.get("class_to_detect")
-        class_names_path = inventory.models[model_name].get("class_names_path")
-        objectness_threshold = inventory.models[model_name].get("objectness_threshold")
+        class_names_path = model.get("class_names_path")
+        objectness_threshold = model.get("objectness_threshold")
 
-        if inventory.models[model_name].get("class_names_path") is not None:
-            class_names_path = os.path.join(data_folder, class_names_path)
+        if class_names_path is not None:
+            class_names_path = data_folder / class_names_path
         try:
-            boxes_coordinates = (
-                inventory.models[model_name].get("output").get("boxes_coordinates")
-            )
-            objectness_scores = (
-                inventory.models[model_name].get("output").get("objectness_scores")
-            )
-            number_of_boxes = (
-                inventory.models[model_name].get("output").get("number_of_boxes")
-            )
-            detection_classes = (
-                inventory.models[model_name].get("output").get("detection_classes")
-            )
+            boxes_coordinates = model.get("output").get("boxes_coordinates")
+            objectness_scores = model.get("output").get("objectness_scores")
+            number_of_boxes = model.get("output").get("number_of_boxes")
+            detection_classes = model.get("output").get("detection_classes")
         except AttributeError:
             boxes_coordinates = None
             objectness_scores = None
@@ -80,8 +68,8 @@ class ModelInfos:
         return ModelInfos(
             id=model_id,
             name=model_name,
-            category=inventory.models[model_name]["category"],
-            version=str(inventory.models[model_name]["version"]),
+            category=model["category"],
+            version=model["version"],
             depends_on=model["depends_on"],
             camera_id=camera_id,
             class_names=class_names,
@@ -90,7 +78,7 @@ class ModelInfos:
             objectness_scores=objectness_scores,
             number_of_boxes=number_of_boxes,
             detection_classes=detection_classes,
-            image_resolution=inventory.models[model_name].get("image_resolution"),
+            image_resolution=model.get("image_resolution"),
             class_to_detect=class_to_detect,
             objectness_threshold=objectness_threshold,
         )

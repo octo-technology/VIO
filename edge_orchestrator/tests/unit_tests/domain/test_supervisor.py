@@ -5,15 +5,15 @@ from unittest.mock import patch
 import numpy as np
 import pytest
 
+from edge_orchestrator.domain.models.edge_station import EdgeStation
 from edge_orchestrator.domain.models.item import Item
 from edge_orchestrator.domain.models.model_infos import ModelInfos
-from edge_orchestrator.domain.use_cases.supervisor import Supervisor, crop_image
-from edge_orchestrator.infrastructure.binary_storage.memory_binary_storage import (
-    MemoryBinaryStorage,
+from edge_orchestrator.domain.use_cases.supervisor import crop_image, Supervisor
+from edge_orchestrator.infrastructure.binary_storage.in_memory_binary_storage import (
+    InMemoryBinaryStorage,
 )
-from edge_orchestrator.infrastructure.inventory.json_inventory import JsonInventory
-from edge_orchestrator.infrastructure.metadata_storage.memory_metadata_storage import (
-    MemoryMetadataStorage,
+from edge_orchestrator.infrastructure.metadata_storage.in_memory_metadata_storage import (
+    InMemoryMetadataStorage,
 )
 from edge_orchestrator.infrastructure.model_forward.fake_model_forward import (
     FakeModelForward,
@@ -24,23 +24,20 @@ from edge_orchestrator.infrastructure.station_config.json_station_config import 
 from edge_orchestrator.infrastructure.telemetry_sink.fake_telemetry_sink import (
     FakeTelemetrySink,
 )
-from edge_orchestrator.infrastructure.telemetry_sink.postgresql_telemetry_sink import (
+from edge_orchestrator.infrastructure.telemetry_sink.postgres_telemetry_sink import (
     PostgresTelemetrySink,
 )
 from tests.conftest import (
     TEST_DATA_FOLDER_PATH,
-    TEST_INVENTORY_PATH,
     TEST_STATION_CONFIGS_FOLDER_PATH,
 )
 
 
 @pytest.mark.asyncio
 class TestSupervisor:
-    async def test_2_models_in_parallel(self, my_item_1):
+    async def test_2_models_in_parallel(self, supervisor):
         random.seed(42)
         np.random.seed(42)
-
-        inventory = JsonInventory(TEST_INVENTORY_PATH)
 
         models_graph = {
             "model_1": {"name": "inception", "depends_on": []},
@@ -49,13 +46,13 @@ class TestSupervisor:
 
         model_pipeline = [
             ModelInfos.from_model_graph_node(
-                "camera_id", model_id, model, inventory, TEST_DATA_FOLDER_PATH
+                "camera_id", model_id, model, TEST_DATA_FOLDER_PATH
             )
             for model_id, model in models_graph.items()
         ]
         binary_data = b"fhfh"
 
-        supervisor = Supervisor(model_forward=FakeModelForward())
+        supervisor.model_forward = FakeModelForward()
         inference_output = await supervisor.get_inference(
             {}, model_pipeline, binary_data, image_name="full_image"
         )
@@ -71,11 +68,9 @@ class TestSupervisor:
 
         assert inference_output == inference_output_expected
 
-    async def test_2_models_in_serie(self):
+    async def test_2_models_in_serie(self, supervisor):
         random.seed(42)
         np.random.seed(42)
-
-        inventory = JsonInventory(TEST_INVENTORY_PATH)
 
         models_graph = {
             "model_1": {"name": "inception", "depends_on": ["model_2"]},
@@ -84,7 +79,7 @@ class TestSupervisor:
 
         model_pipeline = [
             ModelInfos.from_model_graph_node(
-                "camera_id", model_id, model, inventory, TEST_DATA_FOLDER_PATH
+                "camera_id", model_id, model, TEST_DATA_FOLDER_PATH
             )
             for model_id, model in models_graph.items()
         ]
@@ -92,7 +87,7 @@ class TestSupervisor:
             (TEST_DATA_FOLDER_PATH / "fake_item" / "image1.jpg").open("rb").read()
         )
 
-        supervisor = Supervisor(model_forward=FakeModelForward())
+        supervisor.model_forward = FakeModelForward()
         inference_output = await supervisor.get_inference(
             {}, model_pipeline, binary_data, image_name="full_image"
         )
@@ -579,16 +574,17 @@ class TestSupervisor:
         # Given
         item = Item(serial_number="", category="", cameras_metadata={}, binaries={})
         item.id = "item_id"
-        inventory = JsonInventory(TEST_INVENTORY_PATH)
         station_config = JsonStationConfig(
-            TEST_STATION_CONFIGS_FOLDER_PATH, inventory, TEST_DATA_FOLDER_PATH
+            TEST_STATION_CONFIGS_FOLDER_PATH, TEST_DATA_FOLDER_PATH
         )
         station_config.set_station_config("station_config_TEST")
         supervisor = Supervisor(
-            station_config=station_config,
-            metadata_storage=MemoryMetadataStorage(),
+            binary_storage=InMemoryBinaryStorage(),
+            edge_station=EdgeStation(station_config),
+            metadata_storage=InMemoryMetadataStorage(),
             model_forward=FakeModelForward(),
-            binary_storage=MemoryBinaryStorage(),
+            station_config=station_config,
+            telemetry_sink=FakeTelemetrySink(),
         )
 
         # When
@@ -622,16 +618,16 @@ class TestSupervisor:
             "Entering try Decision",
             "End of Decision",
         ]
-        inventory = JsonInventory(TEST_INVENTORY_PATH)
         station_config = JsonStationConfig(
-            TEST_STATION_CONFIGS_FOLDER_PATH, inventory, TEST_DATA_FOLDER_PATH
+            TEST_STATION_CONFIGS_FOLDER_PATH, TEST_DATA_FOLDER_PATH
         )
         station_config.set_station_config("station_config_TEST")
         supervisor = Supervisor(
-            station_config=station_config,
-            metadata_storage=MemoryMetadataStorage(),
+            binary_storage=InMemoryBinaryStorage(),
+            edge_station=EdgeStation(station_config),
+            metadata_storage=InMemoryMetadataStorage(),
             model_forward=FakeModelForward(),
-            binary_storage=MemoryBinaryStorage(),
+            station_config=station_config,
             telemetry_sink=FakeTelemetrySink(),
         )
 

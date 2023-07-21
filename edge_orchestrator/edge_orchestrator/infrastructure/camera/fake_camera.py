@@ -4,14 +4,13 @@ from typing import Dict, List, Union
 
 from edge_orchestrator import logger
 from edge_orchestrator.domain.models.camera import Camera
-from edge_orchestrator.environment.config import Config
 
 
 class FakeCamera(Camera):
     def __init__(self, id: str, settings: Dict[str, Union[str, Dict]]):
         self.id: str = id
         self.settings: Dict = settings
-        self.data_folder_path: Path = Config.ROOT_PATH / "data"
+        self.data_folder_path: Path = Path(__file__).parents[2] / "data"
         self.image_extensions: List = ["*.jpg", "*.png"]
 
     def capture(self) -> bytes:

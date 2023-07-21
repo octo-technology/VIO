@@ -1,8 +1,8 @@
 from unittest.mock import patch
 
 from edge_orchestrator.domain.models.item import Item
-from edge_orchestrator.infrastructure.binary_storage.memory_binary_storage import (
-    MemoryBinaryStorage,
+from edge_orchestrator.infrastructure.binary_storage.in_memory_binary_storage import (
+    InMemoryBinaryStorage,
 )
 
 
@@ -11,7 +11,7 @@ class TestMemoryBinaryStorage:
     def test_save_item_binaries_should_write_image_in_memory(self, generate_id_mocked):
         # Given
         generate_id_mocked.return_value = "my_item_id"
-        binary_storage = MemoryBinaryStorage()
+        binary_storage = InMemoryBinaryStorage()
         expected_picture = bytes([0, 1, 2, 3, 4])
         item = Item(
             serial_number="serial_number",
@@ -30,7 +30,7 @@ class TestMemoryBinaryStorage:
 
     def test_get_item_binary_should_return_requested_item_binary(self):
         # Given
-        binary_storage = MemoryBinaryStorage()
+        binary_storage = InMemoryBinaryStorage()
         expected_picture = bytes([0, 1, 2, 3, 4])
         another_picture = bytes([5, 6, 7, 8, 9])
         binary_storage.binaries = {
@@ -48,7 +48,7 @@ class TestMemoryBinaryStorage:
 
     def test_get_item_binaries_should_return_all_item_binaries_names(self):
         # Given
-        binary_storage = MemoryBinaryStorage()
+        binary_storage = InMemoryBinaryStorage()
         expected_picture_1 = bytes([0, 1, 2, 3, 4])
         expected_picture_2 = bytes([5, 6, 7, 8, 9])
         binary_storage.binaries = {

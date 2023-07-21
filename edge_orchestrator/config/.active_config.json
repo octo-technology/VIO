@@ -9,26 +9,28 @@
     "metadata_storage": {
       "type": "filesystem"
     },
-    "model_forward": {
+    "mode1_forward": {
       "type": "fake"
     },
     "telemetry_sink": {
       "type": "fake"
     },
-    "cameras": {
-      "camera_#1": {
+    "cameras": [
+      {
+        "name": "camera_#1",
         "type": "fake",
         "source": "marker_images",
         "position": "back",
         "exposition": 100
       }
-    }
+    ]
   },
   "domain": {
-    "cameras": {
-      "camera_#1": {
-        "models_graph": {
-          "model_#4": {
+    "camera_rules": [
+      {
+        "name": "camera_#1",
+        "models_graph": [
+          {
             "name": "marker_quality_control",
             "category": "classification",
             "version": "1",
@@ -42,8 +44,8 @@
             ],
             "depends_on": []
           }
-        },
-        "camera_rule": {
+        ],
+        "rule": {
           "name": "expected_label_rule",
           "parameters": {
             "expected_label": [
@@ -52,10 +54,10 @@
           }
         }
       }
-    },
+    ],
     "item_rule": {
       "name": "min_threshold_KO_rule",
-      "parameters": {
+      "params": {
         "threshold": 1
       }
     }

@@ -4,9 +4,9 @@ from unittest.mock import patch
 import pytest
 from freezegun import freeze_time
 
+from application.dto.station_config import StationConfig
 from edge_orchestrator.api_config import get_station_config
 from edge_orchestrator.domain.models.edge_station import EdgeStation
-from edge_orchestrator.domain.ports.station_config import StationConfig
 from edge_orchestrator.infrastructure.camera.fake_camera import FakeCamera
 
 
@@ -21,7 +21,7 @@ class TestEdgeStation:
 
         # Then
         with pytest.raises(TypeError) as error:
-            edge_station.register_cameras(station_config)
+            edge_station.register_cameras()
         assert str(error.value) == "'NoneType' object is not subscriptable"
 
     def test_capture_should_raise_exception_when_cameras_are_not_registered(self):
@@ -59,7 +59,7 @@ class TestEdgeStation:
         edge_station = EdgeStation(station_config)
 
         # When
-        edge_station.register_cameras(station_config)
+        edge_station.register_cameras()
         cameras_metadata, binaries = edge_station.capture()
 
         # Then

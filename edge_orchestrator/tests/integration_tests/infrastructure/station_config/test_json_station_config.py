@@ -5,13 +5,11 @@ import pytest
 from freezegun import freeze_time
 
 from edge_orchestrator.domain.models.model_infos import ModelInfos
-from edge_orchestrator.infrastructure.inventory.json_inventory import JsonInventory
 from edge_orchestrator.infrastructure.station_config.json_station_config import (
     JsonStationConfig,
 )
 from tests.conftest import (
     TEST_DATA_FOLDER_PATH,
-    TEST_INVENTORY_PATH,
     TEST_STATION_CONFIGS_FOLDER_PATH,
 )
 
@@ -24,9 +22,8 @@ class TestJsonStationConfig:
         self,
     ):
         # Given
-        inventory = JsonInventory(TEST_INVENTORY_PATH)
         json_station_config = JsonStationConfig(
-            TEST_STATION_CONFIGS_FOLDER_PATH, inventory, TEST_DATA_FOLDER_PATH
+            TEST_STATION_CONFIGS_FOLDER_PATH, TEST_DATA_FOLDER_PATH
         )
         camera_id = "camera_id3"
 
@@ -40,9 +37,8 @@ class TestJsonStationConfig:
         self,
     ):
         # Given
-        inventory = JsonInventory(TEST_INVENTORY_PATH)
         json_station_config = JsonStationConfig(
-            TEST_STATION_CONFIGS_FOLDER_PATH, inventory, TEST_DATA_FOLDER_PATH
+            TEST_STATION_CONFIGS_FOLDER_PATH, TEST_DATA_FOLDER_PATH
         )
         json_station_config.set_station_config("station_config_TEST2")
         camera_id = "camera_id3"

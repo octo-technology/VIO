@@ -3,23 +3,26 @@ import os
 from pathlib import Path
 from typing import Dict, List, Type, Union
 
+from application.dto.station_config import StationConfig
+from application.no_active_configuration_exception import NoActiveConfigurationException
 from edge_orchestrator import logger
 from edge_orchestrator.domain.models.camera import Camera
 from edge_orchestrator.domain.models.model_infos import ModelInfos
-from edge_orchestrator.domain.ports.inventory import Inventory
-from edge_orchestrator.domain.ports.station_config import StationConfig
 from edge_orchestrator.infrastructure.camera.fake_camera import FakeCamera
 from edge_orchestrator.infrastructure.camera.raspberry_pi_camera import (
     RaspberryPiCamera,
 )
 from edge_orchestrator.infrastructure.camera.usb_camera import UsbCamera
 
+AVAILABLE_CAMERA_TYPES = {
+    "fake": FakeCamera,
+    "pi_camera": RaspberryPiCamera,
+    "usb_camera": UsbCamera,
+}
+
 
 class JsonStationConfig(StationConfig):
-    def __init__(
-        self, station_configs_folder: Path, inventory: Inventory, data_folder: Path
-    ):
-        self.inventory = inventory
+    def __init__(self, station_configs_folder: Path, data_folder: Path):
         self.data_folder = data_folder
 
         if not station_configs_folder.exists():
@@ -29,14 +32,14 @@ class JsonStationConfig(StationConfig):
 
         self.station_configs_folder = station_configs_folder
         self.all_configs = {}
-        self.load()
+        self._load()
 
         self.active_config = None
-        config_name = os.environ.get("ACTIVE_CONFIG_NAME", None)
+        config_name = os.environ.get("ACTIVE_CONFIG_NAME")
         if config_name is not None:
             self.set_station_config(config_name)
 
-    def load(self):
+    def _load(self):
         self.all_configs = {}
         for config in self.station_configs_folder.glob("*.json"):
             with open(config, "r") as station_config_file:
@@ -46,13 +49,16 @@ class JsonStationConfig(StationConfig):
 
     def set_station_config(self, config_name: str):
         try:
+            self.active_config = self.all_configs[config_name]
             self.active_config_name = config_name
-            self.active_config = self.all_configs[self.active_config_name]
-            logger.info(f"Activated the configuration {self.active_config_name}")
         except KeyError:
-            raise KeyError(
-                f"{config_name} is unknown. Valid configs are {list(self.all_configs.keys())}"
+            err_msg = (
+                f"config_name '{config_name}' is unknown. "
+                f"Valid configs are: {list(self.all_configs.keys())}"
             )
+            logger.error(err_msg)
+            raise NoActiveConfigurationException(err_msg)
+        logger.info(f"Activated the configuration {self.active_config_name}")
 
     def get_model_pipeline_for_camera(self, camera_id: str) -> List[ModelInfos]:
         model_pipeline = []
@@ -62,7 +68,7 @@ class JsonStationConfig(StationConfig):
         if model_pipeline_config:
             for model_id, model in model_pipeline_config.items():
                 model_infos = ModelInfos.from_model_graph_node(
-                    camera_id, model_id, model, self.inventory, self.data_folder
+                    camera_id, model_id, model, self.data_folder
                 )
                 model_pipeline.append(model_infos)
         else:
@@ -74,12 +80,9 @@ class JsonStationConfig(StationConfig):
 
     def get_camera_type(self, camera_id: str) -> Type[Camera]:
         camera_config = self.active_config["cameras"].get(camera_id)
-        if camera_config["type"] == "fake":
-            return FakeCamera
-        elif camera_config["type"] == "pi_camera":
-            return RaspberryPiCamera
-        elif camera_config["type"] == "usb_camera":
-            return UsbCamera
+        camera_type = AVAILABLE_CAMERA_TYPES.get(camera_config["type"])
+        if camera_type is not None:
+            return camera_type
         else:
             raise ValueError(f"Camera type ({camera_config['type']}) is not supported.")
 

@@ -1,6 +1,6 @@
 import json
 import os
-from typing import Dict, List
+from typing import Dict, List, Optional
 
 from azure.core.exceptions import ResourceExistsError
 from azure.storage.blob import BlobServiceClient
@@ -11,12 +11,23 @@ from edge_orchestrator.domain.ports.metadata_storage import MetadataStorage
 
 
 class AzureContainerMetadataStorage(MetadataStorage):
-    def __init__(self):
-        self.azure_container_name = os.getenv("AZURE_CONTAINER_NAME")
-        az_storage_connection_str = os.getenv("AZURE_STORAGE_CONNECTION_STRING")
+    def __init__(
+        self,
+        azure_container_name: Optional[str] = None,
+        azure_storage_connection_string: Optional[str] = None,
+    ):
+        if azure_container_name is None:
+            self.azure_container_name = os.getenv(
+                "AZURE_CONTAINER_NAME", "blob-storage-raspberry-1"
+            )
+        if azure_storage_connection_string is None:
+            azure_storage_connection_string = os.getenv(
+                "AZURE_STORAGE_CONNECTION_STRING"
+            )
         self._blob_service_client = BlobServiceClient.from_connection_string(
-            az_storage_connection_str
+            azure_storage_connection_string
         )
+
         try:
             self._blob_service_client.create_container(self.azure_container_name)
         except ResourceExistsError:

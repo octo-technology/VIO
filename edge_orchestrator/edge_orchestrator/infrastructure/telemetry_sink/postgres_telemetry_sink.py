@@ -1,7 +1,7 @@
 import time
 from datetime import datetime
 from random import randrange
-from typing import Dict
+from typing import Dict, Optional
 from urllib.parse import urlparse
 from uuid import uuid4
 
@@ -12,7 +12,14 @@ from edge_orchestrator.domain.ports.telemetry_sink import TelemetrySink
 
 
 class PostgresTelemetrySink(TelemetrySink):
-    def __init__(self, connection_url: str, timeout: int = 30, interval: int = 2):
+    def __init__(
+        self,
+        connection_url: Optional[
+            str
+        ] = "postgresql://vio:vio@hub_monitoring_db:5432/vio",
+        timeout: int = 30,
+        interval: int = 2,
+    ):
         self.connection_url = connection_url
         self._connection = None
         self._timeout = timeout
