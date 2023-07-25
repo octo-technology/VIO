@@ -9,10 +9,20 @@
         version: main
         force: true
 
+    - name: Remove config folder
+      ansible.builtin.file:
+        path: "{{ REMOTE_VIO_DIR }}/edge_orchestrator/config"
+        state: absent
+
     - name: Copy config on the remote machine
       ansible.builtin.copy:
         src:  "{{ LOCAL_VIO_DIR }}/edge_orchestrator/config"
         dest: "{{ REMOTE_VIO_DIR }}/edge_orchestrator/"
+
+    - name: Remove model folder
+      ansible.builtin.file:
+        path: "{{ REMOTE_VIO_DIR }}/edge_model_serving/models"
+        state: absent
 
     - name: Copy model file on the remote machine
       ansible.builtin.copy:

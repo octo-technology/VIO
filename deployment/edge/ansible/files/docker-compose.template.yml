@@ -23,7 +23,7 @@ services:
       - ./edge_orchestrator/config:/edge_orchestrator/config
     devices:
       - /dev/video0:/dev/video0
-#      - /dev/video2:/dev/video2
+      - /dev/video2:/dev/video2
     ports:
       - 8000:8000
     environment:
