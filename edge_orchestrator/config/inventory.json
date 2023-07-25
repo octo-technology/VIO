@@ -19,7 +19,7 @@
       "category": "classification",
       "version": 1,
       "pb_file_path": "modelforward/pin_detection",
-      "class_names_path": "labels.txt",
+      "class_names": ["OK", "NOK"],
       "image_resolution": [
         224,
         224
