@@ -5,86 +5,21 @@
     "usb_camera"
   ],
   "models": {
-    "inception": {
-      "category": "classification",
-      "version": 1,
-      "pb_file_path": "modelforward/inception",
-      "image_resolution": [
-        224,
-        224
-      ]
-    },
     "marker_quality_control": {
       "category": "classification",
       "version": 1,
       "pb_file_path": "modelforward/marker_quality_control",
-      "class_names": [
-        "OK",
-        "KO"
-      ],
+      "class_names_path": "labels.txt",
       "image_resolution": [
         224,
         224
       ]
     },
-    "mobilenet_v1_640x640": {
-      "category": "object_detection",
-      "version": 1,
-      "pb_file_path": "modelforward/mobilenet_v1_640x640",
-      "class_names_path": "coco_labels_originals.txt",
-      "output": {
-        "boxes_coordinates": "detection_boxes",
-        "objectness_scores": "detection_scores",
-        "number_of_boxes": "num_detections",
-        "detection_classes": "detection_classes"
-      },
-      "image_resolution": [
-        640,
-        640
-      ],
-      "objectness_threshold": 0.5
-
-    },
-    "mobilenet_ssd_v2_coco": {
-      "category": "object_detection",
-      "version": 1,
-      "pb_file_path": "modelforward/mobilenet_ssd_v2_coco",
-      "class_names_path": "coco_labels_originals.txt",
-      "output": {
-        "boxes_coordinates": "detection_boxes",
-        "objectness_scores": "detection_scores",
-        "detection_classes": "detection_classes"
-      },
-      "image_resolution": [
-        300,
-        300
-      ],
-      "objectness_threshold": 0.3
-    },
-    "mobilenet_ssd_v2_face": {
-      "category": "object_detection",
-      "version": 1,
-      "pb_file_path": "modelforward/mobilenet_ssd_v2_face",
-      "class_names_path": "face_labels.txt",
-      "output": {
-        "boxes_coordinates": "detection_boxes",
-        "objectness_scores": "detection_scores",
-        "detection_classes": "detection_classes"
-      },
-      "image_resolution": [
-        320,
-        320
-      ],
-      "objectness_threshold": 0.3
-    },
-    "cellphone_connection_control": {
+    "pin_detection": {
       "category": "classification",
       "version": 1,
-      "pb_file_path": "modelforward/cellphone_connection_control",
-      "class_names": [
-        "unconnected",
-        "connected"
-      ],
+      "pb_file_path": "modelforward/pin_detection",
+      "class_names_path": "labels.txt",
       "image_resolution": [
         224,
         224

@@ -4,7 +4,6 @@
       "type": "usb_camera",
       "position": "front",
       "exposition": 100,
-      "source": "/dev/video0",
       "models_graph": {
         "model_id4": {
           "metadata": "marker_quality_control",
