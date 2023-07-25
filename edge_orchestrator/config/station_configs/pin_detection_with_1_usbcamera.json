@@ -17,7 +17,7 @@
           "expected_label": ["OK"]
         }
       }
-    },
+    }
   },
   "item_rule": {
     "name": "min_threshold_KO_rule",
