@@ -28,10 +28,7 @@ class TFServingClassificationWrapper(ModelForward):
             async with aiohttp.ClientSession() as session:
                 async with session.post(model_url, json=payload) as response:
                     json_data = await response.json()
-            logger.info("json DONE")
-            inference_output = self.perform_post_processing(
-                model, json_data["outputs"], binary_name
-            )
+            inference_output = self.perform_post_processing(model, json_data['outputs'], binary_name)
             return inference_output
         except Exception as e:
             logger.exception(e)
