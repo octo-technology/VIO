@@ -5,8 +5,10 @@ WORKDIR /tflite_serving
 COPY tflite_serving/src/ src/
 COPY tflite_serving/pyproject.toml .
 
+ARG TARGET_OS=linux
+
 RUN pip install --upgrade pip
-RUN pip install -e ".[linux]"
+RUN pip install -e ".[${TARGET_OS}]"
 
 ENV MODELS_PATH=/models
 COPY models/tflite/ $MODELS_PATH/tflite/

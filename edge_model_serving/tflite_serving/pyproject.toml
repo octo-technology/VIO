@@ -7,7 +7,7 @@ name = "tflite_serving"
 version = "1.0.0"
 dependencies = [
     "fastapi==0.80.0",
-    "numpy==1.21.6",
+    "numpy==1.22",
     "Pillow==8.4.0",
     "uvicorn==0.22.0",
 ]
@@ -33,7 +33,7 @@ linux = [
     "tflite-runtime==2.7.0"
 ]
 mac = [
-    "tflite-runtime==2.5.0"
+    "tensorflow==2.13.0"
 ]
 
 [tool.pytest.ini_options]
