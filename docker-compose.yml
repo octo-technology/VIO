@@ -12,8 +12,6 @@ services:
     build:
       context: edge_model_serving
       dockerfile: tflite_serving/Dockerfile
-      args:
-        - TARGET_OS=macos
     environment:
       - TF_CPP_MIN_VLOG_LEVEL=0
     ports:

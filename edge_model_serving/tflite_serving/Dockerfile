@@ -2,13 +2,13 @@ FROM python:3.8.10-slim
 
 WORKDIR /tflite_serving
 
+RUN apt-get update && apt-get upgrade -y && apt-get install gcc -y
+
 COPY tflite_serving/src/ src/
 COPY tflite_serving/pyproject.toml .
 
-ARG TARGET_OS=linux
-
 RUN pip install --upgrade pip
-RUN pip install -e ".[${TARGET_OS}]"
+RUN pip install -e ".[linux]"
 
 ENV MODELS_PATH=/models
 COPY models/tflite/ $MODELS_PATH/tflite/

@@ -32,8 +32,8 @@ dev = [
 linux = [
     "tflite-runtime==2.7.0"
 ]
-mac = [
-    "tensorflow==2.13.0"
+macos = [
+    "tflite-runtime==2.7.0"
 ]
 
 [tool.pytest.ini_options]
