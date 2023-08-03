@@ -25,8 +25,8 @@
 </template>
 
 <script>
-import VideoCapture from '@/components/VideoCapture.vue'
 import { mapGetters } from 'vuex'
+import VideoCapture from '@/components/VideoCapture.vue'
 
 export default {
   name: 'VUploadView',

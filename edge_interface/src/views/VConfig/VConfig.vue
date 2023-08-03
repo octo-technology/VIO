@@ -87,7 +87,7 @@
 </template>
 
 <script>
-import { configApiService } from '@/services' // eslint-disable-line
+import { ConfigApiService } from '@/services' // eslint-disable-line
 
 export default {
   name: 'VConfig',
@@ -106,8 +106,8 @@ export default {
 
   created() {
     /* eslint-disable */
-    configApiService.getConfigs().then(configs => (this.configs = configs))
-    configApiService.getInventory().then(inventory => (this.inventory = inventory))
+    ConfigApiService.getConfigs().then(configs => (this.configs = configs))
+    ConfigApiService.getInventory().then(inventory => (this.inventory = inventory))
     /* eslint-disable */
   },
   methods: {
@@ -115,7 +115,7 @@ export default {
       console.log("HEEEEEYYYYY")
       console.log("HEEEEEYYYYY")
       console.log(itemCategory)
-      configApiService
+      ConfigApiService
         .setActiveConfig(itemCategory)
         .then(async response => {
           this.message = `Config ${JSON.parse(response.config.data).config_name} set`
