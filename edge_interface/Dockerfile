@@ -4,6 +4,8 @@ WORKDIR /edge_interface
 COPY package*.json ./
 RUN npm install
 COPY ./ .
+# NODE_OPTIONS is needed on macos M1 to run any npm script
+ENV NODE_OPTIONS --openssl-legacy-provider
 RUN npm run build
 
 FROM nginx as production-stage
