@@ -12,6 +12,11 @@ brew install node
 npm install
 ```
 
+Note: on macos (M1) before running npm script you need to set NODE_OPTIONS 
+```
+export NODE_OPTIONS=--openssl-legacy-provider
+```
+
 ### Compiles and hot-reloads for development
 ```
 npm run serve

@@ -27,19 +27,6 @@
         224
       ]
     },
-    "mask_classification_model": {
-      "category": "classification",
-      "version": 1,
-      "pb_file_path": "modelforward/mask_classification_model",
-      "class_names": [
-        "OK",
-        "KO"
-      ],
-      "image_resolution": [
-        224,
-        224
-      ]
-    },
     "mobilenet_v1_640x640": {
       "category": "object_detection",
       "version": 1,
