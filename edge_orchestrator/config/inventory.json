@@ -9,7 +9,7 @@
       "category": "classification",
       "version": 1,
       "pb_file_path": "modelforward/marker_quality_control",
-      "class_names_path": "labels.txt",
+      "class_names": ["OK", "KO"],
       "image_resolution": [
         224,
         224

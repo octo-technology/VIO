@@ -13,27 +13,6 @@ help:
 	grep -E '^\.PHONY: [a-zA-Z0-9_-]+ .*?## .*$$' $(MAKEFILE_LIST) | \
 		awk 'BEGIN {FS = "(: |##)"}; {printf "\033[36m%-30s\033[0m %s\n", $$2, $$3}'
 
-## tflite_serving
-
-.PHONY: tflite_env  ## 🐍 Create a Python conda environment
-tflite_env:
-	conda create --name tflite_env python=3.8 -y
-
-.PHONY: install_tflite_dependencies_linux  ## ⏬ Install tflite development dependencies on linux
-install_tflite_dependencies_linux:
-	python -m pip install --upgrade pip setuptools
-	cd tflite_serving && pip install -e .[dev,linux] && pip list --outdated
-
-.PHONY: install_tflite_dependencies_mac  ## ⏬ Install tflite development dependencies on mac
-install_tflite_dependencies_mac:
-	python -m pip install --upgrade pip setuptools
-	cd tflite_serving && pip install -e .[dev,mac] && pip list --outdated
-
-.PHONY: torch_env ## setup conda env
-torch_env:
-	conda create --name torch_env python=3.8 openssl=1.1.1n
-	pip install -r torch_serving/requirements.txt
-
 .PHONY: lint  ## 🐍 Lint Python files to conform to the PEP 8 style guide
 lint:
 	flake8 --count --show-source --statistics
@@ -43,16 +22,43 @@ lint:
 autopep8:
 	autopep8 --in-place --aggressive -r tflite_serving
 
+## tflite_serving
+
+.PHONY: tflite_serving  ## 🐍 Create a tflite conda environment
+tflite_serving:
+	conda create --name tflite_serving python=3.8 -y
+
+.PHONY: install_tflite_linux  ## ⏬ Install tflite development dependencies on linux
+install_tflite_linux:
+	python -m pip install --upgrade pip setuptools
+	cd tflite_serving && pip install -e .[dev,linux] && pip list --outdated
+
+.PHONY: install_tflite_mac  ## ⏬ Install tflite development dependencies on mac
+install_tflite_mac:
+	python -m pip install --upgrade pip setuptools
+	cd tflite_serving && pip install -e .[dev,macos] && pip list --outdated
+
 .PHONY: tflite_tests  ## ✅ Launch the unit tflite_tests
 tflite_tests:
 	cd tflite_serving && pytest -v --cov=src --junitxml=reports/tests-report.xml tests/
 
-.PHONY: edge_tflite_serving  ## ✅ Launch the serving app
-edge_tflite_serving:
+.PHONY: run_tflite_serving  ## ✅ Launch the tflite serving app
+run_tflite_serving:
 	cd tflite_serving && uvicorn tflite_serving.tflite_server:app --reload --port 8501 --host 0.0.0.0
 
-.PHONY: edge_torch_serving  ## ✅ Launch the serving app
-edge_torch_serving:
+## torch_serving
+
+.PHONY: torch_serving ## 🐍 Create a torch conda environment
+torch_serving:
+	conda create --name torch_serving python=3.8 openssl=1.1.1n
+	pip install -r torch_serving/requirements.txt
+
+.PHONY: install_torch  ## ⏬ Install torch dependencies
+install_torch:
+	pip install -r torch_serving/requirements.txt
+
+.PHONY: run_torch_serving  ## ✅ Launch the pytorch serving app
+run_torch_serving:
 	cd torch_serving
 	make download-models
 	make build-mar-file

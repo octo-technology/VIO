@@ -24,7 +24,7 @@ class PostgresTelemetrySink(TelemetrySink):
         if self._connection:
             return self._connection
 
-        result = urlparse(self.connection_url)
+        result = urlparse(self.connection_url) # "postgresql://vio:vio@hub_monitoring_db:5432/vio"
         username, password, hostname, port = (
             result.username,
             result.password,
@@ -32,6 +32,8 @@ class PostgresTelemetrySink(TelemetrySink):
             result.port,
         )
         database = result.path[1:]
+
+        logger.debug(f"Connection with params {username, password, hostname, port, database}")
 
         nb_retry = self._timeout // self._interval
         for i in range(nb_retry):

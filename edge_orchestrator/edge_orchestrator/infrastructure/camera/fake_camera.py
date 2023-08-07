@@ -1,6 +1,6 @@
 import random
 from pathlib import Path
-from typing import Dict, Union
+from typing import Dict, List, Union
 
 from edge_orchestrator import logger
 from edge_orchestrator.domain.models.camera import Camera
@@ -10,10 +10,10 @@ from edge_orchestrator.environment.config import Config
 class FakeCamera(Camera):
     def __init__(self, id: str, settings: Dict[str, Union[str, Dict]]):
         super().__init__(id, settings)
-        self.id = id
-        self.settings = settings
-        self.data_folder_path = Config.ROOT_PATH / "data"
-        self.image_extensions = ["*.jpg", "*.png"]
+        self.id: str = id
+        self.settings: Dict = settings
+        self.data_folder_path: Path = Config.ROOT_PATH / "data"
+        self.image_extensions: List = ["*.jpg", "*.png"]
 
     def capture(self) -> bytes:
         random_image_path = self.select_random_image()

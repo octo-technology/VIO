@@ -9,6 +9,7 @@ SHELL := /bin/bash
 REPO_DIRECTORY:=$(shell pwd)
 PYTHONPATH:=${PYTHONPATH}:${REPO_DIRECTORY}
 
+.PHONY: help
 help:
 	echo "❓ Use \`make <target>'"
 	grep -E '^\.PHONY: [a-zA-Z0-9_-]+ .*?## .*$$' $(MAKEFILE_LIST) | \
