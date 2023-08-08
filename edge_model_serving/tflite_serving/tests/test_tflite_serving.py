@@ -32,7 +32,7 @@ class TestTfliteServing:
             "marker_quality_control",
             "mobilenet_ssd_v2_coco",
             "mobilenet_ssd_v2_face",
-            "pin_detection"
+            "pin_detection",
         ]
 
         # When
