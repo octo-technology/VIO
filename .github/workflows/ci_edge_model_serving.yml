@@ -27,7 +27,7 @@ jobs:
           python-version: ${{ matrix.python-version }}
 
       - name: Install dependencies
-        run: make install_tflite_dependencies_linux
+        run: make install_tflite_linux
         working-directory: ./edge_model_serving
 
       - name: Lint with flake8 and black
