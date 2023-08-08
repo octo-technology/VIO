@@ -10,7 +10,6 @@ RUN apt-get install fswebcam -y
 RUN apt-get install libpq-dev zlib1g-dev jq gcc libnuma-dev -y
 RUN pip install --upgrade pip
 RUN pip install .
-RUN pip install psycopg2==2.9.3
 
 ENV API_CONFIG docker
 
