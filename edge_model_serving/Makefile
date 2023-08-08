@@ -51,7 +51,6 @@ run_tflite_serving:
 .PHONY: torch_serving ## 🐍 Create a torch conda environment
 torch_serving:
 	conda create --name torch_serving python=3.8 openssl=1.1.1n
-	pip install -r torch_serving/requirements.txt
 
 .PHONY: install_torch  ## ⏬ Install torch dependencies
 install_torch:
