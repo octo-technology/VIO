@@ -32,6 +32,7 @@ class TestTfliteServing:
             "marker_quality_control",
             "mobilenet_ssd_v2_coco",
             "mobilenet_ssd_v2_face",
+            "pin_detection"
         ]
 
         # When
@@ -39,8 +40,7 @@ class TestTfliteServing:
 
         # Then
         assert actual_response.status_code == 200
-        for model in sorted(actual_response.json()):
-            assert model in expected_models
+        assert expected_models == sorted(actual_response.json())
 
     def test_get_model_resolution_should_return_inputs_shape(self):
         # Given
