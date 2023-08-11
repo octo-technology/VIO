@@ -1,13 +1,11 @@
-from pathlib import Path
 from typing import Dict, Tuple
 
 from edge_orchestrator.domain.ports.station_config import StationConfig
 
 
 class EdgeStation:
-    def __init__(self, station_config: StationConfig, storage: Path):
+    def __init__(self, station_config: StationConfig):
         self.station_config = station_config
-        self.storage = storage
 
     def register_cameras(self, station_config: StationConfig):
         self.cameras = []

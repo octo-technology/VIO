@@ -8,7 +8,6 @@ from edge_orchestrator.api_config import get_station_config
 from edge_orchestrator.domain.models.edge_station import EdgeStation
 from edge_orchestrator.domain.ports.station_config import StationConfig
 from edge_orchestrator.infrastructure.camera.fake_camera import FakeCamera
-from tests.conftest import TEST_DATA_FOLDER_PATH
 
 
 class TestEdgeStation:
@@ -18,7 +17,7 @@ class TestEdgeStation:
         # Given
         station_config: StationConfig = get_station_config()
 
-        edge_station = EdgeStation(station_config, TEST_DATA_FOLDER_PATH)
+        edge_station = EdgeStation(station_config)
 
         # Then
         with pytest.raises(TypeError) as error:
@@ -30,7 +29,7 @@ class TestEdgeStation:
         station_config: StationConfig = get_station_config()
         station_config.set_station_config("station_config_TEST")
 
-        edge_station = EdgeStation(station_config, TEST_DATA_FOLDER_PATH)
+        edge_station = EdgeStation(station_config)
 
         # Then
         with pytest.raises(AttributeError) as error:
@@ -57,7 +56,7 @@ class TestEdgeStation:
         station_config: StationConfig = get_station_config()
         station_config.set_station_config("station_config_TEST")
 
-        edge_station = EdgeStation(station_config, TEST_DATA_FOLDER_PATH)
+        edge_station = EdgeStation(station_config)
 
         # When
         edge_station.register_cameras(station_config)
