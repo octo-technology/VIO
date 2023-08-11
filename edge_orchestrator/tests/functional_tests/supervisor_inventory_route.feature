@@ -13,7 +13,6 @@ Feature: The client requests the inventory available on the station
       "inception": {
         "category": "classification",
         "version": 1,
-        "pb_file_path": "modelforward/inception",
         "class_names": [
           "OK",
           "KO"
@@ -26,7 +25,6 @@ Feature: The client requests the inventory available on the station
       "marker_quality_control": {
         "category": "classification",
         "version": 1,
-        "pb_file_path": "modelforward/marker_quality_control",
         "class_names": [
           "OK",
           "KO"
@@ -39,7 +37,6 @@ Feature: The client requests the inventory available on the station
       "mask_classification_model": {
         "category": "classification",
         "version": 1,
-        "pb_file_path": "modelforward/mask_classification_model",
         "class_names": [
           "OK",
           "KO"
@@ -52,7 +49,6 @@ Feature: The client requests the inventory available on the station
       "mobilenet_v1_640x640": {
         "category": "object_detection",
         "version": 1,
-        "pb_file_path": "modelforward/mobilenet_v1_640x640",
         "class_names_path": "test_detection_labels",
         "output": {
           "boxes_coordinates": "detection_boxes",
@@ -65,7 +61,6 @@ Feature: The client requests the inventory available on the station
       "mobilenet_v1_640x640_detect_classif": {
         "category": "object_detection_with_classification",
         "version": 1,
-        "pb_file_path": "modelforward/mobilenet_v1_640x640",
         "class_names_path": "test_detection_labels",
         "output": {
           "boxes_coordinates": "detection_boxes",

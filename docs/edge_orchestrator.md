@@ -213,7 +213,6 @@ Inside this folder should be the .tflite model and if needed a .txt file with th
       "your_new_model_name": {
       "category": "classification",
       "version": 1,
-      "pb_file_path": "modelforward/your_new_model_name",
       "class_names": [
         "class name 1",
         "class name 2",
@@ -230,7 +229,6 @@ Inside this folder should be the .tflite model and if needed a .txt file with th
     "your_new_model_name": {
       "category": "object_detection",
       "version": 1,
-      "pb_file_path": "modelforward/your_new_model_name",
       "class_names_path": "{name of file with the class names}.txt",
       "output": {
         "boxes_coordinates": "{name of the boxes_coordinates variable in your model}",

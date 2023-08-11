@@ -13,7 +13,6 @@ def test_items_config():
                         "metadata": {
                             "category": "classification",
                             "name": "inception",
-                            "pb_file_path": "modelforward/inception",
                             "version": "1",
                         },
                     }
@@ -32,7 +31,6 @@ def test_items_config():
                         "metadata": {
                             "category": "object_detection_with_classification",
                             "name": "yolov3_harnais",
-                            "pb_file_path": "modelforward/yolov3_harnais",
                             "version": "1",
                         },
                     }
@@ -51,7 +49,6 @@ def test_items_config():
                         "metadata": {
                             "category": "object_detection",
                             "name": "yolov3_harnais",
-                            "pb_file_path": "modelforward/yolov3_harnais",
                             "version": "1",
                         },
                     },
@@ -60,7 +57,6 @@ def test_items_config():
                         "metadata": {
                             "category": "classification",
                             "name": "inception",
-                            "pb_file_path": "modelforward/inception",
                             "version": "1",
                         },
                     },
@@ -79,7 +75,6 @@ def test_items_config():
                         "metadata": {
                             "category": "object_detection",
                             "name": "yolov3_harnais",
-                            "pb_file_path": "modelforward/yolov3_harnais",
                             "version": "1",
                         },
                     },
@@ -88,7 +83,6 @@ def test_items_config():
                         "metadata": {
                             "category": "classification",
                             "name": "inception",
-                            "pb_file_path": "modelforward/inception",
                             "version": "1",
                         },
                     },
@@ -109,7 +103,6 @@ def test_items_config():
                         "metadata": {
                             "category": "object_detection",
                             "name": "yolov3_harnais",
-                            "pb_file_path": "modelforward/yolov3_harnais",
                             "version": "1",
                         },
                     },
@@ -118,7 +111,6 @@ def test_items_config():
                         "metadata": {
                             "category": "classification",
                             "name": "inception",
-                            "pb_file_path": "modelforward/inception",
                             "version": "1",
                         },
                     },
