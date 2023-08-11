@@ -149,7 +149,7 @@ Here's a template of a config file.
       "exposition": 100,
       "models_graph": {
         "model_id1": {
-          "metadata": "mobilenet_ssd_v2_coco", #name of the model
+          "name": "mobilenet_ssd_v2_coco", #name of the model
           "depends_on": [], #if this model depends on another model, if none then empty list
           "class_to_detect": ["cell phone"] #class to detect, always in list format and only for object detection model. If classification model, can delete this row
         },
@@ -176,7 +176,7 @@ Here's a template of a config file.
       "exposition": 100,
       "models_graph": {
         "model_id1": {
-          "metadata": "mobilenet_ssd_v2_face",
+          "name": "mobilenet_ssd_v2_face",
           "depends_on": [],
           "class_to_detect": ["face"]
         }

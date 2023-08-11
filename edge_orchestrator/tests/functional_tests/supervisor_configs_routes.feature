@@ -30,7 +30,7 @@ Feature: The client set an active configuration
           "exposition": 100,
           "models_graph": {
             "model_id4": {
-              "metadata": "marker_quality_control",
+              "name": "marker_quality_control",
               "depends_on": []
             }
           },

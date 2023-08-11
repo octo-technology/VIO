@@ -18,7 +18,6 @@ pytest_plugins = [
     "tests.fixtures.items",
     "tests.fixtures.metadata",
     "tests.fixtures.containers",
-    "tests.fixtures.items_config",
 ]
 
 EDGE_DB_IMG = "mongo:5.0.2"
