@@ -9,7 +9,10 @@
       "category": "classification",
       "version": 1,
       "pb_file_path": "modelforward/marker_quality_control",
-      "class_names": ["OK", "KO"],
+      "class_names": [
+        "OK",
+        "KO"
+      ],
       "image_resolution": [
         224,
         224
@@ -19,11 +22,46 @@
       "category": "classification",
       "version": 1,
       "pb_file_path": "modelforward/pin_detection",
-      "class_names": ["OK", "NOK"],
+      "class_names": [
+        "OK",
+        "NOK"
+      ],
       "image_resolution": [
         224,
         224
       ]
+    },
+    "mobilenet_ssd_v2_coco": {
+      "category": "object_detection",
+      "version": 1,
+      "pb_file_path": "modelforward/mobilenet_ssd_v2_coco",
+      "class_names_path": "coco_labels_originals.txt",
+      "output": {
+        "boxes_coordinates": "detection_boxes",
+        "objectness_scores": "detection_scores",
+        "detection_classes": "detection_classes"
+      },
+      "image_resolution": [
+        300,
+        300
+      ],
+      "objectness_threshold": 0.3
+    },
+    "mobilenet_ssd_v2_face": {
+      "category": "object_detection",
+      "version": 1,
+      "pb_file_path": "modelforward/mobilenet_ssd_v2_face",
+      "class_names_path": "face_labels.txt",
+      "output": {
+        "boxes_coordinates": "detection_boxes",
+        "objectness_scores": "detection_scores",
+        "detection_classes": "detection_classes"
+      },
+      "image_resolution": [
+        320,
+        320
+      ],
+      "objectness_threshold": 0.3
     }
   },
   "camera_rules": [

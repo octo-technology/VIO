@@ -32,9 +32,8 @@ dev = [
 linux = [
     "tflite-runtime==2.7.0"
 ]
-macos = [
-    "tflite-runtime==2.7.0"
-]
+
+# macos refer to https://www.tensorflow.org/lite/guide/build_cmake_pip
 
 [tool.pytest.ini_options]
 min_version = "6.0"
