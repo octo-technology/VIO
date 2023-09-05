@@ -29,17 +29,17 @@ tflite_serving:
 .PHONY: install_tflite_linux  ## ⏬ Install tflite development dependencies on linux
 install_tflite_linux:
 	python -m pip install --upgrade pip setuptools
-	pip install -e .[dev,linux] && pip list --outdated
+	cd tflite_serving && pip install -e .[dev,linux] && pip list --outdated
 
 .PHONY: install_tflite_mac  ## ⏬ Install tflite development dependencies on mac
 install_tflite_mac:
 	python -m pip install --upgrade pip setuptools
-	pip install -e .[dev,macos] && pip list --outdated
+	cd tflite_serving && pip install -e .[dev] && pip list --outdated
 
 .PHONY: tflite_tests  ## ✅ Launch the unit tflite_tests
 tflite_tests:
-	pytest -v --cov=src --junitxml=reports/tests-report.xml tests/
+	cd tflite_serving && pytest -v --cov=src --junitxml=reports/tests-report.xml tests/
 
 .PHONY: run_tflite_serving  ## ✅ Launch the tflite serving app
 run_tflite_serving:
-	uvicorn tflite_serving.tflite_server:app --reload --port 8501 --host 0.0.0.0
+	cd tflite_serving && uvicorn tflite_serving.tflite_server:app --reload --port 8501 --host 0.0.0.0
