@@ -28,7 +28,6 @@ class TFServingClassificationWrapper(ModelForward):
             async with aiohttp.ClientSession() as session:
                 async with session.post(model_url, json=payload) as response:
                     json_data = await response.json()
-            logger.info("json DONE")
             inference_output = self.perform_post_processing(
                 model, json_data["outputs"], binary_name
             )
@@ -55,6 +54,7 @@ class TFServingClassificationWrapper(ModelForward):
     def perform_post_processing(
         self, model: ModelInfos, json_outputs: list, binary_name: str
     ) -> dict:
+        logger.debug(f"model classnames: {model.class_names}")
         return {
             binary_name: {
                 "label": model.class_names[np.argmax(json_outputs[0])],

@@ -33,6 +33,10 @@ class PostgresTelemetrySink(TelemetrySink):
         )
         database = result.path[1:]
 
+        logger.debug(
+            f"Connection with params {username, password, hostname, port, database}"
+        )
+
         nb_retry = self._timeout // self._interval
         for i in range(nb_retry):
             try:

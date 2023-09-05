@@ -1,21 +1,20 @@
 {
   "cameras": {
     "camera_id3": {
-      "type": "pi_camera",
-      "source": "cellphone_dataset",
+      "type": "usb_camera",
+      "source": "/dev/video0",
       "position": "front",
       "exposition": 100,
       "models_graph": {
-        "model_id5": {
-          "metadata": "cellphone_connection_control",
-          "depends_on": [],
-          "class_to_detect": ["connected"]
+        "model_id4": {
+          "metadata": "pin_detection",
+          "depends_on": []
         }
       },
       "camera_rule": {
         "name": "expected_label_rule",
         "parameters": {
-          "expected_label": ["connected"]
+          "expected_label": ["OK"]
         }
       }
     }

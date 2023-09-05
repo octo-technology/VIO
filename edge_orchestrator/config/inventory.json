@@ -5,15 +5,6 @@
     "usb_camera"
   ],
   "models": {
-    "inception": {
-      "category": "classification",
-      "version": 1,
-      "pb_file_path": "modelforward/inception",
-      "image_resolution": [
-        224,
-        224
-      ]
-    },
     "marker_quality_control": {
       "category": "classification",
       "version": 1,
@@ -27,23 +18,18 @@
         224
       ]
     },
-    "mobilenet_v1_640x640": {
-      "category": "object_detection",
+    "pin_detection": {
+      "category": "classification",
       "version": 1,
-      "pb_file_path": "modelforward/mobilenet_v1_640x640",
-      "class_names_path": "coco_labels_originals.txt",
-      "output": {
-        "boxes_coordinates": "detection_boxes",
-        "objectness_scores": "detection_scores",
-        "number_of_boxes": "num_detections",
-        "detection_classes": "detection_classes"
-      },
-      "image_resolution": [
-        640,
-        640
+      "pb_file_path": "modelforward/pin_detection",
+      "class_names": [
+        "OK",
+        "NOK"
       ],
-      "objectness_threshold": 0.5
-
+      "image_resolution": [
+        224,
+        224
+      ]
     },
     "mobilenet_ssd_v2_coco": {
       "category": "object_detection",
@@ -76,19 +62,6 @@
         320
       ],
       "objectness_threshold": 0.3
-    },
-    "cellphone_connection_control": {
-      "category": "classification",
-      "version": 1,
-      "pb_file_path": "modelforward/cellphone_connection_control",
-      "class_names": [
-        "unconnected",
-        "connected"
-      ],
-      "image_resolution": [
-        224,
-        224
-      ]
     }
   },
   "camera_rules": [

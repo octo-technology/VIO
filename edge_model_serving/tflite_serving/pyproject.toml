@@ -7,11 +7,12 @@ name = "tflite_serving"
 version = "1.0.0"
 dependencies = [
     "fastapi==0.80.0",
-    "numpy==1.21.6",
+    "numpy==1.22",
     "Pillow==8.4.0",
     "uvicorn==0.22.0",
+    "anyio==3.7.1"
 ]
-requires-python = ">=3.7"
+requires-python = ">=3.8"
 
 [tool.setuptools.packages.find]
 where = ["src/"]
@@ -32,9 +33,8 @@ dev = [
 linux = [
     "tflite-runtime==2.7.0"
 ]
-mac = [
-    "tflite-runtime==2.5.0"
-]
+
+# macos refer to https://www.tensorflow.org/lite/guide/build_cmake_pip
 
 [tool.pytest.ini_options]
 min_version = "6.0"

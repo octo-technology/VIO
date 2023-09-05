@@ -2,6 +2,8 @@ FROM python:3.8.10-slim
 
 WORKDIR /tflite_serving
 
+RUN apt-get update && apt-get upgrade -y && apt-get install gcc -y
+
 COPY tflite_serving/src/ src/
 COPY tflite_serving/pyproject.toml .
 

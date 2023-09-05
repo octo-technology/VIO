@@ -29,10 +29,10 @@ class TestTfliteServing:
         # Given
         model_url = f"{self.base_url}/models"
         expected_models = [
-            "cellphone_connection_control",
             "marker_quality_control",
             "mobilenet_ssd_v2_coco",
             "mobilenet_ssd_v2_face",
+            "pin_detection",
         ]
 
         # When
@@ -40,14 +40,14 @@ class TestTfliteServing:
 
         # Then
         assert actual_response.status_code == 200
-        assert sorted(actual_response.json()) == expected_models
+        assert expected_models == sorted(actual_response.json())
 
     def test_get_model_resolution_should_return_inputs_shape(self):
         # Given
         model_url = (
-            f"{self.base_url}/models/cellphone_connection_control/versions/1/resolution"
+            f"{self.base_url}/models/mobilenet_ssd_v2_coco/versions/1/resolution"
         )
-        expected_resolution = {"inputs_shape": [1, 224, 224, 3]}
+        expected_resolution = {"inputs_shape": [1, 300, 300, 3]}
 
         # When
         actual_response = self.test_client.get(model_url)

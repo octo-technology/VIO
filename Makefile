@@ -30,6 +30,10 @@ edge_db:
 hub_monitoring:
 	docker-compose up -d --build hub_monitoring
 
+.PHONY: hub_monitoring_db ## ⚙️ Start hub_monitoring database inside a docker container
+hub_monitoring_db:
+	docker-compose up -d --build hub_monitoring_db
+
 .PHONY: vio-edge-up ## 🐳 Start all services (db, model_serving, orchestrator, interface) and local hub monitoring
 vio-edge-up:
 	docker-compose up -d --build
