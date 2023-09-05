@@ -28,15 +28,15 @@ jobs:
 
       - name: Install dependencies
         run: make install_tflite_linux
-        working-directory: ./edge_model_serving
+        working-directory: ./edge_model_serving/tflite_serving
 
       - name: Lint with flake8 and black
         run: make lint
-        working-directory: ./edge_model_serving
+        working-directory: ./edge_model_serving/tflite_serving
 
       - name: Run unit tests
         run: make tflite_tests
-        working-directory: ./edge_model_serving
+        working-directory: ./edge_model_serving/tflite_serving
 
       - name: Upload unit test report
         uses: dorny/test-reporter@v1
