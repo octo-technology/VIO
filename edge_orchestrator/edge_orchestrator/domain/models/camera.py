@@ -1,4 +1,4 @@
-from abc import abstractmethod
+from abc import abstractmethod, ABC
 from typing import Dict, Type, Union
 
 from edge_orchestrator.domain.models.business_rules.camera_business_rules.expected_label_rule import (
@@ -30,11 +30,9 @@ def get_last_inference_by_camera(inference: Dict) -> Dict:
     return last_model_inference
 
 
-class Camera:
-    @abstractmethod
-    def __init__(self, id: str, settings: Dict[str, Union[str, Dict]]):
-        self.id = id
-        self.settings = settings
+class Camera(ABC):
+    id: str
+    settings: Dict[str, Union[str, Dict]]
 
     @abstractmethod
     def capture(self) -> bytes:

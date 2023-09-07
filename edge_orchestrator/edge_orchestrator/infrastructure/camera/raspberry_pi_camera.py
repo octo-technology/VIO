@@ -7,7 +7,6 @@ from edge_orchestrator.domain.models.camera import Camera
 
 class RaspberryPiCamera(Camera):
     def __init__(self, id: str, settings: Dict[str, Union[str, Dict]]):
-        super().__init__(id, settings)
         self.id = id
         self.settings = settings
 

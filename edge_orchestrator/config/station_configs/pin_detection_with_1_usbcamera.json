@@ -7,7 +7,7 @@
       "exposition": 100,
       "models_graph": {
         "model_id4": {
-          "metadata": "pin_detection",
+          "name": "pin_detection",
           "depends_on": []
         }
       },

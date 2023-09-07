@@ -26,18 +26,18 @@
                 </div>
                 <div v-for="(model, model_id) in camera_config['models_graph']" :key="model_id">
                   <span class="title-3">{{ model_id }}</span>
-                  <div>Model name: {{ model['metadata'] }}</div>
+                  <div>Model name: {{ model['name'] }}</div>
                   <div>
                     Model type:
-                    {{ inventory['models'][model['metadata']]['category'] }}
+                    {{ inventory['models'][model['name']]['category'] }}
                   </div>
                   <div>
                     Model version:
-                    {{ inventory['models'][model['metadata']]['version'] }}
+                    {{ inventory['models'][model['name']]['version'] }}
                   </div>
                   <div>
                     Class names:
-                    {{ inventory['models'][model['metadata']]['class_names'] }}
+                    {{ inventory['models'][model['name']]['class_names'] }}
                   </div>
                   <div>Depends on: {{ model['depends_on'] }}</div>
                 </div>
@@ -87,7 +87,7 @@
 </template>
 
 <script>
-import { ConfigApiService } from '@/services' // eslint-disable-line
+import {ConfigApiService} from '@/services' // eslint-disable-line
 
 export default {
   name: 'VConfig',

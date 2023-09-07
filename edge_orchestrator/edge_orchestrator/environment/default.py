@@ -33,5 +33,5 @@ class Default(Config):
             self.inventory,
             self.ROOT_PATH / "data",
         )
-        self.edge_station = EdgeStation(self.station_config, self.ROOT_PATH / "data")
+        self.edge_station = EdgeStation(self.station_config)
         self.telemetry_sink = FakeTelemetrySink()

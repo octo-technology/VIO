@@ -8,7 +8,6 @@
     "marker_quality_control": {
       "category": "classification",
       "version": 1,
-      "pb_file_path": "modelforward/marker_quality_control",
       "class_names": [
         "OK",
         "KO"
@@ -21,7 +20,6 @@
     "pin_detection": {
       "category": "classification",
       "version": 1,
-      "pb_file_path": "modelforward/pin_detection",
       "class_names": [
         "OK",
         "NOK"
@@ -34,7 +32,6 @@
     "mobilenet_ssd_v2_coco": {
       "category": "object_detection",
       "version": 1,
-      "pb_file_path": "modelforward/mobilenet_ssd_v2_coco",
       "class_names_path": "coco_labels_originals.txt",
       "output": {
         "boxes_coordinates": "detection_boxes",
@@ -50,7 +47,6 @@
     "mobilenet_ssd_v2_face": {
       "category": "object_detection",
       "version": 1,
-      "pb_file_path": "modelforward/mobilenet_ssd_v2_face",
       "class_names_path": "face_labels.txt",
       "output": {
         "boxes_coordinates": "detection_boxes",

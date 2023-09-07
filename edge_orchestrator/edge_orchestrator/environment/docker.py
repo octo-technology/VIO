@@ -40,7 +40,7 @@ class Docker(Config):
             inventory=self.inventory,
             data_folder=self.ROOT_PATH / "data",
         )
-        self.edge_station = EdgeStation(self.station_config, self.ROOT_PATH / "data")
+        self.edge_station = EdgeStation(self.station_config)
         self.model_forward = TFServingWrapper(
             self.SERVING_MODEL_URL, self.inventory, self.station_config
         )

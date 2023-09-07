@@ -101,7 +101,7 @@ class JsonStationConfig(StationConfig):
                 raise ValueError(f"Camera type {camera_type} is not supported.")
             self._check_business_rule(camera_conf, "camera")
             for model_id, model_conf in camera_conf["models_graph"].items():
-                model = model_conf["metadata"]
+                model = model_conf["name"]
                 if model not in self.inventory.models:
                     raise ValueError(f"Model type {model} is not supported.")
                 self._check_business_rule(model_conf, "model")

@@ -9,7 +9,6 @@ from edge_orchestrator.environment.config import Config
 
 class FakeCamera(Camera):
     def __init__(self, id: str, settings: Dict[str, Union[str, Dict]]):
-        super().__init__(id, settings)
         self.id: str = id
         self.settings: Dict = settings
         self.data_folder_path: Path = Config.ROOT_PATH / "data"

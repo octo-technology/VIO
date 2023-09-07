@@ -149,7 +149,7 @@ Here's a template of a config file.
       "exposition": 100,
       "models_graph": {
         "model_id1": {
-          "metadata": "mobilenet_ssd_v2_coco", #name of the model
+          "name": "mobilenet_ssd_v2_coco", #name of the model
           "depends_on": [], #if this model depends on another model, if none then empty list
           "class_to_detect": ["cell phone"] #class to detect, always in list format and only for object detection model. If classification model, can delete this row
         },
@@ -176,7 +176,7 @@ Here's a template of a config file.
       "exposition": 100,
       "models_graph": {
         "model_id1": {
-          "metadata": "mobilenet_ssd_v2_face",
+          "name": "mobilenet_ssd_v2_face",
           "depends_on": [],
           "class_to_detect": ["face"]
         }
@@ -213,7 +213,6 @@ Inside this folder should be the .tflite model and if needed a .txt file with th
       "your_new_model_name": {
       "category": "classification",
       "version": 1,
-      "pb_file_path": "modelforward/your_new_model_name",
       "class_names": [
         "class name 1",
         "class name 2",
@@ -230,7 +229,6 @@ Inside this folder should be the .tflite model and if needed a .txt file with th
     "your_new_model_name": {
       "category": "object_detection",
       "version": 1,
-      "pb_file_path": "modelforward/your_new_model_name",
       "class_names_path": "{name of file with the class names}.txt",
       "output": {
         "boxes_coordinates": "{name of the boxes_coordinates variable in your model}",

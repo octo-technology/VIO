@@ -43,8 +43,8 @@ class TestSupervisor:
         inventory = JsonInventory(TEST_INVENTORY_PATH)
 
         models_graph = {
-            "model_1": {"metadata": "inception", "depends_on": []},
-            "model_2": {"metadata": "inception", "depends_on": []},
+            "model_1": {"name": "inception", "depends_on": []},
+            "model_2": {"name": "inception", "depends_on": []},
         }
 
         model_pipeline = [
@@ -78,8 +78,8 @@ class TestSupervisor:
         inventory = JsonInventory(TEST_INVENTORY_PATH)
 
         models_graph = {
-            "model_1": {"metadata": "inception", "depends_on": ["model_2"]},
-            "model_2": {"metadata": "mobilenet_v1_640x640", "depends_on": []},
+            "model_1": {"name": "inception", "depends_on": ["model_2"]},
+            "model_2": {"name": "mobilenet_v1_640x640", "depends_on": []},
         }
 
         model_pipeline = [

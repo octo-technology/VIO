@@ -7,12 +7,12 @@
       "exposition": 100,
       "models_graph": {
         "model_1": {
-          "metadata": "mobilenet_v1_640x640",
+          "name": "mobilenet_v1_640x640",
           "depends_on": [],
           "class_to_detect": "foo"
         },
         "model_2": {
-          "metadata": "inception",
+          "name": "inception",
           "depends_on": [
             "model_1"
           ]
