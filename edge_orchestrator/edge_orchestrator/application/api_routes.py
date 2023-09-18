@@ -104,3 +104,4 @@ def set_config(
         station_config_dto: StationConfig,
 ):
     logger.info(f"set config {station_config_dto.to_model()} to")
+    return station_config_dto.to_model()

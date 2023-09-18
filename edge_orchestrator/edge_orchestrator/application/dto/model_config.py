@@ -12,6 +12,8 @@ from pydantic import (
 )
 from typing_extensions import Annotated
 
+from domain.models.decision import Decision
+
 
 class ModelNameEnum(str, Enum):
     inception = "inception"
@@ -45,7 +47,7 @@ class ModelConfig(BaseModel):
     name: ModelNameEnum
     category: ModelCategoryEnum
     version: Version
-    class_names: Optional[List[str]] = None
+    class_names: Optional[List[Decision]] = [Decision.OK, Decision.KO]
     class_names_path: Optional[FilePath] = None
     output: Optional[ModelOutput] = None
     image_resolution: List[PositiveInt] = Field(min_items=2, max_items=2)
