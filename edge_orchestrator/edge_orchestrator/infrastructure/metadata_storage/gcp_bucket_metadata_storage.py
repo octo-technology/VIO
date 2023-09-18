@@ -1,6 +1,7 @@
 import json
 import os
-from typing import Dict, List
+import secrets
+from typing import Dict, List, Optional
 
 from google.cloud import storage
 
@@ -8,11 +9,16 @@ from edge_orchestrator.domain.models.item import Item
 from edge_orchestrator.domain.ports.metadata_storage import MetadataStorage
 
 
-class GCPMetadataStorage(MetadataStorage):
-    def __init__(self):
+class GCPBucketMetadataStorage(MetadataStorage):
+    def __init__(self, prefix: Optional[str] = None, bucket_name: Optional[str] = None):
+        if prefix is None:
+            prefix = os.environ.get("EDGE_NAME", f"edge#{secrets.token_hex(4)}")
+        if bucket_name is None:
+            bucket_name = os.getenv("GCP_BUCKET_NAME")
+
+        self.prefix = prefix
         self.storage_client = storage.Client()
-        self.prefix = os.environ.get("EDGE_NAME", "")
-        self.bucket = self.storage_client.get_bucket(os.getenv("GCP_BUCKET_NAME"))
+        self.bucket = self.storage_client.get_bucket(bucket_name)
 
     def save_item_metadata(self, item: Item):
         item_metadata = json.dumps(item.get_metadata())

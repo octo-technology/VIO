@@ -1,13 +1,17 @@
 from pathlib import Path
-from typing import List
+from typing import List, Optional
 
 from edge_orchestrator.domain.models.item import Item
 from edge_orchestrator.domain.ports.binary_storage import BinaryStorage
+from edge_orchestrator.infrastructure.filesystem_helpers import get_tmp_path
 
 
 class FileSystemBinaryStorage(BinaryStorage):
-    def __init__(self, src_directory_path: Path):
-        self.folder = src_directory_path
+    def __init__(self, src_directory: Optional[str] = None):
+        if src_directory is None:
+            self.folder = get_tmp_path()
+        else:
+            self.folder = Path(src_directory)
 
     def save_item_binaries(self, item: Item):
         path = self.folder / item.id

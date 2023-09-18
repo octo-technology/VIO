@@ -1,12 +1,12 @@
-from edge_orchestrator.infrastructure.metadata_storage.memory_metadata_storage import (
-    MemoryMetadataStorage,
+from edge_orchestrator.infrastructure.metadata_storage.in_memory_metadata_storage import (
+    InMemoryMetadataStorage,
 )
 
 
 class TestMemoryItemStorage:
     def test_save_item_metadata_should_write_item_in_memory(self, my_item_0):
         # Given
-        metadata_storage = MemoryMetadataStorage()
+        metadata_storage = InMemoryMetadataStorage()
 
         # When
         metadata_storage.save_item_metadata(my_item_0)
@@ -40,7 +40,7 @@ class TestMemoryItemStorage:
 
     def test_get_item_metadata_should_return_requested_item_metadata(self, my_item_0):
         # Given
-        metadata_storage = MemoryMetadataStorage()
+        metadata_storage = InMemoryMetadataStorage()
         metadata_storage.items_metadata[my_item_0.id] = my_item_0.get_metadata()
 
         # When
@@ -65,7 +65,7 @@ class TestMemoryItemStorage:
 
     def test_get_all_items_metadata_should_return_all_items(self, my_item_0, my_item_2):
         # Given
-        metadata_storage = MemoryMetadataStorage()
+        metadata_storage = InMemoryMetadataStorage()
         metadata_storage.items_metadata[my_item_0.id] = my_item_0.get_metadata()
         metadata_storage.items_metadata[my_item_2.id] = my_item_2.get_metadata()
 

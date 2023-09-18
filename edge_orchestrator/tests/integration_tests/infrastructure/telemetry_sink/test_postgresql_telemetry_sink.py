@@ -4,7 +4,7 @@ import random
 import pytest
 from freezegun import freeze_time
 
-from edge_orchestrator.infrastructure.telemetry_sink.postgresql_telemetry_sink import (
+from edge_orchestrator.infrastructure.telemetry_sink.postgres_telemetry_sink import (
     PostgresTelemetrySink,
 )
 

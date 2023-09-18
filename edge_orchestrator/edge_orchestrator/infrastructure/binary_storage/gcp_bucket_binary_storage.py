@@ -1,5 +1,6 @@
 import os
-from typing import List
+import secrets
+from typing import List, Optional
 
 from google.cloud import storage
 
@@ -7,11 +8,16 @@ from edge_orchestrator.domain.models.item import Item
 from edge_orchestrator.domain.ports.binary_storage import BinaryStorage
 
 
-class GCPBinaryStorage(BinaryStorage):
-    def __init__(self):
+class GCPBucketBinaryStorage(BinaryStorage):
+    def __init__(self, prefix: Optional[str] = None, bucket_name: Optional[str] = None):
+        if prefix is None:
+            prefix = os.environ.get("EDGE_NAME", f"edge#{secrets.token_hex(4)}")
+        if bucket_name is None:
+            bucket_name = os.getenv("GCP_BUCKET_NAME")
+
+        self.prefix = prefix
         self.storage_client = storage.Client()
-        self.prefix = os.environ.get("EDGE_NAME", "")
-        self.bucket = self.storage_client.get_bucket(os.getenv("GCP_BUCKET_NAME"))
+        self.bucket = self.storage_client.get_bucket(bucket_name)
 
     def save_item_binaries(self, item: Item) -> None:
         for camera_id, binary in item.binaries.items():

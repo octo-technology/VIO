@@ -6,8 +6,18 @@
       "position": "front",
       "exposition": 100,
       "models_graph": {
-        "model_id4": {
+        "model_#4": {
           "name": "pin_detection",
+          "category": "classification",
+          "version": "1",
+          "class_names": [
+            "OK",
+            "NOK"
+          ],
+          "image_resolution": [
+            224,
+            224
+          ],
           "depends_on": []
         }
       },

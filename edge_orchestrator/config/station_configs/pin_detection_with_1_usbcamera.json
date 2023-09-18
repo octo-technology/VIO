@@ -1,13 +1,23 @@
 {
   "cameras": {
-    "camera_id3": {
+    "camera_#3": {
       "type": "usb_camera",
       "source": "/dev/video0",
       "position": "front",
       "exposition": 100,
       "models_graph": {
-        "model_id4": {
+        "model_#4": {
           "name": "pin_detection",
+          "category": "classification",
+          "version": "1",
+          "class_names": [
+            "OK",
+            "NOK"
+          ],
+          "image_resolution": [
+            224,
+            224
+          ],
           "depends_on": []
         }
       },

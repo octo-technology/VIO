@@ -1,15 +1,15 @@
-from typing import List
+from typing import Any, Dict, List
 
 from edge_orchestrator.domain.models.item import Item
 from edge_orchestrator.domain.ports.binary_storage import BinaryStorage
 
 
-class MemoryBinaryStorage(BinaryStorage):
+class InMemoryBinaryStorage(BinaryStorage):
     def __init__(self):
-        self.binaries = {}
+        self.binaries: Dict[str, Any] = {}
 
     def save_item_binaries(self, item: Item) -> None:
-        binaries_dict = {}
+        binaries_dict: Dict[str, bytes] = {}
         for camera_id, binary in item.binaries.items():
             binaries_dict[camera_id] = binary
         self.binaries[item.id] = binaries_dict

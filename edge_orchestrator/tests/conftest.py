@@ -9,15 +9,15 @@ TEST_STATION_CONFIG_PATH = TEST_STATION_CONFIGS_FOLDER_PATH / "station_config_TE
 TEST_STATION_CONFIG_2_PATH = (
     TEST_STATION_CONFIGS_FOLDER_PATH / "station_config_TEST2.json"
 )
-TEST_INVENTORY_PATH = TEST_CONFIG_FOLDER_PATH / "inventory_TEST.json"
 ROOT_REPOSITORY_PATH = Path(__file__).parents[2]
 
 pytest_plugins = [
     "tests.fixtures.binaries",
     "tests.fixtures.cameras_metadata",
+    "tests.fixtures.containers",
     "tests.fixtures.items",
     "tests.fixtures.metadata",
-    "tests.fixtures.containers",
+    "tests.fixtures.supervisor_and_collaborators",
 ]
 
 EDGE_DB_IMG = "mongo:5.0.2"

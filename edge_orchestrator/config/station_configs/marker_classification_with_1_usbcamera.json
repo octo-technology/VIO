@@ -1,20 +1,32 @@
 {
   "cameras": {
-    "camera_id3": {
+    "camera_#3": {
       "type": "usb_camera",
       "position": "front",
       "exposition": 100,
       "source": "/dev/video0",
       "models_graph": {
-        "model_id4": {
+        "model_#4": {
           "name": "marker_quality_control",
+          "category": "classification",
+          "version": "1",
+          "class_names": [
+            "OK",
+            "KO"
+          ],
+          "image_resolution": [
+            224,
+            224
+          ],
           "depends_on": []
         }
       },
       "camera_rule": {
         "name": "expected_label_rule",
         "parameters": {
-          "expected_label": ["OK"]
+          "expected_label": [
+            "OK"
+          ]
         }
       }
     }

@@ -6,24 +6,22 @@ from typing import Any, Dict, List, Union
 
 from PIL import Image
 
-from edge_orchestrator.api_config import (
-    get_binary_storage,
-    get_edge_station,
-    get_metadata_storage,
-    get_model_forward,
-    get_station_config,
-    get_telemetry_sink,
-    logger,
-)
+from application.dto.station_config import StationConfig
+from edge_orchestrator import logger
 from edge_orchestrator.domain.models.camera import (
     get_camera_rule,
     get_last_inference_by_camera,
 )
 from edge_orchestrator.domain.models.decision import Decision
+from edge_orchestrator.domain.models.edge_station import EdgeStation
 from edge_orchestrator.domain.models.item import Item
 from edge_orchestrator.domain.models.item import get_item_rule
 from edge_orchestrator.domain.models.model_infos import ModelInfos
 from edge_orchestrator.domain.models.supervisor_state import SupervisorState
+from edge_orchestrator.domain.ports.binary_storage import BinaryStorage
+from edge_orchestrator.domain.ports.metadata_storage import MetadataStorage
+from edge_orchestrator.domain.ports.model_forward import ModelForward
+from edge_orchestrator.domain.ports.telemetry_sink import TelemetrySink
 
 
 def check_capture_according_to_config(item: Item, cameras: List[Dict]):
@@ -40,18 +38,18 @@ def check_capture_according_to_config(item: Item, cameras: List[Dict]):
 class Supervisor:
     def __init__(
         self,
-        metadata_storage=get_metadata_storage(),
-        binary_storage=get_binary_storage(),
-        model_forward=get_model_forward(),
-        station_config=get_station_config(),
-        edge_station=get_edge_station(),
-        telemetry_sink=get_telemetry_sink(),
+        binary_storage: BinaryStorage,
+        edge_station: EdgeStation,
+        metadata_storage: MetadataStorage,
+        model_forward: ModelForward,
+        station_config: StationConfig,
+        telemetry_sink: TelemetrySink,
     ):
-        self.metadata_storage = metadata_storage
         self.binary_storage = binary_storage
+        self.edge_station = edge_station
+        self.metadata_storage = metadata_storage
         self.model_forward = model_forward
         self.station_config = station_config
-        self.edge_station = edge_station
         self.telemetry_sink = telemetry_sink
 
     def save_item_metadata(self, fct):
@@ -65,8 +63,6 @@ class Supervisor:
 
     async def inspect(self, item: Item):
         item.station_config = self.station_config.active_config_name
-        if self.edge_station is not None:
-            self.edge_station.register_cameras(self.station_config)
 
         tasks = OrderedDict()
 

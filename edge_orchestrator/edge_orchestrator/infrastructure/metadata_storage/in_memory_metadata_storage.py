@@ -4,7 +4,7 @@ from edge_orchestrator.domain.models.item import Item
 from edge_orchestrator.domain.ports.metadata_storage import MetadataStorage
 
 
-class MemoryMetadataStorage(MetadataStorage):
+class InMemoryMetadataStorage(MetadataStorage):
     def __init__(self):
         self.items_metadata = {}
 

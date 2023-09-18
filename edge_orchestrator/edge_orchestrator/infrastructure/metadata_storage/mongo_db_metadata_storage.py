@@ -1,4 +1,5 @@
-from typing import Dict, List
+import os
+from typing import Dict, List, Optional
 
 import pymongo
 
@@ -7,7 +8,10 @@ from edge_orchestrator.domain.ports.metadata_storage import MetadataStorage
 
 
 class MongoDbMetadataStorage(MetadataStorage):
-    def __init__(self, mongodb_uri: str):
+    def __init__(self, mongodb_uri: Optional[str] = None):
+        if mongodb_uri is None:
+            mongodb_uri = os.environ.get("MONGO_DB_URI", "mongodb://edge_db:27017/")
+
         self.client = pymongo.MongoClient(mongodb_uri)
         self.db = self.client["orchestratorDB"]
         self.items_metadata = self.db["items"]
