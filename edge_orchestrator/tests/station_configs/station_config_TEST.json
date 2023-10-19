@@ -8,7 +8,17 @@
       "models_graph": {
         "model_id4": {
           "name": "marker_quality_control",
-          "depends_on": []
+          "depends_on": [],
+          "category": "classification",
+          "version": 1,
+          "class_names": [
+            "OK",
+            "KO"
+          ],
+          "image_resolution": [
+            224,
+            224
+          ]
         }
       },
       "camera_rule": {

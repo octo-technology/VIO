@@ -5,13 +5,11 @@ from fastapi.responses import JSONResponse
 
 from edge_orchestrator.api_config import (
     get_binary_storage,
-    get_inventory,
     get_metadata_storage,
     get_station_config,
 )
 from edge_orchestrator.application.dto.station_config_dto import StationConfigDto
 from edge_orchestrator.domain.ports.binary_storage import BinaryStorage
-from edge_orchestrator.domain.ports.inventory import Inventory
 from edge_orchestrator.domain.ports.metadata_storage import MetadataStorage
 from edge_orchestrator.domain.ports.station_config import StationConfig
 
@@ -59,11 +57,6 @@ def get_item_state(
     item_id: str, metadata_storage: MetadataStorage = Depends(get_metadata_storage)
 ):
     return metadata_storage.get_item_state(item_id)
-
-
-@api_router.get("/inventory")
-def get_inventory(inventory: Inventory = Depends(get_inventory)):
-    return inventory
 
 
 @api_router.get("/configs")

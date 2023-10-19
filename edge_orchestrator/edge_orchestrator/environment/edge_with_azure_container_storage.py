@@ -5,7 +5,6 @@ from edge_orchestrator.environment.config import Config
 from edge_orchestrator.infrastructure.binary_storage.azure_container_binary_storage import (
     AzureContainerBinaryStorage,
 )
-from edge_orchestrator.infrastructure.inventory.json_inventory import JsonInventory
 from edge_orchestrator.infrastructure.metadata_storage.azure_container_metadata_storage import (
     AzureContainerMetadataStorage,
 )
@@ -28,14 +27,11 @@ class EdgeWithAzureContainerStorage(Config):
     def __init__(self):
         self.metadata_storage = AzureContainerMetadataStorage()
         self.binary_storage = AzureContainerBinaryStorage()
-        self.inventory = JsonInventory(self.ROOT_PATH / "config" / "inventory.json")
         self.station_config = JsonStationConfig(
-            self.ROOT_PATH / "config" / "station_configs",
-            self.inventory,
-            self.ROOT_PATH / "data",
+            self.ROOT_PATH / "config" / "station_configs", self.ROOT_PATH / "data"
         )
         self.edge_station = EdgeStation(self.station_config)
         self.model_forward = TFServingWrapper(
-            self.SERVING_MODEL_URL, self.inventory, self.station_config
+            self.SERVING_MODEL_URL, self.station_config
         )
         self.telemetry_sink = AzureIotHubTelemetrySink()

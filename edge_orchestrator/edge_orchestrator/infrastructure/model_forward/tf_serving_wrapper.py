@@ -13,9 +13,8 @@ from edge_orchestrator.infrastructure.model_forward.tf_serving_detection_wrapper
 
 
 class TFServingWrapper(ModelForward):
-    def __init__(self, serving_model_url, inventory, station_config):
+    def __init__(self, serving_model_url, station_config):
         self.serving_model_url = serving_model_url
-        self.inventory = inventory
         self.station_config = station_config
 
     async def perform_inference(

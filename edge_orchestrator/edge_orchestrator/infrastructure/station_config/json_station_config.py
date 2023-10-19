@@ -6,7 +6,6 @@ from typing import Dict, List, Type, Union
 from edge_orchestrator import logger
 from edge_orchestrator.domain.models.camera import Camera
 from edge_orchestrator.domain.models.model_infos import ModelInfos
-from edge_orchestrator.domain.ports.inventory import Inventory
 from edge_orchestrator.domain.ports.station_config import StationConfig
 from edge_orchestrator.infrastructure.camera.fake_camera import FakeCamera
 from edge_orchestrator.infrastructure.camera.raspberry_pi_camera import (
@@ -16,10 +15,7 @@ from edge_orchestrator.infrastructure.camera.usb_camera import UsbCamera
 
 
 class JsonStationConfig(StationConfig):
-    def __init__(
-        self, station_configs_folder: Path, inventory: Inventory, data_folder: Path
-    ):
-        self.inventory = inventory
+    def __init__(self, station_configs_folder: Path, data_folder: Path):
         self.data_folder = data_folder
 
         if not station_configs_folder.exists():
@@ -42,7 +38,6 @@ class JsonStationConfig(StationConfig):
             with open(config, "r") as station_config_file:
                 content = json.load(station_config_file)
                 self.all_configs[config.with_suffix("").name] = content
-            self._check_station_config_based_on_inventory(content)
 
     def set_station_config(self, config_name: str):
         try:
@@ -62,7 +57,7 @@ class JsonStationConfig(StationConfig):
         if model_pipeline_config:
             for model_id, model in model_pipeline_config.items():
                 model_infos = ModelInfos.from_model_graph_node(
-                    camera_id, model_id, model, self.inventory, self.data_folder
+                    camera_id, model_id, model, self.data_folder
                 )
                 model_pipeline.append(model_infos)
         else:
@@ -92,24 +87,3 @@ class JsonStationConfig(StationConfig):
             camera_settings["position"] = camera_config.get("position")
             camera_settings["source"] = camera_config.get("source")
         return camera_settings
-
-    def _check_station_config_based_on_inventory(self, content):
-        self._check_business_rule(content, "station")
-        for camera_id, camera_conf in content["cameras"].items():
-            camera_type = camera_conf["type"]
-            if camera_type not in self.inventory.cameras:
-                raise ValueError(f"Camera type {camera_type} is not supported.")
-            self._check_business_rule(camera_conf, "camera")
-            for model_id, model_conf in camera_conf["models_graph"].items():
-                model = model_conf["name"]
-                if model not in self.inventory.models:
-                    raise ValueError(f"Model type {model} is not supported.")
-                self._check_business_rule(model_conf, "model")
-
-    def _check_business_rule(self, conf: Dict, conf_level: str):
-        if "business_rule" in conf:
-            business_rule = conf["business_rule"]
-            if business_rule not in self.inventory.business_rules:
-                raise ValueError(
-                    f"{conf_level.capitalize()} business rule ({business_rule}) is not supported."
-                )

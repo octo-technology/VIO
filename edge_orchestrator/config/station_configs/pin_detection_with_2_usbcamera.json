@@ -1,46 +1,106 @@
 {
-  "cameras": {
-    "camera_id3": {
-      "type": "usb_camera",
-      "source": "/dev/video0",
-      "position": "front",
-      "exposition": 100,
-      "models_graph": {
-        "model_id4": {
-          "name": "pin_detection",
-          "depends_on": []
-        }
+  "infra": {
+    "cameras": {
+      "camera_#3": {
+        "type": "usb_camera",
+        "position": "front",
+        "exposition": 100,
+        "source": "/dev/video0"
       },
-      "camera_rule": {
-        "name": "expected_label_rule",
-        "parameters": {
-          "expected_label": ["OK"]
-        }
-      }
-    },
-    "camera_id4": {
-      "type": "usb_camera",
-      "source": "/dev/video2",
-      "position": "front",
-      "exposition": 100,
-      "models_graph": {
-        "model_id4": {
-          "name": "pin_detection",
-          "depends_on": []
-        }
-      },
-      "camera_rule": {
-        "name": "expected_label_rule",
-        "parameters": {
-          "expected_label": ["OK"]
-        }
+      "camera_#4": {
+        "type": "usb_camera",
+        "position": "back",
+        "exposition": 100,
+        "source": "/dev/video0"
       }
     }
   },
-  "item_rule": {
-    "name": "min_threshold_ko_rule",
-    "parameters": {
-      "threshold": 1
+  "business": {
+    "cameras": {
+      "camera_#3": {
+        "models_graph": {
+          "model_#4": {
+            "name": "pin_detection",
+            "category": "classification",
+            "version": 1,
+            "class_names": [
+              "OK",
+              "NOK"
+            ],
+            "image_resolution": [
+              224,
+              224
+            ],
+            "depends_on": []
+          }
+        },
+        "camera_rule": {
+          "name": "expected_label_rule",
+          "parameters": {
+            "expected_label": [
+              "OK"
+            ]
+          }
+        }
+      },
+      "camera_#3": {
+        "models_graph": {
+          "model_#4": {
+            "name": "pin_detection",
+            "category": "classification",
+            "version": 1,
+            "class_names": [
+              "OK",
+              "NOK"
+            ],
+            "image_resolution": [
+              224,
+              224
+            ],
+            "depends_on": []
+          }
+        },
+        "camera_rule": {
+          "name": "expected_label_rule",
+          "parameters": {
+            "expected_label": [
+              "OK"
+            ]
+          }
+        }
+      },
+      "camera_#4": {
+        "models_graph": {
+          "model_#4": {
+            "name": "pin_detection",
+            "category": "classification",
+            "version": 1,
+            "class_names": [
+              "OK",
+              "NOK"
+            ],
+            "image_resolution": [
+              224,
+              224
+            ],
+            "depends_on": []
+          }
+        },
+        "camera_rule": {
+          "name": "expected_label_rule",
+          "parameters": {
+            "expected_label": [
+              "OK"
+            ]
+          }
+        }
+      }
+    },
+    "item_rule": {
+      "name": "min_threshold_ko_rule",
+      "parameters": {
+        "threshold": 1
+      }
     }
   }
 }

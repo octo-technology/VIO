@@ -11,7 +11,6 @@ from edge_orchestrator.domain.use_cases.supervisor import Supervisor, crop_image
 from edge_orchestrator.infrastructure.binary_storage.memory_binary_storage import (
     MemoryBinaryStorage,
 )
-from edge_orchestrator.infrastructure.inventory.json_inventory import JsonInventory
 from edge_orchestrator.infrastructure.metadata_storage.memory_metadata_storage import (
     MemoryMetadataStorage,
 )
@@ -29,7 +28,6 @@ from edge_orchestrator.infrastructure.telemetry_sink.postgresql_telemetry_sink i
 )
 from tests.conftest import (
     TEST_DATA_FOLDER_PATH,
-    TEST_INVENTORY_PATH,
     TEST_STATION_CONFIGS_FOLDER_PATH,
 )
 
@@ -40,16 +38,24 @@ class TestSupervisor:
         random.seed(42)
         np.random.seed(42)
 
-        inventory = JsonInventory(TEST_INVENTORY_PATH)
-
         models_graph = {
-            "model_1": {"name": "inception", "depends_on": []},
-            "model_2": {"name": "inception", "depends_on": []},
+            "model_1": {
+                "name": "inception",
+                "depends_on": [],
+                "category": "classification",
+                "version": 1,
+            },
+            "model_2": {
+                "name": "inception",
+                "depends_on": [],
+                "category": "classification",
+                "version": 1,
+            },
         }
 
         model_pipeline = [
             ModelInfos.from_model_graph_node(
-                "camera_id", model_id, model, inventory, TEST_DATA_FOLDER_PATH
+                "camera_id", model_id, model, TEST_DATA_FOLDER_PATH
             )
             for model_id, model in models_graph.items()
         ]
@@ -75,16 +81,24 @@ class TestSupervisor:
         random.seed(42)
         np.random.seed(42)
 
-        inventory = JsonInventory(TEST_INVENTORY_PATH)
-
         models_graph = {
-            "model_1": {"name": "inception", "depends_on": ["model_2"]},
-            "model_2": {"name": "mobilenet_v1_640x640", "depends_on": []},
+            "model_1": {
+                "name": "inception",
+                "depends_on": ["model_2"],
+                "category": "classification",
+                "version": 1,
+            },
+            "model_2": {
+                "name": "mobilenet_v1_640x640",
+                "depends_on": [],
+                "category": "object_detection",
+                "version": 1,
+            },
         }
 
         model_pipeline = [
             ModelInfos.from_model_graph_node(
-                "camera_id", model_id, model, inventory, TEST_DATA_FOLDER_PATH
+                "camera_id", model_id, model, TEST_DATA_FOLDER_PATH
             )
             for model_id, model in models_graph.items()
         ]
@@ -579,9 +593,8 @@ class TestSupervisor:
         # Given
         item = Item(serial_number="", category="", cameras_metadata={}, binaries={})
         item.id = "item_id"
-        inventory = JsonInventory(TEST_INVENTORY_PATH)
         station_config = JsonStationConfig(
-            TEST_STATION_CONFIGS_FOLDER_PATH, inventory, TEST_DATA_FOLDER_PATH
+            TEST_STATION_CONFIGS_FOLDER_PATH, TEST_DATA_FOLDER_PATH
         )
         station_config.set_station_config("station_config_TEST")
         supervisor = Supervisor(
@@ -622,9 +635,8 @@ class TestSupervisor:
             "Entering try Decision",
             "End of Decision",
         ]
-        inventory = JsonInventory(TEST_INVENTORY_PATH)
         station_config = JsonStationConfig(
-            TEST_STATION_CONFIGS_FOLDER_PATH, inventory, TEST_DATA_FOLDER_PATH
+            TEST_STATION_CONFIGS_FOLDER_PATH, TEST_DATA_FOLDER_PATH
         )
         station_config.set_station_config("station_config_TEST")
         supervisor = Supervisor(

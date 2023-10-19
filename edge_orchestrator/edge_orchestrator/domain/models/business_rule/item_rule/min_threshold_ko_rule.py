@@ -1,6 +1,6 @@
 from typing import Dict
 
-from domain.models.business_rule.item_rule.item_rule import ItemRule
+from edge_orchestrator.domain.models.business_rule.item_rule.item_rule import ItemRule
 from edge_orchestrator.domain.models.decision import Decision
 
 

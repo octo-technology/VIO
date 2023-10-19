@@ -6,7 +6,6 @@ from edge_orchestrator.environment.config import Config
 from edge_orchestrator.infrastructure.binary_storage.filesystem_binary_storage import (
     FileSystemBinaryStorage,
 )
-from edge_orchestrator.infrastructure.inventory.json_inventory import JsonInventory
 from edge_orchestrator.infrastructure.metadata_storage.mongodb_metadata_storage import (
     MongoDbMetadataStorage,
 )
@@ -21,7 +20,6 @@ from edge_orchestrator.infrastructure.telemetry_sink.postgresql_telemetry_sink i
 )
 from tests.conftest import (
     TEST_DATA_FOLDER_PATH,
-    TEST_INVENTORY_PATH,
     TEST_STATION_CONFIGS_FOLDER_PATH,
 )
 
@@ -39,12 +37,11 @@ class Test(Config):
     def __init__(self):
         self.metadata_storage = MongoDbMetadataStorage(self.MONGO_DB_URI)
         self.binary_storage = FileSystemBinaryStorage(TEST_DATA_FOLDER_PATH / "storage")
-        self.inventory = JsonInventory(TEST_INVENTORY_PATH)
         self.station_config = JsonStationConfig(
-            TEST_STATION_CONFIGS_FOLDER_PATH, self.inventory, TEST_DATA_FOLDER_PATH
+            TEST_STATION_CONFIGS_FOLDER_PATH, TEST_DATA_FOLDER_PATH
         )
         self.edge_station = EdgeStation(self.station_config)
         self.model_forward = TFServingWrapper(
-            self.SERVING_MODEL_URL, self.inventory, self.station_config
+            self.SERVING_MODEL_URL, self.station_config
         )
         self.telemetry_sink = PostgresTelemetrySink(self.POSTGRES_DB_URI)

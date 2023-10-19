@@ -1,0 +1,55 @@
+{
+  "cameras": {
+    "camera_id3": {
+      "type": "fake",
+      "source": "fake_item",
+      "position": "front",
+      "exposition": 100,
+      "models_graph": {
+        "model_1": {
+          "name": "mobilenet_v1_640x640",
+          "depends_on": [],
+          "class_to_detect": "foo",
+          "category": "object_detection",
+          "version": 1,
+          "class_names_path": "test_detection_labels",
+          "output": {
+            "boxes_coordinates": "detection_boxes",
+            "objectness_scores": "detection_scores",
+            "number_of_boxes": "num_detections",
+            "detection_classes": "detection_classes"
+          },
+          "objectness_threshold": 0.5
+        },
+        "model_2": {
+          "name": "inception",
+          "depends_on": [
+            "model_1"
+          ],
+          "category": "classification",
+          "version": 1,
+          "class_names": [
+            "OK",
+            "KO"
+          ],
+          "image_resolution": [
+            224,
+            224
+          ]
+        }
+      },
+      "camera_rule": {
+        "name": "expected_label_rule",
+        "parameters": {
+          "expected_label": "OK"
+        }
+      }
+    }
+  },
+  "item_rule": {
+    "name": "min_threshold_ko_rule",
+    "parameters": {
+      "threshold": 1
+    }
+  }
+}
