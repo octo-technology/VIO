@@ -1,10 +1,10 @@
 from typing import Dict
 
-from edge_orchestrator.domain.models.business_rules.item_rule import ItemRule
+from domain.models.business_rule.item_rule.item_rule import ItemRule
 from edge_orchestrator.domain.models.decision import Decision
 
 
-class ThresholdRatioRule(ItemRule):
+class MinThresholdOKRatioRule(ItemRule):
     def __init__(self, min_threshold: float):
         self.min_threshold = min_threshold
 
