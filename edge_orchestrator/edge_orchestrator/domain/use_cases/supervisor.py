@@ -6,8 +6,6 @@ from typing import Any, Dict, List, Union
 
 from PIL import Image
 
-from domain.models.business_rule.camera_rule.camera_rule_factory import get_camera_rule
-from domain.models.business_rule.item_rule.item_rule_factory import get_item_rule
 from edge_orchestrator.api_config import (
     get_binary_storage,
     get_edge_station,
@@ -16,6 +14,12 @@ from edge_orchestrator.api_config import (
     get_station_config,
     get_telemetry_sink,
     logger,
+)
+from edge_orchestrator.domain.models.business_rule.camera_rule.camera_rule_factory import (
+    get_camera_rule,
+)
+from edge_orchestrator.domain.models.business_rule.item_rule.item_rule_factory import (
+    get_item_rule,
 )
 from edge_orchestrator.domain.models.camera import (
     get_last_inference_by_camera,
@@ -217,9 +221,7 @@ class Supervisor:
                 ]["camera_rule"]["name"]
                 camera_rule_parameters = self.station_config.active_config["cameras"][
                     camera_id
-                ]["camera_rule"][
-                    "parameters"
-                ]  # noqa
+                ]["camera_rule"]["parameters"]
 
                 last_model_inferences = get_last_inference_by_camera(
                     item.inferences[camera_id]
@@ -235,7 +237,7 @@ class Supervisor:
                     labels_of_last_model_inferences
                 )
 
-                camera_decisions[f"{camera_id}"] = camera_decision.value
+                camera_decisions[camera_id] = camera_decision.value
 
             item_rule_name = self.station_config.active_config["item_rule"]["name"]
             item_rule_parameters = self.station_config.active_config["item_rule"][

@@ -1,6 +1,6 @@
 from typing import Dict
 
-from domain.models.business_rule.item_rule.item_rule import ItemRule
+from edge_orchestrator.domain.models.business_rule.item_rule.item_rule import ItemRule
 from edge_orchestrator.domain.models.decision import Decision
 
 
@@ -15,7 +15,9 @@ class MinThresholdKORule(ItemRule):
             if decision == Decision.KO.value
         ]
 
-        if len(ko_decisions) >= self.threshold:
+        if len(cameras_decisions) == 0:
+            return Decision.NO_DECISION
+        elif len(ko_decisions) >= self.threshold:
             return Decision.KO
         else:
             return Decision.OK

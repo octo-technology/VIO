@@ -11,9 +11,7 @@ class ExpectedLabelRule(CameraRule):
         self.expected_label = expected_label
 
     def get_camera_decision(self, inference: Dict[str, Union[str, Dict]]) -> Decision:
-        if len(inference) == 0:
-            return Decision.KO
-
+        camera_decision = Decision.NO_DECISION
         for inf in inference:
             if inf in self.expected_label:
                 camera_decision = Decision.OK

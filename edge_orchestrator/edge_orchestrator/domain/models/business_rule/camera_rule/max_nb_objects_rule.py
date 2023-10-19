@@ -14,7 +14,9 @@ class MaxNbObjectsRule(CameraRule):
     def get_camera_decision(self, inference: Dict[str, Union[str, Dict]]) -> Decision:
         objects_of_interest = [obj for obj in inference if obj in self.class_to_detect]
 
-        if len(objects_of_interest) < self.max_threshold:
+        if len(inference) == 0:
+            camera_decision = Decision.NO_DECISION
+        elif len(objects_of_interest) < self.max_threshold:
             camera_decision = Decision.KO
         else:
             camera_decision = Decision.OK

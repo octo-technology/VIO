@@ -1,6 +1,6 @@
 from typing import Dict
 
-from domain.models.business_rule.item_rule.item_rule import ItemRule
+from edge_orchestrator.domain.models.business_rule.item_rule.item_rule import ItemRule
 from edge_orchestrator.domain.models.decision import Decision
 
 
@@ -17,7 +17,9 @@ class MinThresholdOKRatioRule(ItemRule):
 
         ratio_ok = len(ok_decisions) / len(cameras_decisions)
 
-        if ratio_ok >= self.min_threshold:
+        if len(cameras_decisions) == 0:
+            return Decision.NO_DECISION
+        elif ratio_ok >= self.min_threshold:
             return Decision.OK
         else:
             return Decision.KO

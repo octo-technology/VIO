@@ -600,7 +600,7 @@ class TestSupervisor:
         msg_dict = {
             "item_id": "item_id",
             "config": "station_config_TEST",
-            "decision": "OK",
+            "decision": "NO_DECISION",
         }
         mock_send.assert_called_once_with(msg_dict)
 
