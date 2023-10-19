@@ -1,28 +1,10 @@
 import datetime as dt
 import uuid
-from typing import Dict, Type
-
-from edge_orchestrator.domain.models.business_rules.item_business_rule.item_threshold_ratio_rule import (
-    ThresholdRatioRule,
-)
-from edge_orchestrator.domain.models.business_rules.item_business_rule.item_threshold_rule import (
-    ThresholdRule,
-)
-from edge_orchestrator.domain.models.business_rules.item_rule import ItemRule
+from typing import Dict
 
 
-def generate_id():
+def generate_id() -> str:
     return str(uuid.uuid4())
-
-
-def get_item_rule(item_rule_name) -> Type[ItemRule]:
-    if item_rule_name == "threshold_ratio_rule":
-        return ThresholdRatioRule
-
-    elif item_rule_name == "min_threshold_KO_rule":
-        return ThresholdRule
-    else:
-        raise NotImplementedError
 
 
 class Item:

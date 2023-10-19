@@ -1,6 +1,8 @@
 from typing import Dict, Union
 
-from edge_orchestrator.domain.models.business_rules.camera_rule import CameraRule
+from edge_orchestrator.domain.models.business_rule.camera_rule.camera_rule import (
+    CameraRule,
+)
 from edge_orchestrator.domain.models.decision import Decision
 
 

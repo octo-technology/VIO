@@ -1,5 +1,6 @@
+from domain.models.business_rule.camera_rule.camera_rule_factory import get_camera_rule
+
 from edge_orchestrator.domain.models.camera import (
-    get_camera_rule,
     get_last_inference_by_camera,
 )
 from edge_orchestrator.domain.use_cases.supervisor import get_labels

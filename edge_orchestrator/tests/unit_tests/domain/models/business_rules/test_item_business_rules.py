@@ -1,5 +1,6 @@
+from domain.models.business_rule.item_rule.item_rule_factory import get_item_rule
+
 from edge_orchestrator.domain.models.decision import Decision
-from edge_orchestrator.domain.models.item import get_item_rule
 
 
 class TestItemBusinessRule:
@@ -10,7 +11,7 @@ class TestItemBusinessRule:
         camera_decisions = {"camera_id1": "KO", "camera_id2": "OK", "camera_id3": "OK"}
 
         # When
-        item_rule_name = "min_threshold_KO_rule"
+        item_rule_name = "min_threshold_ko_rule"
         item_rule_parameters = {"threshold": 1}
 
         item_rule = get_item_rule(item_rule_name)(**item_rule_parameters)
@@ -26,7 +27,7 @@ class TestItemBusinessRule:
         camera_decisions = {"camera_id1": "OK", "camera_id2": "OK", "camera_id3": "OK"}
 
         # When
-        item_rule_name = "threshold_ratio_rule"
+        item_rule_name = "min_threshold_ok_ratio_rule"
         item_rule_parameters = {"min_threshold": 0.5}
 
         item_rule = get_item_rule(item_rule_name)(**item_rule_parameters)

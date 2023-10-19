@@ -6,6 +6,8 @@ from typing import Any, Dict, List, Union
 
 from PIL import Image
 
+from domain.models.business_rule.camera_rule.camera_rule_factory import get_camera_rule
+from domain.models.business_rule.item_rule.item_rule_factory import get_item_rule
 from edge_orchestrator.api_config import (
     get_binary_storage,
     get_edge_station,
@@ -16,12 +18,10 @@ from edge_orchestrator.api_config import (
     logger,
 )
 from edge_orchestrator.domain.models.camera import (
-    get_camera_rule,
     get_last_inference_by_camera,
 )
 from edge_orchestrator.domain.models.decision import Decision
 from edge_orchestrator.domain.models.item import Item
-from edge_orchestrator.domain.models.item import get_item_rule
 from edge_orchestrator.domain.models.model_infos import ModelInfos
 from edge_orchestrator.domain.models.supervisor_state import SupervisorState
 
@@ -92,11 +92,11 @@ class Supervisor:
         @self.save_item_metadata
         async def set_decision(item: Item):
             decision = self.apply_business_rules(item)
-            item.decision = decision
+            item.decision = decision.value
             telemetry_msg = {
                 "item_id": item.id,
                 "config": item.station_config,
-                "decision": decision,
+                "decision": decision.value,
             }
 
             await self.telemetry_sink.send(telemetry_msg)
@@ -204,7 +204,7 @@ class Supervisor:
         return inference_output
 
     @abstractmethod
-    def apply_business_rules(self, item: Item) -> str:
+    def apply_business_rules(self, item: Item) -> Decision:
         camera_decisions = {}
 
         if item.inferences == Decision.NO_DECISION:
@@ -245,7 +245,7 @@ class Supervisor:
             item_rule = get_item_rule(item_rule_name)(**item_rule_parameters)
             item_decision = item_rule.get_item_decision(camera_decisions)
 
-            return item_decision.value
+            return item_decision
 
 
 def get_labels(inferences):
