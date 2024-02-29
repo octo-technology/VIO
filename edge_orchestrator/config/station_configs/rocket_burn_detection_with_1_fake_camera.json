@@ -1,0 +1,29 @@
+{
+    "cameras": {
+      "camera_id4": {
+        "type": "fake",
+        "source": "rocket_images",
+        "position": "back",
+        "exposition": 100,
+        "models_graph": {
+          "model_id4": {
+            "name": "rocket_burn_detection",
+            "depends_on": []
+          }
+        },
+        "camera_rule": {
+          "name": "unexpected_label_rule",
+          "parameters": {
+            "unexpected_label": [0, 1, 2, 3]
+          }
+        }
+      }
+    },
+    "item_rule": {
+      "name": "min_threshold_KO_rule",
+      "parameters": {
+        "threshold": 1
+      }
+    }
+  }
+  
