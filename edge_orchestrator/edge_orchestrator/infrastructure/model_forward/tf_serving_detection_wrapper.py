@@ -69,38 +69,67 @@ class TFServingDetectionWrapper(ModelForward):
                     self.class_names_path
                 )
             )
+        print("-- TRY CHECKED --")
 
-        for class_to_detect in model.class_to_detect:
-            class_to_detect_position = np.where(
-                np.array(class_names) == class_to_detect
-            )
-            detection_class_positions = np.where(
-                np.array(detection_classes) == float(class_to_detect_position[0] + 1)
-            )
+        if model.name == "rocket_burn_detection":
+            image_height = self.image_shape[0]
+            image_width = self.image_shape[1]
+            # image_height = 1
+            # image_width = 1
 
-            for box_index in detection_class_positions[0]:
-                box_coordinates_in_current_image = boxes_coordinates[box_index]
-                image_height = self.image_shape[0]
-                image_width = self.image_shape[1]
-
-                # Mobilenet returns the coordinates as (ymin, xmin, ymax, xmax)
-                y_min = int(float(box_coordinates_in_current_image[0]) * image_height)
-                x_min = int(float(box_coordinates_in_current_image[1]) * image_width)
-                y_max = int(float(box_coordinates_in_current_image[2]) * image_height)
-                x_max = int(float(box_coordinates_in_current_image[3]) * image_width)
+            for box_index, box in enumerate(boxes_coordinates):
+                box_objectness_score_in_current_image = objectness_scores[box_index]
+                class_to_detect = detection_classes[box_index]
+                
+                # Resizing normalized coordinates to image
+                x_min = box[0] * image_width
+                y_min = box[1] * image_height
+                x_max = box[2] * image_width
+                y_max = box[3] * image_height
 
                 # crop_image expects the box coordinates to be (xmin, ymin, xmax, ymax)
                 box_coordinates_in_current_image = [x_min, y_min, x_max, y_max]
                 box_objectness_score_in_current_image = objectness_scores[box_index]
+                if box_objectness_score_in_current_image >= model.objectness_threshold:
+                            inference_output[f"object_{box_index + 1}"] = {
+                                "label": class_to_detect,
+                                "location": box_coordinates_in_current_image,
+                                "score": box_objectness_score_in_current_image,
+                            }
 
-                logger.debug(
-                    f"box_coordinates_in_current_image: {box_coordinates_in_current_image}"
+        else:
+            for class_to_detect in model.class_names:
+                class_to_detect_position = np.where(
+                    np.array(class_names) == class_to_detect
+                )
+                detection_class_positions = np.where(
+                    np.array(detection_classes) == float(class_to_detect_position[0] + 1)
                 )
 
-                if box_objectness_score_in_current_image >= model.objectness_threshold:
-                    inference_output[f"object_{box_index + 1}"] = {
-                        "label": class_to_detect,
-                        "location": box_coordinates_in_current_image,
-                        "score": box_objectness_score_in_current_image,
-                    }
+                for box_index in detection_class_positions[0]:
+                    box_coordinates_in_current_image = boxes_coordinates[box_index]
+                    image_height = self.image_shape[0]
+                    image_width = self.image_shape[1]
+
+                    # Mobilenet returns the coordinates as (ymin, xmin, ymax, xmax)
+                    y_min = int(float(box_coordinates_in_current_image[0]) * image_height)
+                    x_min = int(float(box_coordinates_in_current_image[1]) * image_width)
+                    y_max = int(float(box_coordinates_in_current_image[2]) * image_height)
+                    x_max = int(float(box_coordinates_in_current_image[3]) * image_width)
+
+                    # crop_image expects the box coordinates to be (xmin, ymin, xmax, ymax)
+                    box_coordinates_in_current_image = [x_min, y_min, x_max, y_max]
+                    box_objectness_score_in_current_image = objectness_scores[box_index]
+
+                    logger.debug(
+                        f"box_coordinates_in_current_image: {box_coordinates_in_current_image}"
+                    )
+
+                    if box_objectness_score_in_current_image >= model.objectness_threshold:
+                        inference_output[f"object_{box_index + 1}"] = {
+                            "label": class_to_detect,
+                            "location": box_coordinates_in_current_image,
+                            "score": box_objectness_score_in_current_image,
+                        }
+        print(inference_output)
         return inference_output

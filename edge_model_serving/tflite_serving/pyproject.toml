@@ -10,7 +10,8 @@ dependencies = [
     "numpy==1.22",
     "Pillow==8.4.0",
     "uvicorn==0.22.0",
-    "anyio==3.7.1"
+    "anyio==3.7.1",
+    "opencv-python-headless"
 ]
 requires-python = ">=3.8"
 
