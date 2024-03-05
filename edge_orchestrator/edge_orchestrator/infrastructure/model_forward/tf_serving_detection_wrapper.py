@@ -72,20 +72,15 @@ class TFServingDetectionWrapper(ModelForward):
         print("-- TRY CHECKED --")
 
         if model.name == "rocket_burn_detection":
-            image_height = self.image_shape[0]
-            image_width = self.image_shape[1]
-            # image_height = 1
-            # image_width = 1
-
             for box_index, box in enumerate(boxes_coordinates):
                 box_objectness_score_in_current_image = objectness_scores[box_index]
                 class_to_detect = detection_classes[box_index]
                 
                 # Resizing normalized coordinates to image
-                x_min = box[0] * image_width
-                y_min = box[1] * image_height
-                x_max = box[2] * image_width
-                y_max = box[3] * image_height
+                x_min = box[0]
+                y_min = box[1]
+                x_max = box[2]
+                y_max = box[3]
 
                 # crop_image expects the box coordinates to be (xmin, ymin, xmax, ymax)
                 box_coordinates_in_current_image = [x_min, y_min, x_max, y_max]
@@ -108,14 +103,12 @@ class TFServingDetectionWrapper(ModelForward):
 
                 for box_index in detection_class_positions[0]:
                     box_coordinates_in_current_image = boxes_coordinates[box_index]
-                    image_height = self.image_shape[0]
-                    image_width = self.image_shape[1]
 
                     # Mobilenet returns the coordinates as (ymin, xmin, ymax, xmax)
-                    y_min = int(float(box_coordinates_in_current_image[0]) * image_height)
-                    x_min = int(float(box_coordinates_in_current_image[1]) * image_width)
-                    y_max = int(float(box_coordinates_in_current_image[2]) * image_height)
-                    x_max = int(float(box_coordinates_in_current_image[3]) * image_width)
+                    y_min = int(box_coordinates_in_current_image[0])
+                    x_min = int(box_coordinates_in_current_image[1])
+                    y_max = int(box_coordinates_in_current_image[2])
+                    x_max = int(box_coordinates_in_current_image[3])
 
                     # crop_image expects the box coordinates to be (xmin, ymin, xmax, ymax)
                     box_coordinates_in_current_image = [x_min, y_min, x_max, y_max]
