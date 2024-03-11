@@ -1,31 +1,40 @@
 from pathlib import Path
 from typing import List
+from datetime import datetime
 
 from edge_orchestrator.domain.models.item import Item
 from edge_orchestrator.domain.ports.binary_storage import BinaryStorage
+import uuid
+
+
+def generate_id():
+    return str(uuid.uuid4())
 
 
 class FileSystemBinaryStorage(BinaryStorage):
     def __init__(self, src_directory_path: Path):
         self.folder = src_directory_path
+        self.session_id = generate_id()
 
-    def save_item_binaries(self, item: Item):
-        path = self.folder / item.id
+    def save_item_binaries(self, item: Item, active_config_name: str):
+        path = self.folder / (active_config_name + self.session_id) / datetime.today().strftime('%Y-%m-%d')
         path.mkdir(parents=True, exist_ok=True)
         for camera_id, binary in item.binaries.items():
-            filepath = _get_filepath(self.folder, item.id, camera_id)
+            filepath = _get_filepath(self.folder, item.id, camera_id, active_config_name, self.session_id)
             with filepath.open("wb") as f:
                 f.write(binary)
 
-    def get_item_binary(self, item_id: str, camera_id: str) -> bytes:
-        filepath = _get_filepath(self.folder, item_id, camera_id)
+    def get_item_binary(self, item_id: str, camera_id: str, active_config_name: str) -> bytes:
+        filepath = _get_filepath(self.folder, item_id, camera_id, active_config_name, self.session_id)
         with filepath.open("rb") as f:
             return f.read()
 
-    def get_item_binaries(self, item_id: str) -> List[str]:
-        filepath = self.folder / item_id
+    def get_item_binaries(self, item_id: str, active_config_name: str) -> List[str]:
+        filepath = (self.folder / (active_config_name + self.session_id) / datetime.today().strftime('%Y-%m-%d') /
+                    item_id)
         return [binary_path.name for binary_path in filepath.glob("*")]
 
 
-def _get_filepath(folder: Path, item_id: str, camera_id: str) -> Path:
-    return folder / item_id / (camera_id + ".jpg")
+def _get_filepath(folder: Path, item_id: str, camera_id: str, active_config_name: str, session_id: str) -> Path:
+    return (folder / (active_config_name + session_id) / datetime.today().strftime('%Y-%m-%d') /
+            (item_id + camera_id + ".jpg"))

@@ -1,6 +1,8 @@
-from fastapi import APIRouter, BackgroundTasks, File, UploadFile
+from fastapi import APIRouter, BackgroundTasks, File, UploadFile, Depends
 from fastapi.responses import JSONResponse
+from edge_orchestrator.api_config import get_station_config
 
+from edge_orchestrator.domain.ports.station_config import StationConfig
 from edge_orchestrator.domain.models.item import Item
 from edge_orchestrator.domain.use_cases.supervisor import Supervisor
 from edge_orchestrator.domain.use_cases.uploader import Uploader
@@ -35,10 +37,12 @@ async def trigger_job(
 
 @trigger_router.post("/upload")
 async def upload_job(
-    image: UploadFile = File(...), background_tasks: BackgroundTasks = None
+    image: UploadFile = File(...),
+    station_config: StationConfig = Depends(get_station_config),
+    background_tasks: BackgroundTasks = None
 ):
     item = Item.from_nothing()
     contents = image.file.read()
     item.binaries = {"0": contents}
-    background_tasks.add_task(uploader.upload, item)
+    background_tasks.add_task(uploader.upload, item, station_config.active_config_name)
     return {"item_id": item.id}
