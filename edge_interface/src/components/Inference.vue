@@ -1,6 +1,6 @@
 <template>
   <div class="mr-4 container">
-    <v-btn color="blue-grey" class="ma-2 white--text" @click="trigger">
+    <v-btn color="blue-grey" class="ma-2 white--text" @click="trigger" @call-trigger="trigger" id="trigger-button">
       Trigger
       <v-icon right dark>
         mdi-cloud-upload
