@@ -136,6 +136,32 @@ def compute_severities(image: np.array, boxes: List):
     return severities
 
 
+def compute_box_severity(image: np.array, box: List):
+    x1_pixel_index = int(box[0] * len(image))
+    y1_pixel_index = int(box[1] * len(image[0]))
+    x2_pixel_index = int(box[2] * len(image))
+    y2_pixel_index = int(box[3] * len(image[0]))
+
+    # Reshape to only the pixels in the detection box & as a list of pixels instead of a 2D array of them
+    image_detection = image[x1_pixel_index:x2_pixel_index, y1_pixel_index:y2_pixel_index, :]
+    image_detection = image_detection.reshape(-1, 3)
+    number_of_pixels_in_box = image_detection.shape[0]
+
+    # Filtering out light pixels
+    mask_dark_pixels = np.all(image_detection < 0.5, axis=1)
+    # Looking at severity as mean darkness
+    dark_colors = image_detection[mask_dark_pixels].flatten()
+    if dark_colors.size == 0:
+        return 0.09
+    else:
+        ratio_pixel_dark_box = len(dark_colors) / 3 / number_of_pixels_in_box
+        grade_dark_pixels_amount = 3 ** (ratio_pixel_dark_box - 1)
+        grade_mean_darkness = (0.5 - dark_colors.mean()) * 2
+
+        severity = round(0.8 * grade_mean_darkness + 0.2 * grade_dark_pixels_amount, 2)
+        return severity
+
+
 def nms(boxes, scores, class_ids, score_threshold=0.4, iou_threshold=0.45):
     non_max_suppression_parameters_checks(score_threshold, iou_threshold)
 

@@ -59,6 +59,10 @@ class TFServingDetectionWrapper(ModelForward):
             json_outputs[model.objectness_scores][0],
             json_outputs[model.detection_classes][0],
         )
+        if model.severities:
+            severities = json_outputs[model.severities][0]
+        else:
+            severities = [None for _ in enumerate(boxes_coordinates)]
 
         try:
             class_names = [c.strip() for c in open(self.class_names_path).readlines()]
@@ -83,11 +87,13 @@ class TFServingDetectionWrapper(ModelForward):
                 # crop_image expects the box coordinates to be (xmin, ymin, xmax, ymax)
                 box_coordinates_in_current_image = [x_min, y_min, x_max, y_max]
                 box_objectness_score_in_current_image = objectness_scores[box_index]
+                box_severity_in_current_image = severities[box_index]
                 if box_objectness_score_in_current_image >= model.objectness_threshold:
                     inference_output[f"object_{box_index + 1}"] = {
                         "label": class_to_detect,
                         "location": box_coordinates_in_current_image,
-                        "score": box_objectness_score_in_current_image
+                        "score": box_objectness_score_in_current_image,
+                        "severity": box_severity_in_current_image
                     }
 
         else:

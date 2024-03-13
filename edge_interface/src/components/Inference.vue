@@ -43,7 +43,6 @@
           </div>
         </div>
         <div v-for="(inference, model_id) in object.inferences" :key="model_id">
-          <h4>{{ model_id }}</h4>
           <div v-if="inference !== 'NO_DECISION'">
             <div v-for="(result, object_id) in inference" :key="object_id">
               <span>{{ object_id }}</span>

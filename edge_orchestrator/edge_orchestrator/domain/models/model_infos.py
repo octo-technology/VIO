@@ -24,6 +24,7 @@ class ModelInfos:
         class_to_detect: Optional[List[str]] = None,
         class_names_path: Optional[str] = None,
         objectness_threshold: Optional[float] = None,
+        severities: Optional[str] = None,
         model_type: Optional[str] = None
     ):
         self.id = id
@@ -41,6 +42,7 @@ class ModelInfos:
         self.detection_classes = detection_classes
         self.class_names_path = class_names_path
         self.objectness_threshold = objectness_threshold
+        self.severities = severities
         self.model_type = model_type
 
     @classmethod
@@ -73,6 +75,9 @@ class ModelInfos:
             detection_classes = (
                 inventory.models[model_name].get("output").get("detection_classes")
             )
+            severities = (
+                inventory.models[model_name].get("output").get("severities")
+            )
             model_type = (
                 inventory.models[model_name].get("output").get("model_type")
             )
@@ -81,6 +86,7 @@ class ModelInfos:
             objectness_scores = None
             number_of_boxes = None
             detection_classes = None
+            severities = None
             model_type = None
 
         return ModelInfos(
@@ -99,6 +105,7 @@ class ModelInfos:
             image_resolution=inventory.models[model_name].get("image_resolution"),
             class_to_detect=class_to_detect,
             objectness_threshold=objectness_threshold,
+            severities=severities,
             model_type=model_type
         )
 
@@ -118,6 +125,7 @@ class ModelInfos:
             and other.image_resolution == self.image_resolution
             and other.class_to_detect == self.class_to_detect
             and other.objectness_threshold == self.objectness_threshold
+            and other.severities == self.severities
             and other.model_type == self.model_type
         )
 

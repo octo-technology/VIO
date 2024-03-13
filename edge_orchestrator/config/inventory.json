@@ -18,7 +18,8 @@
       "output": {
         "boxes_coordinates": "detection_boxes",
         "objectness_scores": "detection_scores",
-        "detection_classes": "detection_classes"
+        "detection_classes": "detection_classes",
+        "severities": "severities"
       },
       "image_resolution": [
         640,
