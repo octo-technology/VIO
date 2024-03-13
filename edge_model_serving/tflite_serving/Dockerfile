@@ -7,8 +7,6 @@ RUN apt-get update && apt-get upgrade -y && apt-get install gcc -y
 COPY tflite_serving/src/ src/
 COPY tflite_serving/pyproject.toml .
 
-RUN apt install python3-opencv -y
-
 RUN pip install --upgrade pip
 RUN pip install -e ".[linux]"
 
