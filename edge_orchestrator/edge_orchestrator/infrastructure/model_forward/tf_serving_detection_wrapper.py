@@ -22,7 +22,7 @@ class TFServingDetectionWrapper(ModelForward):
     ) -> Dict[str, Dict]:
         processed_img = self.perform_pre_processing(model, binary_data)
         logger.debug(f"Processed image size: {processed_img.shape}")
-        payload = {"inputs": processed_img.tolist()}
+        payload = {"inputs": processed_img.tolist(), "model_type": model.model_type}
         model_url = (
             f"{self.base_url}/v1/models/{model.name}/versions/{model.version}:predict"
         )
@@ -69,11 +69,9 @@ class TFServingDetectionWrapper(ModelForward):
                     self.class_names_path
                 )
             )
-        print("-- TRY CHECKED --")
 
-        if model.name == "rocket_burn_detection":
+        if model.type == "yolo":
             for box_index, box in enumerate(boxes_coordinates):
-                box_objectness_score_in_current_image = objectness_scores[box_index]
                 class_to_detect = detection_classes[box_index]
                 
                 # Resizing normalized coordinates to image
@@ -86,11 +84,11 @@ class TFServingDetectionWrapper(ModelForward):
                 box_coordinates_in_current_image = [x_min, y_min, x_max, y_max]
                 box_objectness_score_in_current_image = objectness_scores[box_index]
                 if box_objectness_score_in_current_image >= model.objectness_threshold:
-                            inference_output[f"object_{box_index + 1}"] = {
-                                "label": class_to_detect,
-                                "location": box_coordinates_in_current_image,
-                                "score": box_objectness_score_in_current_image,
-                            }
+                    inference_output[f"object_{box_index + 1}"] = {
+                        "label": class_to_detect,
+                        "location": box_coordinates_in_current_image,
+                        "score": box_objectness_score_in_current_image
+                    }
 
         else:
             for class_to_detect in model.class_names:
@@ -124,5 +122,5 @@ class TFServingDetectionWrapper(ModelForward):
                             "location": box_coordinates_in_current_image,
                             "score": box_objectness_score_in_current_image,
                         }
-        print(inference_output)
+
         return inference_output

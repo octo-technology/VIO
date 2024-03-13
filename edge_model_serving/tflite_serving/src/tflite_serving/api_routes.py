@@ -41,6 +41,7 @@ async def predict(
     logging.warning(f"output details: {output_details}")
 
     try:
+        model_type = payload[b"model_type"]
         input_data = payload[b"inputs"]
         input_array = np.array(input_data, dtype=input_dtype)
 
@@ -68,9 +69,7 @@ async def predict(
                     "detection_scores": scores.tolist(),
                 }
             }
-        elif (model_name == "rocket_burn_detection" or model_name == "plate_burn_v2_detection" or model_name ==
-              "plate_burn_v3_detection"):
-
+        elif model_type == "yolo":
             input_data = payload[b"inputs"]
             input_array = np.array(input_data, dtype=input_dtype)
             input_array /= 255

@@ -24,6 +24,7 @@ class ModelInfos:
         class_to_detect: Optional[List[str]] = None,
         class_names_path: Optional[str] = None,
         objectness_threshold: Optional[float] = None,
+        model_type: Optional[str] = None
     ):
         self.id = id
         self.name = name
@@ -40,6 +41,7 @@ class ModelInfos:
         self.detection_classes = detection_classes
         self.class_names_path = class_names_path
         self.objectness_threshold = objectness_threshold
+        self.model_type = model_type
 
     @classmethod
     def from_model_graph_node(
@@ -71,11 +73,15 @@ class ModelInfos:
             detection_classes = (
                 inventory.models[model_name].get("output").get("detection_classes")
             )
+            model_type = (
+                inventory.models[model_name].get("output").get("model_type")
+            )
         except AttributeError:
             boxes_coordinates = None
             objectness_scores = None
             number_of_boxes = None
             detection_classes = None
+            model_type = None
 
         return ModelInfos(
             id=model_id,
@@ -93,6 +99,7 @@ class ModelInfos:
             image_resolution=inventory.models[model_name].get("image_resolution"),
             class_to_detect=class_to_detect,
             objectness_threshold=objectness_threshold,
+            model_type=model_type
         )
 
     def __eq__(self, other) -> bool:
@@ -111,6 +118,7 @@ class ModelInfos:
             and other.image_resolution == self.image_resolution
             and other.class_to_detect == self.class_to_detect
             and other.objectness_threshold == self.objectness_threshold
+            and other.model_type == self.model_type
         )
 
     def __str__(self):

@@ -8,6 +8,7 @@
     "rocket_burn_detection": {
       "category": "object_detection",
       "version": 1,
+      "model_type": "yolo",
       "class_names": [
         "Low_Severity",
         "Medium_Severity",
