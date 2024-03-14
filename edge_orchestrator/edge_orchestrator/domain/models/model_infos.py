@@ -79,7 +79,7 @@ class ModelInfos:
                 inventory.models[model_name].get("output").get("severities")
             )
             model_type = (
-                inventory.models[model_name].get("output").get("model_type")
+                inventory.models[model_name].get("model_type")
             )
         except AttributeError:
             boxes_coordinates = None

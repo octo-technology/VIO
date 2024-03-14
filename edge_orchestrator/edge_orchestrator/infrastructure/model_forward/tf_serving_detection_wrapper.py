@@ -74,7 +74,7 @@ class TFServingDetectionWrapper(ModelForward):
                 )
             )
 
-        if model.type == "yolo":
+        if model.model_type == "yolo":
             for box_index, box in enumerate(boxes_coordinates):
                 class_to_detect = detection_classes[box_index]
                 
