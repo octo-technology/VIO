@@ -97,7 +97,8 @@ def nms(boxes, scores, class_ids, score_threshold=0.4, iou_threshold=0.45):
         # Rebuild the box list to remove the boxes that were close to the last max score
         boxes = [box for index_box, box in enumerate(boxes) if index_box not in delete_index_list]
         scores = [score for index_score, score in enumerate(scores) if index_score not in delete_index_list]
-        class_ids = [class_id for index_class, class_id in enumerate(class_ids) if index_class not in delete_index_list]
+        class_ids = [class_id for index_class, class_id in enumerate(class_ids) if index_class not in
+                     delete_index_list]
 
     return nms_result_boxes, nms_result_scores, nms_result_classes
 
@@ -114,8 +115,8 @@ def compute_iou(box1, box2):
     box2_height = box2[3] - box2[1]
 
     # Check if centers of boxes are close enough to be intersected
-    if ((abs((box1[0] + box1_width/2) - (box2[0] + box2_width / 2)) < 0.5 * (box2_width + box1_width)) &
-            (abs((box1[1] + box1_height/2) - (box2[1] + box2_height / 2)) < 0.5 * (box2_height + box1_height))):
+    if ((abs((box1[0] + box1_width / 2) - (box2[0] + box2_width / 2)) < 0.5 * (box2_width + box1_width)) &
+            (abs((box1[1] + box1_height / 2) - (box2[1] + box2_height / 2)) < 0.5 * (box2_height + box1_height))):
         intersection_area = ((max(box1[2], box2[2]) - min(box1[0], box2[0])) *
                              (max(box1[3], box2[3]) - min(box1[1], box2[1])))
         union_area = box1_width * box1_height + box2_width * box2_height - intersection_area

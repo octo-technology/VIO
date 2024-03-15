@@ -15,4 +15,3 @@ class UnexpectedLabelRule(CameraRule):
                 camera_decision = Decision.KO
         print("CAMERA DESCISION", camera_decision)
         return camera_decision
-        

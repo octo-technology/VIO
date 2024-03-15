@@ -79,7 +79,7 @@ async def predict(
             # Rotate the tensor
             temp_output = []
             for i in range(len(outputs[0]), 0, -1):
-                temp_output.append(list(map(lambda x: x[i-1], outputs)))
+                temp_output.append(list(map(lambda x: x[i - 1], outputs)))
             outputs = np.array(temp_output)
 
             # Extracting the boxes information to select only the most relevant ones

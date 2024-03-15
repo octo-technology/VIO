@@ -27,7 +27,6 @@
           <img class="img-responsive" ref="image" :src="object.image_url" @load="on_image_loaded" />
           <div v-for="(inference, model_id) in object.inferences" :key="model_id">
             <div v-if="inference !== 'NO_DECISION'">
-              <h1>{{ inference }}</h1>
               <div v-for="(result, object_id) in inference" :key="object_id">
                 <div v-if="'location' in result">
                   <Box
@@ -43,6 +42,7 @@
           </div>
         </div>
         <div v-for="(inference, model_id) in object.inferences" :key="model_id">
+          <h4>{{ model_id }}</h4>
           <div v-if="inference !== 'NO_DECISION'">
             <div v-for="(result, object_id) in inference" :key="object_id">
               <span>{{ object_id }}</span>
