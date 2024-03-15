@@ -21,6 +21,7 @@ def yolo_extract_boxes_information(outputs):
 
     return boxes, scores, class_ids
 
+
 def compute_severities(image: np.array, boxes: List):
     severities = []
     for box in boxes:
@@ -115,7 +116,8 @@ def compute_iou(box1, box2):
     # Check if centers of boxes are close enough to be intersected
     if ((abs((box1[0] + box1_width/2) - (box2[0] + box2_width / 2)) < 0.5 * (box2_width + box1_width)) &
             (abs((box1[1] + box1_height/2) - (box2[1] + box2_height / 2)) < 0.5 * (box2_height + box1_height))):
-        intersection_area = (max(box1[2], box2[2]) - min(box1[0], box2[0])) * (max(box1[3], box2[3]) - min(box1[1], box2[1]))
+        intersection_area = ((max(box1[2], box2[2]) - min(box1[0], box2[0])) *
+                             (max(box1[3], box2[3]) - min(box1[1], box2[1])))
         union_area = box1_width * box1_height + box2_width * box2_height - intersection_area
         return intersection_area / union_area
     return 0

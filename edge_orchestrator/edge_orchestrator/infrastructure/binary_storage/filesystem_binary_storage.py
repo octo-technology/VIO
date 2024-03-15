@@ -17,7 +17,7 @@ class FileSystemBinaryStorage(BinaryStorage):
         self.session_id = generate_id()
 
     def save_item_binaries(self, item: Item, active_config_name: str):
-        path = self.folder / (active_config_name + self.session_id) / datetime.today().strftime('%Y-%m-%d')
+        path = self.folder / (active_config_name + "_" + self.session_id) / datetime.today().strftime('%Y-%m-%d')
         path.mkdir(parents=True, exist_ok=True)
         for camera_id, binary in item.binaries.items():
             filepath = _get_filepath(self.folder, item.id, camera_id, active_config_name, self.session_id)
@@ -30,11 +30,10 @@ class FileSystemBinaryStorage(BinaryStorage):
             return f.read()
 
     def get_item_binaries(self, item_id: str, active_config_name: str) -> List[str]:
-        filepath = (self.folder / (active_config_name + self.session_id) / datetime.today().strftime('%Y-%m-%d') /
-                    item_id)
+        filepath = (self.folder / (active_config_name + "_" + self.session_id) / datetime.today().strftime('%Y-%m-%d'))
         return [binary_path.name for binary_path in filepath.glob("*")]
 
 
 def _get_filepath(folder: Path, item_id: str, camera_id: str, active_config_name: str, session_id: str) -> Path:
-    return (folder / (active_config_name + session_id) / datetime.today().strftime('%Y-%m-%d') /
-            (item_id + camera_id + ".jpg"))
+    return (folder / (active_config_name + "_" + session_id) / datetime.today().strftime('%Y-%m-%d') /
+            (camera_id + "_" + item_id + ".jpg"))

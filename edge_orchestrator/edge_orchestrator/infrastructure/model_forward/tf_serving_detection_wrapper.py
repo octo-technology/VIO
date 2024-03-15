@@ -97,7 +97,7 @@ class TFServingDetectionWrapper(ModelForward):
                     }
 
         else:
-            for class_to_detect in model.class_names:
+            for class_to_detect in model.class_to_detect:
                 class_to_detect_position = np.where(
                     np.array(class_names) == class_to_detect
                 )
