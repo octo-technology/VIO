@@ -5,6 +5,51 @@
     "usb_camera"
   ],
   "models": {
+    "plate_burn_v3_detection": {
+      "category": "object_detection",
+      "version": 1,
+      "model_type": "yolo",
+      "class_names": [
+        "Low_Severity",
+        "Medium_Severity",
+        "High_Severity",
+        "Max_Severity"
+      ],
+      "output": {
+        "boxes_coordinates": "detection_boxes",
+        "objectness_scores": "detection_scores",
+        "detection_classes": "detection_classes",
+        "severities": "severities"
+      },
+      "image_resolution": [
+        640,
+        640
+      ],
+      "objectness_threshold": 0.3
+    },
+    "plate_burn_v2_detection": {
+      "category": "object_detection",
+      "version": 1,
+      "model_type": "yolo",
+      "class_names": [
+        "Test",
+        "Low_Severity",
+        "Medium_Severity",
+        "High_Severity",
+        "Max_Severity"
+      ],
+      "output": {
+        "boxes_coordinates": "detection_boxes",
+        "objectness_scores": "detection_scores",
+        "detection_classes": "detection_classes",
+        "severities": "severities"
+      },
+      "image_resolution": [
+        640,
+        640
+      ],
+      "objectness_threshold": 0.3
+    },
     "rocket_burn_detection": {
       "category": "object_detection",
       "version": 1,

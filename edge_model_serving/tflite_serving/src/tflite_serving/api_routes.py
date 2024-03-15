@@ -46,6 +46,7 @@ async def predict(
         input_data = payload[b"inputs"]
         input_array = np.array(input_data, dtype=input_dtype)
 
+        input_array = np.array(input_array)[:, :, :, :3]
         if model_type == "yolo":
             input_array /= 255
 
