@@ -39,7 +39,7 @@ async def trigger_job(
 async def upload_job(
     image: UploadFile = File(...),
     station_config: StationConfig = Depends(get_station_config),
-    background_tasks: BackgroundTasks = None
+    background_tasks: BackgroundTasks = None,
 ):
     item = Item.from_nothing()
     contents = image.file.read()

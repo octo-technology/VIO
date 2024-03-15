@@ -3,7 +3,11 @@ from typing import Union, Any, List, Dict, AnyStr
 
 import numpy as np
 from fastapi import APIRouter, HTTPException, Request
-from tflite_serving.utils.yolo_postprocessing import yolo_extract_boxes_information, nms, compute_severities
+from tflite_serving.utils.yolo_postprocessing import (
+    yolo_extract_boxes_information,
+    nms,
+    compute_severities,
+)
 
 JSONObject = Dict[AnyStr, Any]
 JSONArray = List[Any]
@@ -92,7 +96,7 @@ async def predict(
                     "detection_boxes": [boxes],
                     "detection_classes": [class_ids],
                     "detection_scores": [scores],
-                    "severities": [severities]
+                    "severities": [severities],
                 }
             }
 

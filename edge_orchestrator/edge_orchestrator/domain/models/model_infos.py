@@ -25,7 +25,7 @@ class ModelInfos:
         class_names_path: Optional[str] = None,
         objectness_threshold: Optional[float] = None,
         severities: Optional[str] = None,
-        model_type: Optional[str] = None
+        model_type: Optional[str] = None,
     ):
         self.id = id
         self.name = name
@@ -75,12 +75,8 @@ class ModelInfos:
             detection_classes = (
                 inventory.models[model_name].get("output").get("detection_classes")
             )
-            severities = (
-                inventory.models[model_name].get("output").get("severities")
-            )
-            model_type = (
-                inventory.models[model_name].get("model_type")
-            )
+            severities = inventory.models[model_name].get("output").get("severities")
+            model_type = inventory.models[model_name].get("model_type")
         except AttributeError:
             boxes_coordinates = None
             objectness_scores = None
@@ -106,7 +102,7 @@ class ModelInfos:
             class_to_detect=class_to_detect,
             objectness_threshold=objectness_threshold,
             severities=severities,
-            model_type=model_type
+            model_type=model_type,
         )
 
     def __eq__(self, other) -> bool:

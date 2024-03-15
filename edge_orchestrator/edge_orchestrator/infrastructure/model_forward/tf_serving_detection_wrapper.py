@@ -93,7 +93,7 @@ class TFServingDetectionWrapper(ModelForward):
                         "label": class_to_detect,
                         "location": box_coordinates_in_current_image,
                         "score": box_objectness_score_in_current_image,
-                        "severity": box_severity_in_current_image
+                        "severity": box_severity_in_current_image,
                     }
 
         else:
@@ -102,7 +102,8 @@ class TFServingDetectionWrapper(ModelForward):
                     np.array(class_names) == class_to_detect
                 )
                 detection_class_positions = np.where(
-                    np.array(detection_classes) == float(class_to_detect_position[0] + 1)
+                    np.array(detection_classes)
+                    == float(class_to_detect_position[0] + 1)
                 )
 
                 for box_index in detection_class_positions[0]:
@@ -122,7 +123,10 @@ class TFServingDetectionWrapper(ModelForward):
                         f"box_coordinates_in_current_image: {box_coordinates_in_current_image}"
                     )
 
-                    if box_objectness_score_in_current_image >= model.objectness_threshold:
+                    if (
+                        box_objectness_score_in_current_image
+                        >= model.objectness_threshold
+                    ):
                         inference_output[f"object_{box_index + 1}"] = {
                             "label": class_to_detect,
                             "location": box_coordinates_in_current_image,
