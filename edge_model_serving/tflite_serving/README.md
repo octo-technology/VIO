@@ -4,12 +4,23 @@ Expose tensorflow-lite models via a rest API. Currently object, face & scene det
 ## Setup
 In this process we create a virtual environment (venv), then install tensorflow-lite [as per these instructions](https://www.tensorflow.org/lite/guide/python) which is platform specific, and finally install the remaining requirements. **Note** on an RPi (only) it is necessary to system wide install pip3, numpy, pillow.
 
-All instructions for mac:
+All instructions for mac using venv :
 ```
 python3 -m venv venv
 source venv/bin/activate
 pip3 install https://dl.google.com/coral/python/tflite_runtime-2.1.0.post1-cp37-cp37m-macosx_10_14_x86_64.whl
 pip3 install -r requirements.txt
+```
+
+Or using the makefiles to set up a conda env :
+
+```
+cd edge_model_serving/tflite_serving
+
+make tflite_serving
+conda activate tflite_serving
+make install_tflite_mac
+pip3 install --extra-index-url https://google-coral.github.io/py-repo/ tflite_runtime
 ```
 
 ## Models
