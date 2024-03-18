@@ -4,7 +4,9 @@
 ### Model format
 The edge model serving supports models of 3 types : TensorFlow, TensorFlowLite and Torch.
 
-This tutorial will present how to add a custom TensorFlowLite model in VIO.
+This note will present how to add a custom TensorFlowLite model in VIO. The process is similar for the two other types,
+for which you can follow the respective ReadMe files ([Torch serving](../edge_model_serving/torch_serving/README.md) and for 
+[TensorFlow serving](../edge_model_serving/tf_serving/README.md)) and work in their respective edge sub-folder.
 
 ### Saving the model
 The model has to be given to the Edge_serving module. Export your custom model to tflite and store it as 
