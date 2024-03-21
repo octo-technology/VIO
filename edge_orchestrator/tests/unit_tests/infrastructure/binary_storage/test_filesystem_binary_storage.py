@@ -31,10 +31,7 @@ class TestFileSystemBinaryStorage:
 
         # Then
         path_to_my_picture = (
-            src_directory_path
-            / active_config_name
-            / "my_item_id"
-            / "camera_id.jpg"
+            src_directory_path / active_config_name / "my_item_id" / "camera_id.jpg"
         )
         assert path_to_my_picture.is_file()
         actual_picture = path_to_my_picture.open("rb").read()
@@ -46,16 +43,9 @@ class TestFileSystemBinaryStorage:
         binary_storage = FileSystemBinaryStorage(src_directory_path)
         expected_picture = bytes([0, 1, 2, 3, 4])
         active_config_name = "detection_model"
-        (
-            src_directory_path
-            / active_config_name
-            / "my_item_id"
-        ).mkdir(parents=True)
+        (src_directory_path / active_config_name / "my_item_id").mkdir(parents=True)
         with (
-            src_directory_path
-            / active_config_name
-            / "my_item_id"
-            / "camera_id.jpg"
+            src_directory_path / active_config_name / "my_item_id" / "camera_id.jpg"
         ).open("wb") as f:
             f.write(expected_picture)
 
@@ -75,17 +65,10 @@ class TestFileSystemBinaryStorage:
         expected_picture_2 = bytes([5, 6, 7, 8, 9])
         active_config_name = "detection_model"
 
-        (
-            src_directory_path
-            / active_config_name
-            / "my_item_id"
-        ).mkdir(parents=True)
+        (src_directory_path / active_config_name / "my_item_id").mkdir(parents=True)
 
         with (
-            src_directory_path
-            / active_config_name
-            / "my_item_id"
-            / "camera_id1.jpg"
+            src_directory_path / active_config_name / "my_item_id" / "camera_id1.jpg"
         ).open("wb") as f_1:
             with (
                 (

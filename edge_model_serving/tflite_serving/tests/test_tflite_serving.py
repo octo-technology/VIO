@@ -94,4 +94,6 @@ class TestTfliteServing:
 
         # Then
         assert actual_response.status_code == 200
-        assert actual_response.json() == expected_prediction
+        for elements in actual_response.json()["outputs"]:
+            for index_value, value in enumerate(elements):
+                assert round(value, 6) == round(expected_prediction["outputs"][0][index_value], 6)

@@ -25,7 +25,7 @@ class ModelInfos:
         class_names_path: Optional[str] = None,
         objectness_threshold: Optional[float] = None,
         severities: Optional[str] = None,
-        model_type: Optional[str] = None,
+        model_type: Optional[str] = "Mobilnet",
     ):
         self.id = id
         self.name = name

@@ -10,7 +10,9 @@ class BinaryStorage:
         pass
 
     @abstractmethod
-    def get_item_binary(self, item_id: str, camera_id: str, active_config_name: str) -> bytes:
+    def get_item_binary(
+        self, item_id: str, camera_id: str, active_config_name: str
+    ) -> bytes:
         pass
 
     @abstractmethod

@@ -75,6 +75,6 @@ class TestDetectionWrapperHelper:
 
         # When
         actual = model_forwarder.perform_post_processing(model, json_outputs)
-        print(actual)
+
         # Then
         assert actual == expected

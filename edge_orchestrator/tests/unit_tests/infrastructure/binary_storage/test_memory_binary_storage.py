@@ -43,7 +43,9 @@ class TestMemoryBinaryStorage:
         }
 
         # When
-        binary = binary_storage.get_item_binary("my_item_id", "my_picture_name_1", config_name_mocked)
+        binary = binary_storage.get_item_binary(
+            "my_item_id", "my_picture_name_1", config_name_mocked
+        )
 
         # Then
         assert binary == expected_picture
@@ -62,7 +64,9 @@ class TestMemoryBinaryStorage:
         }
 
         # When
-        binaries_names = binary_storage.get_item_binaries("my_item_id", config_name_mocked)
+        binaries_names = binary_storage.get_item_binaries(
+            "my_item_id", config_name_mocked
+        )
 
         # Then
         assert binaries_names == ["my_picture_name_1", "my_picture_name_2"]

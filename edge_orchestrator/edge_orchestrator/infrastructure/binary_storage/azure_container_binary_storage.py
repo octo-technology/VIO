@@ -34,7 +34,9 @@ class AzureContainerBinaryStorage(BinaryStorage):
             ) as f:
                 f.write(binary)
 
-    def get_item_binary(self, item_id: str, camera_id: str, active_config_name: str) -> bytes:
+    def get_item_binary(
+        self, item_id: str, camera_id: str, active_config_name: str
+    ) -> bytes:
         with open(
             f"azure://{self.azure_container_name}/{active_config_name}/{item_id}_{camera_id}.jpg",
             "rb",

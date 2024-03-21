@@ -59,10 +59,6 @@ class TFServingDetectionWrapper(ModelForward):
             json_outputs[model.objectness_scores][0],
             json_outputs[model.detection_classes][0],
         )
-        if model.severities:
-            severities = json_outputs[model.severities][0]
-        else:
-            severities = [None for _ in enumerate(boxes_coordinates)]
 
         try:
             class_names = [c.strip() for c in open(self.class_names_path).readlines()]
@@ -73,16 +69,13 @@ class TFServingDetectionWrapper(ModelForward):
                     self.class_names_path
                 )
             )
-
-            try:
-                class_names = model.class_names
-            except Exception as e:
-                logger.exception(e)
-                logger.info("class names are not defined")
+            class_names = model.class_names
 
         if model.model_type == "yolo":
+            severities = json_outputs[model.severities][0]
             for box_index, box in enumerate(boxes_coordinates):
-                detected_class = class_names[int(detection_classes[box_index])]
+                detected_class_id = int(detection_classes[box_index])
+                detected_class = class_names[detected_class_id]
 
                 # Resizing normalized coordinates to image
                 x_min = box[0]
@@ -102,7 +95,7 @@ class TFServingDetectionWrapper(ModelForward):
                         "severity": box_severity_in_current_image,
                     }
 
-        else:
+        elif model.model_type == "Mobilnet":
             for class_to_detect in model.class_to_detect:
                 class_to_detect_position = np.where(
                     np.array(class_names) == class_to_detect
@@ -134,8 +127,8 @@ class TFServingDetectionWrapper(ModelForward):
                     )
 
                     if (
-                            box_objectness_score_in_current_image
-                            >= model.objectness_threshold
+                        box_objectness_score_in_current_image
+                        >= model.objectness_threshold
                     ):
                         inference_output[f"object_{box_index + 1}"] = {
                             "label": class_to_detect,

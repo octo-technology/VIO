@@ -14,7 +14,9 @@ class MemoryBinaryStorage(BinaryStorage):
             binaries_dict[camera_id] = binary
         self.binaries[item.id] = binaries_dict
 
-    def get_item_binary(self, item_id: str, camera_id: str, active_config_name: str) -> bytes:
+    def get_item_binary(
+        self, item_id: str, camera_id: str, active_config_name: str
+    ) -> bytes:
         return self.binaries[item_id][camera_id]
 
     def get_item_binaries(self, item_id: str, active_config_name: str) -> List[str]:

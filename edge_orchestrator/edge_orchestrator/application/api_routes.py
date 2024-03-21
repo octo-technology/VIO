@@ -56,7 +56,9 @@ def get_item_binaries(
     binary_storage: BinaryStorage = Depends(get_binary_storage),
     station_config: StationConfig = Depends(get_station_config),
 ):
-    return binary_storage.get_item_binaries(item_id, station_config.active_config["name"])
+    return binary_storage.get_item_binaries(
+        item_id, station_config.active_config["name"]
+    )
 
 
 @api_router.get("/items/{item_id}/state")

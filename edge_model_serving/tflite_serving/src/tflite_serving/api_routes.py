@@ -77,6 +77,7 @@ async def predict(
                     "detection_boxes": boxes.tolist(),
                     "detection_classes": classes.tolist(),
                     "detection_scores": scores.tolist(),
+                    "severities": [None],
                 }
             }
         elif model_type == "yolo":
