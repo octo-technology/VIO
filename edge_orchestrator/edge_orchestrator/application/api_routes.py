@@ -43,7 +43,7 @@ def get_item_binary(
     station_config: StationConfig = Depends(get_station_config),
 ):
     content_binary = binary_storage.get_item_binary(
-        item_id, camera_id, station_config.active_config_name
+        item_id, camera_id, station_config.active_config["name"]
     )
     return Response(
         content=content_binary, status_code=HTTPStatus.OK, media_type="image/jpeg"
@@ -56,7 +56,7 @@ def get_item_binaries(
     binary_storage: BinaryStorage = Depends(get_binary_storage),
     station_config: StationConfig = Depends(get_station_config),
 ):
-    return binary_storage.get_item_binaries(item_id, station_config.active_config_name)
+    return binary_storage.get_item_binaries(item_id, station_config.active_config["name"])
 
 
 @api_router.get("/items/{item_id}/state")

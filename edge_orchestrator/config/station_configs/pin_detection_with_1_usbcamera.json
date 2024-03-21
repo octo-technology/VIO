@@ -1,4 +1,5 @@
 {
+  "name": "pin_detection",
   "cameras": {
     "camera_id3": {
       "type": "usb_camera",

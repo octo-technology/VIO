@@ -1,4 +1,5 @@
 {
+  "name": "marker_classification",
   "cameras": {
     "camera_id3": {
       "type": "usb_camera",
