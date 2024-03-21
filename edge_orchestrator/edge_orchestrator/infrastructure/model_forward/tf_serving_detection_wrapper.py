@@ -74,9 +74,15 @@ class TFServingDetectionWrapper(ModelForward):
                 )
             )
 
+            try:
+                class_names = model.class_names
+            except Exception as e:
+                logger.exception(e)
+                logger.info("class names are not defined")
+
         if model.model_type == "yolo":
             for box_index, box in enumerate(boxes_coordinates):
-                class_to_detect = detection_classes[box_index]
+                detected_class = class_names[int(detection_classes[box_index])]
 
                 # Resizing normalized coordinates to image
                 x_min = box[0]
@@ -90,7 +96,7 @@ class TFServingDetectionWrapper(ModelForward):
                 box_severity_in_current_image = severities[box_index]
                 if box_objectness_score_in_current_image >= model.objectness_threshold:
                     inference_output[f"object_{box_index + 1}"] = {
-                        "label": class_to_detect,
+                        "label": detected_class,
                         "location": box_coordinates_in_current_image,
                         "score": box_objectness_score_in_current_image,
                         "severity": box_severity_in_current_image,
@@ -128,8 +134,8 @@ class TFServingDetectionWrapper(ModelForward):
                     )
 
                     if (
-                        box_objectness_score_in_current_image
-                        >= model.objectness_threshold
+                            box_objectness_score_in_current_image
+                            >= model.objectness_threshold
                     ):
                         inference_output[f"object_{box_index + 1}"] = {
                             "label": class_to_detect,

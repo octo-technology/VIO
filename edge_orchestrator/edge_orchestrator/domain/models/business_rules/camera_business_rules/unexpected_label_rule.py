@@ -13,5 +13,4 @@ class UnexpectedLabelRule(CameraRule):
         for inf in inference:
             if inf in self.unexpected_label:
                 camera_decision = Decision.KO
-        print("CAMERA DESCISION", camera_decision)
         return camera_decision

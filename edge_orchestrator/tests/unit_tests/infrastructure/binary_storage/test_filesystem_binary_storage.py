@@ -1,6 +1,5 @@
 from pathlib import Path
 from unittest.mock import patch
-from datetime import datetime
 
 from edge_orchestrator.domain.models.item import Item
 from edge_orchestrator.infrastructure.binary_storage.filesystem_binary_storage import (
