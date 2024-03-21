@@ -101,6 +101,10 @@ class TFServingDetectionWrapper(ModelForward):
                 class_to_detect_position = np.where(
                     np.array(class_names) == class_to_detect
                 )
+
+                if class_to_detect_position[0].size == 0:
+                    continue
+
                 detection_class_positions = np.where(
                     np.array(detection_classes)
                     == float(class_to_detect_position[0] + 1)
@@ -110,10 +114,10 @@ class TFServingDetectionWrapper(ModelForward):
                     box_coordinates_in_current_image = boxes_coordinates[box_index]
 
                     # Mobilenet returns the coordinates as (ymin, xmin, ymax, xmax)
-                    y_min = int(box_coordinates_in_current_image[0])
-                    x_min = int(box_coordinates_in_current_image[1])
-                    y_max = int(box_coordinates_in_current_image[2])
-                    x_max = int(box_coordinates_in_current_image[3])
+                    y_min = box_coordinates_in_current_image[0]
+                    x_min = box_coordinates_in_current_image[1]
+                    y_max = box_coordinates_in_current_image[2]
+                    x_max = box_coordinates_in_current_image[3]
 
                     # crop_image expects the box coordinates to be (xmin, ymin, xmax, ymax)
                     box_coordinates_in_current_image = [x_min, y_min, x_max, y_max]

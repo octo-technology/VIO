@@ -46,12 +46,14 @@ async def predict(
     logging.warning(f"output details: {output_details}")
 
     try:
-        model_type = payload[b"model_type"]
         input_data = payload[b"inputs"]
         input_array = np.array(input_data, dtype=input_dtype)
 
-        if model_type == "yolo":
-            input_array /= 255
+        model_type = None
+        if b"model_type" in payload.keys():
+            model_type = payload[b"model_type"]
+            if model_type == "yolo":
+                input_array /= 255
 
         interpreter.set_tensor(input_details[0]["index"], input_array)
         interpreter.invoke()
