@@ -14,7 +14,7 @@ class TestServer:
         # Given
         client = TestClient(server())
         test_file = "camera_id1.jpg"
-        test_file_path = TEST_DATA_FOLDER_PATH / "item_2" / test_file
+        test_file_path = TEST_DATA_FOLDER_PATH / "test_config" / "item_2" / test_file
         expected_logs = [
             "Starting Save Binaries",
             "Entering try Save Binaries",

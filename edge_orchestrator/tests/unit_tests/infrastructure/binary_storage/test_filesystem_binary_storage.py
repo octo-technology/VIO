@@ -31,8 +31,12 @@ class TestFileSystemBinaryStorage:
         binary_storage.save_item_binaries(item, active_config_name)
 
         # Then
-        path_to_my_picture = (src_directory_path / (active_config_name + "_" + binary_storage.session_id) /
-                              datetime.today().strftime('%Y-%m-%d') / "camera_id_my_item_id.jpg")
+        path_to_my_picture = (
+            src_directory_path
+            / active_config_name
+            / "my_item_id"
+            / "camera_id.jpg"
+        )
         assert path_to_my_picture.is_file()
         actual_picture = path_to_my_picture.open("rb").read()
         assert actual_picture == expected_picture
@@ -43,14 +47,23 @@ class TestFileSystemBinaryStorage:
         binary_storage = FileSystemBinaryStorage(src_directory_path)
         expected_picture = bytes([0, 1, 2, 3, 4])
         active_config_name = "detection_model"
-        (src_directory_path / (active_config_name + "_" + binary_storage.session_id) /
-         datetime.today().strftime('%Y-%m-%d')).mkdir(parents=True)
-        with (src_directory_path / (active_config_name + "_" + binary_storage.session_id) /
-              datetime.today().strftime('%Y-%m-%d') / "camera_id_my_item_id.jpg").open("wb") as f:
+        (
+            src_directory_path
+            / active_config_name
+            / "my_item_id"
+        ).mkdir(parents=True)
+        with (
+            src_directory_path
+            / active_config_name
+            / "my_item_id"
+            / "camera_id.jpg"
+        ).open("wb") as f:
             f.write(expected_picture)
 
         # When
-        actual_binary = binary_storage.get_item_binary("my_item_id", "camera_id", active_config_name)
+        actual_binary = binary_storage.get_item_binary(
+            "my_item_id", "camera_id", active_config_name
+        )
 
         # Then
         assert actual_binary == expected_picture
@@ -63,18 +76,36 @@ class TestFileSystemBinaryStorage:
         expected_picture_2 = bytes([5, 6, 7, 8, 9])
         active_config_name = "detection_model"
 
-        (src_directory_path / (active_config_name + "_" + binary_storage.session_id) /
-         datetime.today().strftime('%Y-%m-%d')).mkdir(parents=True)
+        (
+            src_directory_path
+            / active_config_name
+            / "my_item_id"
+        ).mkdir(parents=True)
 
-        with (src_directory_path / (active_config_name + "_" + binary_storage.session_id) /
-              datetime.today().strftime('%Y-%m-%d') / "camera_id1_my_item_id.jpg").open("wb") as f_1:
-            with ((src_directory_path / (active_config_name + "_" + binary_storage.session_id) /
-                   datetime.today().strftime('%Y-%m-%d') / "camera_id2_my_item_id.jpg")).open("wb") as f_2:
+        with (
+            src_directory_path
+            / active_config_name
+            / "my_item_id"
+            / "camera_id1.jpg"
+        ).open("wb") as f_1:
+            with (
+                (
+                    src_directory_path
+                    / active_config_name
+                    / "my_item_id"
+                    / "camera_id2.jpg"
+                )
+            ).open("wb") as f_2:
                 f_1.write(expected_picture_1)
                 f_2.write(expected_picture_2)
 
         # When
-        binaries_names = binary_storage.get_item_binaries("my_item_id", active_config_name)
+        binaries_names = binary_storage.get_item_binaries(
+            "my_item_id", active_config_name
+        )
 
         # Then
-        assert set(binaries_names) == {"camera_id1_my_item_id.jpg", "camera_id2_my_item_id.jpg"}
+        assert set(binaries_names) == {
+            "camera_id1.jpg",
+            "camera_id2.jpg",
+        }
