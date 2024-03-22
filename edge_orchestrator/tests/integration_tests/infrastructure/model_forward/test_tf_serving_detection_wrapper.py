@@ -46,7 +46,7 @@ class TestTFServingDetectionWrapper:
         expected_model_output = {
             "object_1": {
                 "label": "cat",
-                "location": [370, 2, 738, 340],
+                "location": [0.3939, 0.0063, 0.786, 1.0],
                 "score": 0.652510464,
             }
         }
@@ -100,12 +100,12 @@ class TestTFServingDetectionWrapper:
         expected_model_output = {
             "object_1": {
                 "label": "dog",
-                "location": [234, 13, 778, 911],
+                "location": [0.1403, 0.0139, 0.4665, 0.9764],
                 "score": 0.717056394,
             },
             "object_2": {
                 "label": "cat",
-                "location": [796, 124, 1371, 935],
+                "location": [0.4773, 0.1329, 0.8222, 0.9968],
                 "score": 0.682666183,
             },
         }
