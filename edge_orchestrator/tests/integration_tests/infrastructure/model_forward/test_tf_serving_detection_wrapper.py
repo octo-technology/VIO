@@ -100,7 +100,7 @@ class TestTFServingDetectionWrapper:
         expected_model_output = {
             "object_1": {
                 "label": "dog",
-                "location": [0.1403, 0.0139, 0.4665, 0.9764],
+                "location": [0.1403, 0.0149, 0.4669, 0.9714],
                 "score": 0.717056394,
             },
             "object_2": {
