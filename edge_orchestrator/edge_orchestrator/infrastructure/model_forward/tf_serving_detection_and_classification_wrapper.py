@@ -69,10 +69,10 @@ class TFServingDetectionClassificationWrapper(ModelForward):
             # Mobilenet returns the coordinates as (ymin, xmin, ymax, xmax)
             # Hence, the switch here
             box_coordinates_in_current_image = [
-                box_coordinates_in_current_image[1],
-                box_coordinates_in_current_image[0],
-                box_coordinates_in_current_image[3],
-                box_coordinates_in_current_image[2],
+                round(box_coordinates_in_current_image[1], 4),
+                round(box_coordinates_in_current_image[0], 4),
+                round(box_coordinates_in_current_image[3], 4),
+                round(box_coordinates_in_current_image[2], 4),
             ]
             box_objectness_score_in_current_image = objectness_scores[box_index]
 

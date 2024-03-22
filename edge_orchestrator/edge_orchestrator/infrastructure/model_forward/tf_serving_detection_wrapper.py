@@ -78,10 +78,10 @@ class TFServingDetectionWrapper(ModelForward):
                 detected_class = class_names[detected_class_id]
 
                 # Resizing normalized coordinates to image
-                x_min = box[0]
-                y_min = box[1]
-                x_max = box[2]
-                y_max = box[3]
+                x_min = round(box[0], 4)
+                y_min = round(box[1], 4)
+                x_max = round(box[2], 4)
+                y_max = round(box[3], 4)
 
                 # crop_image expects the box coordinates to be (xmin, ymin, xmax, ymax)
                 box_coordinates_in_current_image = [x_min, y_min, x_max, y_max]
@@ -113,10 +113,10 @@ class TFServingDetectionWrapper(ModelForward):
                     box_coordinates_in_current_image = boxes_coordinates[box_index]
 
                     # Mobilenet returns the coordinates as (ymin, xmin, ymax, xmax)
-                    y_min = box_coordinates_in_current_image[0]
-                    x_min = box_coordinates_in_current_image[1]
-                    y_max = box_coordinates_in_current_image[2]
-                    x_max = box_coordinates_in_current_image[3]
+                    y_min = round(box_coordinates_in_current_image[0], 4)
+                    x_min = round(box_coordinates_in_current_image[1], 4)
+                    y_max = round(box_coordinates_in_current_image[2], 4)
+                    x_max = round(box_coordinates_in_current_image[3], 4)
 
                     # crop_image expects the box coordinates to be (xmin, ymin, xmax, ymax)
                     box_coordinates_in_current_image = [x_min, y_min, x_max, y_max]

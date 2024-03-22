@@ -44,5 +44,5 @@ async def upload_job(
     item = Item.from_nothing()
     contents = image.file.read()
     item.binaries = {"0": contents}
-    background_tasks.add_task(uploader.upload, item, station_config.active_config_name)
+    background_tasks.add_task(uploader.upload, item, station_config.active_config["name"])
     return {"item_id": item.id}
