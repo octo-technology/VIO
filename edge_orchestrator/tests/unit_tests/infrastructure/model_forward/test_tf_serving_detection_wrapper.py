@@ -59,6 +59,7 @@ class TestDetectionWrapperHelper:
             "1",
             "camera_id1",
             image_resolution=[640, 640],
+            model_type="Mobilnet",
             class_names=["foo", "bar", "baz"],
             boxes_coordinates="detection_boxes",
             objectness_scores="detection_scores",
@@ -75,6 +76,7 @@ class TestDetectionWrapperHelper:
 
         # When
         actual = model_forwarder.perform_post_processing(model, json_outputs)
+        print(actual)
 
         # Then
         assert actual == expected
