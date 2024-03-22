@@ -20,6 +20,10 @@ class TestServer:
             "Entering try Save Binaries",
             "End of Save Binaries",
         ]
+        client.post(
+            "/api/v1/configs/active",
+            json={"config_name": "marker_classification_with_2_fake_cameras"},
+        )
 
         # When
         with open(test_file_path, "rb") as f:
