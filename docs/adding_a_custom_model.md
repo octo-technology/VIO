@@ -13,50 +13,15 @@ The model has to be given to the Edge_serving module. Export your custom model t
 `VIO/edge_model_serving/models/tflite/<model_folder_name>/<model_name>.tflite`. (If needed add a .txt file with the 
 labels/class names)
 
-The Edge_orchestrator has to know about the new model that is available. To do so, complete the inventory file `VIO/edge_orchestrator/config/inventory.json` with 
-all the information required depending on you model type under the ````models ```` category. 
-  - Classification model
-    ```
-      "your_new_model_name": {
-      "category": "classification",
-      "version": 1,
-      "class_names": [
-        "class name 1",
-        "class name 2",
-         ...
-      ],
-      "image_resolution": [
-        x resolution for your trained model (int),
-        y resolution for your trained model (int)
-      ]
-    }
-    ```
-  - Object detection model
-    ```
-    "your_new_model_name": {
-      "category": "object_detection",
-      "version": 1,
-      "class_names_path": "{name of file with the class names}.txt",
-      "output": {
-        "boxes_coordinates": "{name of the boxes_coordinates variable in your model}",
-        "objectness_scores": "{name of the objectness_scores variable in your model}",
-        "number_of_boxes": "{name of the number_of_boxes variable in your model}",
-        "detection_classes": "{name of the detection_classes variable in your model}"
-      },
-      "image_resolution": [
-        x resolution for your trained model (int),
-        y resolution for your trained model (int)
-      ],
-      "objectness_threshold": minimum threshold score for an object to be detected (float)
-
-    }
-    ```
+The Edge_orchestrator has to know about the new model that is available. To do so, complete the inventory file 
+`VIO/edge_orchestrator/config/inventory.json` with all the information required depending on you model type under the 
+````models ```` category. Note that the model name variable should fit the model folder name. You can refer to [this subsection](edge_orchestrator.md#add-a-new-model).
 
 
 ### Creating the configuration files
 Now that all the components know about your new model, you will need to create a configuration that will use your custom 
 model. Create a new JSON file in `VIO/edge_orchestrator/config/station_configs` with any config name. You can follow the
-configuration of this file in the [Add a new configuration](edge_orchestrator.md) subsection.
+configuration of this file in the [Add a new configuration](edge_orchestrator.md#add-a-new-configuration-) subsection.
 
 ## Adapting the code to your model - Optional
 
@@ -66,7 +31,7 @@ level & for the Edge Orchestrator reception.
 - Detection model
 
 The implemented methods are designed to support Mobilenet_SSD format, where the output of the model is 
-`List[List[Boxes], List[Classes], List[Scores]]` and the following box format `[ymin, xmin, ymax, xmax]`.
+`List[List[Boxes], List[Classes], List[Scores]]` and box format is `[ymin, xmin, ymax, xmax]`.
 
 If your custom model doesn't fit this format, you can add custom post-processing methods.
 

@@ -1,7 +1,7 @@
 # edge_interface
 
 ## Development setup
-
+go to edge_interface/
 ```
 brew update
 brew install node

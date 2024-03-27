@@ -122,7 +122,38 @@ class TestMyFunction:
 ```
 - Don't mistake a stub for a mock. A mock is used to assert that it has been called (see above example). A stub 
 is used to simulate the returned value.
-  
+
+### Testing and docker images
+If you are not working with a M1 processor you may encounter some deployment problems when starting the Orchestrator's tests.
+To resolve them you will have to build a docker image that fits your system using the Orchestrator's makefile and modify
+the `conftest.py` file to edit the `image_name` field.
+```
+VIO/edge_orchestrator/tests/conftest.py
+
+EDGE_MODEL_SERVING = {
+    "image_name": --NEW_DOCKER_IMAGE--,
+    "container_volume_path": "/tf_serving",
+    "host_volume_path_suffix": "edge_model_serving",
+}
+```
+You will need to change the `starting_log` parameter and remove the call to `check_image_presence_or_pull_it_from_registry` 
+from the `container.py` file.
+
+```
+VIO/edge_orchestrator/tests/fixtures/containers.py
+
+if tf_serving_host is None or tf_serving_port is None:
+    port_to_expose = 8501
+    container = TfServingContainer(
+        image=image_name,
+        port_to_expose=port_to_expose,
+        env={"MODEL_NAME": exposed_model_name},
+        host_volume_path=host_volume_path,
+        container_volume_path=container_volume_path,
+    )
+    container.start("INFO:     Application startup complete.")
+```
+
 ## Versioning strategy
 - Git tutorial:
     - [Basic git tutorial](http://rogerdudler.github.io/git-guide/)

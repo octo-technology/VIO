@@ -1,6 +1,6 @@
 # Running VIO locally
 
-In order to use VIO locally we are going to start 3 modules that will need conda installed.
+In order to use VIO locally we are going to start 3 modules in 3 different terminals. Some of them will need conda installed.
 The most direct way to install conda on MacOS is via Homebrew:
 ```
 brew update
