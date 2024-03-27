@@ -27,16 +27,17 @@ download-models:
 .PHONY: build-mar-file
 build-mar-file:
 	torch-model-archiver \
-	--model-name yolo5 \
-	--version 2.1 \
-	--serialized-file ../models/torch/yolo5_v2.1.torchscript.pt \
-	--handler ./torchserve_handler.py \
-	--extra-files ../models/torch/index_to_name.json,./torchserve_handler.py
+	--model-name fastrcnn \
+	--version 1.0 \
+	--model-file model.py \
+	--serialized-file ../models/torch/fasterrcnn_resnet50_fpn_coco-258fb6c6.pth \
+	--handler object_detector \
+	--extra-files ../models/torch/index_to_name.json -f
 
 .PHONY: serve
 serve:
-	torchserve --start --model-store ../models/torch --models yolo=yolo5.mar
+	torchserve --start --model-store ../models/torch --models fastrcnn=fastrcnn.mar
 
 .PHONY: test
 test:
-	curl http://127.0.0.1:8080/predictions/yolo -T ../tests/L1\ front.jpg
+	curl http://127.0.0.1:8080/predictions/fastrcnn -T ..tests/data/persons.jpg
