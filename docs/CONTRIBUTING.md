@@ -124,7 +124,13 @@ class TestMyFunction:
 is used to simulate the returned value.
 
 ### Testing and docker images
-If you are not working with a M1 processor you may encounter some deployment problems when starting the Orchestrator's tests.
+- In order to run the tests, your docker instance will need to be connected to github, allowing docker to pull the images.
+You can follow [these steps](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry#authenticating-with-a-personal-access-token-classic)
+to establish a token connection between docker and github.
+
+⚠ If you are not working with a M1 processor ⚠
+
+You may encounter some deployment problems when starting the Orchestrator's tests.
 To resolve them you will have to build a docker image that fits your system using the Orchestrator's makefile and modify
 the `conftest.py` file to edit the `image_name` field.
 ```

@@ -83,19 +83,19 @@ launch the following actions:
 ![vio-architecture-stack](docs/images/edge_orchestrator-actions.png)
 
 ## 🛰️ Technology features
-- ⚡️Backend API with [FastAPI](https://fastapi.tiangolo.com/)
-- 📜 Frontend with [React](https://react.dev/)
 - 🏠 Hosting possibilities :
   - ☁️ Cloud possibilities with [Azure](https://portal.azure.com/#home) and [GCP](https://cloud.google.com/)
   - 👮 Float management with [Ansible](https://docs.ansible.com/ansible/latest/index.html)
   - 🛸 Raspberry deployment
   - 🐳 [Docker](https://www.docker.com/) Compose
   - 💻 Local
-- 📈 [Grafana](https://grafana.com/) insight & dashboard
-- ✅ Tested with [Pytest](https://docs.pytest.org/en/8.0.x/)
+- ⚡️Backend API with [FastAPI](https://fastapi.tiangolo.com/)
+- 📜 Frontend with [React](https://react.dev/)
 - 🏭 Continuous Integration & Continuous Development : 
   - ♟️ Github actions
   - 📝️ Clean code with [Black](https://black.readthedocs.io/en/stable/index.html) & [Flake8](https://flake8.pycqa.org/en/latest/) 
+  - ✅ Tested with [Pytest](https://docs.pytest.org/en/8.0.x/)
+- 📈 [Grafana](https://grafana.com/) insight & dashboard
 
 ## 🏭 Releases
 
