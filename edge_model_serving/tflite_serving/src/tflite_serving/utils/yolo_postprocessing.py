@@ -50,9 +50,9 @@ def compute_box_severity(image: np.array, box: List):
     # Looking at severity as mean darkness
     dark_colors = image_detection[mask_dark_pixels].flatten()
     if dark_colors.size == 0:
-        return 0.09
+        return 0.1
     else:
-        severity = (0.5 - dark_colors.mean()) * 2
+        severity = round((0.5 - dark_colors.mean()) * 2, 2)
         return severity
 
 
