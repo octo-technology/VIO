@@ -15,20 +15,16 @@ from edge_orchestrator.infrastructure.station_config.json_station_config import 
 from edge_orchestrator.infrastructure.telemetry_sink.fake_telemetry_sink import (
     FakeTelemetrySink,
 )
-from edge_orchestrator.infrastructure.model_forward.tf_serving_wrapper import (
-    TFServingWrapper,
+from edge_orchestrator.infrastructure.model_forward.fake_model_forward import (
+    FakeModelForward,
 )
-import os
 
 
 class Default(Config):
-    SERVING_MODEL_URL = os.environ.get("SERVING_MODEL_URL", "http://0.0.0.0:8501")
 
     def __init__(self):
         self.metadata_storage = MemoryMetadataStorage()
-        self.model_forward = TFServingWrapper(
-            self.SERVING_MODEL_URL, self.inventory, self.station_config
-        )
+        self.model_forward = FakeModelForward()
         self.binary_storage = FileSystemBinaryStorage(
             self.ROOT_PATH / "data" / "storage"
         )
