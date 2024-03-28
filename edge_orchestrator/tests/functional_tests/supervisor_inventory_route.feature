@@ -49,11 +49,11 @@ Feature: The client requests the inventory available on the station
       "mobilenet_v1_640x640": {
         "category": "object_detection",
         "version": 1,
-        "model_type": "Mobilnet",
+        "model_type": "Mobilenet",
         "class_names_path": "test_detection_labels",
         "output": {
-          "boxes_coordinates": "detection_boxes",
-          "objectness_scores": "detection_scores",
+          "detection_boxes": "detection_boxes",
+          "detection_scores": "detection_scores",
           "number_of_boxes": "num_detections",
           "detection_classes": "detection_classes"
         },
@@ -62,11 +62,11 @@ Feature: The client requests the inventory available on the station
       "mobilenet_v1_640x640_detect_classif": {
         "category": "object_detection_with_classification",
         "version": 1,
-        "model_type": "Mobilnet",
+        "model_type": "Mobilenet",
         "class_names_path": "test_detection_labels",
         "output": {
-          "boxes_coordinates": "detection_boxes",
-          "objectness_scores": "detection_scores",
+          "detection_boxes": "detection_boxes",
+          "detection_scores": "detection_scores",
           "number_of_boxes": "num_detections",
           "detection_classes": "detection_classes"
         },

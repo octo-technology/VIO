@@ -16,10 +16,10 @@
         "Max_Severity"
       ],
       "output": {
-        "boxes_coordinates": "detection_boxes",
-        "objectness_scores": "detection_scores",
+        "detection_boxes": "detection_boxes",
+        "detection_scores": "detection_scores",
         "detection_classes": "detection_classes",
-        "severities": "severities"
+        "detection_metadatas": "severities"
       },
       "image_resolution": [
         640,
@@ -56,8 +56,8 @@
       "version": 1,
       "class_names_path": "coco_labels_originals.txt",
       "output": {
-        "boxes_coordinates": "detection_boxes",
-        "objectness_scores": "detection_scores",
+        "detection_boxes": "detection_boxes",
+        "detection_scores": "detection_scores",
         "detection_classes": "detection_classes"
       },
       "image_resolution": [
@@ -71,8 +71,8 @@
       "version": 1,
       "class_names_path": "face_labels.txt",
       "output": {
-        "boxes_coordinates": "detection_boxes",
-        "objectness_scores": "detection_scores",
+        "detection_boxes": "detection_boxes",
+        "detection_scores": "detection_scores",
         "detection_classes": "detection_classes"
       },
       "image_resolution": [
@@ -85,7 +85,8 @@
   "camera_rules": [
     "expected_label_rule",
     "min_nb_objects_rule",
-    "max_nb_objects_rule"
+    "max_nb_objects_rule",
+    "unexpected_label_rule"
   ],
   "item_rules": [
     "threshold_ratio_rule",

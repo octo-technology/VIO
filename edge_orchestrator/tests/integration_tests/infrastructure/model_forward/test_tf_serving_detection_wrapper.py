@@ -28,11 +28,11 @@ class TestTFServingDetectionWrapper:
             depends_on=[],
             name="mobilenet_v1_640x640",
             category="object_detection",
-            model_type="Mobilnet",
+            model_type="Mobilenet",
             version="1",
             camera_id="camera_id1",
-            boxes_coordinates="detection_boxes",
-            objectness_scores="detection_scores",
+            detection_boxes="detection_boxes",
+            detection_scores="detection_scores",
             number_of_boxes="num_detections",
             detection_classes="detection_classes",
             image_resolution=[640, 640],
@@ -55,7 +55,9 @@ class TestTFServingDetectionWrapper:
         actual_model_output = await tf_serving_model_forwarder.perform_inference(
             model_inference_version, my_binaries_0["camera_id1"], ""
         )
-
+        print(actual_model_output)
+        print('tibo')
+        print(model_inference_version)
         # Then
         assert actual_model_output.keys() == expected_model_output.keys()
         for object_id, output in actual_model_output.items():
@@ -82,11 +84,11 @@ class TestTFServingDetectionWrapper:
             depends_on=[],
             name="mobilenet_v1_640x640",
             category="object_detection",
-            model_type="Mobilnet",
+            model_type="Mobilenet",
             version="1",
             camera_id="camera_id2",
-            boxes_coordinates="detection_boxes",
-            objectness_scores="detection_scores",
+            detection_boxes="detection_boxes",
+            detection_scores="detection_scores",
             number_of_boxes="num_detections",
             detection_classes="detection_classes",
             image_resolution=[640, 640],

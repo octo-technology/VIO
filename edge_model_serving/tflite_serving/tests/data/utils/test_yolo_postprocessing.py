@@ -1,7 +1,7 @@
 import numpy as np
 from tflite_serving.utils.yolo_postprocessing import (
     yolo_extract_boxes_information,
-    nms,
+    non_max_suppression,
     compute_severities,
 )
 
@@ -25,14 +25,14 @@ class TestYoloPostprocessing:
         expected_classes = [0, 1, 0]
 
         # When
-        boxes, scores, classes = yolo_extract_boxes_information(model_outputs)
+        actual_boxes, actual_scores, actual_classes = yolo_extract_boxes_information(model_outputs)
 
         # Then
-        assert boxes == expected_boxes
-        assert scores == expected_scores
-        assert classes == expected_classes
+        assert actual_boxes == expected_boxes
+        assert actual_scores == expected_scores
+        assert actual_classes == expected_classes
 
-    def test_nms(self):
+    def test_non_max_suppression(self):
         # Given
         boxes = [
             [75, 105, 125, 135],
@@ -53,14 +53,14 @@ class TestYoloPostprocessing:
         expected_scores = [0.99, 0.9, 0.75]
         expected_classes = [1, 0, 0]
 
-        nms_boxes, nms_scores, nms_classes = nms(
+        actual_boxes, actual_scores, actual_classes = non_max_suppression(
             boxes, scores, classes, score_threshold=0.4, iou_threshold=0.45
         )
 
         # Then
-        assert nms_boxes == expected_boxes
-        assert nms_scores == expected_scores
-        assert nms_classes == expected_classes
+        assert actual_boxes == expected_boxes
+        assert actual_scores == expected_scores
+        assert actual_classes == expected_classes
 
     def test_compute_severities(self):
         # Given
@@ -101,7 +101,7 @@ class TestYoloPostprocessing:
         expected_severities = [0.8, 0.1]
 
         # When
-        severities = compute_severities(image, boxes)
+        actual_severities = compute_severities(image, boxes)
 
         # Then
-        assert severities == expected_severities
+        assert actual_severities == expected_severities

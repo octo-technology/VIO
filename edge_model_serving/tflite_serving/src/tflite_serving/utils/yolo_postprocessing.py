@@ -56,7 +56,7 @@ def compute_box_severity(image: np.array, box: List):
         return severity
 
 
-def nms(boxes, scores, class_ids, score_threshold=0.4, iou_threshold=0.45):
+def non_max_suppression(boxes, scores, class_ids, score_threshold=0.4, iou_threshold=0.45):
     non_max_suppression_parameters_checks(score_threshold, iou_threshold)
 
     nms_result_boxes = []

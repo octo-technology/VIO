@@ -5,7 +5,7 @@ import numpy as np
 from fastapi import APIRouter, HTTPException, Request
 from tflite_serving.utils.yolo_postprocessing import (
     yolo_extract_boxes_information,
-    nms,
+    non_max_suppression,
     compute_severities,
 )
 
@@ -91,7 +91,7 @@ async def predict(
 
             # Extracting the boxes information to select only the most relevant ones
             boxes, scores, class_ids = yolo_extract_boxes_information(outputs)
-            boxes, scores, class_ids = nms(boxes, scores, class_ids)
+            boxes, scores, class_ids = non_max_suppression(boxes, scores, class_ids)
             severities = compute_severities(input_array[0], boxes)
 
             prediction = {

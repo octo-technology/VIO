@@ -55,8 +55,8 @@ class TFServingDetectionWrapper(ModelForward):
         logger.debug(f"json_outputs {json_outputs}")
 
         boxes_coordinates, objectness_scores, detection_classes = (
-            json_outputs[model.boxes_coordinates][0],
-            json_outputs[model.objectness_scores][0],
+            json_outputs[model.detection_boxes][0],
+            json_outputs[model.detection_scores][0],
             json_outputs[model.detection_classes][0],
         )
 
@@ -72,7 +72,7 @@ class TFServingDetectionWrapper(ModelForward):
             class_names = model.class_names
 
         if model.model_type == "yolo":
-            severities = json_outputs[model.severities][0]
+            severities = json_outputs[model.detection_metadata][0]
             for box_index, box in enumerate(boxes_coordinates):
                 detected_class_id = int(detection_classes[box_index])
                 detected_class = class_names[detected_class_id]
@@ -95,7 +95,7 @@ class TFServingDetectionWrapper(ModelForward):
                         "severity": box_severity_in_current_image,
                     }
 
-        elif model.model_type == "Mobilnet":
+        elif model.model_type == "Mobilenet":
             for class_to_detect in model.class_to_detect:
                 class_to_detect_position = np.where(
                     np.array(class_names) == class_to_detect

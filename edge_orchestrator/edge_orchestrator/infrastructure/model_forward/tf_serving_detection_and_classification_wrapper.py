@@ -49,8 +49,8 @@ class TFServingDetectionClassificationWrapper(ModelForward):
         inference_output = {}
         class_names = []
         boxes_coordinates, objectness_scores, detection_classes = (
-            json_outputs[model.boxes_coordinates][0],
-            json_outputs[model.objectness_scores][0],
+            json_outputs[model.detection_boxes][0],
+            json_outputs[model.detection_scores][0],
             json_outputs[model.detection_classes][0],
         )
 
