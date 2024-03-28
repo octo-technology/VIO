@@ -30,31 +30,12 @@ make install
 pip install -e .[dev]
 ```
 
-It may be required for you to change the default profile of VIO depending on your needs. 
+It is now required to edit the configured environment according to a local run.
+In the `VIO/edge_orchestrator/edge_orchestrator/api_config.py` file, inform the local profile on line 7.
 
-In the `VIO/edge_orchestrator/
-edge_orchestrator/environment/default.py` file, you can connect the orchestrator to your edge serving API by giving its
-adress to `SERVING_MODEL_URL`.
 ```
-import os
-
-class Default(Config):
-    SERVING_MODEL_URL = os.environ.get(
-        "SERVING_MODEL_URL", "http://0.0.0.0:8501"
-    )
-```
-
-The default value of the Serving Wrapper is a `FakeModelForward`, which you can replace with a `TFServingWrapper` that you
-imported.
-```
-from edge_orchestrator.infrastructure.model_forward.tf_serving_wrapper import (
-    TFServingWrapper)
-
-class Default(Config):
-    def __init__(self):
-        self.model_forward = TFServingWrapper(
-            self.SERVING_MODEL_URL, self.inventory, self.station_config
-        )
+def load_config():
+    configuration = os.environ.get("API_CONFIG", "local")
 ```
 
 Now start the server :

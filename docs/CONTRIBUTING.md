@@ -125,8 +125,8 @@ is used to simulate the returned value.
 
 ### Testing and docker images
 - In order to run the tests, your docker instance will need to be connected to github, allowing docker to pull the images.
-You can follow [these steps](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry#authenticating-with-a-personal-access-token-classic)
-to establish a token connection between docker and github.
+Complete the `VIO/edge_orchestrator/tests/.env` file with your github username and access token, or
+by following [these steps](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry#authenticating-with-a-personal-access-token-classic) to make this connection possible.
 
 ⚠ If you are not working with a M1 processor ⚠
 

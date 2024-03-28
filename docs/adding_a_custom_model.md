@@ -8,6 +8,8 @@ This note will present how to add a custom TensorFlowLite model in VIO. The proc
 for which you can follow the respective ReadMe files ([Torch serving](../edge_model_serving/torch_serving/README.md) and for 
 [TensorFlow serving](../edge_model_serving/tf_serving/README.md)) and work in their respective edge sub-folder.
 
+Comming soon: Integration with [Hugging Face](https://huggingface.co/) 
+
 ### Saving the model
 The model has to be given to the Edge_serving module. Export your custom model to tflite and store it as 
 `VIO/edge_model_serving/models/tflite/<model_folder_name>/<model_name>.tflite`. (If needed add a .txt file with the 

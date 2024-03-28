@@ -85,12 +85,13 @@ launch the following actions:
 ## 🛰️ Technology features
 - 🏠 Hosting possibilities :
   - ☁️ Cloud possibilities with [Azure](https://portal.azure.com/#home) and [GCP](https://cloud.google.com/)
-  - 👮 Float management with [Ansible](https://docs.ansible.com/ansible/latest/index.html)
-  - 🛸 Raspberry deployment
-  - 🐳 [Docker](https://www.docker.com/) Compose
-  - 💻 Local
+  - 🛸 On the edge using raspberry 
+  - 🐳 On the edge locally with anaconda or [Docker](https://www.docker.com/)
+- 👮 Fleet management :
+  - 📦 Fleet integration/deployment with [Ansible](https://docs.ansible.com/ansible/latest/index.html)
+  - 🕵️ Fleet supervision/observability with [Grafana](https://grafana.com/) & [Open-Telemetry](https://opentelemetry.io/docs/)
 - ⚡️Backend API with [FastAPI](https://fastapi.tiangolo.com/)
-- 📜 Frontend with [React](https://react.dev/)
+- 📜 Frontend with [Vue.js](https://fr.vuejs.org/)
 - 🏭 Continuous Integration & Continuous Development : 
   - ♟️ Github actions
   - 📝️ Clean code with [Black](https://black.readthedocs.io/en/stable/index.html) & [Flake8](https://flake8.pycqa.org/en/latest/) 
