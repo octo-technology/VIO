@@ -34,7 +34,8 @@ def check_image_presence_or_pull_it_from_registry(image_name: str):
         )
         if image_name.startswith("ghcr.io/octo-technology"):
             from dotenv import load_dotenv
-            load_dotenv('tests/.env')
+
+            load_dotenv("tests/.env")
 
             if os.environ.get("REGISTRY_USERNAME") and os.environ.get(
                 "REGISTRY_PASSWORD"
