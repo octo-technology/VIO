@@ -8,7 +8,7 @@ brew install --cask miniconda
 ```
 
 ## Running the edge model serving
-The edge model serving is the module that is going to do the inference computing using the stored models. It is called
+The edge model serving is the module that is going to do the inference computing using the stored models (_it does the_ `.predict()`"). It is called
 by the edge orchestrator.
 
 You can follow the conda environment installation from the 
