@@ -55,9 +55,7 @@ class TestTFServingDetectionWrapper:
         actual_model_output = await tf_serving_model_forwarder.perform_inference(
             model_inference_version, my_binaries_0["camera_id1"], ""
         )
-        print(actual_model_output)
-        print('tibo')
-        print(model_inference_version)
+
         # Then
         assert actual_model_output.keys() == expected_model_output.keys()
         for object_id, output in actual_model_output.items():

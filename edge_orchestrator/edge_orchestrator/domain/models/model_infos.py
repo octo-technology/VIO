@@ -75,7 +75,9 @@ class ModelInfos:
             detection_classes = (
                 inventory.models[model_name].get("output").get("detection_classes")
             )
-            detection_metadata = inventory.models[model_name].get("output").get("detection_metadata")
+            detection_metadata = (
+                inventory.models[model_name].get("output").get("detection_metadata")
+            )
             model_type = inventory.models[model_name].get("model_type")
         except AttributeError:
             detection_boxes = None
