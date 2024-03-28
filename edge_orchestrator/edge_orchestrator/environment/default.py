@@ -21,7 +21,6 @@ from edge_orchestrator.infrastructure.model_forward.fake_model_forward import (
 
 
 class Default(Config):
-
     def __init__(self):
         self.metadata_storage = MemoryMetadataStorage()
         self.model_forward = FakeModelForward()
