@@ -30,9 +30,13 @@ def read_all(metadata_storage: MetadataStorage = Depends(get_metadata_storage)):
 
 @api_router.get("/items/{item_id}")
 def get_item(
-    item_id: str, metadata_storage: MetadataStorage = Depends(get_metadata_storage)
+    item_id: str,
+    metadata_storage: MetadataStorage = Depends(get_metadata_storage),
+    station_config: StationConfig = Depends(get_station_config)
 ):
-    return metadata_storage.get_item_metadata(item_id)
+    return metadata_storage.get_item_metadata(
+        item_id, station_config.active_config["name"]
+    )
 
 
 @api_router.get("/items/{item_id}/binaries/{camera_id}")
@@ -63,9 +67,13 @@ def get_item_binaries(
 
 @api_router.get("/items/{item_id}/state")
 def get_item_state(
-    item_id: str, metadata_storage: MetadataStorage = Depends(get_metadata_storage)
+    item_id: str,
+    metadata_storage: MetadataStorage = Depends(get_metadata_storage),
+    station_config: StationConfig = Depends(get_station_config),
 ):
-    return metadata_storage.get_item_state(item_id)
+    return metadata_storage.get_item_state(
+        item_id, station_config.active_config["name"]
+    )
 
 
 @api_router.get("/inventory")

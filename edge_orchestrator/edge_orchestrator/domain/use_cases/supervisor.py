@@ -59,7 +59,8 @@ class Supervisor:
         async def wrapper(item: Item, *args):
             item.state = args[0].value
             await fct(item)
-            self.metadata_storage.save_item_metadata(item)
+            active_config_name = self.station_config.active_config["name"]
+            self.metadata_storage.save_item_metadata(item, active_config_name)
 
         return wrapper
 
@@ -121,7 +122,8 @@ class Supervisor:
             logger.info(f"End of {supervisor_state.value}")
 
         item.state = SupervisorState.DONE.value
-        self.metadata_storage.save_item_metadata(item)
+        active_config_name = self.station_config.active_config["name"]
+        self.metadata_storage.save_item_metadata(item, active_config_name)
 
     async def get_predictions(self, item: Item) -> Dict[str, Dict]:
         predictions = {}
