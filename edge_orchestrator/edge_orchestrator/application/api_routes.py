@@ -32,7 +32,7 @@ def read_all(metadata_storage: MetadataStorage = Depends(get_metadata_storage)):
 def get_item(
     item_id: str,
     metadata_storage: MetadataStorage = Depends(get_metadata_storage),
-    station_config: StationConfig = Depends(get_station_config)
+    station_config: StationConfig = Depends(get_station_config),
 ):
     return metadata_storage.get_item_metadata(
         item_id, station_config.active_config["name"]

@@ -22,7 +22,8 @@ class TestTFServingDetectionWrapper:
             base_url=test_tflite_serving_base_url,
             class_names_path=TEST_DATA_FOLDER_PATH / "test_detection_labels",
         )
-
+        print("tibo")
+        print(test_tflite_serving_base_url)
         model_inference_version = ModelInfos(
             id="model1",
             depends_on=[],

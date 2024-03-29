@@ -43,7 +43,9 @@ class TestFileSystemMetadataStorage:
         metadata_storage.save_item_metadata(item, active_config_name)
 
         # Then
-        path_to_my_metadata = src_directory_path / "detection_model" / "my_item_id" / "metadata.json"
+        path_to_my_metadata = (
+            src_directory_path / "detection_model" / "my_item_id" / "metadata.json"
+        )
         assert path_to_my_metadata.is_file()
         actual_metadata = json.load(path_to_my_metadata.open("r"))
         assert actual_metadata == expected_response
@@ -56,12 +58,16 @@ class TestFileSystemMetadataStorage:
         active_config_name = "detection_model"
         expected_metadata = my_cameras_metadata_0
         (src_directory_path / active_config_name / "my_item_id").mkdir(parents=True)
-        with (src_directory_path / active_config_name / "my_item_id" / "metadata.json").open("w") as f:
+        with (
+            src_directory_path / active_config_name / "my_item_id" / "metadata.json"
+        ).open("w") as f:
             json.dump(expected_metadata, f)
         metadata_storage = FileSystemMetadataStorage(src_directory_path)
 
         # When
-        actual_metadata = metadata_storage.get_item_metadata("my_item_id", active_config_name)
+        actual_metadata = metadata_storage.get_item_metadata(
+            "my_item_id", active_config_name
+        )
 
         # Then
         assert actual_metadata == expected_metadata
@@ -83,7 +89,9 @@ class TestFileSystemMetadataStorage:
         )
         item.state = SupervisorState.DONE.value
         expected_state = item.state
-        with (src_directory_path / active_config_name / "my_item_id" / "metadata.json").open("w") as f:
+        with (
+            src_directory_path / active_config_name / "my_item_id" / "metadata.json"
+        ).open("w") as f:
             json.dump(item.get_metadata(), f)
         metadata_storage = FileSystemMetadataStorage(src_directory_path)
 
@@ -100,9 +108,13 @@ class TestFileSystemMetadataStorage:
         active_config_name = "detection_model"
         (src_directory_path / active_config_name / "my_item_id_1").mkdir(parents=True)
         (src_directory_path / active_config_name / "my_item_id_2").mkdir(parents=True)
-        with (src_directory_path / active_config_name / "my_item_id_1" / "metadata.json").open("w") as f1, (
+        with (
+            src_directory_path / active_config_name / "my_item_id_1" / "metadata.json"
+        ).open("w") as f1, (
             src_directory_path / active_config_name / "my_item_id_2" / "metadata.json"
-        ).open("w") as f2:
+        ).open(
+            "w"
+        ) as f2:
             json.dump(my_cameras_metadata_0, f1)
             json.dump(my_cameras_metadata_1, f2)
         metadata_storage = FileSystemMetadataStorage(src_directory_path)

@@ -35,5 +35,7 @@ class FileSystemMetadataStorage(MetadataStorage):
         return metadata
 
 
-def _get_filepath(folder: Path, item_id: str, active_config_name: str, filename: str = "metadata.json") -> Path:
+def _get_filepath(
+    folder: Path, item_id: str, active_config_name: str, filename: str = "metadata.json"
+) -> Path:
     return folder / active_config_name / item_id / filename
