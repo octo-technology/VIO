@@ -201,6 +201,9 @@ Here's a template of a config file.
 
 The comments are only here to guide you, you should delete them in your new json config.
 
+A "fake" camera will not capture image but pick a random .jpg or .png file in the folder pointed by the "input_images_folder
+" parameter, which will be located in edge_orchestrator/data/<folder_name>.
+
 ## Add a new model
 
 - All our models are in tflite format. In order to add an already trained model in the ```flite_serving ``` folder. 

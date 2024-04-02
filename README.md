@@ -83,10 +83,10 @@ launch the following actions:
 ![vio-architecture-stack](docs/images/edge_orchestrator-actions.png)
 
 ## 🛰️ Technology features
-- 🏠 Hosting possibilities :
-  - ☁️ Cloud possibilities with [Azure](https://portal.azure.com/#home) and [GCP](https://cloud.google.com/)
-  - 🛸 On the edge using raspberry 
-  - 🐳 On the edge locally with anaconda or [Docker](https://www.docker.com/)
+- 🏠 Hosting :
+  - ☁️ Hub : Cloud possibilities with [Azure](https://portal.azure.com/#home) and [GCP](https://cloud.google.com/)
+  - 🛸 Host : Using raspberries
+  - 🐳 Host : [Docker](https://www.docker.com/) or locally with anaconda
 - 👮 Fleet management :
   - 📦 Fleet integration/deployment with [Ansible](https://docs.ansible.com/ansible/latest/index.html)
   - 🕵️ Fleet supervision/observability with [Grafana](https://grafana.com/) & [Open-Telemetry](https://opentelemetry.io/docs/)
