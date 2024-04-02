@@ -71,7 +71,23 @@ Feature: The client requests the inventory available on the station
           "detection_classes": "detection_classes"
         },
         "objectness_threshold": 0.5
-      }
+      },
+    "yolo_coco_nano": {
+      "category": "object_detection",
+      "version": 1,
+      "class_names_path": "test_detection_labels_yolo",
+      "model_type": "yolo",
+      "output": {
+        "detection_boxes": "detection_boxes",
+        "detection_scores": "detection_scores",
+        "detection_classes": "detection_classes"
+      },
+      "image_resolution": [
+        320,
+        320
+      ],
+      "objectness_threshold": 0.3
+    }
     },
     "camera_rules": [
       "expected_label_rule",
