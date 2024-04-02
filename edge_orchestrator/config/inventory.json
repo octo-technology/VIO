@@ -19,7 +19,7 @@
         "detection_boxes": "detection_boxes",
         "detection_scores": "detection_scores",
         "detection_classes": "detection_classes",
-        "detection_metadatas": "severities"
+        "detection_metadata": "severities"
       },
       "image_resolution": [
         640,
@@ -70,6 +70,22 @@
       "category": "object_detection",
       "version": 1,
       "class_names_path": "face_labels.txt",
+      "output": {
+        "detection_boxes": "detection_boxes",
+        "detection_scores": "detection_scores",
+        "detection_classes": "detection_classes"
+      },
+      "image_resolution": [
+        320,
+        320
+      ],
+      "objectness_threshold": 0.3
+    },
+    "yolo_coco_nano": {
+      "category": "object_detection",
+      "version": 1,
+      "class_names_path": "coco_labels_yolo.txt",
+      "model_type": "yolo",
       "output": {
         "detection_boxes": "detection_boxes",
         "detection_scores": "detection_scores",

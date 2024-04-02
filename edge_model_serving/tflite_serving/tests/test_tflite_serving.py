@@ -1,5 +1,7 @@
 import os
 from pathlib import Path
+import io
+from PIL import Image
 
 import numpy as np
 from fastapi.testclient import TestClient
@@ -33,6 +35,7 @@ class TestTfliteServing:
             "mobilenet_ssd_v2_coco",
             "mobilenet_ssd_v2_face",
             "pin_detection",
+            "yolo_coco_nano",
         ]
 
         # When
@@ -99,3 +102,19 @@ class TestTfliteServing:
                 assert round(value, 6) == round(
                     expected_prediction["outputs"][0][index_value], 6
                 )
+
+    def test_serving_for_yolo_detection_model_runs(self):
+        # Given
+        model_url = f"{self.base_url}/models/yolo_coco_nano/versions/1:predict"
+        with open(self.image_test_path, "rb") as image_file:
+            image = Image.open(io.BytesIO(image_file.read()))
+            resized_image = image.resize((320, 320), Image.ANTIALIAS)
+            img = np.expand_dims(resized_image, axis=0).astype(np.uint8)
+
+        payload = {"inputs": img.tolist(), "model_type": "yolo"}
+
+        # When
+        actual_response = self.test_client.post(model_url, json=payload)
+
+        # Then
+        assert actual_response.status_code == 200

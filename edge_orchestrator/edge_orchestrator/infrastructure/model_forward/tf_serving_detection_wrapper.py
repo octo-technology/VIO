@@ -47,6 +47,7 @@ class TFServingDetectionWrapper(ModelForward):
             (model.image_resolution[0], model.image_resolution[1]), Image.ANTIALIAS
         )
         img = np.expand_dims(resized_image, axis=0).astype(np.uint8)
+        img = img[:, :, :, :3]
         return img
 
     def perform_post_processing(self, model: ModelInfos, json_outputs: dict) -> dict:
@@ -72,7 +73,10 @@ class TFServingDetectionWrapper(ModelForward):
             class_names = model.class_names
 
         if model.model_type == "yolo":
-            severities = json_outputs[model.detection_metadata][0]
+            metadata = [None] * len(boxes_coordinates)
+            if model.detection_metadata is not None:
+                metadata = json_outputs[model.detection_metadata][0]
+
             for box_index, box in enumerate(boxes_coordinates):
                 detected_class_id = int(detection_classes[box_index])
                 detected_class = class_names[detected_class_id]
@@ -86,13 +90,13 @@ class TFServingDetectionWrapper(ModelForward):
                 # crop_image expects the box coordinates to be (xmin, ymin, xmax, ymax)
                 box_coordinates_in_current_image = [x_min, y_min, x_max, y_max]
                 box_objectness_score_in_current_image = objectness_scores[box_index]
-                box_severity_in_current_image = severities[box_index]
+                box_metadata_in_current_image = metadata[box_index]
                 if box_objectness_score_in_current_image >= model.objectness_threshold:
                     inference_output[f"object_{box_index + 1}"] = {
                         "label": detected_class,
                         "location": box_coordinates_in_current_image,
                         "score": box_objectness_score_in_current_image,
-                        "severity": box_severity_in_current_image,
+                        "metadata": box_metadata_in_current_image,
                     }
 
         elif model.model_type == "Mobilenet":
@@ -100,9 +104,6 @@ class TFServingDetectionWrapper(ModelForward):
                 class_to_detect_position = np.where(
                     np.array(class_names) == class_to_detect
                 )
-
-                if class_to_detect_position[0].size == 0:
-                    continue
 
                 detection_class_positions = np.where(
                     np.array(detection_classes)
