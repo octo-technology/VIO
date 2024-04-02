@@ -5,9 +5,11 @@ from tests.conftest import TEST_DATA_FOLDER_PATH
 
 @fixture(scope="function")
 def my_binaries_0():
-    with (TEST_DATA_FOLDER_PATH / "item_0" / "camera_id1.jpg").open("br") as f1, (
-        TEST_DATA_FOLDER_PATH / "item_0" / "camera_id2.jpg"
-    ).open("br") as f2:
+    with (TEST_DATA_FOLDER_PATH / "test_config" / "item_0" / "camera_id1.jpg").open(
+        "br"
+    ) as f1, (TEST_DATA_FOLDER_PATH / "test_config" / "item_0" / "camera_id2.jpg").open(
+        "br"
+    ) as f2:
         picture_1 = f1.read()
         picture_2 = f2.read()
     return {"camera_id1": picture_1, "camera_id2": picture_2}
@@ -15,7 +17,9 @@ def my_binaries_0():
 
 @fixture(scope="function")
 def my_binaries_1():
-    with (TEST_DATA_FOLDER_PATH / "item_1" / "camera_id1.jpg").open("br") as f:
+    with (TEST_DATA_FOLDER_PATH / "test_config" / "item_1" / "camera_id1.jpg").open(
+        "br"
+    ) as f:
         picture = f.read()
     return {
         "camera_id1": picture,
@@ -27,9 +31,11 @@ def my_binaries_1():
 
 @fixture(scope="function")
 def my_binaries_2():
-    with (TEST_DATA_FOLDER_PATH / "item_2" / "camera_id1.jpg").open("br") as f1, (
-        TEST_DATA_FOLDER_PATH / "item_2" / "camera_id2.jpg"
-    ).open("br") as f2:
+    with (TEST_DATA_FOLDER_PATH / "test_config" / "item_2" / "camera_id1.jpg").open(
+        "br"
+    ) as f1, (TEST_DATA_FOLDER_PATH / "test_config" / "item_2" / "camera_id2.jpg").open(
+        "br"
+    ) as f2:
         picture_2 = f1.read()
         picture_3 = f2.read()
     return {"camera_id2": picture_2, "camera_id3": picture_3}

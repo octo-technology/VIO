@@ -28,10 +28,11 @@ class TestTFServingDetectionWrapper:
             depends_on=[],
             name="mobilenet_ssd_v2_coco",
             category="object_detection",
+            model_type="Mobilenet",
             version="1",
             camera_id="camera_id1",
-            boxes_coordinates="detection_boxes",
-            objectness_scores="detection_scores",
+            detection_boxes="detection_boxes",
+            detection_scores="detection_scores",
             number_of_boxes="num_detections",
             detection_classes="detection_classes",
             image_resolution=[300, 300],
@@ -45,7 +46,7 @@ class TestTFServingDetectionWrapper:
         expected_model_output = {
             "object_1": {
                 "label": "bear",
-                "location": [376, 4, 722, 339],
+                "location": [0.4008, 0.0124, 0.7688, 0.9982],
                 "score": 0.87890625,
             }
         }
@@ -81,10 +82,11 @@ class TestTFServingDetectionWrapper:
             depends_on=[],
             name="mobilenet_ssd_v2_coco",
             category="object_detection",
+            model_type="Mobilenet",
             version="1",
             camera_id="camera_id2",
-            boxes_coordinates="detection_boxes",
-            objectness_scores="detection_scores",
+            detection_boxes="detection_boxes",
+            detection_scores="detection_scores",
             number_of_boxes="num_detections",
             detection_classes="detection_classes",
             image_resolution=[300, 300],
@@ -98,12 +100,12 @@ class TestTFServingDetectionWrapper:
         expected_model_output = {
             "object_1": {
                 "label": "cat",
-                "location": [774, 132, 1377, 946],
+                "location": [0.4643, 0.1408, 0.8258, 1.0086],
                 "score": 0.93359375,
             },
             "object_2": {
                 "label": "dog",
-                "location": [225, 6, 796, 915],
+                "location": [0.1355, 0.0072, 0.4777, 0.9755],
                 "score": 0.91015625,
             },
         }

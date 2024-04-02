@@ -53,14 +53,15 @@ class TestJsonStationConfig:
                 depends_on=[],
                 name="mobilenet_v1_640x640",
                 category="object_detection",
+                model_type="Mobilenet",
                 class_names=None,
                 class_names_path=os.path.join(
                     TEST_DATA_FOLDER_PATH, "test_detection_labels"
                 ),
                 version="1",
                 camera_id="camera_id3",
-                boxes_coordinates="detection_boxes",
-                objectness_scores="detection_scores",
+                detection_boxes="detection_boxes",
+                detection_scores="detection_scores",
                 number_of_boxes="num_detections",
                 class_to_detect="foo",
                 detection_classes="detection_classes",

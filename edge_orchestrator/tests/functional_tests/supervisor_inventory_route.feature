@@ -49,10 +49,11 @@ Feature: The client requests the inventory available on the station
       "mobilenet_v1_640x640": {
         "category": "object_detection",
         "version": 1,
+        "model_type": "Mobilenet",
         "class_names_path": "test_detection_labels",
         "output": {
-          "boxes_coordinates": "detection_boxes",
-          "objectness_scores": "detection_scores",
+          "detection_boxes": "detection_boxes",
+          "detection_scores": "detection_scores",
           "number_of_boxes": "num_detections",
           "detection_classes": "detection_classes"
         },
@@ -61,15 +62,32 @@ Feature: The client requests the inventory available on the station
       "mobilenet_v1_640x640_detect_classif": {
         "category": "object_detection_with_classification",
         "version": 1,
+        "model_type": "Mobilenet",
         "class_names_path": "test_detection_labels",
         "output": {
-          "boxes_coordinates": "detection_boxes",
-          "objectness_scores": "detection_scores",
+          "detection_boxes": "detection_boxes",
+          "detection_scores": "detection_scores",
           "number_of_boxes": "num_detections",
           "detection_classes": "detection_classes"
         },
         "objectness_threshold": 0.5
-      }
+      },
+    "yolo_coco_nano": {
+      "category": "object_detection",
+      "version": 1,
+      "class_names_path": "test_detection_labels_yolo",
+      "model_type": "yolo",
+      "output": {
+        "detection_boxes": "detection_boxes",
+        "detection_scores": "detection_scores",
+        "detection_classes": "detection_classes"
+      },
+      "image_resolution": [
+        320,
+        320
+      ],
+      "objectness_threshold": 0.3
+    }
     },
     "camera_rules": [
       "expected_label_rule",

@@ -4,18 +4,13 @@ from edge_orchestrator.domain.models.business_rules.camera_rule import CameraRul
 from edge_orchestrator.domain.models.decision import Decision
 
 
-class ExpectedLabelRule(CameraRule):
-    def __init__(self, expected_label: str):
-        self.expected_label = expected_label
+class UnexpectedLabelRule(CameraRule):
+    def __init__(self, unexpected_label: str):
+        self.unexpected_label = unexpected_label
 
     def get_camera_decision(self, inference: Dict[str, Union[str, Dict]]) -> Decision:
-        if len(inference) == 0:
-            return Decision.KO
-
+        camera_decision = Decision.OK
         for inf in inference:
-            if inf in self.expected_label:
-                camera_decision = Decision.OK
-            else:
+            if inf in self.unexpected_label:
                 camera_decision = Decision.KO
-
         return camera_decision

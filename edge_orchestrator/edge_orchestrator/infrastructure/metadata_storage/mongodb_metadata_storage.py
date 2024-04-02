@@ -12,17 +12,17 @@ class MongoDbMetadataStorage(MetadataStorage):
         self.db = self.client["orchestratorDB"]
         self.items_metadata = self.db["items"]
 
-    def save_item_metadata(self, item: Item):
+    def save_item_metadata(self, item: Item, active_config_name: str = None):
         self.items_metadata.update_one(
             {"_id": item.id}, {"$set": item.get_metadata(False)}, upsert=True
         )
 
-    def get_item_metadata(self, item_id: str) -> Dict:
+    def get_item_metadata(self, item_id: str, active_config_name: str = None) -> Dict:
         mongo_output = self.items_metadata.find_one({"_id": item_id})
         mongo_output["id"] = mongo_output.pop("_id")
         return mongo_output
 
-    def get_item_state(self, item_id: str) -> str:
+    def get_item_state(self, item_id: str, active_config_name: str = None) -> str:
         item = self.items_metadata.find_one({"_id": item_id})
         return item["state"]
 

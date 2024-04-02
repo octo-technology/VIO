@@ -49,8 +49,8 @@ class TFServingDetectionClassificationWrapper(ModelForward):
         inference_output = {}
         class_names = []
         boxes_coordinates, objectness_scores, detection_classes = (
-            json_outputs[model.boxes_coordinates][0],
-            json_outputs[model.objectness_scores][0],
+            json_outputs[model.detection_boxes][0],
+            json_outputs[model.detection_scores][0],
             json_outputs[model.detection_classes][0],
         )
 
@@ -69,10 +69,10 @@ class TFServingDetectionClassificationWrapper(ModelForward):
             # Mobilenet returns the coordinates as (ymin, xmin, ymax, xmax)
             # Hence, the switch here
             box_coordinates_in_current_image = [
-                int(box_coordinates_in_current_image[1] * self.image_shape[1]),
-                int(box_coordinates_in_current_image[0] * self.image_shape[0]),
-                int(box_coordinates_in_current_image[3] * self.image_shape[1]),
-                int(box_coordinates_in_current_image[2] * self.image_shape[0]),
+                round(box_coordinates_in_current_image[1], 4),
+                round(box_coordinates_in_current_image[0], 4),
+                round(box_coordinates_in_current_image[3], 4),
+                round(box_coordinates_in_current_image[2], 4),
             ]
             box_objectness_score_in_current_image = objectness_scores[box_index]
 

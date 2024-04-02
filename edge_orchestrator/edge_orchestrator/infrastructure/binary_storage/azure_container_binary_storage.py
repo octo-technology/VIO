@@ -25,18 +25,20 @@ class AzureContainerBinaryStorage(BinaryStorage):
         )
         self._transport_params = {"client": self._blob_service_client}
 
-    def save_item_binaries(self, item: Item):
+    def save_item_binaries(self, item: Item, active_config_name: str):
         for camera_id, binary in item.binaries.items():
             with open(
-                f"azure://{self.azure_container_name}/{item.id}/{camera_id}.jpg",
+                f"azure://{self.azure_container_name}/{active_config_name}/{item.id}_{camera_id}.jpg",
                 "wb",
                 transport_params=self._transport_params,
             ) as f:
                 f.write(binary)
 
-    def get_item_binary(self, item_id: str, camera_id: str) -> bytes:
+    def get_item_binary(
+        self, item_id: str, camera_id: str, active_config_name: str
+    ) -> bytes:
         with open(
-            f"azure://{self.azure_container_name}/{item_id}/{camera_id}.jpg",
+            f"azure://{self.azure_container_name}/{active_config_name}/{item_id}_{camera_id}.jpg",
             "rb",
             transport_params=self._transport_params,
         ) as f:

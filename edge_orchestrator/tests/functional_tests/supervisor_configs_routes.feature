@@ -22,6 +22,7 @@ Feature: The client set an active configuration
     Then the active configuration is
     """
     {
+      "name": "test_name",
       "cameras": {
         "camera_id3": {
           "type": "fake",

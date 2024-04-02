@@ -1,6 +1,6 @@
 <template>
   <div class="mr-4 container">
-    <v-btn color="blue-grey" class="ma-2 white--text" @click="trigger">
+    <v-btn color="blue-grey" class="ma-2 white--text" @click="trigger" @call-trigger="trigger" id="trigger-button">
       Trigger
       <v-icon right dark>
         mdi-cloud-upload
@@ -23,27 +23,32 @@
       </p>
       <div v-for="(object, index) in predictedItem" :key="index">
         <h3>{{ object.cameraId }}</h3>
-        <div>
-          <img class="img-responsive" :src="object.image_url" />
+        <div class="inference-image">
+          <img class="img-responsive" ref="image" :src="object.image_url" @load="on_image_loaded" />
           <div v-for="(inference, model_id) in object.inferences" :key="model_id">
-            <div v-for="(result, object_id) in inference" :key="object_id">
-              <div v-if="'location' in result">
-                <Box
-                  :x-min="result['location'][0]"
-                  :y-min="result['location'][1]"
-                  :x-max="result['location'][2]"
-                  :y-max="result['location'][3]"
-                />
+            <div v-if="inference !== 'NO_DECISION'">
+              <div v-for="(result, object_id) in inference" :key="object_id">
+                <div v-if="'location' in result">
+                  <Box
+                    v-if="imgLoaded"
+                    v-bind:x-min="xoffset + result['location'][0] * width"
+                    v-bind:y-min="yoffset + result['location'][1] * height"
+                    v-bind:x-max="xoffset + result['location'][2] * width"
+                    v-bind:y-max="yoffset + result['location'][3] * height"
+                  />
+                </div>
               </div>
             </div>
           </div>
         </div>
         <div v-for="(inference, model_id) in object.inferences" :key="model_id">
           <h4>{{ model_id }}</h4>
-          <div v-for="(result, object_id) in inference" :key="object_id">
-            <span>{{ object_id }}</span>
-            <div v-for="(value, key) in result" :key="key">
-              <span>{{ key }}: {{ value }}</span>
+          <div v-if="inference !== 'NO_DECISION'">
+            <div v-for="(result, object_id) in inference" :key="object_id">
+              <span>{{ object_id }}</span>
+              <div v-for="(value, key) in result" :key="key">
+                <span>{{ key }}: {{ value }}</span>
+              </div>
             </div>
           </div>
         </div>
@@ -68,9 +73,23 @@ export default {
     itemId: null,
     statusList: null,
     state: undefined,
-    decision: undefined
+    decision: undefined,
+    imgLoaded: false,
+    height: null,
+    width: null,
+    xoffset: null,
+    yoffset: null
   }),
   methods: {
+    on_image_loaded() {
+      const img = this.$refs.image[0]
+      this.height = img.height
+      this.width = img.width
+      this.xoffset = img.offsetLeft
+      this.yoffset = img.offsetTop
+      console.log('Image size : ', this.height, this.width)
+      this.imgLoaded = true
+    },
     getColor(status) {
       if (this.statusList[status] > this.statusList[this.state]) {
         return 'red'
@@ -139,8 +158,7 @@ export default {
 <style lang="scss" scoped>
 .result {
   display: inline-block;
-  vertical-align: top;
-  padding: 0 5rem 0 5rem;
+  position: relative;
 }
 
 .container {

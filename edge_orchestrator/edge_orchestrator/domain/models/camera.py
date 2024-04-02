@@ -10,6 +10,9 @@ from edge_orchestrator.domain.models.business_rules.camera_business_rules.max_nb
 from edge_orchestrator.domain.models.business_rules.camera_business_rules.min_nb_objects_rule import (
     MinNbObjectsRule,
 )
+from edge_orchestrator.domain.models.business_rules.camera_business_rules.unexpected_label_rule import (
+    UnexpectedLabelRule,
+)
 from edge_orchestrator.domain.models.business_rules.camera_rule import CameraRule
 
 
@@ -20,6 +23,8 @@ def get_camera_rule(rule_name) -> Type[CameraRule]:
         return MinNbObjectsRule
     elif rule_name == "max_nb_objects_rule":
         return MaxNbObjectsRule
+    elif rule_name == "unexpected_label_rule":
+        return UnexpectedLabelRule
     else:
         raise NotImplementedError
 

@@ -50,6 +50,9 @@
             <v-btn v-if="!isStart" color="error" class="mr-4" @click="onStart">
               Start Camera
             </v-btn>
+            <v-btn v-if="isStart" color="error" class="mr-4" @click="onStartVid">
+              Start Video Capture
+            </v-btn>
           </div>
         </div>
       </div>
@@ -150,6 +153,18 @@ export default {
     onStart() {
       this.isStart = true
       this.$refs.webcam.start()
+    },
+    onStartVid() {
+      const execTime = 60 * 1000 // 1 minute
+      const intervalID = setInterval(this.captureTrigger, 2000)
+      setTimeout(() => {
+        clearTimeout(intervalID)
+      }, execTime)
+    },
+    captureTrigger() {
+      this.onCapture()
+      const button = document.getElementById('trigger-button')
+      button.click()
     },
     checkDeviceId(device) {
       return device.deviceId === this.deviceId

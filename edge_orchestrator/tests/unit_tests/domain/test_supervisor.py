@@ -56,6 +56,8 @@ class TestSupervisor:
         binary_data = b"fhfh"
 
         supervisor = Supervisor(model_forward=FakeModelForward())
+        supervisor.station_config.active_config_name = "test_config"
+
         inference_output = await supervisor.get_inference(
             {}, model_pipeline, binary_data, image_name="full_image"
         )
@@ -645,4 +647,5 @@ class TestSupervisor:
             for logger_name, logger_level, logger_msg in caplog.record_tuples
             if logger_name == "edge_orchestrator"
         ]
+
         assert expected_messages == actual_messages

@@ -3,6 +3,11 @@ from typing import Union, Any, List, Dict, AnyStr
 
 import numpy as np
 from fastapi import APIRouter, HTTPException, Request
+from tflite_serving.utils.yolo_postprocessing import (
+    yolo_extract_boxes_information,
+    non_max_suppression,
+    compute_severities,
+)
 
 JSONObject = Dict[AnyStr, Any]
 JSONArray = List[Any]
@@ -44,8 +49,13 @@ async def predict(
         input_data = payload[b"inputs"]
         input_array = np.array(input_data, dtype=input_dtype)
 
-        interpreter.set_tensor(input_details[0]["index"], input_array)
+        model_type = None
+        if b"model_type" in payload.keys():
+            model_type = payload[b"model_type"]
+            if model_type == "yolo":
+                input_array /= 255
 
+        interpreter.set_tensor(input_details[0]["index"], input_array)
         interpreter.invoke()
         # Process image and get predictions
         prediction = {}
@@ -67,8 +77,32 @@ async def predict(
                     "detection_boxes": boxes.tolist(),
                     "detection_classes": classes.tolist(),
                     "detection_scores": scores.tolist(),
+                    "severities": [None],
                 }
             }
+        elif model_type == "yolo":
+            outputs = interpreter.get_tensor(output_details[0]["index"])[0]
+
+            # Rotate the tensor
+            temp_output = []
+            for i in range(len(outputs[0]), 0, -1):
+                temp_output.append(list(map(lambda x: x[i - 1], outputs)))
+            outputs = np.array(temp_output)
+
+            # Extracting the boxes information to select only the most relevant ones
+            boxes, scores, class_ids = yolo_extract_boxes_information(outputs)
+            boxes, scores, class_ids = non_max_suppression(boxes, scores, class_ids)
+            severities = compute_severities(input_array[0], boxes)
+
+            prediction = {
+                "outputs": {
+                    "detection_boxes": [boxes],
+                    "detection_classes": [class_ids],
+                    "detection_scores": [scores],
+                    "severities": [severities],
+                }
+            }
+
         elif len(output_details) == 1:
             scores = interpreter.get_tensor(output_details[0]["index"])
             logging.warning(

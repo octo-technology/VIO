@@ -33,12 +33,12 @@ class Uploader:
 
         return wrapper
 
-    async def upload(self, item: Item):
+    async def upload(self, item: Item, active_config_name: str):
         tasks = OrderedDict()
 
         @self.save_item_metadata
         async def save_item_binaries(item: Item):
-            self.binary_storage.save_item_binaries(item)
+            self.binary_storage.save_item_binaries(item, active_config_name)
 
         async def set_error_state(item: Item, error_message: str):
             item.error = True

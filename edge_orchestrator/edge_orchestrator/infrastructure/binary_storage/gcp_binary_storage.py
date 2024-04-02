@@ -13,23 +13,29 @@ class GCPBinaryStorage(BinaryStorage):
         self.prefix = os.environ.get("EDGE_NAME", "")
         self.bucket = self.storage_client.get_bucket(os.getenv("GCP_BUCKET_NAME"))
 
-    def save_item_binaries(self, item: Item) -> None:
+    def save_item_binaries(self, item: Item, active_config_name: str) -> None:
         for camera_id, binary in item.binaries.items():
             blob = self.bucket.blob(
-                os.path.join(self.prefix, item.id, f"{camera_id}.jpg")
+                os.path.join(
+                    self.prefix, active_config_name, item.id, f"{camera_id}.jpg"
+                )
             )
             if blob is None:
                 raise Exception("An image should be upload")
             blob.upload_from_string(binary, content_type="image/jpg")
 
-    def get_item_binary(self, item_id: str, camera_id: str) -> bytes:
-        filename = os.path.join(self.prefix, item_id, f"{camera_id}.jpg")
+    def get_item_binary(
+        self, item_id: str, camera_id: str, active_config_name: str
+    ) -> bytes:
+        filename = os.path.join(
+            self.prefix, active_config_name, item_id, f"{camera_id}.jpg"
+        )
         blob = self.bucket.get_blob(filename)
         if blob is None:
             return None
         return blob.download_as_bytes()
 
-    def get_item_binaries(self, item_id: str) -> List[str]:
+    def get_item_binaries(self, item_id: str, active_config_name: str) -> List[str]:
         binaries = []
         for blob in self.bucket.list_blobs():
             if item_id in blob.name:

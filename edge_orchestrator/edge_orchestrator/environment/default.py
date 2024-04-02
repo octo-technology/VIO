@@ -9,14 +9,14 @@ from edge_orchestrator.infrastructure.metadata_storage.memory_metadata_storage i
     MemoryMetadataStorage,
 )
 
-from edge_orchestrator.infrastructure.model_forward.fake_model_forward import (
-    FakeModelForward,
-)
 from edge_orchestrator.infrastructure.station_config.json_station_config import (
     JsonStationConfig,
 )
 from edge_orchestrator.infrastructure.telemetry_sink.fake_telemetry_sink import (
     FakeTelemetrySink,
+)
+from edge_orchestrator.infrastructure.model_forward.fake_model_forward import (
+    FakeModelForward,
 )
 
 
