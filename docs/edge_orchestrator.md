@@ -207,7 +207,7 @@ The comments are only here to guide you, you should delete them in your new json
  `input_images_folder` | Used with `fake` cameras, is the path to the folder from which the pictures are taken.
  `position` | Used for metadata
  `exposition` | Used for metadata
- `models_graph` | Pipeline of models used during inference. Dictionary of models, containing their names, depencecies to other models and ...
+ `models_graph` | Pipeline of models used during inference. Dictionary of models, containing their names, depencecies to other models and all its possible parameters.
  `camera_rule` | Dictionary, key `name` containing the rule name and key `parameters` containing the selected rule's inputs 
 
 For the item rules, just inform the rule's `name` and `parameters` as a dictionary of the inputs.
@@ -265,6 +265,7 @@ Inside this folder should be the .tflite model and if needed a .txt file with th
  `version`  |  Model's version, used in the API link, should be 1 __mais c'est pas utilisé__
  `model_type`  |  Type of model used, is `Mobilenet` or `yolo`. Mobilenet models return boxes as [ymin, xmin, ymax, xmax] and Yolo as [x_center, y_center, width, height]
  `image_resolution` | List of ints corresponding to the x.y image size ingested by the model
+ `depends_on` | Used to design model pipelines, is a list of models' names
  `class_names` | List of the label names as a list of strings 
  `class_names_path` | Path to the labels files, the file should be located under the `edge_orchestrator/data` folder
  `class_to_detect` | List of label names that will be detected (for Mobilenet)
