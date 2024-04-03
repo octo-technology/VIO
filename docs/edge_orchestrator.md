@@ -201,8 +201,19 @@ Here's a template of a config file.
 
 The comments are only here to guide you, you should delete them in your new json config.
 
-A "fake" camera will not capture image but pick a random .jpg or .png file in the folder pointed by the "input_images_folder
-" parameter, which will be located in edge_orchestrator/data/<folder_name>.
+ Station config : Camera        | Description                                                                             
+-----------------|-----------------------------------------------------------------------
+ `type` | Camera type can be `fake`, `pi_camera` and `usb_camera`. `pi_camera` will be used for raspberry deployment. `usb_camera` is used when it is required to find a camera or webcam connected to the edge. A `fake` camera will not capture image but pick a random .jpg or .png file in the folder pointed by the "input_images_folder" parameter, which will be located in edge_orchestrator/data/<input_images_folder>.
+ `input_images_folder` | Used with `fake` cameras, is the path to the folder from which the pictures are taken.
+ `position` | Used for metadata
+ `exposition` | Used for metadata
+ `models_graph` | Pipeline of models used during inference. Dictionary of models, containing their names, depencecies to other models and ...
+ `camera_rule` | Dictionary, key `name` containing the rule name and key `parameters` containing the selected rule's inputs 
+
+For the item rules, just inform the rule's `name` and `parameters` as a dictionary of the inputs.
+
+
+
 
 ## Add a new model
 
@@ -248,6 +259,21 @@ Inside this folder should be the .tflite model and if needed a .txt file with th
     }
     ```
 
+ Model parameters        | Description                                                                             
+------------------------|---------------------------------------------------------------------------
+ `category` | Model's category, can be `object_detection`, `classification` or `object_detection_with_classification`
+ `version`  |  Model's version, used in the API link, should be 1 __mais c'est pas utilisé__
+ `model_type`  |  Type of model used, is `Mobilenet` or `yolo`. Mobilenet models return boxes as [ymin, xmin, ymax, xmax] and Yolo as [x_center, y_center, width, height]
+ `image_resolution` | List of ints corresponding to the x.y image size ingested by the model
+ `class_names` | List of the label names as a list of strings 
+ `class_names_path` | Path to the labels files, the file should be located under the `edge_orchestrator/data` folder
+ `class_to_detect` | List of label names that will be detected (for Mobilenet)
+ `number_of_boxes` | Useless ?
+ `output: detection_boxes` | For detection models, name which will be given to the predicted boxes
+ `output: detection_scores` | For detection models, name which will be given to the predicted scores
+ `output: detection_classes` | For detection models, name which will be given to the predicted classes
+ `output: detection_metadata` | For detection models, name which will be given to the predicted metadata
+ `objectness_threshold` | Score threshold under which an object won't be detected
 
 ## Add new camera rule
 In order to make a final decision i.e the item rule, we first need camera rules. Each camera gets a rule.
