@@ -5,28 +5,6 @@
     "usb_camera"
   ],
   "models": {
-    "rocket_burn_detection": {
-      "category": "object_detection",
-      "version": 1,
-      "model_type": "yolo",
-      "class_names": [
-        "Low_Severity",
-        "Medium_Severity",
-        "High_Severity",
-        "Max_Severity"
-      ],
-      "output": {
-        "detection_boxes": "detection_boxes",
-        "detection_scores": "detection_scores",
-        "detection_classes": "detection_classes",
-        "detection_metadata": "severities"
-      },
-      "image_resolution": [
-        640,
-        640
-      ],
-      "objectness_threshold": 0.3
-    },
     "marker_quality_control": {
       "category": "classification",
       "version": 1,
