@@ -31,11 +31,11 @@ jobs:
           POSTGRES_USER: test
           POSTGRES_PASSWORD: test
       edge_model_serving:
-        image: ghcr.io/octo-technology/vio/edge_model_serving:latest
+        image: ghcr.io/octo-technology/vio/edge_model_serving:main
         ports:
           - 8501:8501
       edge_tflite_serving:
-        image: ghcr.io/octo-technology/vio/edge_tflite_serving:latest
+        image: ghcr.io/octo-technology/vio/edge_tflite_serving:main
         ports:
           - 8502:8501
     env:
