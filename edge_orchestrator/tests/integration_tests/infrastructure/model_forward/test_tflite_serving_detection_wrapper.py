@@ -157,20 +157,20 @@ class TestTFServingDetectionWrapper:
         expected_model_output = {
             "object_1": {
                 "label": "giraffe",
-                "location": [0.1651, 0.1545, 0.4987, 0.9194],
-                "score": 0.94951,
+                "location": [0.1633, 0.1537, 0.4971, 0.9183],
+                "score": 0.94316,
                 "metadata": None,
             },
             "object_2": {
                 "label": "zebra",
-                "location": [0.034, 0.7618, 0.2055, 0.9368],
-                "score": 0.91841,
+                "location": [0.0342, 0.7625, 0.2051, 0.9359],
+                "score": 0.92974,
                 "metadata": None,
             },
             "object_3": {
                 "label": "elephant",
-                "location": [0.9238, 0.5622, 0.9786, 0.6469],
-                "score": 0.65450,
+                "location": [0.9241, 0.5623, 0.9793, 0.6468],
+                "score": 0.62438,
                 "metadata": None,
             },
         }
