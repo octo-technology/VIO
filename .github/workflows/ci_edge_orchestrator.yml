@@ -98,6 +98,14 @@ jobs:
           path: edge_orchestrator/reports/behave/*.xml
           reporter: java-junit
 
+      - name: Capture Docker Logs
+        if: ${{ always() }}
+        run: docker logs edge_tflite_serving > docker_logs_edge_tflite_serving.txt
+
+      - name: Display Docker Logs
+        if: ${{ always() }}
+        run: cat docker_logs_edge_tflite_serving.txt
+
   build_and_push_images:
     needs: lint_and_test_on_edge_orchestrator
     strategy:
