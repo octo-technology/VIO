@@ -100,7 +100,7 @@ jobs:
 
       - name: Capture Docker Logs
         if: ${{ always() }}
-        run: docker logs edge_tflite_serving > docker_logs_edge_tflite_serving.txt
+        run: docker logs ghcr.io/octo-technology/vio/edge_tflite_serving:main > docker_logs_edge_tflite_serving.txt
 
       - name: Display Docker Logs
         if: ${{ always() }}
