@@ -43,3 +43,8 @@ class GCPBinaryStorage(BinaryStorage):
                     binary = binary.name
                     binaries.append(binary)
         return binaries
+
+    def get_filepath(self, item_id: str, camera_id: str, active_config_name: str) -> str:
+        return os.path.join(
+            self.prefix, active_config_name, item_id, f"{camera_id}.jpg"
+        )
