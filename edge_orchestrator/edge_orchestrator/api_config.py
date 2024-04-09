@@ -83,3 +83,7 @@ def get_edge_station():
 
 def get_telemetry_sink():
     return config.get_telemetry_sink()
+
+
+def get_labelizer():
+    return config.get_labelizer()
