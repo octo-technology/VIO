@@ -142,7 +142,7 @@ EDGE_MODEL_SERVING = {
     "host_volume_path_suffix": "edge_model_serving",
 }
 ```
-You will need to change the `starting_log` parameter and remove the call to `check_image_presence_or_pull_it_from_registry` 
+You may need to change the `starting_log` parameter and remove the call to `check_image_presence_or_pull_it_from_registry` 
 from the `container.py` file.
 
 ```
