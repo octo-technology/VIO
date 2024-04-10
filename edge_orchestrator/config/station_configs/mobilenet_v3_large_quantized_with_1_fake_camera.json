@@ -1,21 +1,21 @@
 {
-    "name": "yolo_coco",
+    "name": "mobilenet_v3",
     "cameras": {
       "camera_id4": {
         "type": "fake",
-        "source": "person_dataset",
+        "source": "pizza_dataset",
         "position": "back",
         "exposition": 100,
         "models_graph": {
           "model_id4": {
-            "name": "yolo_coco_nano",
+            "name": "mobilenet_v3_large_quantized",
             "depends_on": []
           }
         },
         "camera_rule": {
           "name": "expected_label_rule",
           "parameters": {
-            "expected_label": ["person"]
+            "expected_label": ["pizza, pizza pie"]
           }
         }
       }
