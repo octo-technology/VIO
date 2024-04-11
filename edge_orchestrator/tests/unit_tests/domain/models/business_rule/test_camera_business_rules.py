@@ -26,8 +26,8 @@ class TestCameraBusinessRule:
             last_model_inferences = get_last_inference_by_camera(inferences[camera])
             labels_of_last_model_inferences = get_labels(last_model_inferences)
 
-            item_camera_rule = get_camera_rule(camera_rule_name)(
-                **camera_rule_parameters
+            item_camera_rule = get_camera_rule(
+                camera_rule_name, **camera_rule_parameters
             )
             camera_decision = item_camera_rule.get_camera_decision(
                 labels_of_last_model_inferences
@@ -71,8 +71,8 @@ class TestCameraBusinessRule:
             last_model_inferences = get_last_inference_by_camera(inferences[camera])
             labels_of_last_model_inferences = get_labels(last_model_inferences)
 
-            item_camera_rule = get_camera_rule(camera_rule_name)(
-                **camera_rule_parameters
+            item_camera_rule = get_camera_rule(
+                camera_rule_name, **camera_rule_parameters
             )
             camera_decision = item_camera_rule.get_camera_decision(
                 labels_of_last_model_inferences
@@ -143,7 +143,7 @@ class TestCameraBusinessRule:
 
         last_model_inferences = get_last_inference_by_camera(inferences[camera])
         labels_of_last_model_inferences = get_labels(last_model_inferences)
-        item_camera_rule = get_camera_rule(camera_rule_name)(**camera_rule_parameters)
+        item_camera_rule = get_camera_rule(camera_rule_name, **camera_rule_parameters)
         camera_decision = item_camera_rule.get_camera_decision(
             labels_of_last_model_inferences
         )
@@ -182,7 +182,7 @@ class TestCameraBusinessRule:
             "min_threshold": 1,
         }
 
-        item_camera_rule = get_camera_rule(camera_rule_name)(**camera_rule_parameters)
+        item_camera_rule = get_camera_rule(camera_rule_name, **camera_rule_parameters)
         camera_decision = item_camera_rule.get_camera_decision(inferences[camera])
 
         camera_decisions[f"{camera}"] = camera_decision.value
@@ -201,7 +201,7 @@ class TestCameraBusinessRule:
             "min_threshold": 1,
         }
 
-        item_camera_rule = get_camera_rule(camera_rule_name)(**camera_rule_parameters)
+        item_camera_rule = get_camera_rule(camera_rule_name, **camera_rule_parameters)
         camera_decision = item_camera_rule.get_camera_decision(inferences)
 
         # Then

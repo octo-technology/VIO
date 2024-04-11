@@ -230,10 +230,10 @@ class Supervisor:
                     return Decision.NO_DECISION
                 labels_of_last_model_inferences = get_labels(last_model_inferences)
 
-                item_camera_rule = get_camera_rule(camera_rule_name)(
-                    **camera_rule_parameters
+                camera_rule = get_camera_rule(
+                    camera_rule_name, **camera_rule_parameters
                 )
-                camera_decision = item_camera_rule.get_camera_decision(
+                camera_decision = camera_rule.get_camera_decision(
                     labels_of_last_model_inferences
                 )
 

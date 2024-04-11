@@ -27,17 +27,16 @@ class TFServingDetectionWrapper(ModelForward):
             f"{self.base_url}/v1/models/{model.name}/versions/{model.version}:predict"
         )
         logger.info(f"Get prediction at {model_url}")
+        inference_output = {}
         try:
             async with aiohttp.ClientSession() as session:
                 async with session.post(model_url, json=payload) as response:
                     json_data = await response.json()
-            logger.debug(f"response received {json_data}")
-            inference_output = self.perform_post_processing(model, json_data["outputs"])
-            return inference_output
+                    logger.debug(f"response received {json_data}")
+                    inference_output = self.perform_post_processing(model, json_data["outputs"])
         except Exception as e:
             logger.exception(e)
-            inference_output = "NO_DECISION"
-            return inference_output
+        return inference_output
 
     def perform_pre_processing(self, model: ModelInfos, binary: bytes):
         img = Image.open(io.BytesIO(binary))

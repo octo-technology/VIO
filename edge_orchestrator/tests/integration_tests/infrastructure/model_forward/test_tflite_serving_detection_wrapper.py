@@ -1,5 +1,3 @@
-import os
-
 import pytest
 
 from edge_orchestrator.domain.models.model_infos import ModelInfos
@@ -37,9 +35,7 @@ class TestTFServingDetectionWrapper:
             detection_classes="detection_classes",
             image_resolution=[300, 300],
             class_to_detect=["bear"],
-            class_names_path=os.path.join(
-                TEST_DATA_FOLDER_PATH, "test_detection_labels"
-            ),
+            class_names_path=TEST_DATA_FOLDER_PATH / "test_detection_labels",
             objectness_threshold=0.5,
         )
 
@@ -91,9 +87,7 @@ class TestTFServingDetectionWrapper:
             detection_classes="detection_classes",
             image_resolution=[300, 300],
             class_to_detect=["cat", "dog"],
-            class_names_path=os.path.join(
-                TEST_DATA_FOLDER_PATH, "test_detection_labels"
-            ),
+            class_names_path=TEST_DATA_FOLDER_PATH / "test_detection_labels",
             objectness_threshold=0.5,
         )
 
@@ -146,9 +140,7 @@ class TestTFServingDetectionWrapper:
             camera_id="camera_id4",
             detection_boxes="detection_boxes",
             detection_scores="detection_scores",
-            class_names_path=os.path.join(
-                TEST_DATA_FOLDER_PATH, "test_detection_labels_yolo"
-            ),
+            class_names_path=TEST_DATA_FOLDER_PATH / "test_detection_labels_yolo",
             detection_classes="detection_classes",
             image_resolution=[320, 320],
             objectness_threshold=0.5,
