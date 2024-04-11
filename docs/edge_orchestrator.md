@@ -201,6 +201,20 @@ Here's a template of a config file.
 
 The comments are only here to guide you, you should delete them in your new json config.
 
+ Station config : Camera        | Description                                                                             
+-----------------|-----------------------------------------------------------------------
+ `type` | Camera type can be `fake`, `pi_camera` and `usb_camera`. `pi_camera` will be used for raspberry deployment. `usb_camera` is used when it is required to find a camera or webcam connected to the edge. A `fake` camera will not capture image but pick a random .jpg or .png file in the folder pointed by the "input_images_folder" parameter, which will be located in edge_orchestrator/data/<input_images_folder>.
+ `input_images_folder` | Used with `fake` cameras, is the path to the folder from which the pictures are taken.
+ `position` | Used for metadata, purpose of saving the camera parameters in the future
+ `exposition` | Used for metadata, purpose of saving the camera parameters in the future
+ `models_graph` | Pipeline of models used during inference. Dictionary of models, containing their names, depencecies to other models and all its possible parameters.
+ `camera_rule` | Dictionary, key `name` containing the rule name and key `parameters` containing the selected rule's inputs 
+
+For the item rules, just inform the rule's `name` and `parameters` as a dictionary of the inputs.
+
+
+
+
 ## Add a new model
 
 - All our models are in tflite format. In order to add an already trained model in the ```flite_serving ``` folder. 
@@ -245,6 +259,21 @@ Inside this folder should be the .tflite model and if needed a .txt file with th
     }
     ```
 
+ Model parameters        | Description                                                                             
+------------------------|---------------------------------------------------------------------------
+ `category` | Model's category, can be `object_detection`, `classification` or `object_detection_with_classification`
+ `version`  |  Model's version, used in the API link, should be 1 __mais c'est pas utilisé__
+ `model_type`  |  Type of model used, is `Mobilenet` or `yolo`. Mobilenet models return boxes as [ymin, xmin, ymax, xmax] and Yolo as [x_center, y_center, width, height]
+ `image_resolution` | List of ints corresponding to the x.y image size ingested by the model
+ `depends_on` | Used to design model pipelines, is a list of models' names
+ `class_names` | List of the label names as a list of strings 
+ `class_names_path` | Path to the labels files, the file should be located under the `edge_orchestrator/data` folder
+ `class_to_detect` | List of label names that will be detected (for Mobilenet)
+ `output: detection_boxes` | For detection models, name which will be given to the predicted boxes
+ `output: detection_scores` | For detection models, name which will be given to the predicted scores
+ `output: detection_classes` | For detection models, name which will be given to the predicted classes
+ `output: detection_metadata` | For detection models, name which will be given to the predicted metadata
+ `objectness_threshold` | Score threshold under which an object won't be detected
 
 ## Add new camera rule
 In order to make a final decision i.e the item rule, we first need camera rules. Each camera gets a rule.
@@ -293,3 +322,132 @@ which get the good method from the name of the item rule in the station config f
 
 The camera and item rules are called in the edge_orchestrator method ```edge_orchestrator/edge_orchestrator/domain/use_cases/edge_orchestrator.py``` 
 in the ``` apply_business_rules ``` function.
+
+## Adapters description
+
+### Binary storage adapter
+
+When an image is captured by any camera, VIO is saving the image in a storage. The binary storage adapter is responsible
+this process. 4 binary storage systems are implemented in VIO:
+- File System Binary Storage: Saves the image in the filesystem under the `VIO/edge_orchestrator/data/storage` folder.
+- Memory Binary Storage: Saves the image in memory as a dictionary.
+- Azure Container Binary Storage: Saves the images in an Azure Blob Storage container.
+- GCP Binary Storage: Saves the images in a Google Cloud Storage bucket.
+
+Theses adapters are implemented in the `edge_orchestrator/edge_orchestrator/infrastructure/binary_storage` folder and 
+the base mock class is defined `edge_orchestrator/edge_orchestrator/domain/ports/binary_storage.py`.
+
+### Camera adapter
+
+The camera adapter is responsible for localizing the connected cameras and capturing images, 3 camera systems are 
+implemented in VIO and are chosen in the model configuration:
+- Fake Camera: Picks a random .jpg or .png file in the folder pointed by the "input_images_folder" parameter, 
+which will be located in edge_orchestrator/data/<input_images_folder>.
+- Pi Camera: Used for Raspberry deployments to capture the images.
+- USB Camera: Used when to find the connected cameras or webcams and capture images.
+
+Theses adapters are implemented in the `edge_orchestrator/edge_orchestrator/infrastructure/camera` folder and the base 
+Camera class from which the adapters inherit is defined in `edge_orchestrator/edge_orchestrator/domain/models/camera.py`.
+
+### Inventory adapter
+
+Used to store the configuration settings. One adapter is available for json configuration files.
+- Json Inventory: Reads the configuration from a json file.
+
+This adapter is implemented in the `edge_orchestrator/edge_orchestrator/infrastructure/inventory` folder and the base
+mock Inventory class is defined in `edge_orchestrator/edge_orchestrator/domain/ports/inventory.py`.
+
+### Metadata storage adapter
+
+When a task is done, the configuration and the results are saved in a metadata storage. An example of the stored data
+is shown below:
+
+<details><summary><b>Metadata json</b></summary><p>
+
+```
+"serial_number": "serial_number",
+    "category": "category",
+    "station_config": "yolo_coco_nano_with_1_fake_camera",
+    "cameras": {
+      "camera_id4": {
+        "brightness": null,
+        "exposition": 100,
+        "position": "back",
+        "source": "people_dataset"
+      }
+    },
+    "received_time": "2024-04-02 11:22:12",
+    "inferences": {
+      "camera_id4": {
+        "model_id4": {
+          "object_1": {
+            "label": "person",
+            "location": [
+              0.2731,
+              0.1679,
+              0.5308,
+              0.9438
+            ],
+            "score": 0.9098637104034424,
+            "metadata": null
+          },
+          "object_2": {
+            "label": "person",
+            "location": [
+              0.1099,
+              0.351,
+              0.2252,
+              0.6945
+            ],
+            "score": 0.559946596622467,
+            "metadata": null
+          }
+        }
+      }
+    },
+    "decision": "OK",
+    "state": "Done",
+    "error": null,
+    "id": "03a7adc7-59d5-4190-8160-4a71fd07cac5"
+```
+</p></details>
+
+4 metadata storage systems are implemented in VIO:
+- File System Metadata Storage: Saves the metadata in the filesystem under the `VIO/edge_orchestrator/edge_orchestrator/data/storage` folder.
+- Memory Metadata Storage: Saves the metadata in memory as a dictionary.
+- Azure Container Metadata Storage: Saves the metadata in an Azure Blob Storage container.
+- GCP Metadata Storage: Saves the metadata in a Google Cloud Bucket.
+- MongoDB Metadata Storage: Saves the metadata in a MongoDB database.
+
+Theses adapters are implemented in the `edge_orchestrator/edge_orchestrator/infrastructure/metadata_storage` folder and 
+the base mock class is defined `edge_orchestrator/edge_orchestrator/domain/ports/metadata_storage.py`.
+
+### Model forward adapter
+
+The model forward adapter is responsible for the model inference, it performs the inference with the required post and 
+pre-processing. 5 model forward systems are implemented in VIO:
+- Fake Model Forward: Returns a random inference result.
+- TF Serving Wrapper: Redirect the prediction task to one of the 3 following Tensor Flow model forwarders.
+- TF Serving Detection Wrapper: Performs the inference with a detection model.
+- TF Serving Classification Wrapper: Performs the inference with a classification model.
+- TF Serving Detection and Classification Wrapper: Performs the inference with a detection and classification model.
+
+Theses adapters are implemented in the `edge_orchestrator/edge_orchestrator/infrastructure/model_forward` folder and
+the base mock class is defined `edge_orchestrator/edge_orchestrator/domain/ports/model_forward.py`.
+
+### Station config adapter
+
+Used to store the station configuration settings. One adapter is available for json configuration files.
+
+This adapter is implemented in the `edge_orchestrator/edge_orchestrator/infrastructure/station_config` folder and the base
+mock StationConfig class is defined in `edge_orchestrator/edge_orchestrator/domain/ports/station_config.py`.
+
+### Telemetry sink adapter
+
+Sends the telemetry data to a sink for further processing and analysis. 3 telemetry sink systems are implemented in VIO:
+- Fake Telemetry Sink: Does nothing.
+- Azure Telemetry Sink: Sends the telemetry data to an Azure IoT Hub Module.
+- Postgresql Telemetry Sink: Sends the telemetry data to a Postgresql database.
+
+Theses adapters are implemented in the `edge_orchestrator/edge_orchestrator/infrastructure/telemetry_sink` folder and
+the base mock class is defined `edge_orchestrator/edge_orchestrator/domain/ports/telemetry_sink.py`.

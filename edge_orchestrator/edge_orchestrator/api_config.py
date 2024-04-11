@@ -28,6 +28,10 @@ def load_config():
         from edge_orchestrator.environment.docker import Docker
 
         configuration_class = Docker
+    elif configuration == "local":
+        from edge_orchestrator.environment.local import Local
+
+        configuration_class = Local
     elif configuration == "default":
         from edge_orchestrator.environment.default import Default
 
