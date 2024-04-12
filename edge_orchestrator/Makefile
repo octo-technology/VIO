@@ -1,3 +1,7 @@
+ifneq (,$(wildcard .env))
+	include .env
+endif
+
 SHELL := /bin/bash
 .SHELLFLAGS = -ec
 .ONESHELL:
@@ -5,8 +9,6 @@ SHELL := /bin/bash
 
 .EXPORT_ALL_VARIABLES:
 .DEFAULT_GOAL: help
-
-include .env
 
 REPO_DIRECTORY:=$(shell pwd)
 PYTHONPATH:=${PYTHONPATH}:${REPO_DIRECTORY}
