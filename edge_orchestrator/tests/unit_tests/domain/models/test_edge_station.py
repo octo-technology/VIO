@@ -36,9 +36,7 @@ class TestEdgeStation:
             edge_station.capture()
         assert str(error.value) == "'EdgeStation' object has no attribute 'cameras'"
 
-    @freeze_time(
-        lambda: dt.datetime(year=2021, month=5, day=19, hour=15, minute=0, second=0)
-    )
+    @freeze_time(lambda: dt.datetime(year=2021, month=5, day=19, hour=15, minute=0, second=0))
     @patch.object(FakeCamera, "capture")
     @patch("edge_orchestrator.domain.models.item.generate_id")
     def test_capture_should_instantiate_item_with_1_binary(

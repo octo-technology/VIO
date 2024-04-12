@@ -38,11 +38,12 @@ requires-python = ">=3.8.10"
 [project.optional-dependencies]
 dev = [
     "alembic==1.11.1",
-    "autopep8==2.0.1",
+    "autoflake==2.3.1",
     "behave @ git+https://github.com/behave/behave@v1.2.7.dev3#egg=behave[toml]",
     "black==23.7.0",
     "flake8==6.0.0",
     "freezegun==1.2.2",
+    "isort==5.13.2",
     "pytest==7.2.1",
     "pytest-asyncio==0.20.3",
     "pytest-cov==4.0.0",
@@ -67,6 +68,14 @@ junit = true
 junit_directory = "reports/behave/"
 logging_clear_handlers = true
 paths = ["tests/functional_tests"]
+
+[tool.black]
+line-length = 120
+target-version = ["py38", "py39", "py310", "py311"]
+verbose = true
+
+[tool.isort]
+profile = "black"
 
 [tool.pytest.ini_options]
 min_version = "6.0"

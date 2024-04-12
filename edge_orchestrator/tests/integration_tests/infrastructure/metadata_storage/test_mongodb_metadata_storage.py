@@ -4,9 +4,7 @@ from edge_orchestrator.infrastructure.metadata_storage.mongodb_metadata_storage 
 
 
 class TestMongoDbItemStorage:
-    def test_save_item_metadata_should_write_item_metadata_in_mongo_db(
-        self, test_mongo_db_uri, my_item_0
-    ):
+    def test_save_item_metadata_should_write_item_metadata_in_mongo_db(self, test_mongo_db_uri, my_item_0):
         # Given
         metadata_storage = MongoDbMetadataStorage(mongodb_uri=test_mongo_db_uri)
         my_item_0.id = "d1adfc08-cb98-46d6-ae9c-b07c5d16a2ec"
@@ -42,9 +40,7 @@ class TestMongoDbItemStorage:
             }
         ]
 
-    def test_get_item_metadata_should_return_requested_item_metadata(
-        self, test_mongo_db_uri, my_item_0
-    ):
+    def test_get_item_metadata_should_return_requested_item_metadata(self, test_mongo_db_uri, my_item_0):
         # Given
         my_item_0.id = "d1adfc08-cb98-46d6-ae9c-b07c5d16a2ec"
         metadata_storage = MongoDbMetadataStorage(mongodb_uri=test_mongo_db_uri)
@@ -72,9 +68,7 @@ class TestMongoDbItemStorage:
             "error": None,
         }
 
-    def test_get_all_items_metadata_should_return_all_items(
-        self, test_mongo_db_uri, my_item_0, my_item_2
-    ):
+    def test_get_all_items_metadata_should_return_all_items(self, test_mongo_db_uri, my_item_0, my_item_2):
         # Given
         my_item_0.id = "d1adfc08-cb98-46d6-ae9c-b07c5d16a2ec"
         my_item_2.id = "af6b4922-8e4a-4dbc-ac9b-b5fd56ceaf25"

@@ -11,9 +11,7 @@ class TestClassifModelHelper:
     ):
         # Given
         model_forwarder = TFServingClassificationWrapper(base_url="")
-        binary = open(
-            TEST_DATA_FOLDER_PATH / "mask_images" / "person_with_mask.jpg", "br"
-        ).read()
+        binary = open(TEST_DATA_FOLDER_PATH / "mask_images" / "person_with_mask.jpg", "br").read()
         expected_shape = (1, 224, 224, 3)
 
         model = ModelInfos(

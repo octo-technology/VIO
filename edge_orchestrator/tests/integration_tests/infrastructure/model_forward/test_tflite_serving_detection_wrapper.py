@@ -1,5 +1,3 @@
-import os
-
 import pytest
 
 from edge_orchestrator.domain.models.model_infos import ModelInfos
@@ -11,12 +9,8 @@ from tests.conftest import TEST_DATA_FOLDER_PATH
 
 @pytest.mark.asyncio
 class TestTFServingDetectionWrapper:
-    @pytest.mark.parametrize(
-        "setup_test_tflite_serving", ["mobilenet_ssd_v2_coco"], indirect=True
-    )
-    async def test_perform_inference_should_detect_a_bear(
-        self, test_tflite_serving_base_url, my_binaries_0
-    ):
+    @pytest.mark.parametrize("setup_test_tflite_serving", ["mobilenet_ssd_v2_coco"], indirect=True)
+    async def test_perform_inference_should_detect_a_bear(self, test_tflite_serving_base_url, my_binaries_0):
         # Given
         tf_serving_model_forwarder = TFServingDetectionWrapper(
             base_url=test_tflite_serving_base_url,
@@ -37,9 +31,7 @@ class TestTFServingDetectionWrapper:
             detection_classes="detection_classes",
             image_resolution=[300, 300],
             class_to_detect=["bear"],
-            class_names_path=os.path.join(
-                TEST_DATA_FOLDER_PATH, "test_detection_labels"
-            ),
+            class_names_path=TEST_DATA_FOLDER_PATH / "test_detection_labels",
             objectness_threshold=0.5,
         )
 
@@ -61,16 +53,10 @@ class TestTFServingDetectionWrapper:
         for object_id, output in actual_model_output.items():
             assert output["label"] == expected_model_output[object_id]["label"]
             assert output["location"] == expected_model_output[object_id]["location"]
-            assert round(output["score"], 5) == round(
-                expected_model_output[object_id]["score"], 5
-            )
+            assert round(output["score"], 5) == round(expected_model_output[object_id]["score"], 5)
 
-    @pytest.mark.parametrize(
-        "setup_test_tflite_serving", ["mobilenet_ssd_v2_coco"], indirect=True
-    )
-    async def test_perform_inference_should_detect_a_cat_and_a_dog(
-        self, test_tflite_serving_base_url, my_binaries_0
-    ):
+    @pytest.mark.parametrize("setup_test_tflite_serving", ["mobilenet_ssd_v2_coco"], indirect=True)
+    async def test_perform_inference_should_detect_a_cat_and_a_dog(self, test_tflite_serving_base_url, my_binaries_0):
         # Given
         tf_serving_model_forwarder = TFServingDetectionWrapper(
             base_url=test_tflite_serving_base_url,
@@ -91,9 +77,7 @@ class TestTFServingDetectionWrapper:
             detection_classes="detection_classes",
             image_resolution=[300, 300],
             class_to_detect=["cat", "dog"],
-            class_names_path=os.path.join(
-                TEST_DATA_FOLDER_PATH, "test_detection_labels"
-            ),
+            class_names_path=TEST_DATA_FOLDER_PATH / "test_detection_labels",
             objectness_threshold=0.5,
         )
 
@@ -120,13 +104,9 @@ class TestTFServingDetectionWrapper:
         for object_id, output in actual_model_output.items():
             assert output["label"] == expected_model_output[object_id]["label"]
             assert output["location"] == expected_model_output[object_id]["location"]
-            assert round(output["score"], 5) == round(
-                expected_model_output[object_id]["score"], 5
-            )
+            assert round(output["score"], 5) == round(expected_model_output[object_id]["score"], 5)
 
-    @pytest.mark.parametrize(
-        "setup_test_tflite_serving", ["yolo_coco_nano"], indirect=True
-    )
+    @pytest.mark.parametrize("setup_test_tflite_serving", ["yolo_coco_nano"], indirect=True)
     async def test_perform_with_yolo_inference_should_detect_a_giraffe_zebra_and_elephant(
         self, test_tflite_serving_base_url, my_binaries_2
     ):
@@ -146,9 +126,7 @@ class TestTFServingDetectionWrapper:
             camera_id="camera_id4",
             detection_boxes="detection_boxes",
             detection_scores="detection_scores",
-            class_names_path=os.path.join(
-                TEST_DATA_FOLDER_PATH, "test_detection_labels_yolo"
-            ),
+            class_names_path=TEST_DATA_FOLDER_PATH / "test_detection_labels_yolo",
             detection_classes="detection_classes",
             image_resolution=[320, 320],
             objectness_threshold=0.5,
@@ -185,6 +163,4 @@ class TestTFServingDetectionWrapper:
         for object_id, output in actual_model_output.items():
             assert output["label"] == expected_model_output[object_id]["label"]
             assert output["location"] == expected_model_output[object_id]["location"]
-            assert round(output["score"], 5) == round(
-                expected_model_output[object_id]["score"], 5
-            )
+            assert round(output["score"], 5) == round(expected_model_output[object_id]["score"], 5)
