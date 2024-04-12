@@ -13,9 +13,7 @@ class MongoDbMetadataStorage(MetadataStorage):
         self.items_metadata = self.db["items"]
 
     def save_item_metadata(self, item: Item, active_config_name: str = None):
-        self.items_metadata.update_one(
-            {"_id": item.id}, {"$set": item.get_metadata(False)}, upsert=True
-        )
+        self.items_metadata.update_one({"_id": item.id}, {"$set": item.get_metadata(False)}, upsert=True)
 
     def get_item_metadata(self, item_id: str, active_config_name: str = None) -> Dict:
         mongo_output = self.items_metadata.find_one({"_id": item_id})

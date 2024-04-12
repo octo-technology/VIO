@@ -9,11 +9,7 @@ class MinThresholdOKRatioRule(ItemRule):
         self.min_threshold = min_threshold
 
     def get_item_decision(self, cameras_decisions: Dict[str, str]) -> Decision:
-        ok_decisions = [
-            decision
-            for decision in cameras_decisions.values()
-            if decision == Decision.OK.value
-        ]
+        ok_decisions = [decision for decision in cameras_decisions.values() if decision == Decision.OK.value]
 
         ratio_ok = len(ok_decisions) / len(cameras_decisions)
 

@@ -17,8 +17,7 @@ def load_config():
     ]
     if configuration not in available_configurations:
         raise ValueError(
-            f"Unknown configuration '{configuration}'. "
-            f"Valid configurations are {available_configurations}."
+            f"Unknown configuration '{configuration}'. " f"Valid configurations are {available_configurations}."
         )
     elif configuration == "test":
         from edge_orchestrator.environment.test import Test

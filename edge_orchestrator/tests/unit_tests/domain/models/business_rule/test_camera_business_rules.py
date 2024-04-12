@@ -1,9 +1,7 @@
 from edge_orchestrator.domain.models.business_rule.camera_rule.camera_rule_factory import (
     get_camera_rule,
 )
-from edge_orchestrator.domain.models.camera import (
-    get_last_inference_by_camera,
-)
+from edge_orchestrator.domain.models.camera import get_last_inference_by_camera
 from edge_orchestrator.domain.models.decision import Decision
 from edge_orchestrator.domain.use_cases.supervisor import get_labels
 
@@ -11,11 +9,7 @@ from edge_orchestrator.domain.use_cases.supervisor import get_labels
 class TestCameraBusinessRule:
     def test_camera_decision_should_return_KO_when_expected_label_is_OK(self):
         # Given
-        inferences = {
-            "camera_id3": {
-                "model_id4": {"full_image": {"label": "KO", "probability": 0.999930501}}
-            }
-        }
+        inferences = {"camera_id3": {"model_id4": {"full_image": {"label": "KO", "probability": 0.999930501}}}}
 
         # When
         camera_decisions = {}
@@ -26,12 +20,8 @@ class TestCameraBusinessRule:
             last_model_inferences = get_last_inference_by_camera(inferences[camera])
             labels_of_last_model_inferences = get_labels(last_model_inferences)
 
-            item_camera_rule = get_camera_rule(
-                camera_rule_name, **camera_rule_parameters
-            )
-            camera_decision = item_camera_rule.get_camera_decision(
-                labels_of_last_model_inferences
-            )
+            item_camera_rule = get_camera_rule(camera_rule_name, **camera_rule_parameters)
+            camera_decision = item_camera_rule.get_camera_decision(labels_of_last_model_inferences)
 
             camera_decisions[f"{camera}"] = camera_decision.value
 
@@ -71,12 +61,8 @@ class TestCameraBusinessRule:
             last_model_inferences = get_last_inference_by_camera(inferences[camera])
             labels_of_last_model_inferences = get_labels(last_model_inferences)
 
-            item_camera_rule = get_camera_rule(
-                camera_rule_name, **camera_rule_parameters
-            )
-            camera_decision = item_camera_rule.get_camera_decision(
-                labels_of_last_model_inferences
-            )
+            item_camera_rule = get_camera_rule(camera_rule_name, **camera_rule_parameters)
+            camera_decision = item_camera_rule.get_camera_decision(labels_of_last_model_inferences)
 
             camera_decisions[f"{camera}"] = camera_decision.value
 
@@ -144,9 +130,7 @@ class TestCameraBusinessRule:
         last_model_inferences = get_last_inference_by_camera(inferences[camera])
         labels_of_last_model_inferences = get_labels(last_model_inferences)
         item_camera_rule = get_camera_rule(camera_rule_name, **camera_rule_parameters)
-        camera_decision = item_camera_rule.get_camera_decision(
-            labels_of_last_model_inferences
-        )
+        camera_decision = item_camera_rule.get_camera_decision(labels_of_last_model_inferences)
 
         # Then
         assert camera_decision.value == "OK"

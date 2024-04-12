@@ -1,8 +1,4 @@
-from typing import Type
-
-from edge_orchestrator.domain.models.business_rule.item_rule.item_rule import (
-    ItemRule,
-)
+from edge_orchestrator.domain.models.business_rule.item_rule.item_rule import ItemRule
 from edge_orchestrator.domain.models.business_rule.item_rule.min_threshold_ko_rule import (
     MinThresholdKORule,
 )
@@ -16,8 +12,9 @@ AVAILABLE_ITEM_RULES = {
 }
 
 
-def get_item_rule(rule_name: str) -> Type[ItemRule]:
+def get_item_rule(rule_name: str, **item_rule_parameters) -> ItemRule:
     try:
-        return AVAILABLE_ITEM_RULES[rule_name]
+        item_rule = AVAILABLE_ITEM_RULES[rule_name]
+        return item_rule(**item_rule_parameters)
     except KeyError as error:
         raise NotImplementedError(f"Unknown item rule name: {rule_name}") from error

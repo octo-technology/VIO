@@ -9,11 +9,7 @@ class MinThresholdKORule(ItemRule):
         self.threshold = threshold
 
     def get_item_decision(self, cameras_decisions: Dict[str, str]) -> Decision:
-        ko_decisions = [
-            decision
-            for decision in cameras_decisions.values()
-            if decision == Decision.KO.value
-        ]
+        ko_decisions = [decision for decision in cameras_decisions.values() if decision == Decision.KO.value]
 
         if len(cameras_decisions) == 0:
             return Decision.NO_DECISION

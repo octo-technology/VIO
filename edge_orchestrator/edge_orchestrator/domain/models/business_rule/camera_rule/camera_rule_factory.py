@@ -22,9 +22,9 @@ AVAILABLE_CAMERA_RULES = {
 }
 
 
-def get_camera_rule(rule_name: str, **kwargs) -> CameraRule:
+def get_camera_rule(rule_name: str, **camera_rule_parameters) -> CameraRule:
     try:
         camera_rule = AVAILABLE_CAMERA_RULES[rule_name]
-        return camera_rule(**kwargs)
+        return camera_rule(**camera_rule_parameters)
     except KeyError as error:
         raise NotImplementedError(f"Unknown camera rule name: {rule_name}") from error
