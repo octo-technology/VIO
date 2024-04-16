@@ -1,6 +1,6 @@
 import datetime as dt
 import uuid
-from typing import Dict, Type
+from typing import Dict, Type, List
 
 from edge_orchestrator.domain.models.business_rules.item_business_rule.item_threshold_ratio_rule import (
     ThresholdRatioRule,
@@ -32,6 +32,7 @@ class Item:
         category: str,
         cameras_metadata: Dict[str, Dict],
         binaries: Dict[str, bytes],
+        dimensions: Dict[str, List[int]],
     ):
         self.id = generate_id()
         self.received_time = dt.datetime.now()
@@ -39,6 +40,7 @@ class Item:
         self.category = category
         self.cameras_metadata = cameras_metadata
         self.binaries = binaries
+        self.dimensions = dimensions
 
         self.inferences = {}
         self.decision = {}
@@ -49,7 +51,7 @@ class Item:
 
     @classmethod
     def from_nothing(cls):
-        return Item("serial_number", "category", {}, {})
+        return Item("serial_number", "category", {}, {}, {})
 
     def get_metadata(self, with_id: bool = True) -> Dict:
         metadata = {
@@ -58,6 +60,7 @@ class Item:
             "station_config": self.station_config,
             "cameras": self.cameras_metadata,
             "received_time": self.received_time.strftime("%Y-%m-%d %H:%M:%S"),
+            "dimensions": self.dimensions,
             "inferences": self.inferences,
             "decision": self.decision,
             "state": self.state,
@@ -75,6 +78,7 @@ class Item:
             and self.category == other.category
             and self.cameras_metadata == other.cameras_metadata
             and self.binaries == other.binaries
+            and self.dimensions == other.dimensions
             and self.inferences == other.inferences
             and self.decision == other.decision
             and self.state == other.state

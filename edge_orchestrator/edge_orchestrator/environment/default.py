@@ -18,9 +18,6 @@ from edge_orchestrator.infrastructure.telemetry_sink.fake_telemetry_sink import 
 from edge_orchestrator.infrastructure.model_forward.fake_model_forward import (
     FakeModelForward,
 )
-from edge_orchestrator.infrastructure.labelizer.labelbox_labelizer import (
-    LabelboxLabelizer
-)
 
 
 class Default(Config):
@@ -38,4 +35,3 @@ class Default(Config):
         )
         self.edge_station = EdgeStation(self.station_config)
         self.telemetry_sink = FakeTelemetrySink()
-        self.labelizer = LabelboxLabelizer()

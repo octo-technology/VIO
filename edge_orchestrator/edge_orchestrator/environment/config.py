@@ -7,7 +7,6 @@ from edge_orchestrator.domain.ports.metadata_storage import MetadataStorage
 from edge_orchestrator.domain.ports.model_forward import ModelForward
 from edge_orchestrator.domain.ports.station_config import StationConfig
 from edge_orchestrator.domain.ports.telemetry_sink import TelemetrySink
-from edge_orchestrator.domain.ports.labelizer import Labelizer
 
 
 class Config:
@@ -20,7 +19,6 @@ class Config:
     station_config: StationConfig = None
     edge_station: EdgeStation = None
     telemetry_sink: TelemetrySink = None
-    labelizer: Labelizer = None
 
     def get_metadata_storage(self):
         return self.metadata_storage
@@ -42,6 +40,3 @@ class Config:
 
     def get_telemetry_sink(self):
         return self.telemetry_sink
-
-    def get_labelizer(self):
-        return self.labelizer
