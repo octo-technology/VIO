@@ -1,12 +1,10 @@
-import os
+from hub_labelizer.application.server import server
 import sys
 import uvicorn
 from dotenv import load_dotenv
 
 sys.path.append(f"{__file__}/VIO/edge_orchestrator")
 load_dotenv()
-
-from hub_labelizer.application.server import server
 
 
 def main():

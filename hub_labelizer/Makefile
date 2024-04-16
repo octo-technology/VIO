@@ -23,7 +23,7 @@ lint:
 
 .PHONY: autopep8  ## 🐍 Automatically formats Python code to conform to the PEP 8 style guide
 autopep8:
-	autopep8 --in-place --aggressive -r edge_orchestrator
+	autopep8 --in-place --aggressive -r hub_labelizer
 
 .PHONY: conda_env  ## 🐍 Create a Python conda environment
 conda_env:

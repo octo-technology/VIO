@@ -1,11 +1,8 @@
 import os
 
-from hub_labelizer import logger
 from hub_labelizer.environment.config import Config
 
-from hub_labelizer.infrastructure.labelizer.labelbox_labelizer import (
-    LabelboxLabelizer
-)
+from hub_labelizer.infrastructure.labelizer.labelbox_labelizer import LabelboxLabelizer
 
 
 class Default(Config):

@@ -7,10 +7,7 @@ def load_config():
     configuration = os.environ.get("API_CONFIG", "default")
     logger.info(f"App running with configuration: {configuration}")
 
-    available_configurations = [
-        "default",
-        "docker"
-    ]
+    available_configurations = ["default", "docker"]
 
     if configuration not in available_configurations:
         raise ValueError(

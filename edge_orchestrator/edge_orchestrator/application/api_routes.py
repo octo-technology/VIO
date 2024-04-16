@@ -107,14 +107,17 @@ def set_station_config(
 
 
 @api_router.get("/binary_path/{item_id}/{camera_id}/{config_name}")
-def get_binary_storage(item_id: str,
-                       camera_id: str,
-                       config_name: str,
-                       binary_storage: BinaryStorage = Depends(get_binary_storage)):
+def get_binary_storage(
+    item_id: str,
+    camera_id: str,
+    config_name: str,
+    binary_storage: BinaryStorage = Depends(get_binary_storage),
+):
     return binary_storage.get_item_binary_filepath(item_id, camera_id, config_name)
 
 
 @api_router.get("/metadata_storage")
-def get_metadata_storage(metadata_storage: MetadataStorage = Depends(get_metadata_storage)):
+def get_metadata_storage(
+    metadata_storage: MetadataStorage = Depends(get_metadata_storage),
+):
     return metadata_storage.get_all_items_metadata()
-
