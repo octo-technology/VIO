@@ -1,3 +1,7 @@
+ifneq (,$(wildcard .env))
+	include .env
+endif
+
 SHELL := /bin/bash
 .SHELLFLAGS = -ec
 .ONESHELL:
@@ -15,15 +19,17 @@ help:
 	grep -E '^\.PHONY: [a-zA-Z0-9_-]+ .*?## .*$$' $(MAKEFILE_LIST) | \
 		awk 'BEGIN {FS = "(: |##)"}; {printf "\033[36m%-30s\033[0m %s\n", $$2, $$3}'
 
+.PHONY: linting  ## 🐍 Lint Python files to conform to the PEP 8 style guide
+linting:
+	black .
+	isort . --gitignore
+	autoflake -i --remove-all-unused-imports -r --ignore-init-module-imports . --exclude .venv
 
-.PHONY: lint  ## 🐍 Lint Python files to conform to the PEP 8 style guide
+.PHONY: lint  ## 🐍 Check linting Python files to conform to the PEP 8 style guide
 lint:
-	flake8 --count --show-source --statistics
 	black . --check
-
-.PHONY: autopep8  ## 🐍 Automatically formats Python code to conform to the PEP 8 style guide
-autopep8:
-	autopep8 --in-place --aggressive -r edge_orchestrator
+	isort . --gitignore --check
+	flake8 --count --show-source --statistics
 
 .PHONY: conda_env  ## 🐍 Create a Python conda environment
 conda_env:

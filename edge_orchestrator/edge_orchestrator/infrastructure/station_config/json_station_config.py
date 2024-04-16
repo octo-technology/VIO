@@ -16,16 +16,12 @@ from edge_orchestrator.infrastructure.camera.usb_camera import UsbCamera
 
 
 class JsonStationConfig(StationConfig):
-    def __init__(
-        self, station_configs_folder: Path, inventory: Inventory, data_folder: Path
-    ):
+    def __init__(self, station_configs_folder: Path, inventory: Inventory, data_folder: Path):
         self.inventory = inventory
         self.data_folder = data_folder
 
         if not station_configs_folder.exists():
-            raise FileNotFoundError(
-                f'No station config folder found at "{station_configs_folder}"'
-            )
+            raise FileNotFoundError(f'No station config folder found at "{station_configs_folder}"')
 
         self.station_configs_folder = station_configs_folder
         self.all_configs = {}
@@ -50,15 +46,11 @@ class JsonStationConfig(StationConfig):
             self.active_config = self.all_configs[self.active_config_name]
             logger.info(f"Activated the configuration {self.active_config_name}")
         except KeyError:
-            raise KeyError(
-                f"{config_name} is unknown. Valid configs are {list(self.all_configs.keys())}"
-            )
+            raise KeyError(f"{config_name} is unknown. Valid configs are {list(self.all_configs.keys())}")
 
     def get_model_pipeline_for_camera(self, camera_id: str) -> List[ModelInfos]:
         model_pipeline = []
-        model_pipeline_config = self.active_config["cameras"].get(camera_id)[
-            "models_graph"
-        ]
+        model_pipeline_config = self.active_config["cameras"].get(camera_id)["models_graph"]
         if model_pipeline_config:
             for model_id, model in model_pipeline_config.items():
                 model_infos = ModelInfos.from_model_graph_node(
@@ -110,6 +102,4 @@ class JsonStationConfig(StationConfig):
         if "business_rule" in conf:
             business_rule = conf["business_rule"]
             if business_rule not in self.inventory.business_rules:
-                raise ValueError(
-                    f"{conf_level.capitalize()} business rule ({business_rule}) is not supported."
-                )
+                raise ValueError(f"{conf_level.capitalize()} business rule ({business_rule}) is not supported.")

@@ -13,15 +13,11 @@ class FileSystemBinaryStorage(BinaryStorage):
         path = self.folder / active_config_name / item.id
         path.mkdir(parents=True, exist_ok=True)
         for camera_id, binary in item.binaries.items():
-            filepath = _get_filepath(
-                self.folder, item.id, camera_id, active_config_name
-            )
+            filepath = _get_filepath(self.folder, item.id, camera_id, active_config_name)
             with filepath.open("wb") as f:
                 f.write(binary)
 
-    def get_item_binary(
-        self, item_id: str, camera_id: str, active_config_name: str
-    ) -> bytes:
+    def get_item_binary(self, item_id: str, camera_id: str, active_config_name: str) -> bytes:
         filepath = _get_filepath(self.folder, item_id, camera_id, active_config_name)
         with filepath.open("rb") as f:
             return f.read()
@@ -36,7 +32,5 @@ class FileSystemBinaryStorage(BinaryStorage):
         return str(_get_filepath(self.folder, item_id, camera_id, active_config_name))
 
 
-def _get_filepath(
-    folder: Path, item_id: str, camera_id: str, active_config_name: str
-) -> Path:
+def _get_filepath(folder: Path, item_id: str, camera_id: str, active_config_name: str) -> Path:
     return folder / active_config_name / item_id / (camera_id + ".jpg")

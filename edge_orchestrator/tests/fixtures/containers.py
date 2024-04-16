@@ -29,13 +29,9 @@ def check_image_presence_or_pull_it_from_registry(image_name: str):
     image_tags = [tag for image in client.images.list() for tag in image.tags]
     if image_name not in image_tags:
         auth_config = None
-        logging.info(
-            f"Pulling docker image {image_name} from registry when running tests for the first time..."
-        )
+        logging.info(f"Pulling docker image {image_name} from registry when running tests for the first time...")
         if image_name.startswith("ghcr.io/octo-technology"):
-            if os.environ.get("REGISTRY_USERNAME") and os.environ.get(
-                "REGISTRY_PASSWORD"
-            ):
+            if os.environ.get("REGISTRY_USERNAME") and os.environ.get("REGISTRY_PASSWORD"):
                 auth_config = {
                     "username": os.environ.get("REGISTRY_USERNAME"),
                     "password": os.environ.get("REGISTRY_PASSWORD"),
@@ -48,9 +44,7 @@ def check_image_presence_or_pull_it_from_registry(image_name: str):
         client.images.pull(image_name, auth_config=auth_config)
 
 
-def start_test_db(
-    image_name: str, connection_url: Optional[str]
-) -> Tuple[str, MongoDbContainer]:
+def start_test_db(image_name: str, connection_url: Optional[str]) -> Tuple[str, MongoDbContainer]:
     container = None
     if connection_url is None:
         check_image_presence_or_pull_it_from_registry(image_name)
@@ -133,11 +127,7 @@ def setup_test_tensorflow_serving(request: SubRequest) -> Generator[str, None, N
         image_name=EDGE_MODEL_SERVING["image_name"],
         starting_log=r"Entering the event loop ...",
         exposed_model_name=request.param,
-        host_volume_path=(
-            (
-                ROOT_REPOSITORY_PATH / EDGE_MODEL_SERVING["host_volume_path_suffix"]
-            ).as_posix()
-        ),
+        host_volume_path=((ROOT_REPOSITORY_PATH / EDGE_MODEL_SERVING["host_volume_path_suffix"]).as_posix()),
         container_volume_path=EDGE_MODEL_SERVING["container_volume_path"],
     )
     yield connection_url
@@ -171,8 +161,6 @@ def apply_db_migrations(connection_url: str) -> bool:
     os.environ["DB_CONNECTION_URL"] = connection_url
     path_to_migration = ROOT_REPOSITORY_PATH / "hub_monitoring/db_migrations"
     alembic_cfg = Config(path_to_migration / "alembic.ini")
-    alembic_cfg.set_main_option(
-        "script_location", (path_to_migration / "alembic").as_posix()
-    )
+    alembic_cfg.set_main_option("script_location", (path_to_migration / "alembic").as_posix())
     alembic_command.upgrade(alembic_cfg, "head")
     return True

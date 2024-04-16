@@ -21,9 +21,7 @@ from edge_orchestrator.infrastructure.telemetry_sink.fake_telemetry_sink import 
 
 
 class UploadWithGCPBucket(Config):
-    SERVING_MODEL_URL = os.environ.get(
-        "SERVING_MODEL_URL", "http://edge_model_serving:8501"
-    )
+    SERVING_MODEL_URL = os.environ.get("SERVING_MODEL_URL", "http://edge_model_serving:8501")
 
     def __init__(self):
         self.metadata_storage = GCPMetadataStorage()
@@ -35,7 +33,5 @@ class UploadWithGCPBucket(Config):
             self.ROOT_PATH / "data",
         )
         self.edge_station = EdgeStation(self.station_config)
-        self.model_forward = TFServingWrapper(
-            self.SERVING_MODEL_URL, self.inventory, self.station_config
-        )
+        self.model_forward = TFServingWrapper(self.SERVING_MODEL_URL, self.inventory, self.station_config)
         self.telemetry_sink = FakeTelemetrySink()

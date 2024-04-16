@@ -1,7 +1,6 @@
 # edge_interface
 
 ## Development setup
-
 ```
 brew update
 brew install node
@@ -9,6 +8,7 @@ brew install node
 
 ## Project setup
 ```
+cd edge_interface
 npm install
 ```
 

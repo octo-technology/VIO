@@ -18,22 +18,18 @@ class TFServingWrapper(ModelForward):
         self.inventory = inventory
         self.station_config = station_config
 
-    async def perform_inference(
-        self, model: ModelInfos, binary_data: bytes, binary_name: str
-    ) -> dict:
+    async def perform_inference(self, model: ModelInfos, binary_data: bytes, binary_name: str) -> dict:
         if model.category == ModelTypes.CLASSIFICATION.value:
-            return await TFServingClassificationWrapper(
-                self.serving_model_url
-            ).perform_inference(model, binary_data, binary_name)
+            return await TFServingClassificationWrapper(self.serving_model_url).perform_inference(
+                model, binary_data, binary_name
+            )
         elif model.category == ModelTypes.OBJECT_DETECTION.value:
-            return await TFServingDetectionWrapper(
-                self.serving_model_url, model.class_names_path
-            ).perform_inference(model, binary_data, binary_name)
+            return await TFServingDetectionWrapper(self.serving_model_url, model.class_names_path).perform_inference(
+                model, binary_data, binary_name
+            )
         elif model.category == ModelTypes.OBJECT_DETECTION_WITH_CLASSIFICATION.value:
             return await TFServingDetectionClassificationWrapper(
                 self.serving_model_url, model.class_names_path
             ).perform_inference(model, binary_data, binary_name)
         else:
-            logger.error(
-                f"Enter a valid model category, model category entered and invalid : {model.category}"
-            )
+            logger.error(f"Enter a valid model category, model category entered and invalid : {model.category}")

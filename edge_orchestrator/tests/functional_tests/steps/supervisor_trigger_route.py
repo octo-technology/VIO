@@ -19,9 +19,7 @@ use_step_matcher("re")
 
 @given("the config '([a-zA-Z0-9-_]+)' is activated")
 def config_is_activated(context: Context, config_name: str):
-    with (
-        context.test_directory / "config" / "station_configs" / f"{config_name}.json"
-    ).open("r") as f:
+    with (context.test_directory / "config" / "station_configs" / f"{config_name}.json").open("r") as f:
         config = json.load(f)
 
     context.execute_steps(
@@ -80,20 +78,12 @@ def check_item_binaries_are_stored(context: Context):
     for row in context.table:
         assert f'{row["binary_name"]}.{row["binary_extension"]}' in response_1_content
 
-        path_to_tests_images = (
-            context.test_directory
-            / "data"
-            / context.cameras[row["binary_name"]]["source"]
-        )
+        path_to_tests_images = context.test_directory / "data" / context.cameras[row["binary_name"]]["source"]
         tests_images = [
-            filepath.open("rb").read()
-            for filepath in path_to_tests_images.iterdir()
-            if filepath.suffix == ".jpg"
+            filepath.open("rb").read() for filepath in path_to_tests_images.iterdir() if filepath.suffix == ".jpg"
         ]
 
-        response_2 = context.test_client.get(
-            f'/api/v1/items/{context.item_id}/binaries/{row["binary_name"]}'
-        )
+        response_2 = context.test_client.get(f'/api/v1/items/{context.item_id}/binaries/{row["binary_name"]}')
         assert response_2.status_code == HTTP_200_OK
         assert response_2.content in tests_images
     assert len(response_1_content) == len(context.table.rows)
@@ -147,13 +137,9 @@ def check_telemetry_message_is_stored(context):
         result.port,
     )
     database = result.path[1:]
-    connection = psycopg2.connect(
-        dbname=database, user=username, password=password, host=hostname, port=port
-    )
+    connection = psycopg2.connect(dbname=database, user=username, password=password, host=hostname, port=port)
     with connection.cursor() as curs:
-        curs.execute(
-            "SELECT * FROM iothub.telemetry WHERE item_id = %s;", (context.item_id,)
-        )
+        curs.execute("SELECT * FROM iothub.telemetry WHERE item_id = %s;", (context.item_id,))
         res = curs.fetchone()
     _id, device_id, decision, timestamp, item_id, config_res = res
     assert isinstance(_id, str)

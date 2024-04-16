@@ -17,15 +17,11 @@ class TFServingDetectionClassificationWrapper(ModelForward):
         self.image_shape = image_shape
         self.class_names_path = class_names_path
 
-    async def perform_inference(
-        self, model: ModelInfos, binary_data: bytes, binary_name: str
-    ) -> Dict[str, Dict]:
+    async def perform_inference(self, model: ModelInfos, binary_data: bytes, binary_name: str) -> Dict[str, Dict]:
         processed_img = self.perform_pre_processing(binary_data)
         logger.debug(f"Processed image size: {processed_img.shape}")
         payload = {"inputs": processed_img.tolist()}
-        model_url = (
-            f"{self.base_url}/v1/models/{model.name}/versions/{model.version}:predict"
-        )
+        model_url = f"{self.base_url}/v1/models/{model.name}/versions/{model.version}:predict"
 
         try:
             async with aiohttp.ClientSession() as session:
@@ -58,11 +54,7 @@ class TFServingDetectionClassificationWrapper(ModelForward):
             class_names = [c.strip() for c in open(self.class_names_path).readlines()]
         except Exception as e:
             logger.exception(e)
-            logger.info(
-                "cannot open class names files at location {}".format(
-                    self.class_names_path
-                )
-            )
+            logger.info("cannot open class names files at location {}".format(self.class_names_path))
 
         for box_index, box_coordinates_in_current_image in enumerate(boxes_coordinates):
             # crop_image expects the box coordinates to be (xmin, ymin, xmax, ymax)

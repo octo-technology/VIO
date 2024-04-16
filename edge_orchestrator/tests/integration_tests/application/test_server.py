@@ -8,9 +8,7 @@ from tests.conftest import TEST_DATA_FOLDER_PATH
 
 
 class TestServer:
-    def test_upload_route__should_return_expected_logs_when_received_paylod_with_binary_image(
-        self, caplog
-    ):
+    def test_upload_route__should_return_expected_logs_when_received_paylod_with_binary_image(self, caplog):
         # Given
         client = TestClient(server())
         test_file = "camera_id1.jpg"
@@ -27,9 +25,7 @@ class TestServer:
 
         # When
         with open(test_file_path, "rb") as f:
-            actual_response = client.post(
-                "/api/v1/upload", files={"image": ("filename", f, "image/jpeg")}
-            )
+            actual_response = client.post("/api/v1/upload", files={"image": ("filename", f, "image/jpeg")})
 
         actual_logs = []
         for record in caplog.records:
@@ -40,9 +36,7 @@ class TestServer:
         assert actual_response.status_code == 200
         assert actual_logs == expected_logs
 
-    def test_get_item_metadata__should_return_expected_paylod_when_received_specific_item_id(
-        self, my_item_0, caplog
-    ):
+    def test_get_item_metadata__should_return_expected_paylod_when_received_specific_item_id(self, my_item_0, caplog):
         # Given
         metadata_storage = get_metadata_storage()
         metadata_storage.save_item_metadata(my_item_0)

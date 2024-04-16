@@ -63,21 +63,11 @@ class ModelInfos:
         if inventory.models[model_name].get("class_names_path") is not None:
             class_names_path = os.path.join(data_folder, class_names_path)
         try:
-            number_of_boxes = (
-                inventory.models[model_name].get("output").get("number_of_boxes")
-            )
-            detection_boxes = (
-                inventory.models[model_name].get("output").get("detection_boxes")
-            )
-            detection_scores = (
-                inventory.models[model_name].get("output").get("detection_scores")
-            )
-            detection_classes = (
-                inventory.models[model_name].get("output").get("detection_classes")
-            )
-            detection_metadata = (
-                inventory.models[model_name].get("output").get("detection_metadata")
-            )
+            number_of_boxes = inventory.models[model_name].get("output").get("number_of_boxes")
+            detection_boxes = inventory.models[model_name].get("output").get("detection_boxes")
+            detection_scores = inventory.models[model_name].get("output").get("detection_scores")
+            detection_classes = inventory.models[model_name].get("output").get("detection_classes")
+            detection_metadata = inventory.models[model_name].get("output").get("detection_metadata")
             model_type = inventory.models[model_name].get("model_type")
         except AttributeError:
             detection_boxes = None
@@ -138,6 +128,4 @@ class ModelTypes(Enum):
     CLASSIFICATION = "classification"
     OBJECT_DETECTION = "object_detection"
     OBJECT_DETECTION_WITH_CLASSIFICATION = "object_detection_with_classification"
-    OBJECT_DETECTION_WITH_CLASSIFICATION_TORCH = (
-        "object_detection_with_classification_torch"
-    )
+    OBJECT_DETECTION_WITH_CLASSIFICATION_TORCH = "object_detection_with_classification_torch"

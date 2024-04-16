@@ -17,8 +17,7 @@ def load_config():
     ]
     if configuration not in available_configurations:
         raise ValueError(
-            f"Unknown configuration '{configuration}'. "
-            f"Valid configurations are {available_configurations}."
+            f"Unknown configuration '{configuration}'. " f"Valid configurations are {available_configurations}."
         )
     elif configuration == "test":
         from edge_orchestrator.environment.test import Test
@@ -28,6 +27,10 @@ def load_config():
         from edge_orchestrator.environment.docker import Docker
 
         configuration_class = Docker
+    elif configuration == "local":
+        from edge_orchestrator.environment.local import Local
+
+        configuration_class = Local
     elif configuration == "default":
         from edge_orchestrator.environment.default import Default
 

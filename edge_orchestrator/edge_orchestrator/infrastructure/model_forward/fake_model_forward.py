@@ -8,9 +8,7 @@ from edge_orchestrator.domain.ports.model_forward import Labels, ModelForward
 
 
 class FakeModelForward(ModelForward):
-    async def perform_inference(
-        self, model: ModelInfos, binary_data: bytes, binary_name: str
-    ) -> Dict:
+    async def perform_inference(self, model: ModelInfos, binary_data: bytes, binary_name: str) -> Dict:
         inference_output = {}
         if model.category == ModelTypes.CLASSIFICATION.value:
             inference_output = {

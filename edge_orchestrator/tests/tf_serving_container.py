@@ -19,9 +19,7 @@ class TfServingContainer(DockerContainer):
         for key, value in env.items():
             self.with_env(key, value)
         if host_volume_path and container_volume_path:
-            self.with_volume_mapping(
-                host=host_volume_path, container=container_volume_path
-            )
+            self.with_volume_mapping(host=host_volume_path, container=container_volume_path)
 
     @wait_container_is_ready()
     def _connect(self, default_starting_log: str):
