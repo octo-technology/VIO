@@ -1,0 +1,74 @@
+[build-system]
+requires = ["setuptools>=66", "setuptools_scm[toml]>=6.2"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hub_labelizer"
+dynamic = ["readme"]
+version = "0.1.0"
+authors = [
+    { name = "LEIB", email = "leib@octo.com" },
+]
+description = 'vio-hub: labelizer module'
+classifiers = [
+    'Programming Language :: Python :: 3',
+    'License :: OSI Approved :: Apache2.0',
+    'Operating System :: OS Independent',
+]
+dependencies = [
+ #   "aiohttp==3.8.3",
+    "fastapi[all]==0.100.0",
+ #   "numpy==1.24.1",
+ #   "Pillow==9.3.0",
+ #   "psycopg2-binary==2.9.5",
+ #   "psycopg2==2.9.3",
+ #   "pymongo==4.3.3",
+    "labelbox[data]==3.66.0",
+]
+requires-python = ">=3.8.10"
+
+
+[project.optional-dependencies]
+dev = [
+    "alembic==1.11.1",
+    "autopep8==2.0.1",
+    "behave @ git+https://github.com/behave/behave@v1.2.7.dev3#egg=behave[toml]",
+    "black==23.7.0",
+    "flake8==6.0.0",
+    "freezegun==1.2.2",
+    "pytest==7.2.1",
+    "pytest-asyncio==0.20.3",
+    "pytest-cov==4.0.0",
+    "python-dotenv==0.21.1",
+    "requests[security]==2.28.2",
+    "testcontainers==3.7.1"
+]
+
+[project.scripts]
+hub_labelizer = "hub_labelizer.__main__:main"
+
+[project.urls]
+homepage = "https://github.com/octo-technology/VIO"
+documentation = "https://octo-technology.github.io/VIO/"
+changelog = "https://github.com/octo-technology/VIO/compare/"
+
+[tool.behave]
+junit = true
+junit_directory = "reports/behave/"
+logging_clear_handlers = true
+paths = ["tests/functional_tests"]
+
+[tool.pytest.ini_options]
+min_version = "6.0"
+testpaths = "tests/unit_tests"
+norecursedirs = [".git", "venv/", ".pytest_cache/", "main/"]
+
+[tool.setuptools.dynamic]
+readme = { file = ["README.rst", "USAGE.rst"] }
+
+[tool.setuptools.packages.find]
+where = ["hub_labelizer/"]
+exclude = ["tests*", "data"]
+
+[tool.setuptools.package-data]
+hub_labelizer = ["logger.cfg"]
