@@ -1,14 +1,18 @@
-# VIO - Visual Inspection Orchestrator
+<div align="center">
+    <h1>VIO - Visual Inspection Orchestrator</h1>
 
 ![CI edge_orchestrator](https://github.com/octo-technology/VIO/actions/workflows/ci_edge_orchestrator.yml/badge.svg)
 ![CI edge_interface](https://github.com/octo-technology/VIO/actions/workflows/ci_edge_interface.yml/badge.svg)
 ![GitHub issues](https://img.shields.io/github/issues/octo-technology/VIO)
 
-Visual Inspection Orchestrator is a modular framework made to ease the deployment of VI usecases.
+🎥 Visual Inspection Orchestrator is a modular framework made to ease the deployment of VI usecases 🎥
 
 *Usecase example: Quality check of a product manufactured on an assembly line.*
+</div>
 
-VIO full documentation can be found [here](https://octo-technology.github.io/VIO/)
+<h1></h1>
+
+## 🏗️ Modular framework
 
 The VIO modules are split between:
 
@@ -24,23 +28,27 @@ The VIO modules are split between:
 - [The hub monitoring](docs/hub_monitoring.md)
 - [The hub deployment playbook](docs/hub_deployment.md)
 
-## Requirements
+**VIO full documentation can be found [here](https://octo-technology.github.io/VIO/)**
+
+## 🧱 Requirements
 
 - `docker` installed
 - `make` installed
 
-## Install the framework
+## 🚀 Getting started
+
+### Install the framework
 
 ```shell
 git clone git@github.com:octo-technology/VIO.git
 ```
 
-## Run the stack
+### Running the stack
 
 To launch the stack you can use the [Makefile](../Makefile) on the root of the repository which define the different
-target based on the [docker-compose.yml](../docker-compose.yml):
+target based on the [docker-compose.yml](../docker-compose.yml) as described below, or [run the modules locally]().
 
-### Start vio
+#### Start vio
 
 To start all edge services (orchestrator, model-serving, interface, db) with local hub monitoring (grafana):
 
@@ -48,7 +56,7 @@ To start all edge services (orchestrator, model-serving, interface, db) with loc
 make vio-edge-up
 ```
 
-### Stop vio
+#### Stop vio
 
 To stop and delete all running services :
 
@@ -59,6 +67,8 @@ make vio-edge-down
 To check all services are up and running you can run the command `docker ps`, you should see something like below:
 
 ![stack-up-with-docker](docs/images/stack-up-with-docker.png)
+
+### Accessing the services 
 
 Once all services are up and running you can access:
 
@@ -72,16 +82,32 @@ launch the following actions:
 
 ![vio-architecture-stack](docs/images/edge_orchestrator-actions.png)
 
-## Releases
+## 🛰️ Technology features
+- 🏠 Hosting :
+  - ☁️ Hub : Cloud possibilities with [Azure](https://portal.azure.com/#home) and [GCP](https://cloud.google.com/)
+  - 🛸 Host : Using raspberries
+  - 🐳 Host : [Docker](https://www.docker.com/) or locally with anaconda
+- 👮 Fleet management :
+  - 📦 Fleet integration/deployment with [Ansible](https://docs.ansible.com/ansible/latest/index.html)
+  - 🕵️ Fleet supervision/observability with [Grafana](https://grafana.com/) & [Open-Telemetry](https://opentelemetry.io/docs/)
+- ⚡️Backend API with [FastAPI](https://fastapi.tiangolo.com/)
+- 📜 Frontend with [Vue.js](https://fr.vuejs.org/)
+- 🏭 Continuous Integration & Continuous Development : 
+  - ♟️ Github actions
+  - 📝️ Clean code with [Black](https://black.readthedocs.io/en/stable/index.html) & [Flake8](https://flake8.pycqa.org/en/latest/) 
+  - ✅ Tested with [Pytest](https://docs.pytest.org/en/8.0.x/)
+- 📈 [Grafana](https://grafana.com/) insight & dashboard
+
+## 🏭 Releases
 
  Build Type        | Status                                                                                                                                                                                                    | Artifacts                                                           
 -------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------
  **Docker images** | [![Status](https://github.com/octo-technology/VIO/actions/workflows/publication_vio_images.yml/badge.svg)](https://github.com/octo-technology/VIO/actions/workflows/publication_vio_images.yml/badge.svg) | [Github registry](https://github.com/orgs/octo-technology/packages) 
 
-## License
+## 📝 License
 
 VIO is licensed under [Apache 2.0 License](docs/LICENSE.md)
 
-## Contributing
+## 🙋 Contributing
 
 Learn more about how to get involved on [CONTRIBUTING.md](docs/CONTRIBUTING.md) guide

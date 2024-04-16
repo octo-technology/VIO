@@ -94,8 +94,8 @@ Feature: The client requests the inventory available on the station
       "min_nb_objects_rule"
       ],
     "item_rules": [
-      "threshold_ratio_rule",
-      "min_threshold_KO_rule"
+      "min_threshold_ok_ratio_rule",
+      "min_threshold_ko_rule"
       ]
     }
     """

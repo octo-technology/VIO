@@ -11,12 +11,8 @@ from tests.conftest import TEST_DATA_FOLDER_PATH
 
 @pytest.mark.asyncio
 class TestTFServingDetectionWrapper:
-    @pytest.mark.parametrize(
-        "setup_test_tensorflow_serving", ["mobilenet_v1_640x640"], indirect=True
-    )
-    async def test_perform_inference_should_detected_a_cat(
-        self, test_tensorflow_serving_base_url, my_binaries_0
-    ):
+    @pytest.mark.parametrize("setup_test_tensorflow_serving", ["mobilenet_v1_640x640"], indirect=True)
+    async def test_perform_inference_should_detected_a_cat(self, test_tensorflow_serving_base_url, my_binaries_0):
         # Given
         tf_serving_model_forwarder = TFServingDetectionWrapper(
             base_url=test_tensorflow_serving_base_url,
@@ -37,9 +33,7 @@ class TestTFServingDetectionWrapper:
             detection_classes="detection_classes",
             image_resolution=[640, 640],
             class_to_detect=["cat"],
-            class_names_path=os.path.join(
-                TEST_DATA_FOLDER_PATH, "test_detection_labels"
-            ),
+            class_names_path=os.path.join(TEST_DATA_FOLDER_PATH, "test_detection_labels"),
             objectness_threshold=0.5,
         )
 
@@ -61,13 +55,9 @@ class TestTFServingDetectionWrapper:
         for object_id, output in actual_model_output.items():
             assert output["label"] == expected_model_output[object_id]["label"]
             assert output["location"] == expected_model_output[object_id]["location"]
-            assert round(output["score"], 5) == round(
-                expected_model_output[object_id]["score"], 5
-            )
+            assert round(output["score"], 5) == round(expected_model_output[object_id]["score"], 5)
 
-    @pytest.mark.parametrize(
-        "setup_test_tensorflow_serving", ["mobilenet_v1_640x640"], indirect=True
-    )
+    @pytest.mark.parametrize("setup_test_tensorflow_serving", ["mobilenet_v1_640x640"], indirect=True)
     async def test_perform_inference_should_detected_a_cat_and_a_dog(
         self, test_tensorflow_serving_base_url, my_binaries_0
     ):  # noqa
@@ -91,9 +81,7 @@ class TestTFServingDetectionWrapper:
             detection_classes="detection_classes",
             image_resolution=[640, 640],
             class_to_detect=["cat", "dog"],
-            class_names_path=os.path.join(
-                TEST_DATA_FOLDER_PATH, "test_detection_labels"
-            ),
+            class_names_path=os.path.join(TEST_DATA_FOLDER_PATH, "test_detection_labels"),
             objectness_threshold=0.5,
         )
 
@@ -120,6 +108,4 @@ class TestTFServingDetectionWrapper:
         for object_id, output in actual_model_output.items():
             assert output["label"] == expected_model_output[object_id]["label"]
             assert output["location"] == expected_model_output[object_id]["location"]
-            assert round(output["score"], 5) == round(
-                expected_model_output[object_id]["score"], 5
-            )
+            assert round(output["score"], 5) == round(expected_model_output[object_id]["score"], 5)

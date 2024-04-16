@@ -38,11 +38,7 @@ def before_all(context: Context):
         image_name=EDGE_MODEL_SERVING["image_name"],
         starting_log=r"Entering the event loop ...",
         exposed_model_name="marker_quality_control",
-        host_volume_path=(
-            (
-                ROOT_REPOSITORY_PATH / EDGE_MODEL_SERVING["host_volume_path_suffix"]
-            ).as_posix()
-        ),
+        host_volume_path=((ROOT_REPOSITORY_PATH / EDGE_MODEL_SERVING["host_volume_path_suffix"]).as_posix()),
         container_volume_path=EDGE_MODEL_SERVING["container_volume_path"],
     )
     os.environ["API_CONFIG"] = "test"

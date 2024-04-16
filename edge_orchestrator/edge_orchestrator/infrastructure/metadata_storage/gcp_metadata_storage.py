@@ -16,15 +16,11 @@ class GCPMetadataStorage(MetadataStorage):
 
     def save_item_metadata(self, item: Item, active_config_name: str):
         item_metadata = json.dumps(item.get_metadata())
-        blob = self.bucket.blob(
-            os.path.join(self.prefix, active_config_name, item.id, "metadata.json")
-        )
+        blob = self.bucket.blob(os.path.join(self.prefix, active_config_name, item.id, "metadata.json"))
         blob.upload_from_string(item_metadata, content_type="application/json")
 
     def get_item_metadata(self, item_id: str, active_config_name: str) -> Dict:
-        filename = os.path.join(
-            self.prefix, active_config_name, item_id, "metadata.json"
-        )
+        filename = os.path.join(self.prefix, active_config_name, item_id, "metadata.json")
         blob = self.bucket.get_blob(filename)
         if blob is None:
             raise Exception("No file with this id exist")

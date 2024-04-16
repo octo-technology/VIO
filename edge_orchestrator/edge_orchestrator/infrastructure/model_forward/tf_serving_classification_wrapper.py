@@ -14,23 +14,17 @@ class TFServingClassificationWrapper(ModelForward):
         self.base_url = base_url
         self.class_names = None
 
-    async def perform_inference(
-        self, model: ModelInfos, binary_data: bytes, binary_name: str
-    ) -> dict:
+    async def perform_inference(self, model: ModelInfos, binary_data: bytes, binary_name: str) -> dict:
         self.class_names = model.class_names
         processed_img = self.perform_pre_processing(model, binary_data)
         payload = {"inputs": processed_img.tolist()}
-        model_url = (
-            f"{self.base_url}/v1/models/{model.name}/versions/{model.version}:predict"
-        )
+        model_url = f"{self.base_url}/v1/models/{model.name}/versions/{model.version}:predict"
         logger.info(f"Getting prediction using: {model_url}")
         try:
             async with aiohttp.ClientSession() as session:
                 async with session.post(model_url, json=payload) as response:
                     json_data = await response.json()
-            inference_output = self.perform_post_processing(
-                model, json_data["outputs"], binary_name
-            )
+            inference_output = self.perform_post_processing(model, json_data["outputs"], binary_name)
             return inference_output
         except Exception as e:
             logger.exception(e)
@@ -43,17 +37,13 @@ class TFServingClassificationWrapper(ModelForward):
             dtype=np.float32,
         )
         img = Image.open(io.BytesIO(binary))
-        img = ImageOps.fit(
-            img, (model.image_resolution[0], model.image_resolution[1]), Image.ANTIALIAS
-        )
+        img = ImageOps.fit(img, (model.image_resolution[0], model.image_resolution[1]), Image.ANTIALIAS)
         img_array = np.asarray(img)
         normalized_image_array = (img_array.astype(np.float32) / 127.0) - 1
         data[0] = normalized_image_array
         return data
 
-    def perform_post_processing(
-        self, model: ModelInfos, json_outputs: list, binary_name: str
-    ) -> dict:
+    def perform_post_processing(self, model: ModelInfos, json_outputs: list, binary_name: str) -> dict:
         logger.debug(f"model classnames: {model.class_names}")
         return {
             binary_name: {

@@ -48,9 +48,7 @@ class TestSupervisor:
         }
 
         model_pipeline = [
-            ModelInfos.from_model_graph_node(
-                "camera_id", model_id, model, inventory, TEST_DATA_FOLDER_PATH
-            )
+            ModelInfos.from_model_graph_node("camera_id", model_id, model, inventory, TEST_DATA_FOLDER_PATH)
             for model_id, model in models_graph.items()
         ]
         binary_data = b"fhfh"
@@ -58,17 +56,11 @@ class TestSupervisor:
         supervisor = Supervisor(model_forward=FakeModelForward())
         supervisor.station_config.active_config_name = "test_config"
 
-        inference_output = await supervisor.get_inference(
-            {}, model_pipeline, binary_data, image_name="full_image"
-        )
+        inference_output = await supervisor.get_inference({}, model_pipeline, binary_data, image_name="full_image")
 
         inference_output_expected = {
-            "model_1": {
-                "full_image": {"label": "OK", "probability": 0.3745401188473625}
-            },
-            "model_2": {
-                "full_image": {"label": "OK", "probability": 0.9507143064099162}
-            },
+            "model_1": {"full_image": {"label": "OK", "probability": 0.3745401188473625}},
+            "model_2": {"full_image": {"label": "OK", "probability": 0.9507143064099162}},
         }
 
         assert inference_output == inference_output_expected
@@ -85,19 +77,13 @@ class TestSupervisor:
         }
 
         model_pipeline = [
-            ModelInfos.from_model_graph_node(
-                "camera_id", model_id, model, inventory, TEST_DATA_FOLDER_PATH
-            )
+            ModelInfos.from_model_graph_node("camera_id", model_id, model, inventory, TEST_DATA_FOLDER_PATH)
             for model_id, model in models_graph.items()
         ]
-        binary_data = (
-            (TEST_DATA_FOLDER_PATH / "fake_item" / "image1.jpg").open("rb").read()
-        )
+        binary_data = (TEST_DATA_FOLDER_PATH / "fake_item" / "image1.jpg").open("rb").read()
 
         supervisor = Supervisor(model_forward=FakeModelForward())
-        inference_output = await supervisor.get_inference(
-            {}, model_pipeline, binary_data, image_name="full_image"
-        )
+        inference_output = await supervisor.get_inference({}, model_pipeline, binary_data, image_name="full_image")
 
         inference_output_expected = {
             "model_1": {
@@ -125,9 +111,7 @@ class TestSupervisor:
         assert inference_output == inference_output_expected
 
     @patch.object(JsonStationConfig, "get_model_pipeline_for_camera")
-    @pytest.mark.parametrize(
-        "camera_id", ["camera_id1", "camera_id2", "camera_id3", "camera_id4"]
-    )
+    @pytest.mark.parametrize("camera_id", ["camera_id1", "camera_id2", "camera_id3", "camera_id4"])
     async def test_get_prediction_for_camera_should_return_2_predicted_objects_by_one_object_detection_model(
         self, model_config_mocked, camera_id, my_item_1
     ):
@@ -160,17 +144,13 @@ class TestSupervisor:
         }
 
         # When
-        actual = await supervisor.get_prediction_for_camera(
-            camera_id, my_item_1, image_name="full_image"
-        )
+        actual = await supervisor.get_prediction_for_camera(camera_id, my_item_1, image_name="full_image")
 
         # Then
         assert actual == expected
 
     @patch.object(JsonStationConfig, "get_model_pipeline_for_camera")
-    @pytest.mark.parametrize(
-        "camera_id", ["camera_id1", "camera_id2", "camera_id3", "camera_id4"]
-    )
+    @pytest.mark.parametrize("camera_id", ["camera_id1", "camera_id2", "camera_id3", "camera_id4"])
     async def test_get_prediction_for_camera_should_return_1_predicted_object_by_one_classification_model(
         self, model_config_mocked, camera_id, my_item_1
     ):
@@ -190,22 +170,16 @@ class TestSupervisor:
         ]
         model_config_mocked.return_value = models_version
 
-        expected = {
-            "model1": {"full_image": {"label": "OK", "probability": 0.3745401188473625}}
-        }
+        expected = {"model1": {"full_image": {"label": "OK", "probability": 0.3745401188473625}}}
 
         # When
-        actual = await supervisor.get_prediction_for_camera(
-            camera_id, my_item_1, image_name="full_image"
-        )
+        actual = await supervisor.get_prediction_for_camera(camera_id, my_item_1, image_name="full_image")
 
         # Then
         assert actual == expected
 
     @patch.object(JsonStationConfig, "get_model_pipeline_for_camera")
-    @pytest.mark.parametrize(
-        "camera_id", ["camera_id1", "camera_id2", "camera_id3", "camera_id4"]
-    )
+    @pytest.mark.parametrize("camera_id", ["camera_id1", "camera_id2", "camera_id3", "camera_id4"])
     async def test_get_prediction_for_camera_returns_2_objects_with_label_for_object_detection_followed_by_classif(
         # noqa
         self,
@@ -262,17 +236,13 @@ class TestSupervisor:
         }
 
         # When
-        actual = await supervisor.get_prediction_for_camera(
-            camera_id, my_item_1, image_name="full_image"
-        )
+        actual = await supervisor.get_prediction_for_camera(camera_id, my_item_1, image_name="full_image")
 
         # Then
         assert actual == expected
 
     @patch.object(JsonStationConfig, "get_model_pipeline_for_camera")
-    @pytest.mark.parametrize(
-        "camera_id", ["camera_id1", "camera_id2", "camera_id3", "camera_id4"]
-    )
+    @pytest.mark.parametrize("camera_id", ["camera_id1", "camera_id2", "camera_id3", "camera_id4"])
     async def test_get_prediction_for_camera_returns_2_objects_with_label_for_object_detection_with_classif_model(
         # noqa
         self,
@@ -314,17 +284,13 @@ class TestSupervisor:
         model_config_mocked.return_value = models_version
 
         # When
-        actual = await supervisor.get_prediction_for_camera(
-            camera_id, my_item_1, image_name="full_image"
-        )
+        actual = await supervisor.get_prediction_for_camera(camera_id, my_item_1, image_name="full_image")
 
         # Then
         assert actual == expected
 
     @patch.object(JsonStationConfig, "get_model_pipeline_for_camera")
-    @pytest.mark.parametrize(
-        "camera_id", ["camera_id1", "camera_id2", "camera_id3", "camera_id4"]
-    )
+    @pytest.mark.parametrize("camera_id", ["camera_id1", "camera_id2", "camera_id3", "camera_id4"])
     async def test_get_prediction_for_camera_should_return_1_output_by_model_and_among_them_1_is_classification(
         # noqa
         self,
@@ -415,17 +381,13 @@ class TestSupervisor:
         }
 
         # When
-        actual = await supervisor.get_prediction_for_camera(
-            camera_id, my_item_1, image_name="full_image"
-        )
+        actual = await supervisor.get_prediction_for_camera(camera_id, my_item_1, image_name="full_image")
 
         # Then
         assert actual == expected
 
     @patch.object(JsonStationConfig, "get_model_pipeline_for_camera")
-    @pytest.mark.parametrize(
-        "camera_id", ["camera_id1", "camera_id2", "camera_id3", "camera_id4"]
-    )
+    @pytest.mark.parametrize("camera_id", ["camera_id1", "camera_id2", "camera_id3", "camera_id4"])
     async def test_get_prediction_for_camera_should_return_1_output_by_model_and_among_them_2_are_classification(
         # noqa
         self,
@@ -521,27 +483,19 @@ class TestSupervisor:
                     "probability": 0.7080725777960455,
                 },
             },
-            "model4": {
-                "full_image": {"label": "OK", "probability": 0.020584494295802447}
-            },
+            "model4": {"full_image": {"label": "OK", "probability": 0.020584494295802447}},
         }
 
         # When
-        actual = await supervisor.get_prediction_for_camera(
-            camera_id, my_item_1, image_name="full_image"
-        )
+        actual = await supervisor.get_prediction_for_camera(camera_id, my_item_1, image_name="full_image")
 
         # Then
         assert actual == expected
 
     def test_apply_crop_function_with_correct_box_should_resize_the_picture(self):
         # Given
-        original_picture = (
-            (TEST_DATA_FOLDER_PATH / "fake_item" / "image3.jpg").open("rb").read()
-        )
-        expected_cropped_picture = (
-            (TEST_DATA_FOLDER_PATH / "fake_item" / "image3_crop.jpg").open("rb").read()
-        )
+        original_picture = (TEST_DATA_FOLDER_PATH / "fake_item" / "image3.jpg").open("rb").read()
+        expected_cropped_picture = (TEST_DATA_FOLDER_PATH / "fake_item" / "image3_crop.jpg").open("rb").read()
 
         # xmin, ymin, xmax, ymax
         box = [218, 41, 553, 379]
@@ -552,13 +506,9 @@ class TestSupervisor:
         # Then
         assert actual == expected_cropped_picture
 
-    def test_apply_crop_function_with_incorrect_box_should_log_an_error_and_return_the_same_picture(
-        self, caplog
-    ):
+    def test_apply_crop_function_with_incorrect_box_should_log_an_error_and_return_the_same_picture(self, caplog):
         # Given
-        original_picture = (
-            (TEST_DATA_FOLDER_PATH / "fake_item" / "image3.jpg").open("rb").read()
-        )
+        original_picture = (TEST_DATA_FOLDER_PATH / "fake_item" / "image3.jpg").open("rb").read()
 
         # xmin, ymin, xmax, ymax
         box = [554, 41, 553, 379]
@@ -568,23 +518,16 @@ class TestSupervisor:
 
         # Then
         assert actual == original_picture
-        assert (
-            caplog.records[0].msg
-            == "Informations for cropping are incorrect, the initial picture is used"
-        )
+        assert caplog.records[0].msg == "Informations for cropping are incorrect, the initial picture is used"
         assert caplog.records[1].msg == "xmin (=554) is greater than xmax (=553)"
 
     @patch.object(PostgresTelemetrySink, "send")
-    async def test_set_decision_should_send_final_decision_to_telemetry_sink(
-        self, mock_send
-    ):
+    async def test_set_decision_should_send_final_decision_to_telemetry_sink(self, mock_send):
         # Given
         item = Item(serial_number="", category="", cameras_metadata={}, binaries={})
         item.id = "item_id"
         inventory = JsonInventory(TEST_INVENTORY_PATH)
-        station_config = JsonStationConfig(
-            TEST_STATION_CONFIGS_FOLDER_PATH, inventory, TEST_DATA_FOLDER_PATH
-        )
+        station_config = JsonStationConfig(TEST_STATION_CONFIGS_FOLDER_PATH, inventory, TEST_DATA_FOLDER_PATH)
         station_config.set_station_config("station_config_TEST")
         supervisor = Supervisor(
             station_config=station_config,
@@ -600,13 +543,11 @@ class TestSupervisor:
         msg_dict = {
             "item_id": "item_id",
             "config": "station_config_TEST",
-            "decision": "OK",
+            "decision": "NO_DECISION",
         }
         mock_send.assert_called_once_with(msg_dict)
 
-    async def test_inspect_should_log_information_about_item_processing(
-        self, caplog, my_fake_item
-    ):
+    async def test_inspect_should_log_information_about_item_processing(self, caplog, my_fake_item):
         # Given
         expected_messages = [
             "Activated the configuration station_config_TEST",
@@ -625,9 +566,7 @@ class TestSupervisor:
             "End of Decision",
         ]
         inventory = JsonInventory(TEST_INVENTORY_PATH)
-        station_config = JsonStationConfig(
-            TEST_STATION_CONFIGS_FOLDER_PATH, inventory, TEST_DATA_FOLDER_PATH
-        )
+        station_config = JsonStationConfig(TEST_STATION_CONFIGS_FOLDER_PATH, inventory, TEST_DATA_FOLDER_PATH)
         station_config.set_station_config("station_config_TEST")
         supervisor = Supervisor(
             station_config=station_config,

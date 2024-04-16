@@ -33,9 +33,7 @@ class PostgresTelemetrySink(TelemetrySink):
         )
         database = result.path[1:]
 
-        logger.debug(
-            f"Connection with params {username, password, hostname, port, database}"
-        )
+        logger.debug(f"Connection with params {username, password, hostname, port, database}")
 
         nb_retry = self._timeout // self._interval
         for i in range(nb_retry):
@@ -47,9 +45,7 @@ class PostgresTelemetrySink(TelemetrySink):
                     host=hostname,
                     port=port,
                 )
-                logger.debug(
-                    f"Telemetry Postgres DB took ‘{i * self._interval}‘sec to start and be migrated"
-                )
+                logger.debug(f"Telemetry Postgres DB took ‘{i * self._interval}‘sec to start and be migrated")
                 return self._connection
             except psycopg2.OperationalError:
                 time.sleep(self._interval)
@@ -70,9 +66,7 @@ class PostgresTelemetrySink(TelemetrySink):
 
             self._insert_message(_id, device_id, decision, timestamp, item_id, config)
         except psycopg2.DatabaseError as e:
-            logger.error(
-                f"Message was not correctly inserted into telemetry table : {e}"
-            )
+            logger.error(f"Message was not correctly inserted into telemetry table : {e}")
 
     def _insert_message(
         self,

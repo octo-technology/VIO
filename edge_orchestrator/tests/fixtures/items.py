@@ -7,9 +7,7 @@ from edge_orchestrator.domain.models.item import Item
 
 
 @fixture(scope="function")
-@freeze_time(
-    lambda: dt.datetime(year=2021, month=5, day=19, hour=15, minute=0, second=0)
-)
+@freeze_time(lambda: dt.datetime(year=2021, month=5, day=19, hour=15, minute=0, second=0))
 def my_item_0(my_cameras_metadata_0, my_binaries_0):
     return Item(
         serial_number="123",
@@ -20,9 +18,7 @@ def my_item_0(my_cameras_metadata_0, my_binaries_0):
 
 
 @fixture(scope="function")
-@freeze_time(
-    lambda: dt.datetime(year=2021, month=5, day=19, hour=15, minute=0, second=0)
-)
+@freeze_time(lambda: dt.datetime(year=2021, month=5, day=19, hour=15, minute=0, second=0))
 def my_item_1(my_cameras_metadata_1, my_binaries_1):
     return Item(
         serial_number="serial_number_test",
@@ -33,9 +29,7 @@ def my_item_1(my_cameras_metadata_1, my_binaries_1):
 
 
 @fixture(scope="function")
-@freeze_time(
-    lambda: dt.datetime(year=2021, month=5, day=19, hour=15, minute=0, second=0)
-)
+@freeze_time(lambda: dt.datetime(year=2021, month=5, day=19, hour=15, minute=0, second=0))
 def my_fake_item(my_cameras_metadata_1, my_fake_binaries):
     return Item(
         serial_number="serial_number_test",
@@ -46,9 +40,7 @@ def my_fake_item(my_cameras_metadata_1, my_fake_binaries):
 
 
 @fixture(scope="function")
-@freeze_time(
-    lambda: dt.datetime(year=2021, month=5, day=19, hour=15, minute=0, second=0)
-)
+@freeze_time(lambda: dt.datetime(year=2021, month=5, day=19, hour=15, minute=0, second=0))
 def my_fake_item_2(my_cameras_metadata_3, my_fake_binaries_2):
     return Item(
         serial_number="serial_number_test",
@@ -59,9 +51,7 @@ def my_fake_item_2(my_cameras_metadata_3, my_fake_binaries_2):
 
 
 @fixture(scope="function")
-@freeze_time(
-    lambda: dt.datetime(year=2021, month=5, day=19, hour=15, minute=0, second=0)
-)
+@freeze_time(lambda: dt.datetime(year=2021, month=5, day=19, hour=15, minute=0, second=0))
 def my_item_2(my_cameras_metadata_2, my_binaries_2):
     return Item(
         serial_number="123",

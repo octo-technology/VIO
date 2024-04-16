@@ -44,7 +44,7 @@ Feature: The client set an active configuration
         }
       },
       "item_rule": {
-        "name": "min_threshold_KO_rule",
+        "name": "min_threshold_ko_rule",
         "parameters": {
           "threshold": 1
         }

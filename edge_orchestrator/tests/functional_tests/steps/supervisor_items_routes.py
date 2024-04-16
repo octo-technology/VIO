@@ -29,9 +29,7 @@ def client_get_item_metadata(context: Context, item_id: str):
 
 @when("one item '([a-zA-Z0-9-_]+)' binary from camera '([a-zA-Z0-9-_]+)' is requested")
 def client_get_item_binary(context: Context, item_id: str, camera_id: str):
-    response = context.test_client.get(
-        "/api/v1/items/" + context.item_id + "/binaries/" + camera_id
-    )
+    response = context.test_client.get("/api/v1/items/" + context.item_id + "/binaries/" + camera_id)
     assert response.status_code == 200
     context.binary_response = response.content
 

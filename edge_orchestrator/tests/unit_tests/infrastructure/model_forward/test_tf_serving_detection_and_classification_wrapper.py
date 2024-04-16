@@ -14,9 +14,7 @@ class TestDetectionClassificationHelper:
             base_url="",
             class_names_path=TEST_DATA_FOLDER_PATH / "test_detection_labels",
         )
-        binary = open(
-            TEST_DATA_FOLDER_PATH / "mask_images" / "person_with_mask.jpg", "br"
-        ).read()
+        binary = open(TEST_DATA_FOLDER_PATH / "mask_images" / "person_with_mask.jpg", "br").read()
         expected_shape = (1, 720, 1080, 3)
 
         # When
@@ -33,8 +31,7 @@ class TestDetectionClassificationHelper:
         # Given
         model_forwarder = TFServingDetectionClassificationWrapper(
             base_url="",
-            class_names_path=TEST_DATA_FOLDER_PATH
-            / "test_detection_foo_bar_baz_labels",
+            class_names_path=TEST_DATA_FOLDER_PATH / "test_detection_foo_bar_baz_labels",
             image_shape=[1, 1],
         )
         json_outputs = {

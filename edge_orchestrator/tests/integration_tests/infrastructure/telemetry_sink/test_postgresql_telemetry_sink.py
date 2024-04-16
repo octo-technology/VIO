@@ -11,12 +11,8 @@ from edge_orchestrator.infrastructure.telemetry_sink.postgresql_telemetry_sink i
 
 @pytest.mark.asyncio
 class TestPostgresTelemetrySink:
-    @freeze_time(
-        lambda: dt.datetime(year=2023, month=1, day=27, hour=15, minute=0, second=0)
-    )
-    async def test_insert_and_select_query_given_one_telemetry_message(
-        self, test_postgres_db_uri
-    ):
+    @freeze_time(lambda: dt.datetime(year=2023, month=1, day=27, hour=15, minute=0, second=0))
+    async def test_insert_and_select_query_given_one_telemetry_message(self, test_postgres_db_uri):
         # Given
         telemetry_msg = {
             "decision": "OK",

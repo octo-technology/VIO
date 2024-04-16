@@ -16,9 +16,7 @@ def measure_tests_pyramid_and_create_gitlab_badges(badges_generation: bool):
         number_of_int_tests,
         number_of_unit_tests,
     ) = compute_number_of_each_test_type()
-    total_number_of_tests = (
-        number_of_unit_tests + number_of_int_tests + number_of_func_tests
-    )
+    total_number_of_tests = number_of_unit_tests + number_of_int_tests + number_of_func_tests
 
     percentage_of_unit_tests = percentage(number_of_unit_tests, total_number_of_tests)
     percentage_of_int_tests = percentage(number_of_int_tests, total_number_of_tests)
@@ -36,9 +34,7 @@ def measure_tests_pyramid_and_create_gitlab_badges(badges_generation: bool):
 \n"""  # noqa
     )
 
-    check_if_pyramid_is_ok(
-        number_of_unit_tests, number_of_int_tests, number_of_func_tests
-    )
+    check_if_pyramid_is_ok(number_of_unit_tests, number_of_int_tests, number_of_func_tests)
 
     if badges_generation:
         import anybadge
@@ -79,15 +75,11 @@ def compute_number_of_each_test_type(
 ) -> Tuple[int, int, int]:
     number_of_unit_tests = count_tests(path_to_unit_tests, test_function_pattern)
     number_of_int_tests = count_tests(path_to_integration_tests, test_function_pattern)
-    number_of_func_tests = count_tests(
-        path_to_functional_tests, test_scenario_pattern, "feature"
-    )
+    number_of_func_tests = count_tests(path_to_functional_tests, test_scenario_pattern, "feature")
     return number_of_func_tests, number_of_int_tests, number_of_unit_tests
 
 
-def count_tests(
-    path: Path, test_function_pattern: re.Pattern, file_extension="py"
-) -> int:
+def count_tests(path: Path, test_function_pattern: re.Pattern, file_extension="py") -> int:
     counter = 0
     for filepath in path.glob(f"**/*.{file_extension}"):
         with filepath.open("r") as f:
@@ -103,9 +95,7 @@ def percentage(number_of_unit_tests: int, total_number_of_tests: int) -> float:
     return number_of_unit_tests / total_number_of_tests * 100
 
 
-def get_color_according_to_percentage(
-    percentage_of_func_tests, percentage_of_int_tests, percentage_of_unit_tests
-):
+def get_color_according_to_percentage(percentage_of_func_tests, percentage_of_int_tests, percentage_of_unit_tests):
     func_color, int_color, unit_color = "green", "green", "green"
     if percentage_of_func_tests <= 1 or percentage_of_func_tests >= 20:
         func_color = "brightred"
@@ -116,9 +106,7 @@ def get_color_according_to_percentage(
     return func_color, int_color, unit_color
 
 
-def check_if_pyramid_is_ok(
-    number_of_unit_tests: int, number_of_int_tests: int, number_of_func_tests: int
-):
+def check_if_pyramid_is_ok(number_of_unit_tests: int, number_of_int_tests: int, number_of_func_tests: int):
     if (
         number_of_func_tests > number_of_int_tests
         or number_of_func_tests > number_of_unit_tests

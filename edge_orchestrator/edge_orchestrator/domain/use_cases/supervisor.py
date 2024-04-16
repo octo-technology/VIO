@@ -15,13 +15,15 @@ from edge_orchestrator.api_config import (
     get_telemetry_sink,
     logger,
 )
-from edge_orchestrator.domain.models.camera import (
+from edge_orchestrator.domain.models.business_rule.camera_rule.camera_rule_factory import (
     get_camera_rule,
-    get_last_inference_by_camera,
 )
+from edge_orchestrator.domain.models.business_rule.item_rule.item_rule_factory import (
+    get_item_rule,
+)
+from edge_orchestrator.domain.models.camera import get_last_inference_by_camera
 from edge_orchestrator.domain.models.decision import Decision
 from edge_orchestrator.domain.models.item import Item
-from edge_orchestrator.domain.models.item import get_item_rule
 from edge_orchestrator.domain.models.model_infos import ModelInfos
 from edge_orchestrator.domain.models.supervisor_state import SupervisorState
 
@@ -31,9 +33,7 @@ def check_capture_according_to_config(item: Item, cameras: List[Dict]):
     cameras = set(cameras)
     missing_camera_binary = cameras.difference(binaries)
     if len(missing_camera_binary) != 0:
-        logger.warning(
-            f"Only {len(binaries)} were received and {len(cameras)} are expected!"
-        )
+        logger.warning(f"Only {len(binaries)} were received and {len(cameras)} are expected!")
         logger.warning(f"Missing image for camera: {missing_camera_binary}")
 
 
@@ -81,9 +81,7 @@ class Supervisor:
 
         @self.save_item_metadata
         async def save_item_binaries(item: Item):
-            self.binary_storage.save_item_binaries(
-                item, self.station_config.active_config["name"]
-            )
+            self.binary_storage.save_item_binaries(item, self.station_config.active_config["name"])
 
         @self.save_item_metadata
         async def set_inferences(item: Item):
@@ -92,11 +90,11 @@ class Supervisor:
         @self.save_item_metadata
         async def set_decision(item: Item):
             decision = self.apply_business_rules(item)
-            item.decision = decision
+            item.decision = decision.value
             telemetry_msg = {
                 "item_id": item.id,
                 "config": item.station_config,
-                "decision": decision,
+                "decision": decision.value,
             }
 
             await self.telemetry_sink.send(telemetry_msg)
@@ -128,9 +126,7 @@ class Supervisor:
     async def get_predictions(self, item: Item) -> Dict[str, Dict]:
         predictions = {}
         for camera_id in self.station_config.get_cameras():
-            predictions_per_camera = await self.get_prediction_for_camera(
-                camera_id, item, "full_image"
-            )
+            predictions_per_camera = await self.get_prediction_for_camera(camera_id, item, "full_image")
             predictions[camera_id] = predictions_per_camera
         return predictions
 
@@ -140,9 +136,7 @@ class Supervisor:
         inference_output = {}
         binary_data = item.binaries[camera_id]
         model_pipeline = self.station_config.get_model_pipeline_for_camera(camera_id)
-        prediction_for_camera = await self.get_inference(
-            inference_output, model_pipeline, binary_data, image_name
-        )
+        prediction_for_camera = await self.get_inference(inference_output, model_pipeline, binary_data, image_name)
 
         return prediction_for_camera
 
@@ -158,17 +152,13 @@ class Supervisor:
                 continue
             logger.info(f"Getting inference for model {current_model.id}")
             if _model_has_no_dependency(current_model.depends_on):
-                inference_output[
-                    current_model.id
-                ] = await self.model_forward.perform_inference(
+                inference_output[current_model.id] = await self.model_forward.perform_inference(
                     current_model, full_image, image_name
                 )
             else:
                 inference_output[current_model.id] = {}
                 model_dependencies = [
-                    model_infos
-                    for model_infos in model_pipeline
-                    if model_infos.id in current_model.depends_on
+                    model_infos for model_infos in model_pipeline if model_infos.id in current_model.depends_on
                 ]
                 inference_output_dependencies = await self.get_inference(
                     inference_output, model_dependencies, full_image, image_name
@@ -182,29 +172,23 @@ class Supervisor:
                     ].items():  # noqa
                         object_location = inference_output_dependency["location"]
                         cropped_image = crop_image(full_image, object_location)
-                        inference_output_object = (
-                            await self.model_forward.perform_inference(
-                                current_model, cropped_image, object_id
-                            )
+                        inference_output_object = await self.model_forward.perform_inference(
+                            current_model, cropped_image, object_id
                         )
                         for (
                             sub_object_id,
                             sub_object_info,
                         ) in inference_output_object.items():
                             if "location" in sub_object_info.keys():
-                                sub_object_info[
-                                    "location"
-                                ] = relocate_sub_object_location_within_full_image(
+                                sub_object_info["location"] = relocate_sub_object_location_within_full_image(
                                     object_location, sub_object_info["location"]
                                 )
-                            inference_output[current_model.id][
-                                sub_object_id
-                            ] = sub_object_info
+                            inference_output[current_model.id][sub_object_id] = sub_object_info
 
         return inference_output
 
     @abstractmethod
-    def apply_business_rules(self, item: Item) -> str:
+    def apply_business_rules(self, item: Item) -> Decision:
         camera_decisions = {}
 
         if item.inferences == Decision.NO_DECISION:
@@ -212,40 +196,28 @@ class Supervisor:
 
         else:
             for camera_id in item.inferences:
-                camera_rule_name = self.station_config.active_config["cameras"][
-                    camera_id
-                ]["camera_rule"]["name"]
-                camera_rule_parameters = self.station_config.active_config["cameras"][
-                    camera_id
-                ]["camera_rule"][
+                camera_rule_name = self.station_config.active_config["cameras"][camera_id]["camera_rule"]["name"]
+                camera_rule_parameters = self.station_config.active_config["cameras"][camera_id]["camera_rule"][
                     "parameters"
-                ]  # noqa
+                ]
 
-                last_model_inferences = get_last_inference_by_camera(
-                    item.inferences[camera_id]
-                )
+                last_model_inferences = get_last_inference_by_camera(item.inferences[camera_id])
                 if last_model_inferences == Decision.NO_DECISION:
                     return Decision.NO_DECISION
                 labels_of_last_model_inferences = get_labels(last_model_inferences)
 
-                item_camera_rule = get_camera_rule(camera_rule_name)(
-                    **camera_rule_parameters
-                )
-                camera_decision = item_camera_rule.get_camera_decision(
-                    labels_of_last_model_inferences
-                )
+                camera_rule = get_camera_rule(camera_rule_name, **camera_rule_parameters)
+                camera_decision = camera_rule.get_camera_decision(labels_of_last_model_inferences)
 
-                camera_decisions[f"{camera_id}"] = camera_decision.value
+                camera_decisions[camera_id] = camera_decision.value
 
             item_rule_name = self.station_config.active_config["item_rule"]["name"]
-            item_rule_parameters = self.station_config.active_config["item_rule"][
-                "parameters"
-            ]
+            item_rule_parameters = self.station_config.active_config["item_rule"]["parameters"]
 
-            item_rule = get_item_rule(item_rule_name)(**item_rule_parameters)
+            item_rule = get_item_rule(item_rule_name, **item_rule_parameters)
             item_decision = item_rule.get_item_decision(camera_decisions)
 
-            return item_decision.value
+            return item_decision
 
 
 def get_labels(inferences):
@@ -275,9 +247,7 @@ def crop_image(binary_data: bytes, detected_object: List[int]) -> bytes:
         area.save(cropped_image, format="JPEG")
         return cropped_image.getvalue()
     else:
-        logger.error(
-            "Informations for cropping are incorrect, the initial picture is used"
-        )
+        logger.error("Informations for cropping are incorrect, the initial picture is used")
         if xmin > xmax:
             logger.error(f"xmin (={xmin}) is greater than xmax (={xmax})")
         elif ymin > ymax:

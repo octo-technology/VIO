@@ -16,18 +16,14 @@ from tests.conftest import (
 )
 
 
-@freeze_time(
-    lambda: dt.datetime(year=2021, month=5, day=19, hour=15, minute=0, second=0)
-)
+@freeze_time(lambda: dt.datetime(year=2021, month=5, day=19, hour=15, minute=0, second=0))
 class TestJsonStationConfig:
     def test_get_models_for_camera_should_return_one_model_infos_when_camera_config_has_one_model(
         self,
     ):
         # Given
         inventory = JsonInventory(TEST_INVENTORY_PATH)
-        json_station_config = JsonStationConfig(
-            TEST_STATION_CONFIGS_FOLDER_PATH, inventory, TEST_DATA_FOLDER_PATH
-        )
+        json_station_config = JsonStationConfig(TEST_STATION_CONFIGS_FOLDER_PATH, inventory, TEST_DATA_FOLDER_PATH)
         camera_id = "camera_id3"
 
         # When
@@ -41,9 +37,7 @@ class TestJsonStationConfig:
     ):
         # Given
         inventory = JsonInventory(TEST_INVENTORY_PATH)
-        json_station_config = JsonStationConfig(
-            TEST_STATION_CONFIGS_FOLDER_PATH, inventory, TEST_DATA_FOLDER_PATH
-        )
+        json_station_config = JsonStationConfig(TEST_STATION_CONFIGS_FOLDER_PATH, inventory, TEST_DATA_FOLDER_PATH)
         json_station_config.set_station_config("station_config_TEST2")
         camera_id = "camera_id3"
 
@@ -55,9 +49,7 @@ class TestJsonStationConfig:
                 category="object_detection",
                 model_type="Mobilenet",
                 class_names=None,
-                class_names_path=os.path.join(
-                    TEST_DATA_FOLDER_PATH, "test_detection_labels"
-                ),
+                class_names_path=os.path.join(TEST_DATA_FOLDER_PATH, "test_detection_labels"),
                 version="1",
                 camera_id="camera_id3",
                 detection_boxes="detection_boxes",

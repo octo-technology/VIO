@@ -13,7 +13,5 @@ class Labels(Enum):
 
 class ModelForward:
     @abstractmethod
-    async def perform_inference(
-        self, model: ModelInfos, binary_data: bytes, binary_name: str
-    ) -> Dict[str, Dict]:
+    async def perform_inference(self, model: ModelInfos, binary_data: bytes, binary_name: str) -> Dict[str, Dict]:
         pass

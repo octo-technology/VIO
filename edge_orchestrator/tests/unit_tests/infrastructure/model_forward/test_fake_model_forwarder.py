@@ -28,14 +28,10 @@ class TestFakeModelForwarder:
         )
         binary_data = bytes([])
 
-        expected = {
-            "full_image": {"label": Labels.OK.value, "probability": 0.3745401188473625}
-        }
+        expected = {"full_image": {"label": Labels.OK.value, "probability": 0.3745401188473625}}
 
         # When
-        actual = await fake_model_forwarder.perform_inference(
-            model_inference_version, binary_data, "full_image"
-        )
+        actual = await fake_model_forwarder.perform_inference(model_inference_version, binary_data, "full_image")
 
         # Then
         assert actual == expected
@@ -68,9 +64,7 @@ class TestFakeModelForwarder:
         }
 
         # When
-        actual = await fake_model_forwarder.perform_inference(
-            model_inference_version, binary_data, "full_image"
-        )
+        actual = await fake_model_forwarder.perform_inference(model_inference_version, binary_data, "full_image")
 
         # Then
         assert actual == expected
@@ -108,9 +102,7 @@ class TestFakeModelForwarder:
         }
 
         # When
-        actual = await fake_model_forwarder.perform_inference(
-            model_inference_version, binary_data, "full_image"
-        )
+        actual = await fake_model_forwarder.perform_inference(model_inference_version, binary_data, "full_image")
 
         # Then
         assert actual == expected

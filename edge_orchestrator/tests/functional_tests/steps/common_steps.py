@@ -25,30 +25,19 @@ def assert_metadata_almost_equal(
         expected_item_value_or_pattern,
     ) in expected_item_metadata.items():
         if expected_item_key == "id":
-            assert re.match(
-                expected_item_value_or_pattern, actual_item_metadata[expected_item_key]
-            )
+            assert re.match(expected_item_value_or_pattern, actual_item_metadata[expected_item_key])
         elif expected_item_key == "received_time":
-            assert strptime(
-                actual_item_metadata[expected_item_key], expected_item_value_or_pattern
-            )
+            assert strptime(actual_item_metadata[expected_item_key], expected_item_value_or_pattern)
         elif expected_item_key == "inferences":
             assert_classification_inference_almost_equal(
                 actual_item_metadata[expected_item_key], expected_item_value_or_pattern
             )
         elif expected_item_key == "decision":
-            assert_decision_is_valid(
-                actual_item_metadata[expected_item_key], expected_item_value_or_pattern
-            )
+            assert_decision_is_valid(actual_item_metadata[expected_item_key], expected_item_value_or_pattern)
         elif expected_item_key == "state":
-            assert_state_is_valid(
-                actual_item_metadata[expected_item_key], expected_item_value_or_pattern
-            )
+            assert_state_is_valid(actual_item_metadata[expected_item_key], expected_item_value_or_pattern)
         else:
-            assert (
-                expected_item_value_or_pattern
-                == actual_item_metadata[expected_item_key]
-            )
+            assert expected_item_value_or_pattern == actual_item_metadata[expected_item_key]
 
 
 def assert_classification_inference_almost_equal(
@@ -75,9 +64,7 @@ def assert_state_is_valid(actual_state: str, expected_state: Optional[str] = Non
         assert actual_state in [state.value for state in SupervisorState]
 
 
-def assert_decision_is_valid(
-    actual_decision: str, expected_decision: Optional[str] = None
-):
+def assert_decision_is_valid(actual_decision: str, expected_decision: Optional[str] = None):
     if expected_decision:
         assert re.match(expected_decision, actual_decision)
     else:

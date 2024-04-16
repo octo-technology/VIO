@@ -1,32 +1,5 @@
-from abc import abstractmethod, ABC
-from typing import Dict, Type, Union
-
-from edge_orchestrator.domain.models.business_rules.camera_business_rules.expected_label_rule import (
-    ExpectedLabelRule,
-)
-from edge_orchestrator.domain.models.business_rules.camera_business_rules.max_nb_objects_rule import (
-    MaxNbObjectsRule,
-)
-from edge_orchestrator.domain.models.business_rules.camera_business_rules.min_nb_objects_rule import (
-    MinNbObjectsRule,
-)
-from edge_orchestrator.domain.models.business_rules.camera_business_rules.unexpected_label_rule import (
-    UnexpectedLabelRule,
-)
-from edge_orchestrator.domain.models.business_rules.camera_rule import CameraRule
-
-
-def get_camera_rule(rule_name) -> Type[CameraRule]:
-    if rule_name == "expected_label_rule":
-        return ExpectedLabelRule
-    elif rule_name == "min_nb_objects_rule":
-        return MinNbObjectsRule
-    elif rule_name == "max_nb_objects_rule":
-        return MaxNbObjectsRule
-    elif rule_name == "unexpected_label_rule":
-        return UnexpectedLabelRule
-    else:
-        raise NotImplementedError
+from abc import ABC, abstractmethod
+from typing import Dict, Union
 
 
 def get_last_inference_by_camera(inference: Dict) -> Dict:
