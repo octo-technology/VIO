@@ -116,5 +116,5 @@ def get_binary_storage(item_id: str,
 
 @api_router.get("/metadata_storage")
 def get_metadata_storage(metadata_storage: MetadataStorage = Depends(get_metadata_storage)):
-    return metadata_storage
+    return metadata_storage.get_all_items_metadata()
 

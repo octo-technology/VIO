@@ -9,6 +9,7 @@ def load_config():
 
     available_configurations = [
         "default",
+        "docker"
     ]
 
     if configuration not in available_configurations:
@@ -17,28 +18,20 @@ def load_config():
             f"Valid configurations are {available_configurations}."
         )
 
-        configuration_class = Docker
     elif configuration == "default":
         from hub_labelizer.environment.default import Default
 
         configuration_class = Default
 
+    elif configuration == "docker":
+        from hub_labelizer.environment.docker import Docker
+
+        configuration_class = Docker
+
     return configuration_class()
 
 
 config = load_config()
-
-
-def get_metadata_storage():
-    return config.get_metadata_storage()
-
-
-def get_binary_storage():
-    return config.get_binary_storage()
-
-
-def get_station_config():
-    return config.get_station_config()
 
 
 def get_labelizer():

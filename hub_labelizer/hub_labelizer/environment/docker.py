@@ -8,10 +8,10 @@ from hub_labelizer.infrastructure.labelizer.labelbox_labelizer import (
 )
 
 
-class Default(Config):
-    os.environ["ORCHESTRATOR_MODEL_URL"] = "http://0.0.0.0:8000"
+class Docker(Config):
+    os.environ["EDGE_ORCHESTRATOR_URL"] = "http://edge_orchestrator:8000"
     ORCHESTRATOR_MODEL_URL = os.environ.get(
-        "ORCHESTRATOR_MODEL_URL", "http://0.0.0.0:8000"
+        "EDGE_ORCHESTRATOR_URL", "http://edge_orchestrator:8000"
     )
 
     def __init__(self):

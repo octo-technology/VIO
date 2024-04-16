@@ -15,7 +15,7 @@ async def get_metadata(url_orchestrator: str):
         async with aiohttp.ClientSession() as session:
             async with session.get(call_url) as response:
                 json_data = await response.json()
-                logger.debug(f"Received metadata for {json_data['items_metadata'].keys()} items")
+                logger.debug(f"Received metadata for {len(json_data)} items")
 
     except Exception as e:
         logger.exception(e)
@@ -27,12 +27,13 @@ async def aget_binaries_annotations_path(url_orchestrator: str, config_name: str
     dict_metabin = {}
     metadata = await get_metadata(url_orchestrator)
 
-    for item_id in list(metadata["items_metadata"].keys()):
-        for camera_id in metadata["items_metadata"][item_id]["inferences"].keys():
+    for item_metadata in metadata:
+        item_id = item_metadata["id"]
+        for camera_id in item_metadata["inferences"].keys():
             # Get detections for this binary
             lb_annotation_list = []
-            camera_detections = metadata["items_metadata"][item_id]["inferences"][camera_id]
-            camera_dimensions = metadata["items_metadata"][item_id]["dimensions"][camera_id]
+            camera_detections = item_metadata["inferences"][camera_id]
+            camera_dimensions = item_metadata["dimensions"][camera_id]
             for model_id in camera_detections.keys():
                 for detection in camera_detections[model_id].values():
                     lb_annotation = transform_annotations_to_bbox(detection, camera_dimensions)
@@ -89,7 +90,7 @@ class LabelboxLabelizer(Labelizer):
 
     async def apost_images(self, project_id: str, dataset_id: str, config_name: str, filters: dict):
         self.load_dataset(dataset_id)
-        url_orchestrator = os.getenv("ORCHESTRATOR_MODEL_URL")
+        url_orchestrator = os.getenv("EDGE_ORCHESTRATOR_URL")
         print(url_orchestrator)
         binaries_annotations = await aget_binaries_annotations_path(url_orchestrator, config_name)
 
