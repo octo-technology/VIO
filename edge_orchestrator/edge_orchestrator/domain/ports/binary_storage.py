@@ -18,7 +18,5 @@ class BinaryStorage:
         pass
 
     @abstractmethod
-    def get_filepath(
-        self, item_id: str, camera_id: str, active_config_name: str
-    ) -> str:
+    def get_filepath(self, item_id: str, camera_id: str, active_config_name: str) -> str:
         pass

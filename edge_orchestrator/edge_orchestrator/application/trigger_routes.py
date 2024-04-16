@@ -1,8 +1,8 @@
+import io
+
 from fastapi import APIRouter, BackgroundTasks, Depends, File, UploadFile
 from fastapi.responses import JSONResponse
-
 from PIL import Image
-import io
 
 from edge_orchestrator.api_config import get_station_config
 from edge_orchestrator.domain.models.item import Item

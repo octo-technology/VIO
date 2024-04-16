@@ -50,7 +50,5 @@ class AzureContainerBinaryStorage(BinaryStorage):
                     binaries.append(f.read())
         return binaries
 
-    def get_item_binary_filepath(
-        self, item_id: str, camera_id: str, active_config_name: str
-    ) -> str:
+    def get_item_binary_filepath(self, item_id: str, camera_id: str, active_config_name: str) -> str:
         return f"azure://{self.azure_container_name}/{active_config_name}/{item_id}_{camera_id}.jpg"

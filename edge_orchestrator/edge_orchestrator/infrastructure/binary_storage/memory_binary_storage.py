@@ -20,7 +20,5 @@ class MemoryBinaryStorage(BinaryStorage):
     def get_item_binaries(self, item_id: str, active_config_name: str) -> List[str]:
         return list(self.binaries[item_id].keys())
 
-    def get_filepath(
-        self, item_id: str, camera_id: str, active_config_name: str
-    ) -> str:
+    def get_filepath(self, item_id: str, camera_id: str, active_config_name: str) -> str:
         return NotImplementedError

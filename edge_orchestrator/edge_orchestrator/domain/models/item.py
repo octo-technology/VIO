@@ -1,12 +1,10 @@
 import datetime as dt
-import uuid
-
-from typing import Dict, Type, List
-
+from typing import Dict, List
+from uuid import uuid4
 
 
 def generate_id() -> str:
-    return str(uuid.uuid4())
+    return str(uuid4())
 
 
 class Item:
