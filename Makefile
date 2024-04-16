@@ -30,6 +30,10 @@ edge_db:
 hub_monitoring:
 	docker-compose up -d --build hub_monitoring
 
+.PHONY: hub_labelizer ## ⚙️ Start hub_labelizer inside a docker container
+hub_labelizer:
+	docker-compose up -d --build hub_labelizer
+
 .PHONY: hub_monitoring_db ## ⚙️ Start hub_monitoring database inside a docker container
 hub_monitoring_db:
 	docker-compose up -d --build hub_monitoring_db

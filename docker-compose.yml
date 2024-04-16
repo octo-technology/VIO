@@ -36,6 +36,19 @@ services:
       MONGO_DB_URI: mongodb://edge_db:27017/
       POSTGRES_DB_URI: postgresql://vio:vio@hub_monitoring_db:5432/vio
 
+  hub_labelizer:
+    container_name: hub_labelizer
+    build:
+      context: hub_labelizer
+      dockerfile: Dockerfile
+    volumes:
+      - ./edge_orchestrator/data:/edge_orchestrator/data
+    ports:
+      - 8100:8100
+    environment:
+      API_CONFIG: docker
+      EDGE_ORCHESTRATOR_URL: http://edge_orchestrator:8000
+
   edge_interface:
     container_name: edge_interface
     build:
