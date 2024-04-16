@@ -524,7 +524,7 @@ class TestSupervisor:
     @patch.object(PostgresTelemetrySink, "send")
     async def test_set_decision_should_send_final_decision_to_telemetry_sink(self, mock_send):
         # Given
-        item = Item(serial_number="", category="", cameras_metadata={}, binaries={})
+        item = Item(serial_number="", category="", cameras_metadata={}, binaries={}, dimensions=[])
         item.id = "item_id"
         inventory = JsonInventory(TEST_INVENTORY_PATH)
         station_config = JsonStationConfig(TEST_STATION_CONFIGS_FOLDER_PATH, inventory, TEST_DATA_FOLDER_PATH)
