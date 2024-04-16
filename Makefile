@@ -45,3 +45,12 @@ vio-edge-up-raspberrypi:
 .PHONY: vio-edge-down ## ❌ Stop all services (model_serving, edge_orchestrator, ui)
 vio-edge-down:
 	docker-compose down
+
+.PHONY: copy-emissions ## 📄 Copy emissions.csv from edge_orchestrator container (overwrites local file after one run)
+copy-emissions:
+	docker cp edge_orchestrator:edge_orchestrator/emissions.csv ./edge_orchestrator/emissions
+
+.PHONY: read-emissions ## 📄 Read emissions.csv
+read-emissions:
+	python ./edge_orchestrator/emissions/read_emissions.py edge_orchestrator/emissions/emissions.csv
+

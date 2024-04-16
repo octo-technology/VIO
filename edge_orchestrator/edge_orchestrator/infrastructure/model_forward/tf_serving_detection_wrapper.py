@@ -1,10 +1,12 @@
 import io
+import logging
 from pathlib import Path
 from typing import Dict
 
 import aiohttp
 import numpy as np
 from PIL import Image
+from codecarbon import EmissionsTracker
 
 from edge_orchestrator import logger
 from edge_orchestrator.domain.models.model_infos import ModelInfos
@@ -18,6 +20,12 @@ class TFServingDetectionWrapper(ModelForward):
         self.image_shape = image_shape
 
     async def perform_inference(self, model: ModelInfos, binary_data: bytes, binary_name: str) -> Dict[str, Dict]:
+
+        # Inference carbon tracking
+        tracker = EmissionsTracker(project_name="inference_object_detection", experiment_id="1",
+                                   tracking_mode="process", log_level="debug")
+        tracker.start()
+
         processed_img = self.perform_pre_processing(model, binary_data)
         logger.debug(f"Processed image size: {processed_img.shape}")
         payload = {"inputs": processed_img.tolist(), "model_type": model.model_type}
@@ -32,6 +40,10 @@ class TFServingDetectionWrapper(ModelForward):
                     inference_output = self.perform_post_processing(model, json_data["outputs"])
         except Exception as e:
             logger.exception(e)
+
+        emissions = tracker.stop()
+        logger.info(f"Total emissions for the inference: {emissions*1_000} gCO2eq")
+
         return inference_output
 
     def perform_pre_processing(self, model: ModelInfos, binary: bytes):
@@ -117,5 +129,4 @@ class TFServingDetectionWrapper(ModelForward):
                             "location": box_coordinates_in_current_image,
                             "score": box_objectness_score_in_current_image,
                         }
-
         return inference_output
