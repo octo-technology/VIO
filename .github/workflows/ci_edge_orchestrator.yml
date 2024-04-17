@@ -135,23 +135,3 @@ jobs:
     secrets:
       username: ${{ github.actor }}
       password: ${{ secrets.GITHUB_TOKEN }}
-
-  build_and-publish:
-    name: Build and publish Python 🐍 distributions 📦 to GitHub Packages
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out repository
-        uses: actions/checkout@v3
-
-      - name: Setup Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v4
-        with:
-          python-version: ${{ matrix.python-version }}
-
-      - name: Build and publish
-        env:
-          TWINE_USERNAME: ${{ github.actor }}
-          TWINE_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          python setup.py sdist bdist_wheel
-          twine upload --repository-url https://ghcr.io/${{ github.repository }}/edge_orchestrator dist/*
