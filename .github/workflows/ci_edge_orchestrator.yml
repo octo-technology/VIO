@@ -148,12 +148,6 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
-      - name: Install dependencies
-        run: |
-            make install
-            pip install setuptools wheel twine -t .
-        working-directory: ./edge_orchestrator
-
       - name: Build and publish
         env:
           TWINE_USERNAME: ${{ github.actor }}
