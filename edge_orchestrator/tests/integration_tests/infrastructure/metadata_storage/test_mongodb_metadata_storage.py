@@ -35,6 +35,7 @@ class TestMongoDbItemStorage:
                 "received_time": "2021-05-19 15:00:00",
                 "inferences": {},
                 "decision": {},
+                "dimensions": [100, 100],
                 "state": None,
                 "error": None,
             }
@@ -64,6 +65,7 @@ class TestMongoDbItemStorage:
             "received_time": "2021-05-19 15:00:00",
             "inferences": {},
             "decision": {},
+            "dimensions": [100, 100],
             "state": None,
             "error": None,
         }
@@ -105,6 +107,7 @@ class TestMongoDbItemStorage:
                 "received_time": "2021-05-19 15:00:00",
                 "inferences": {},
                 "decision": {},
+                "dimensions": [100, 100],
                 "state": None,
                 "error": None,
             },
@@ -123,6 +126,7 @@ class TestMongoDbItemStorage:
                 "received_time": "2021-05-19 15:00:00",
                 "inferences": {},
                 "decision": {},
+                "dimensions": [100, 100],
                 "state": None,
                 "error": None,
             },
