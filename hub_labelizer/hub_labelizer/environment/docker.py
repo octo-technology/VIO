@@ -1,4 +1,5 @@
 import os
+from dotenv import load_dotenv
 
 from hub_labelizer.environment.config import Config
 
@@ -6,6 +7,7 @@ from hub_labelizer.infrastructure.labelizer.labelbox_labelizer import LabelboxLa
 
 
 class Docker(Config):
+    load_dotenv()
     os.environ["EDGE_ORCHESTRATOR_URL"] = "http://edge_orchestrator:8000"
     ORCHESTRATOR_MODEL_URL = os.environ.get(
         "EDGE_ORCHESTRATOR_URL", "http://edge_orchestrator:8000"
