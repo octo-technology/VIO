@@ -48,7 +48,7 @@ vio-edge-up:
 
 .PHONY: vio-up ## 🐳 Start all edge services (db, model_serving, orchestrator, interface) and hubs (monitoring, monitoring_db, labelizer)
 vio-up:
-	docker-compose up -d --build
+	docker-compose --profile hub --profile edge up -d --build
 
 .PHONY: vio-edge-up-raspberrypi ## 🐳 Start all edge services on RaspberryPI (db, model_serving, orchestrator, interface)
 vio-edge-up-raspberrypi:
