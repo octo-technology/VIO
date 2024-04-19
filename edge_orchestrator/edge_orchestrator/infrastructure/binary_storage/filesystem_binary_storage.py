@@ -26,6 +26,9 @@ class FileSystemBinaryStorage(BinaryStorage):
         filepath = self.folder / active_config_name / item_id
         return [binary_path.name for binary_path in filepath.glob("*")]
 
+    def get_item_binary_filepath(self, item_id: str, camera_id: str, active_config_name: str) -> str:
+        return str(_get_filepath(self.folder, item_id, camera_id, active_config_name))
+
 
 def _get_filepath(folder: Path, item_id: str, camera_id: str, active_config_name: str) -> Path:
     return folder / active_config_name / item_id / (camera_id + ".jpg")

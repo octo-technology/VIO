@@ -21,6 +21,7 @@ class TestFileSystemMetadataStorage:
             category="category",
             cameras_metadata=my_cameras_metadata_0,
             binaries={},
+            dimensions=[],
         )
         src_directory_path = Path(tmpdir.mkdir("metadata"))
         metadata_storage = FileSystemMetadataStorage(src_directory_path)
@@ -33,6 +34,7 @@ class TestFileSystemMetadataStorage:
             "station_config": item.station_config,
             "cameras": item.cameras_metadata,
             "received_time": item.received_time.strftime("%Y-%m-%d %H:%M:%S"),
+            "dimensions": item.dimensions,
             "inferences": item.inferences,
             "decision": item.decision,
             "state": item.state,
@@ -76,6 +78,7 @@ class TestFileSystemMetadataStorage:
             category="category",
             cameras_metadata=my_cameras_metadata_0,
             binaries={},
+            dimensions=[],
         )
         item.state = SupervisorState.DONE.value
         expected_state = item.state

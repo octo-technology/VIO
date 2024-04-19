@@ -14,6 +14,7 @@ def my_item_0(my_cameras_metadata_0, my_binaries_0):
         category="tacos",
         cameras_metadata=my_cameras_metadata_0,
         binaries=my_binaries_0,
+        dimensions=[100, 100],
     )
 
 
@@ -25,6 +26,7 @@ def my_item_1(my_cameras_metadata_1, my_binaries_1):
         category="category_test",
         cameras_metadata=my_cameras_metadata_1,
         binaries=my_binaries_1,
+        dimensions=[100, 100],
     )
 
 
@@ -36,6 +38,7 @@ def my_fake_item(my_cameras_metadata_1, my_fake_binaries):
         category="category_test",
         cameras_metadata=my_cameras_metadata_1,
         binaries=my_fake_binaries,
+        dimensions=[100, 100],
     )
 
 
@@ -47,6 +50,7 @@ def my_fake_item_2(my_cameras_metadata_3, my_fake_binaries_2):
         category="category_test",
         cameras_metadata=my_cameras_metadata_3,
         binaries=my_fake_binaries_2,
+        dimensions=[100, 100],
     )
 
 
@@ -58,4 +62,5 @@ def my_item_2(my_cameras_metadata_2, my_binaries_2):
         category="tacos",
         cameras_metadata=my_cameras_metadata_2,
         binaries=my_binaries_2,
+        dimensions=[100, 100],
     )

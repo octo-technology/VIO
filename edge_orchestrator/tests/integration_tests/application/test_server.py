@@ -48,6 +48,7 @@ class TestServer:
             "station_config",
             "cameras",
             "received_time",
+            "dimensions",
             "inferences",
             "decision",
             "state",
@@ -61,5 +62,5 @@ class TestServer:
         # Then
         assert actual_response.status_code == 200
         json_response = json.loads(actual_response.text)
-        assert len(json_response) == 10
+        assert len(json_response) == 11
         assert list(json_response.keys()) == keys_expected

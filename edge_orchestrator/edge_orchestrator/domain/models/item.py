@@ -1,10 +1,10 @@
 import datetime as dt
-import uuid
-from typing import Dict
+from typing import Dict, List
+from uuid import uuid4
 
 
 def generate_id() -> str:
-    return str(uuid.uuid4())
+    return str(uuid4())
 
 
 class Item:
@@ -14,6 +14,7 @@ class Item:
         category: str,
         cameras_metadata: Dict[str, Dict],
         binaries: Dict[str, bytes],
+        dimensions: Dict[str, List[int]],
     ):
         self.id = generate_id()
         self.received_time = dt.datetime.now()
@@ -21,6 +22,7 @@ class Item:
         self.category = category
         self.cameras_metadata = cameras_metadata
         self.binaries = binaries
+        self.dimensions = dimensions
 
         self.inferences = {}
         self.decision = {}
@@ -31,7 +33,7 @@ class Item:
 
     @classmethod
     def from_nothing(cls):
-        return Item("serial_number", "category", {}, {})
+        return Item("serial_number", "category", {}, {}, {})
 
     def get_metadata(self, with_id: bool = True) -> Dict:
         metadata = {
@@ -40,6 +42,7 @@ class Item:
             "station_config": self.station_config,
             "cameras": self.cameras_metadata,
             "received_time": self.received_time.strftime("%Y-%m-%d %H:%M:%S"),
+            "dimensions": self.dimensions,
             "inferences": self.inferences,
             "decision": self.decision,
             "state": self.state,
@@ -57,6 +60,7 @@ class Item:
             and self.category == other.category
             and self.cameras_metadata == other.cameras_metadata
             and self.binaries == other.binaries
+            and self.dimensions == other.dimensions
             and self.inferences == other.inferences
             and self.decision == other.decision
             and self.state == other.state

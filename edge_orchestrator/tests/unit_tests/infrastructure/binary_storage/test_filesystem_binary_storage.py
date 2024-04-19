@@ -22,6 +22,7 @@ class TestFileSystemBinaryStorage:
             category="category",
             cameras_metadata={},
             binaries={"camera_id": expected_picture},
+            dimensions=[100, 100],
         )
 
         # When

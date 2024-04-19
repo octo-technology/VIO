@@ -19,6 +19,7 @@ class TestMemoryBinaryStorage:
             category="category",
             cameras_metadata={},
             binaries={"my_picture_name": expected_picture},
+            dimensions=[100, 100],
         )
 
         # When

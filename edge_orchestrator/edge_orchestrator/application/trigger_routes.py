@@ -1,5 +1,8 @@
+import io
+
 from fastapi import APIRouter, BackgroundTasks, Depends, File, UploadFile
 from fastapi.responses import JSONResponse
+from PIL import Image
 
 from edge_orchestrator.api_config import get_station_config
 from edge_orchestrator.domain.models.item import Item
@@ -28,6 +31,9 @@ async def trigger_job(image: UploadFile = None, background_tasks: BackgroundTask
         if image:
             contents = image.file.read()
             camera_id = supervisor.station_config.get_cameras()[0]
+
+            img = Image.open(io.BytesIO(contents))
+            item.dimensions = {camera_id: img.size}
             item.binaries = {camera_id: contents}
         background_tasks.add_task(supervisor.inspect, item)
         return {"item_id": item.id}
