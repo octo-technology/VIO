@@ -38,14 +38,22 @@ hub_labelizer:
 hub_monitoring_db:
 	docker-compose up -d --build hub_monitoring_db
 
-.PHONY: vio-edge-up ## 🐳 Start all services (db, model_serving, orchestrator, interface) and local hub monitoring
+.PHONY: vio-hub-up ## 🐳 Start all hub services (monitoring, monitoring_db, labelizer)
+vio-hub-up:
+	docker-compose --profile hub up -d --build
+
+.PHONY: vio-edge-up ## 🐳 Start all edge services (db, model_serving, orchestrator, interface)
 vio-edge-up:
+	docker-compose --profile edge up -d --build
+
+.PHONY: vio-up ## 🐳 Start all edge services (db, model_serving, orchestrator, interface) and hubs (monitoring, monitoring_db, labelizer)
+vio-up:
 	docker-compose up -d --build
 
 .PHONY: vio-edge-up-raspberrypi ## 🐳 Start all edge services on RaspberryPI (db, model_serving, orchestrator, interface)
 vio-edge-up-raspberrypi:
 	docker-compose -f docker-compose.raspberrypi.yml up -d --build
 
-.PHONY: vio-edge-down ## ❌ Stop all services (model_serving, edge_orchestrator, ui)
-vio-edge-down:
+.PHONY: vio-down ## ❌ Stop all services (model_serving, edge_orchestrator, ui)
+vio-down:
 	docker-compose down

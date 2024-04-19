@@ -101,11 +101,13 @@ class LabelboxLabelizer(Labelizer):
         self.dataset = self.client.get_dataset(dataset_id)
 
     async def apost_images(
-        self, project_id: str, dataset_id: str, config_name: str, filters: dict
+        self, project_id: str, dataset_id: str, config_name: str, api_key: str, filters: dict
     ):
+        if not api_key:
+            self.client = lb.Client(api_key=os.getenv("LABELBOX_API_KEY"))
+
         self.load_dataset(dataset_id)
         url_orchestrator = os.getenv("EDGE_ORCHESTRATOR_URL")
-        print(url_orchestrator)
         binaries_annotations = await aget_binaries_annotations_path(
             url_orchestrator, config_name
         )

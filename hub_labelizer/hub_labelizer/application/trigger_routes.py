@@ -11,10 +11,11 @@ async def drop_to_labelizer_job(
     project_id: str = None,
     dataset_id: str = None,
     config_name: str = None,
+    api_key: str = None,
     labelizer: Labelizer = Depends(get_labelizer),
     background_tasks: BackgroundTasks = None,
 ):
     filters = {}
     background_tasks.add_task(
-        labelizer.apost_images, project_id, dataset_id, config_name, filters
+        labelizer.apost_images, project_id, dataset_id, config_name, api_key, filters
     )
