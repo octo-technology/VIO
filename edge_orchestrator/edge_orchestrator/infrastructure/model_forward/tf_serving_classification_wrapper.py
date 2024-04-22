@@ -3,6 +3,7 @@ import io
 import aiohttp
 import numpy as np
 from PIL import Image, ImageOps
+from codecarbon import EmissionsTracker
 
 from edge_orchestrator import logger
 from edge_orchestrator.domain.models.model_infos import ModelInfos
@@ -15,21 +16,31 @@ class TFServingClassificationWrapper(ModelForward):
         self.class_names = None
 
     async def perform_inference(self, model: ModelInfos, binary_data: bytes, binary_name: str) -> dict:
+
+        tracker = EmissionsTracker(project_name="classification_inference", measure_power_secs=1,
+                                   tracking_mode="process", log_level="critical")
+
         self.class_names = model.class_names
         processed_img = self.perform_pre_processing(model, binary_data)
         payload = {"inputs": processed_img.tolist()}
         model_url = f"{self.base_url}/v1/models/{model.name}/versions/{model.version}:predict"
         logger.info(f"Getting prediction using: {model_url}")
         try:
+            tracker.start_task("perform_classification_inference")
             async with aiohttp.ClientSession() as session:
                 async with session.post(model_url, json=payload) as response:
                     json_data = await response.json()
-            inference_output = self.perform_post_processing(model, json_data["outputs"], binary_name)
-            return inference_output
+                    logger.debug(f"response received {json_data}")
+                    inference_output = self.perform_post_processing(model, json_data["outputs"], binary_name)
+                    inference_emissions = tracker.stop_task()
         except Exception as e:
             logger.exception(e)
             inference_output = "NO_DECISION"
-            return inference_output
+        finally:
+            _ = tracker.stop()
+
+        logger.info(f"Total emissions for the classification inference: {inference_emissions.emissions * 1_000} gCO2eq")
+        return inference_output
 
     def perform_pre_processing(self, model: ModelInfos, binary: bytes):
         data = np.ndarray(

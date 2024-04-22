@@ -21,10 +21,8 @@ class TFServingDetectionWrapper(ModelForward):
 
     async def perform_inference(self, model: ModelInfos, binary_data: bytes, binary_name: str) -> Dict[str, Dict]:
 
-        # Inference carbon tracking
-        tracker = EmissionsTracker(project_name="inference_object_detection", experiment_id="1",
-                                   tracking_mode="process", log_level="debug")
-        tracker.start()
+        tracker = EmissionsTracker(project_name="detection_inference", measure_power_secs=1,
+                                   tracking_mode="process", log_level="critical")
 
         processed_img = self.perform_pre_processing(model, binary_data)
         logger.debug(f"Processed image size: {processed_img.shape}")
@@ -33,17 +31,19 @@ class TFServingDetectionWrapper(ModelForward):
         logger.info(f"Get prediction at {model_url}")
         inference_output = {}
         try:
+            tracker.start_task("perform_detection_inference")
             async with aiohttp.ClientSession() as session:
                 async with session.post(model_url, json=payload) as response:
                     json_data = await response.json()
                     logger.debug(f"response received {json_data}")
                     inference_output = self.perform_post_processing(model, json_data["outputs"])
+                    inference_emissions = tracker.stop_task()
         except Exception as e:
             logger.exception(e)
+        finally:
+            _ = tracker.stop()
 
-        emissions = tracker.stop()
-        logger.info(f"Total emissions for the inference: {emissions*1_000} gCO2eq")
-
+        logger.info(f"Total emissions for the detection inference: {inference_emissions.emissions*1_000} gCO2eq")
         return inference_output
 
     def perform_pre_processing(self, model: ModelInfos, binary: bytes):

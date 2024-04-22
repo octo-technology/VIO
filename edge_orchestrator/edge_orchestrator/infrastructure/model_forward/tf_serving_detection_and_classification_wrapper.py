@@ -5,6 +5,7 @@ from typing import Dict
 import aiohttp
 import numpy as np
 from PIL import Image
+from codecarbon import EmissionsTracker
 
 from edge_orchestrator import logger
 from edge_orchestrator.domain.models.model_infos import ModelInfos
@@ -18,21 +19,32 @@ class TFServingDetectionClassificationWrapper(ModelForward):
         self.class_names_path = class_names_path
 
     async def perform_inference(self, model: ModelInfos, binary_data: bytes, binary_name: str) -> Dict[str, Dict]:
+
+        tracker = EmissionsTracker(project_name="detection_and_classification_inference", measure_power_secs=1,
+                                   tracking_mode="process", log_level="critical")
+
         processed_img = self.perform_pre_processing(binary_data)
         logger.debug(f"Processed image size: {processed_img.shape}")
         payload = {"inputs": processed_img.tolist()}
         model_url = f"{self.base_url}/v1/models/{model.name}/versions/{model.version}:predict"
 
         try:
+            tracker.start_task("perform_detection_and_classification_inference")
             async with aiohttp.ClientSession() as session:
                 async with session.post(model_url, json=payload) as response:
                     json_data = await response.json()
-            inference_output = self.perform_post_processing(model, json_data["outputs"])
-            return inference_output
+                    logger.debug(f"response received {json_data}")
+                    inference_output = self.perform_post_processing(model, json_data["outputs"])
+                    inference_emissions = tracker.stop_task()
         except Exception as e:
             logger.exception(e)
             inference_output = "NO_DECISION"
-            return inference_output
+        finally:
+            _ = tracker.stop()
+
+        logger.info(f"Total emissions for the detection and classification inference:"
+                    f" {inference_emissions.emissions*1_000} gCO2eq")
+        return inference_output
 
     def perform_pre_processing(self, binary: bytes):
         img = Image.open(io.BytesIO(binary))
