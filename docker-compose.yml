@@ -24,9 +24,18 @@ services:
     build:
       context: edge_orchestrator
       dockerfile: Dockerfile
+    privileged: true
     volumes:
+      - type: bind
+        source: /proc
+        target: /proc
+      ##      - type: bind
+      ##        source: /sys/class/powercap
+      ##        target: /sys/class/powercap
       - ./edge_orchestrator/data:/edge_orchestrator/data
       - ./edge_orchestrator/config:/edge_orchestrator/config
+      - ./edge_orchestrator/emissions:/edge_orchestrator/emissions
+      - /sys:/sys
     ports:
       - 8000:8000
     environment:

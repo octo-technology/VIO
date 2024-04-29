@@ -21,8 +21,12 @@ class TFServingDetectionWrapper(ModelForward):
 
     async def perform_inference(self, model: ModelInfos, binary_data: bytes, binary_name: str) -> Dict[str, Dict]:
 
+        # TODO : remove unused code
+        ROOT_PATH = Path(__file__).parents[3]
+        emissions_path = ROOT_PATH / "emissions"
+        logger.info(f"emissions_path: {emissions_path}")
         tracker = EmissionsTracker(project_name="detection_inference", measure_power_secs=1,
-                                   tracking_mode="process", log_level="critical")
+                                   tracking_mode="process", log_level="info", output_dir=str(emissions_path))
 
         processed_img = self.perform_pre_processing(model, binary_data)
         logger.debug(f"Processed image size: {processed_img.shape}")
