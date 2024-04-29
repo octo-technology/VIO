@@ -29,9 +29,9 @@ services:
       - type: bind
         source: /proc
         target: /proc
-      ##      - type: bind
-      ##        source: /sys/class/powercap
-      ##        target: /sys/class/powercap
+      - type: bind
+        source: /usr/bin/powermetrics
+        target: /usr/bin/powermetrics
       - ./edge_orchestrator/data:/edge_orchestrator/data
       - ./edge_orchestrator/config:/edge_orchestrator/config
       - ./edge_orchestrator/emissions:/edge_orchestrator/emissions
