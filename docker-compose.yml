@@ -2,7 +2,7 @@ version: '3'
 
 services:
   edge_db:
-    image: mongo:5.0.2
+    image: mongo:4.4
     container_name: edge_db
     ports:
       - 27017:27017
