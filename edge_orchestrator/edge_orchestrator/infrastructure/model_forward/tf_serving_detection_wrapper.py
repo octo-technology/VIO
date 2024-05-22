@@ -1,12 +1,10 @@
 import io
-import logging
 from pathlib import Path
 from typing import Dict
 
 import aiohttp
 import numpy as np
 from PIL import Image
-from codecarbon import EmissionsTracker
 
 from edge_orchestrator import logger
 from edge_orchestrator.domain.models.model_infos import ModelInfos
@@ -21,13 +19,6 @@ class TFServingDetectionWrapper(ModelForward):
 
     async def perform_inference(self, model: ModelInfos, binary_data: bytes, binary_name: str) -> Dict[str, Dict]:
 
-        # TODO : remove unused code
-        ROOT_PATH = Path(__file__).parents[3]
-        emissions_path = ROOT_PATH / "emissions"
-        logger.info(f"emissions_path: {emissions_path}")
-        tracker = EmissionsTracker(project_name="detection_inference", measure_power_secs=1,
-                                   tracking_mode="process", log_level="info", output_dir=str(emissions_path))
-
         processed_img = self.perform_pre_processing(model, binary_data)
         logger.debug(f"Processed image size: {processed_img.shape}")
         payload = {"inputs": processed_img.tolist(), "model_type": model.model_type}
@@ -35,19 +26,14 @@ class TFServingDetectionWrapper(ModelForward):
         logger.info(f"Get prediction at {model_url}")
         inference_output = {}
         try:
-            tracker.start_task("perform_detection_inference")
             async with aiohttp.ClientSession() as session:
                 async with session.post(model_url, json=payload) as response:
                     json_data = await response.json()
                     logger.debug(f"response received {json_data}")
                     inference_output = self.perform_post_processing(model, json_data["outputs"])
-                    inference_emissions = tracker.stop_task()
         except Exception as e:
             logger.exception(e)
-        finally:
-            _ = tracker.stop()
 
-        logger.info(f"Total emissions for the detection inference: {inference_emissions.emissions*1_000} gCO2eq")
         return inference_output
 
     def perform_pre_processing(self, model: ModelInfos, binary: bytes):

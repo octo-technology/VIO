@@ -25,6 +25,7 @@ services:
       context: edge_orchestrator
       dockerfile: Dockerfile
     privileged: true
+    # TODO : change volumes
     volumes:
       - ./edge_orchestrator/data:/edge_orchestrator/data
       - ./edge_orchestrator/config:/edge_orchestrator/config

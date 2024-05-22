@@ -3,6 +3,7 @@ import io
 from abc import abstractmethod
 from collections import OrderedDict
 from typing import Any, Dict, List, Union
+from pathlib import Path
 
 from PIL import Image
 
@@ -26,6 +27,11 @@ from edge_orchestrator.domain.models.decision import Decision
 from edge_orchestrator.domain.models.item import Item
 from edge_orchestrator.domain.models.model_infos import ModelInfos
 from edge_orchestrator.domain.models.supervisor_state import SupervisorState
+from codecarbon import track_emissions
+
+ROOT_PATH = Path(__file__).parents[3]
+emissions_path = ROOT_PATH / "emissions"
+logger.info(f"emissions_path: {emissions_path}")
 
 
 def check_capture_according_to_config(item: Item, cameras: List[Dict]):
@@ -39,13 +45,13 @@ def check_capture_according_to_config(item: Item, cameras: List[Dict]):
 
 class Supervisor:
     def __init__(
-        self,
-        metadata_storage=get_metadata_storage(),
-        binary_storage=get_binary_storage(),
-        model_forward=get_model_forward(),
-        station_config=get_station_config(),
-        edge_station=get_edge_station(),
-        telemetry_sink=get_telemetry_sink(),
+            self,
+            metadata_storage=get_metadata_storage(),
+            binary_storage=get_binary_storage(),
+            model_forward=get_model_forward(),
+            station_config=get_station_config(),
+            edge_station=get_edge_station(),
+            telemetry_sink=get_telemetry_sink(),
     ):
         self.metadata_storage = metadata_storage
         self.binary_storage = binary_storage
@@ -54,6 +60,8 @@ class Supervisor:
         self.edge_station = edge_station
         self.telemetry_sink = telemetry_sink
 
+    @track_emissions(project_name="track_metadata", measure_power_secs=1,
+                     log_level="info", output_dir=str(emissions_path))
     def save_item_metadata(self, fct):
         @functools.wraps(fct)
         async def wrapper(item: Item, *args):
@@ -84,6 +92,8 @@ class Supervisor:
             self.binary_storage.save_item_binaries(item, self.station_config.active_config["name"])
 
         @self.save_item_metadata
+        @track_emissions(project_name="track_inference", measure_power_secs=1,
+                         log_level="info", output_dir=str(emissions_path))
         async def set_inferences(item: Item):
             item.inferences = await self.get_predictions(item)
 
@@ -131,7 +141,7 @@ class Supervisor:
         return predictions
 
     async def get_prediction_for_camera(
-        self, camera_id: str, item: Item, image_name: str
+            self, camera_id: str, item: Item, image_name: str
     ) -> Dict[str, Union[Dict, Any]]:
         inference_output = {}
         binary_data = item.binaries[camera_id]
@@ -141,11 +151,11 @@ class Supervisor:
         return prediction_for_camera
 
     async def get_inference(
-        self,
-        inference_output: Dict,
-        model_pipeline: List[ModelInfos],
-        full_image: bytes,
-        image_name: str,
+            self,
+            inference_output: Dict,
+            model_pipeline: List[ModelInfos],
+            full_image: bytes,
+            image_name: str,
     ) -> Dict[str, Dict]:
         for current_model in model_pipeline:
             if _model_did_run(current_model.id, inference_output):
@@ -165,8 +175,8 @@ class Supervisor:
                 )
                 for model_dependency in model_dependencies:
                     for (
-                        object_id,
-                        inference_output_dependency,
+                            object_id,
+                            inference_output_dependency,
                     ) in inference_output_dependencies[
                         model_dependency.id
                     ].items():  # noqa
@@ -176,8 +186,8 @@ class Supervisor:
                             current_model, cropped_image, object_id
                         )
                         for (
-                            sub_object_id,
-                            sub_object_info,
+                                sub_object_id,
+                                sub_object_info,
                         ) in inference_output_object.items():
                             if "location" in sub_object_info.keys():
                                 sub_object_info["location"] = relocate_sub_object_location_within_full_image(
@@ -256,7 +266,7 @@ def crop_image(binary_data: bytes, detected_object: List[int]) -> bytes:
 
 
 def relocate_sub_object_location_within_full_image(
-    object_location: List[int], sub_object_location: List[int]
+        object_location: List[int], sub_object_location: List[int]
 ) -> List[int]:
     [x_min_o, y_min_o, x_max_o, y_max_o] = object_location
     [x_min_so, y_min_so, x_max_so, y_max_so] = sub_object_location
