@@ -18,7 +18,7 @@ class TFServingClassificationWrapper(ModelForward):
     async def perform_inference(self, model: ModelInfos, binary_data: bytes, binary_name: str) -> dict:
 
         tracker = EmissionsTracker(project_name="classification_inference", measure_power_secs=1,
-                                   tracking_mode="process", log_level="critical")
+                                   log_level="info")
 
         self.class_names = model.class_names
         processed_img = self.perform_pre_processing(model, binary_data)

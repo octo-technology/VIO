@@ -21,7 +21,7 @@ class TFServingDetectionClassificationWrapper(ModelForward):
     async def perform_inference(self, model: ModelInfos, binary_data: bytes, binary_name: str) -> Dict[str, Dict]:
 
         tracker = EmissionsTracker(project_name="detection_and_classification_inference", measure_power_secs=1,
-                                   tracking_mode="process", log_level="critical")
+                                   log_level="info")
 
         processed_img = self.perform_pre_processing(binary_data)
         logger.debug(f"Processed image size: {processed_img.shape}")
@@ -43,7 +43,7 @@ class TFServingDetectionClassificationWrapper(ModelForward):
             _ = tracker.stop()
 
         logger.info(f"Total emissions for the detection and classification inference:"
-                    f" {inference_emissions.emissions*1_000} gCO2eq")
+                    f" {inference_emissions.emissions * 1_000} gCO2eq")
         return inference_output
 
     def perform_pre_processing(self, binary: bytes):

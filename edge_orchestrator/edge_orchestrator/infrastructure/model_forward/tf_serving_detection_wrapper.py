@@ -26,7 +26,7 @@ class TFServingDetectionWrapper(ModelForward):
         emissions_path = ROOT_PATH / "emissions"
         logger.info(f"emissions_path: {emissions_path}")
         tracker = EmissionsTracker(project_name="detection_inference", measure_power_secs=1,
-                                   tracking_mode="process", log_level="info", output_dir=str(emissions_path))
+                                   log_level="info", output_dir=str(emissions_path))
 
         processed_img = self.perform_pre_processing(model, binary_data)
         logger.debug(f"Processed image size: {processed_img.shape}")
