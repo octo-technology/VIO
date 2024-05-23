@@ -8,7 +8,6 @@ from tflite_serving.utils.yolo_postprocessing import (
     non_max_suppression,
     compute_severities,
 )
-from codecarbon import track_emissions
 
 JSONObject = Dict[AnyStr, Any]
 JSONArray = List[Any]
@@ -35,7 +34,6 @@ async def get_model_metadata(model_name: str, model_version: str, request: Reque
 
 
 @api_router.post("/models/{model_name}/versions/{model_version}:predict")
-@track_emissions
 async def predict(
     model_name: str, model_version: str, payload: JSONStructure, request: Request
 ):
