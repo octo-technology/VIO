@@ -32,7 +32,6 @@ from codecarbon import track_emissions
 
 ROOT_PATH = Path(__file__).parents[3]
 emissions_path = ROOT_PATH / "emissions"
-logger.info(f"emissions_path: {emissions_path}")
 
 
 def check_capture_according_to_config(item: Item, cameras: List[Dict]):
