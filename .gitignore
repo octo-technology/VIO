@@ -202,3 +202,7 @@ edge_orchestrator/data/*
 edge_orchestrator/config/secrets
 /deployment/edge/images/
 *package-lock.json
+
+# Emissions directory
+edge_orchestrator/emissions
+edge_model_serving/emissions
