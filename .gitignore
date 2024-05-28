@@ -205,4 +205,3 @@ edge_orchestrator/config/secrets
 
 # Emissions directory
 edge_orchestrator/emissions
-edge_model_serving/emissions
