@@ -29,6 +29,7 @@ services:
     volumes:
       - ./edge_orchestrator/data:/edge_orchestrator/data
       - ./edge_orchestrator/config:/edge_orchestrator/config
+      - ./edge_orchestrator/emissions:/edge_orchestrator/emissions
     ports:
       - 8000:8000
     environment:
