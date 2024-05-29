@@ -2,9 +2,10 @@ import functools
 import io
 from abc import abstractmethod
 from collections import OrderedDict
-from typing import Any, Dict, List, Union
 from pathlib import Path
+from typing import Any, Dict, List, Union
 
+from codecarbon import track_emissions
 from PIL import Image
 
 from edge_orchestrator.api_config import (
@@ -27,8 +28,6 @@ from edge_orchestrator.domain.models.decision import Decision
 from edge_orchestrator.domain.models.item import Item
 from edge_orchestrator.domain.models.model_infos import ModelInfos
 from edge_orchestrator.domain.models.supervisor_state import SupervisorState
-
-from codecarbon import track_emissions
 
 ROOT_PATH = Path(__file__).parents[3]
 emissions_path = ROOT_PATH / "emissions"
