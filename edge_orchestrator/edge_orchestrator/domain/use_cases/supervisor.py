@@ -4,7 +4,6 @@ from abc import abstractmethod
 from collections import OrderedDict
 from pathlib import Path
 from typing import Any, Dict, List, Union
-from pathlib import Path
 
 from codecarbon import track_emissions
 from PIL import Image
