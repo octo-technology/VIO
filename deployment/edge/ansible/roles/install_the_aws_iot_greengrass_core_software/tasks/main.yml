@@ -1,0 +1,36 @@
+---
+
+- name: Install the AWS IoT Greengrass Core software
+  ansible.builtin.command:
+    argv:
+      - export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
+      - echo $AWS_ACCESS_KEY_ID
+      # - export AWS_SECRET_ACCESS_KEY="{{ lookup('env', AWS_SECRET_ACCESS_KEY) }}"
+      # - export AWS_SESSION_TOKEN="{{ lookup('env', AWS_SESSION_TOKEN) }}"
+      # - sudo -E java -Droot="/greengrass/v2" -Dlog.store=FILE
+      # - -jar ./GreengrassInstaller/lib/Greengrass.jar
+      # - --aws-region {{ aws_iot_greengrass_region }}
+      # - --thing-name MyGreengrassCore
+      # - --thing-group-name MyGreengrassCoreGroup
+      # - --thing-policy-name GreengrassV2IoTThingPolicy
+      # - --tes-role-name GreengrassV2TokenExchangeRole
+      # - --tes-role-alias-name GreengrassCoreTokenExchangeRoleAlias
+      # - --component-default-user {{ aws_iot_greengrass_user }}:{{ aws_iot_greengrass_group }}
+      # - --provision true
+      # - --setup-system-service true
+  become: yes
+  become_user: root
+  environment:
+    AWS_ACCESS_KEY_ID: http://proxy.example.com:8080
+
+
+- name: Install Python pip3
+  ansible.builtin.apt:
+    name: python3-pip
+    state: present
+  become: true
+
+- name: Upgrade Python pip
+  ansible.builtin.pip:
+    name: pip
+    state: latest

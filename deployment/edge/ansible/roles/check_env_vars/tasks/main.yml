@@ -1,0 +1,11 @@
+---
+
+- name: Check credentials are set as environment variables
+  assert:
+    that:
+      - "{{ lookup('env', item) is defined }}"
+      - "{{ lookup('env', item) | length > 0 }}"
+      - "{{ lookup('env', item) != None }}"
+    fail_msg: "{{ item }} environment variable needs to be set for the role to work"
+    success_msg: "Required variable {{ item }} is defined"
+  loop: "{{ env_vars }}"
