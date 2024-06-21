@@ -23,7 +23,7 @@ classifiers = [
 dependencies = [
     "aiohttp==3.8.3",
     "azure-iot-device==2.12.0",
-    "codecarbon==2.4.2",
+    "codecarbon==2.5.0",
     "fastapi[all]==0.100.0",
     "numpy==1.24.1",
     "Pillow==9.3.0",
