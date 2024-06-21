@@ -1,0 +1,46 @@
+---
+
+- name: "Get stats of on {{ greengrass_root_dir }} directory"
+  ansible.builtin.stat:
+    path: "{{ greengrass_root_dir }}"
+  register: gg_dir
+
+- name: "Get stats of on /etc/systemd/system/greengrass.service"
+  ansible.builtin.stat:
+    path: /etc/systemd/system/greengrass.service
+  register: gg_service_file
+
+- name: Install the AWS IoT Greengrass Core software
+  ansible.builtin.shell: |
+    java -Droot="{{ greengrass_root_dir }}" -Dlog.store=FILE \
+    -jar ./GreengrassInstaller/lib/Greengrass.jar \
+    --aws-region {{ greengrass_aws_region }} \
+    --thing-name {{ greengrass_thing_name }} \
+    --thing-group-name {{  greengrass_thing_group_name }} \
+    --thing-policy-name {{ greengrass_thing_policy_name }} \
+    --tes-role-name {{ greengrass_iam_tmp_role_name }} \
+    --tes-role-alias-name {{ greengrass_iam_tmp_role_alias_name }} \
+    --component-default-user {{ aws_iot_greengrass_user }}:{{ aws_iot_greengrass_group }} \
+    --provision true \
+    --setup-system-service true \
+    --deploy-dev-tools true
+  args:
+    chdir: /home/{{ aws_iot_greengrass_user }}
+  become_user: root
+  become: true
+  environment:
+    AWS_ACCESS_KEY_ID: "{{ aws_access_key_id }}"
+    AWS_SECRET_ACCESS_KEY: "{{ aws_secret_access_key }}"
+    AWS_SESSION_TOKEN: "{{ aws_session_token }}"
+  when: not gg_dir.stat.exists and not gg_service_file.stat.exists
+
+- name: Install Python pip3
+  ansible.builtin.apt:
+    name: python3-pip
+    state: present
+  become: true
+
+- name: Upgrade Python pip
+  ansible.builtin.pip:
+    name: pip
+    state: latest

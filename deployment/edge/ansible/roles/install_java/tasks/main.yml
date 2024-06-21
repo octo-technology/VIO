@@ -1,0 +1,19 @@
+---
+
+- name: Install Java package (Ubuntu/Debian)
+  apt:
+    name: "{{ java_apt_package }}"
+    state: present
+    update_cache: yes
+  become: true
+
+- name: Print the Java version
+  ansible.builtin.shell: java -version
+
+
+- name: Install ACL package for perrmissions issues
+  apt:
+    name: acl
+    state: present
+    update_cache: yes
+  become: true

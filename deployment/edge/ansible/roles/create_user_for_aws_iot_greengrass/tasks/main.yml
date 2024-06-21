@@ -1,0 +1,24 @@
+---
+
+- name: Ensure group "{{ aws_iot_greengrass_group }}" exists
+  ansible.builtin.group:
+    name: "{{ aws_iot_greengrass_group }}"
+    state: present
+
+- name: Add the user "{{ aws_iot_greengrass_user }}" with a primary group of "{{ aws_iot_greengrass_group }}"
+  ansible.builtin.user:
+    name: "{{ aws_iot_greengrass_user }}"
+    group: "{{ aws_iot_greengrass_group }}"
+    create_home: yes
+    expires: -1
+
+- name: Allow the "root" user to run any commands
+  community.general.sudoers:
+    name: allow-all-to-root
+    state: present
+    user: root
+    commands: ALL
+
+- name: Print /etc/sudoers file to check root permissions
+  ansible.builtin.shell: cat /etc/sudoers
+  become: true
