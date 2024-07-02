@@ -1,0 +1,28 @@
+{
+    "targetArn": "arn:aws:iot:eu-west-1:767397954739:thinggroup/bapo-group",
+    "deploymentName": "Deploy FileWatcher for bapo-group",
+    "components": {
+        "aws.greengrass.Cli": {
+            "componentVersion": "2.12.6"
+        },
+        "aws.greengrass.labs.s3.file.uploader": {
+            "componentVersion": "1.1.0",
+            "configurationUpdate": {
+                "merge": "{\"PathName\": \"/home/ggc_user/watchdir/\",\"BucketName\": \"bapo-greengrass-poc\",\"ObjectKeyPrefix\": \"watchdir/\",\"Interval\": \"1\",\"LogLevel\": \"INFO\"}"
+            }
+        }
+    },
+    "deploymentPolicies": {
+        "failureHandlingPolicy": "DO_NOTHING",
+        "componentUpdatePolicy": {
+            "timeoutInSeconds": 60,
+            "action": "NOTIFY_COMPONENTS"
+        },
+        "configurationValidationPolicy": {
+            "timeoutInSeconds": 60
+        }
+    },
+    "tags": {
+        "context": "poc-greengrass-by-bapo"
+    }
+}

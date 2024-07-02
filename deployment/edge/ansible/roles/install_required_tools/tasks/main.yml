@@ -1,0 +1,17 @@
+---
+
+- name: Install required packages on the device
+  apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+  become: true
+  loop: ["{{ java_apt_package }}", acl, git, gcc, make, python3-pip, vim]
+
+- name: Print the Java version
+  ansible.builtin.shell: java -version
+
+- name: Upgrade Python pip
+  ansible.builtin.pip:
+    name: pip
+    state: latest

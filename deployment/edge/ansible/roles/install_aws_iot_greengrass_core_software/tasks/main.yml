@@ -34,13 +34,3 @@
     AWS_SESSION_TOKEN: "{{ aws_session_token }}"
   when: not gg_dir.stat.exists and not gg_service_file.stat.exists
 
-- name: Install Python pip3
-  ansible.builtin.apt:
-    name: python3-pip
-    state: present
-  become: true
-
-- name: Upgrade Python pip
-  ansible.builtin.pip:
-    name: pip
-    state: latest
