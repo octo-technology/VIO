@@ -34,3 +34,9 @@
     AWS_SESSION_TOKEN: "{{ aws_session_token }}"
   when: not gg_dir.stat.exists and not gg_service_file.stat.exists
 
+- name: Enable service greengrass and ensure it is not masked
+  ansible.builtin.systemd_service:
+    name: greengrass
+    enabled: true
+    state: started
+    masked: no

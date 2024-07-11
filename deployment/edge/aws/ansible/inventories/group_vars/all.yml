@@ -4,11 +4,10 @@ aws_access_key_id: "{{ lookup('env', 'AWS_ACCESS_KEY_ID') }}"
 aws_secret_access_key: "{{ lookup('env', 'AWS_SECRET_ACCESS_KEY') }}"
 aws_session_token: "{{ lookup('env', 'AWS_SESSION_TOKEN') }}"
 
-
-java_apt_package: default-jdk
 aws_iot_greengrass_core_software: greengrass-nucleus-latest.zip
 aws_iot_greengrass_group: ggc_group
 aws_iot_greengrass_user: ggc_user
+aws_iot_greengrass_password: "{{ lookup('env', 'AWS_IOT_GREENGRASS_PASSWORD') }}"
 greengrass_aws_region: eu-west-1
 greengrass_root_dir: /greengrass/v2/
 

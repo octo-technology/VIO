@@ -1,0 +1,48 @@
+---
+# tasks file for install_docker
+
+- name: Create /etc/apt/keyrings
+  ansible.builtin.file:
+    path: /etc/apt/keyrings
+    state: directory
+    mode: '0755'
+
+- name: Add Docker GPG apt Key
+  ansible.builtin.get_url:
+    url: https://download.docker.com/linux/raspbian/gpg
+    dest: /etc/apt/keyrings/docker.asc
+
+- name: Add Docker Repository
+  apt_repository:
+    repo: "deb [arch=armhf signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/raspbian buster stable"
+    state: present
+
+- name: Update apt and install docker and useful plugins
+  apt:
+    name: "{{ item }}"
+    state: latest
+    update_cache: true
+  loop: [docker-ce, docker-ce-cli, containerd.io, docker-buildx-plugin, docker-compose-plugin]
+
+- name: Copy docker-compose file with owner and permissions
+  ansible.builtin.copy:
+    src: files/docker-compose
+    dest: /usr/bin/docker-compose
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Enable service docker and ensure it is not masked
+  ansible.builtin.systemd_service:
+    name: "{{ item  }}"
+    enabled: true
+    state: restarted
+    masked: no
+  loop: ["docker", "containerd"]
+
+- name: Add user to docker group
+  user:
+    name: "{{ item }}"
+    groups: docker
+    append: yes
+  loop: ["pi", "{{ aws_iot_greengrass_user }}"]

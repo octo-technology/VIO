@@ -1,0 +1,35 @@
+version: '3'
+
+services:
+  edge_db:
+    image: webhippie/mongodb:latest-arm32v7
+    container_name: edge_db
+    ports:
+      - 27017:27017
+
+  edge_model_serving:
+    container_name: edge_model_serving
+    image: ghcr.io/octo-technology/vio/edge_tflite_serving.raspberrypi:latest
+    environment:
+      - TF_CPP_MIN_VLOG_LEVEL=0
+    ports:
+      - 8501:8501
+    volumes:
+      - ./edge_model_serving:/models
+
+  edge_orchestrator:
+    container_name: edge_orchestrator
+    image: ghcr.io/octo-technology/vio/edge_orchestrator.raspberrypi:latest
+    privileged: true
+    volumes:
+      - ./edge_orchestrator/data:/edge_orchestrator/data
+      - ./edge_orchestrator/config:/edge_orchestrator/config
+      - /opt/vc:/opt/vc
+    ports:
+      - 8000:8000
+
+  edge_interface:
+    container_name: edge_interface
+    image: ghcr.io/octo-technology/vio/edge_interface.raspberrypi:latest
+    ports:
+      - 8080:80

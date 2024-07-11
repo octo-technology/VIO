@@ -6,10 +6,15 @@
     state: present
     update_cache: yes
   become: true
-  loop: ["{{ java_apt_package }}", acl, git, gcc, make, python3-pip, vim]
+  loop: "{{ lookup('file', 'files/useful_debian_packages').splitlines() }}"
+
+- name: Get the Java version
+  ansible.builtin.shell: java -version
+  register: java_version
 
 - name: Print the Java version
-  ansible.builtin.shell: java -version
+  ansible.builtin.debug:
+    var: java_version
 
 - name: Upgrade Python pip
   ansible.builtin.pip:
