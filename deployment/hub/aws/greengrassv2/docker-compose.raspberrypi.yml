@@ -9,7 +9,7 @@ services:
 
   edge_model_serving:
     container_name: edge_model_serving
-    image: ghcr.io/octo-technology/vio/edge_tflite_serving.raspberrypi:latest
+    image: 767397954739.dkr.ecr.eu-west-1.amazonaws.com/edge_tflite_serving.raspberrypi:latest
     environment:
       - TF_CPP_MIN_VLOG_LEVEL=0
     ports:
@@ -19,7 +19,7 @@ services:
 
   edge_orchestrator:
     container_name: edge_orchestrator
-    image: ghcr.io/octo-technology/vio/edge_orchestrator.raspberrypi:latest
+    image: 767397954739.dkr.ecr.eu-west-1.amazonaws.com/edge_orchestrator.raspberrypi:latest
     privileged: true
     volumes:
       - ./edge_orchestrator/data:/edge_orchestrator/data
@@ -30,6 +30,6 @@ services:
 
   edge_interface:
     container_name: edge_interface
-    image: ghcr.io/octo-technology/vio/edge_interface.raspberrypi:latest
+    image: 767397954739.dkr.ecr.eu-west-1.amazonaws.com/edge_interface.raspberrypi:latest
     ports:
       - 8080:80
