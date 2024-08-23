@@ -1,0 +1,10 @@
+{
+    "components": {
+      "file_uploader": {
+        "componentVersion": "1.0.0",
+        "configurationUpdate": {
+          "merge": "{\"bucketName\":\"BUCKET_NAME\"}"
+        }
+      }
+    }
+  }

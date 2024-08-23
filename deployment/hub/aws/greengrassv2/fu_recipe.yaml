@@ -24,7 +24,7 @@ Manifests:
             -v ./monitored_dir:/monitored_dir \
             -e AWS_CONTAINER_AUTHORIZATION_TOKEN \
             -e AWS_CONTAINER_CREDENTIALS_FULL_URI \
-            --rm 767397954739.dkr.ecr.eu-west-1.amazonaws.com/edge_file_uploader:latest \
+            --rm AWS_ACCOUNT_ID.dkr.ecr.eu-west-1.amazonaws.com/vio/file_uploader:latest \
             "{configuration:/bucketName}"
     Artifacts:
-      - URI: "docker:767397954739.dkr.ecr.eu-west-1.amazonaws.com/edge_file_uploader:latest"
+      - URI: "docker:AWS_ACCOUNT_ID.dkr.ecr.eu-west-1.amazonaws.com/vio/file_uploader:latest"

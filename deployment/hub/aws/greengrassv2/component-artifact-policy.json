@@ -1,12 +1,29 @@
 {
-    "Version": "2012-10-17",
-    "Statement": [
+  "Version": "2012-10-17",
+  "Statement": [
       {
-        "Effect": "Allow",
-        "Action": [
-          "s3:GetObject"
-        ],
-        "Resource": "arn:aws:s3:::bapo-greengrass-poc/*"
+          "Sid": "S3",
+          "Effect": "Allow",
+          "Action": [
+              "s3:*",
+              "s3:GetObject"
+          ],
+          "Resource": [
+              "*",
+              "arn:aws:s3:::bapo-greengrass-poc/*"
+          ]
+      },
+      {
+          "Sid": "ECR",
+          "Effect": "Allow",
+          "Action": [
+              "ecr:GetAuthorizationToken",
+              "ecr:BatchGetImage",
+              "ecr:GetDownloadUrlForLayer"
+          ],
+          "Resource": [
+              "*"
+          ]
       }
-    ]
-  }
+  ]
+}
