@@ -1,0 +1,34 @@
+{
+    "targetArn": "arn:aws:iot:eu-west-1:767397954739:thinggroup/bapo-group",
+    "deploymentName": "Deploy VIO for bapo-group",
+    "components": {
+        "aws.greengrass.Cli": {
+            "componentVersion": "2.12.6"
+        },
+        "aws.greengrass.StreamManager": {
+            "componentVersion": "2.1.12"
+        },
+        "aws.greengrass.TokenExchangeService": {
+            "componentVersion": "2.0.3"
+        },
+        "aws.greengrass.DockerApplicationManager": {
+            "componentVersion": "2.0.11"
+        },
+        "vio": {
+            "componentVersion": "0.1.4"
+        }
+    },
+    "deploymentPolicies": {
+        "failureHandlingPolicy": "DO_NOTHING",
+        "componentUpdatePolicy": {
+            "timeoutInSeconds": 60,
+            "action": "NOTIFY_COMPONENTS"
+        },
+        "configurationValidationPolicy": {
+            "timeoutInSeconds": 60
+        }
+    },
+    "tags": {
+        "context": "poc-greengrass-by-bapo"
+    }
+}

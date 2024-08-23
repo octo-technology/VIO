@@ -1,0 +1,7 @@
+---
+
+- name: Set authorized key taken from file
+  ansible.posix.authorized_key:
+    user: pi
+    state: present
+    key: "{{ lookup('file', lookup('env','SSH_PUB_KEY_PATH')) }}"

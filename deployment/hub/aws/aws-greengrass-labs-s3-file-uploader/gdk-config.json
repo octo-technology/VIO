@@ -1,0 +1,16 @@
+{
+  "component": {
+    "aws.greengrass.labs.s3.file.uploader": {
+      "author": "Amazon",
+      "version": "1.1.0",
+      "build": {
+        "build_system": "zip"
+      },
+      "publish": {
+        "bucket": "bapo-greengrass-poc",
+        "region": "eu-west-1"
+      }
+    }
+  },
+  "gdk_version": "1.0.0"
+}

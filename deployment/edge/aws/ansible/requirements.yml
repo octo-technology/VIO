@@ -1,0 +1,5 @@
+# requirements.yml
+---
+
+roles:
+- name: staticdev.pyenv

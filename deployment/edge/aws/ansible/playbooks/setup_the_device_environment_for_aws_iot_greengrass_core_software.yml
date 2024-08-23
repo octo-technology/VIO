@@ -1,0 +1,24 @@
+- name: "Set up the device environment for AWS IoT Greengrass Core software"
+  hosts: all
+  roles:
+    - role: roles/check_env_vars
+      vars:
+        env_vars: [SSH_PUB_KEY_PATH, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_SESSION_TOKEN, AWS_IOT_GREENGRASS_PASSWORD]
+    - role: roles/setup_device_in_passwordless_mode_with_ssh
+    - role: roles/install_required_tools
+    - role: roles/create_user_for_aws_iot_greengrass
+      become: true
+    - role: staticdev.pyenv
+      vars:
+        pyenv_env: 'user'
+        pyenv_global: ["3.9"]
+        pyenv_python_versions: ["3.9"]
+        pyenv_enable_autocompletion: true
+        pyenv_owner: "{{ aws_iot_greengrass_user }}"
+        pyenv_owner_group: "{{ aws_iot_greengrass_group }}"
+        pyenv_path: "/home/{{ aws_iot_greengrass_user }}/.pyenv"
+    - role: roles/download_aws_iot_greengrass_core_software
+      remote_user: root
+    - role: roles/install_aws_iot_greengrass_core_software
+    - role: roles/install_docker
+      become: true

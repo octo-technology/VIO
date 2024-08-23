@@ -1,0 +1,40 @@
+---
+
+- name: Ensure group "{{ aws_iot_greengrass_group }}" exists
+  ansible.builtin.group:
+    name: "{{ aws_iot_greengrass_group }}"
+    state: present
+
+- name: Add the user "{{ aws_iot_greengrass_user }}" with a primary group of "{{ aws_iot_greengrass_group }}"
+  ansible.builtin.user:
+    name: "{{ aws_iot_greengrass_user }}"
+    group: "{{ aws_iot_greengrass_group }}"
+    password: "{{ aws_iot_greengrass_password }}"
+    create_home: yes
+    expires: -1
+    update_password: always
+
+- name: Change "{{ aws_iot_greengrass_user }}" password
+  ansible.builtin.shell: "chage --list {{ aws_iot_greengrass_user }}"
+
+- name: Add the user "{{ aws_iot_greengrass_user }}" to docker group
+  ansible.builtin.user:
+    name: "{{ aws_iot_greengrass_user }}"
+    group: docker
+
+- name: Set authorized key taken from file
+  ansible.posix.authorized_key:
+    user: "{{ aws_iot_greengrass_user }}"
+    state: present
+    key: "{{ lookup('file', lookup('env','SSH_PUB_KEY_PATH')) }}"
+
+- name: Allow the "root" user to run any commands
+  community.general.sudoers:
+    name: allow-all-to-root
+    state: present
+    user: root
+    commands: ALL
+
+- name: Print /etc/sudoers file to check root permissions
+  ansible.builtin.shell: cat /etc/sudoers
+  become: true

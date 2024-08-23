@@ -1,0 +1,31 @@
+---
+
+- name: Download the latest version of the AWS IoT Greengrass Core software
+  ansible.builtin.get_url:
+    url: https://d2s8p88vqu9w66.cloudfront.net/releases/{{ aws_iot_greengrass_core_software }}
+    dest: /tmp/{{ aws_iot_greengrass_core_software }}
+
+- name: Verify the Greengrass nucleus software signature
+  ansible.builtin.shell: jarsigner -verify -certs -verbose /tmp/{{ aws_iot_greengrass_core_software }}
+  register: resultVerification
+  failed_when: (resultVerification.stdout) == "jar is unsigned." 
+
+- name: Create "/home/{{ aws_iot_greengrass_user }}/GreengrassInstaller" directory if it does not exist
+  ansible.builtin.file:
+    path: "/home/{{ aws_iot_greengrass_user }}/GreengrassInstaller"
+    state: directory
+    mode: '0755'
+    recurse: yes
+    owner: "{{ aws_iot_greengrass_user }}"
+    group: "{{ aws_iot_greengrass_group }}"
+  become: true
+
+- name: Unzip the AWS IoT Greengrass Core software to a folder
+  ansible.builtin.unarchive:
+    src: /tmp/{{ aws_iot_greengrass_core_software }}
+    dest: /home/{{ aws_iot_greengrass_user }}/GreengrassInstaller
+    remote_src: yes
+  become: true
+
+- name: See the version of the AWS IoT Greengrass Core software
+  ansible.builtin.shell: java -jar /home/{{ aws_iot_greengrass_user }}/GreengrassInstaller/lib/Greengrass.jar --version
