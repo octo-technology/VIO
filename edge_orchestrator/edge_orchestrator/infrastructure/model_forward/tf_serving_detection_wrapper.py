@@ -19,8 +19,10 @@ class TFServingDetectionWrapper(ModelForward):
 
     async def perform_inference(self, model: ModelInfos, binary_data: bytes, binary_name: str) -> Dict[str, Dict]:
         processed_img = self.perform_pre_processing(model, binary_data)
-        logger.debug(f"Processed image size: {processed_img.shape}")
+        # logger.debug(f"Processed image size: {processed_img.shape}")
+        print(f"Processed image size: {processed_img.shape}")
         payload = {"inputs": processed_img.tolist(), "model_type": model.model_type}
+
         model_url = f"{self.base_url}/v1/models/{model.name}/versions/{model.version}:predict"
         logger.info(f"Get prediction at {model_url}")
         inference_output = {}
@@ -28,8 +30,20 @@ class TFServingDetectionWrapper(ModelForward):
             async with aiohttp.ClientSession() as session:
                 async with session.post(model_url, json=payload) as response:
                     json_data = await response.json()
-                    logger.debug(f"response received {json_data}")
-                    inference_output = self.perform_post_processing(model, json_data["outputs"])
+                    # debug
+
+                    # logger.debug(f"response received {json_data}")
+                    print("json data: ", json_data)
+
+                    # inference_output = self.perform_post_processing(model, json_data["outputs"])
+
+                    if "outputs" in json_data:
+                        inference_output = self.perform_post_processing(model, json_data["outputs"])
+                    else:
+                        logger.error(f"'outputs' key not found in response: {json_data}")
+
+                    # debug
+                    print("inference output: ", inference_output)
         except Exception as e:
             logger.exception(e)
         return inference_output
@@ -41,18 +55,27 @@ class TFServingDetectionWrapper(ModelForward):
         resized_image = img.resize((model.image_resolution[0], model.image_resolution[1]), Image.ANTIALIAS)
         img = np.expand_dims(resized_image, axis=0).astype(np.uint8)
         img = img[:, :, :, :3]
+
+        #debug
+        print(f"Preprocessed image shape: {img.shape}")
+        print(f"Preprocessed image type: {img.dtype}")
+
         return img
 
     def perform_post_processing(self, model: ModelInfos, json_outputs: dict) -> dict:
         inference_output = {}
 
-        logger.debug(f"json_outputs {json_outputs}")
+        # logger.debug(f"json_outputs {json_outputs}")
+        print(f"json_outputs: {json_outputs}")
 
         boxes_coordinates, objectness_scores, detection_classes = (
-            json_outputs[model.detection_boxes][0],
-            json_outputs[model.detection_scores][0],
-            json_outputs[model.detection_classes][0],
+            json_outputs[model.detection_boxes],
+            json_outputs[model.detection_scores],
+            json_outputs[model.detection_classes],
         )
+        print(boxes_coordinates) # [228.20753479003906, 20.28748321533203, 228.4307098388672, 20.350753784179688]
+        print(objectness_scores) # 0.6449559926986694
+        print(detection_classes) # 0
 
         try:
             class_names = [c.strip() for c in open(self.class_names_path).readlines()]

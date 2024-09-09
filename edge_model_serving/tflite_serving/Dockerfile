@@ -3,6 +3,7 @@ FROM python:3.8.10-slim
 WORKDIR /tflite_serving
 
 RUN apt-get update && apt-get upgrade -y && apt-get install gcc -y
+RUN apt-get update && apt-get install -y pkg-config libhdf5-dev
 
 COPY tflite_serving/src/ src/
 COPY tflite_serving/pyproject.toml .

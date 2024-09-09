@@ -70,8 +70,8 @@
         "detection_classes": "detection_classes"
       },
       "image_resolution": [
-        320,
-        320
+        256,
+        256
       ],
       "objectness_threshold": 0.3
     }
