@@ -1,9 +1,12 @@
 import os
 
+from dotenv import load_dotenv
+
 from edge_orchestrator import logger
 
 
 def load_config():
+    load_dotenv()
     configuration = os.environ.get("API_CONFIG", "default")
     logger.info(f"App running with configuration: {configuration}")
 
