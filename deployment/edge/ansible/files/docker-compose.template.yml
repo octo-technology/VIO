@@ -1,5 +1,3 @@
-version: '3'
-
 services:
   edge_model_serving:
     container_name: edge_model_serving
