@@ -32,10 +32,11 @@ services:
       - 8000:8000
     environment:
       EDGE_NAME: vio-edge-1
-      API_CONFIG: docker
+      API_CONFIG: upload-gcp
       SERVING_MODEL_URL: http://edge_model_serving:8501
-      MONGO_DB_URI: mongodb://edge_db:27017/
-      POSTGRES_DB_URI: postgresql://vio:vio@hub_monitoring_db:5432/vio
+      GOOGLE_APPLICATION_CREDENTIALS: /edge_orchestrator/config/secrets/credentials.json
+      GCP_BUCKET_NAME: tf-vio-bucket
+      ACTIVE_CONFIG_NAME: marker_classification_with_1_fake_camera
     profiles: [edge]
 
   hub_labelizer:
