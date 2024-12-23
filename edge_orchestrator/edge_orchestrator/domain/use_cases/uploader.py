@@ -26,10 +26,9 @@ class Uploader:
 
     def save_item_metadata(self, fct):
         @functools.wraps(fct)
-        async def wrapper(item: Item, *args):
+        async def wrapper(item: Item, active_config_name: str, *args):
             item.state = args[0].value
             await fct(item)
-            active_config_name = args[1]
             self.metadata_storage.save_item_metadata(item, active_config_name)
 
         return wrapper
