@@ -50,7 +50,8 @@ class TFServingClassificationWrapper(ModelForward):
         number_model_classes = len(model.class_names)
         if number_predictions_classes != number_model_classes:
             raise Exception(
-                f"Number of classes in the model ({number_model_classes}) is different from the number of predictions ({number_predictions_classes})"
+                f"Number of classes in the model ({number_model_classes}) is different from"
+                "the number of predictions ({number_predictions_classes})"
             )
         return {
             binary_name: {
