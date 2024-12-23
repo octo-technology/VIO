@@ -26,10 +26,10 @@ class Uploader:
 
     def save_item_metadata(self, fct):
         @functools.wraps(fct)
-        async def wrapper(item: Item, *args):
+        async def wrapper(item: Item, active_config_name: str, *args):
             item.state = args[0].value
             await fct(item)
-            self.metadata_storage.save_item_metadata(item)
+            self.metadata_storage.save_item_metadata(item, active_config_name)
 
         return wrapper
 
@@ -58,4 +58,4 @@ class Uploader:
             logger.info(f"End of {uploader_state.value}")
 
         item.state = UploaderState.DONE.value
-        self.metadata_storage.save_item_metadata(item)
+        self.metadata_storage.save_item_metadata(item, active_config_name)
