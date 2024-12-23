@@ -11,6 +11,13 @@ https://stackoverflow.com/questions/42835626/ansible-to-use-the-ssh-connection-t
 pip install -r requirements.txt
 ```
 
+### Find the IP of the edge
+
+Under Ubuntu, you can use the following command to find the IP of the edge
+```bash
+ip a | grep -A 2 'wlx' | grep 'inet ' | awk '{print $2}' | cut -d/ -f1
+```
+
 ## docker-compose devices
 
 We are adding those devices to be able to trigger capture from 2 cameras connected on the usb port of your edge.
