@@ -1,3 +1,21 @@
+## Launch edge locally and upload data on GCP
+
+### Service account for edge_orchestrator
+- Create a service account with the roles/storage.admin directly through the GCP UI.
+- Export key json file
+- Store the key file at this location: `edge_orchestrator/config/secrets/credentials.json`
+
+### Set env variables on docker-compose.yml
+
+    API_CONFIG: upload-gcp
+    GOOGLE_APPLICATION_CREDENTIALS: /edge_orchestrator/config/secrets/credentials.json
+    GCP_BUCKET_NAME: <bucket-name>
+
+### Launch VIO
+```shell
+$ make edge_orchestrator
+```
+
 ## Deploy edge on GCP via Kube
 
 Ensure that Terraform has ran before to create the infrastructure.
