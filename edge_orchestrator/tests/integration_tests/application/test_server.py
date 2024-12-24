@@ -1,4 +1,5 @@
 import json
+import os
 
 from fastapi.testclient import TestClient
 
@@ -10,9 +11,12 @@ from tests.conftest import TEST_DATA_FOLDER_PATH
 class TestServer:
     def test_upload_route__should_return_expected_logs_when_received_paylod_with_binary_image(self, caplog):
         # Given
+        edge_name = "edge_test"
+        os.environ["EDGE_NAME"] = edge_name
+
         client = TestClient(server())
         test_file = "camera_id1.jpg"
-        test_file_path = TEST_DATA_FOLDER_PATH / "test_config" / "item_2" / test_file
+        test_file_path = TEST_DATA_FOLDER_PATH / edge_name / "test_config" / "item_2" / test_file
         expected_logs = [
             "Starting Save Binaries",
             "Entering try Save Binaries",
