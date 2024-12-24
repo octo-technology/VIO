@@ -1,3 +1,4 @@
+import os
 from unittest.mock import Mock, patch
 
 from edge_orchestrator.domain.models.item import Item
@@ -11,6 +12,8 @@ class TestGCPBinaryStorage:
     @patch("edge_orchestrator.infrastructure.binary_storage.gcp_binary_storage.storage")
     def test_save_item_binaries_should_write_image_in_gcp(self, mock_storage):
         # Given
+        edge_name = "edge_test"
+        os.environ["EDGE_NAME"] = edge_name
         test_active_config_name = "test_config"
         test_camera_id = "1"
         test_file_path = TEST_DATA_FOLDER_PATH / EDGE_NAME / test_active_config_name / "item_2" / "camera_id1.jpg"
@@ -35,6 +38,8 @@ class TestGCPBinaryStorage:
     @patch("edge_orchestrator.infrastructure.binary_storage.gcp_binary_storage.storage")
     def test_get_item_binary_should_return_image(self, mock_storage):
         # Given
+        edge_name = "edge_test"
+        os.environ["EDGE_NAME"] = edge_name
         test_active_config_name = "test_config"
         test_camera_id = "1"
         test_file_path = TEST_DATA_FOLDER_PATH / EDGE_NAME / test_active_config_name / "item_2" / "camera_id1.jpg"
