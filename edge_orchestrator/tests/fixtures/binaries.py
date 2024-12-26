@@ -1,5 +1,3 @@
-import os
-
 from _pytest.fixtures import fixture
 
 from tests.conftest import EDGE_NAME, TEST_DATA_FOLDER_PATH

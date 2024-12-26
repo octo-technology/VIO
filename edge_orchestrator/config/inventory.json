@@ -74,19 +74,6 @@
         320
       ],
       "objectness_threshold": 0.3
-    },
-    "duck_detector": {
-      "category": "classification",
-      "version": 1,
-      "class_names": [
-        "OK",
-        "NOK",
-        "NOK2"
-      ],
-      "image_resolution": [
-        224,
-        224
-      ]
     }
   },
   "camera_rules": [
