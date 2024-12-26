@@ -26,3 +26,4 @@ EDGE_MODEL_SERVING = {
     "host_volume_path_suffix": "edge_model_serving",
 }
 EDGE_TFLITE_SERVING_IMG = "ghcr.io/octo-technology/vio/edge_tflite_serving:main"
+EDGE_NAME = "edge_test"

@@ -13,7 +13,7 @@
 
 ### Launch VIO
 ```shell
-$ make edge_orchestrator
+$ make vio-edge-up:
 ```
 
 ## Deploy edge on GCP via Kube
