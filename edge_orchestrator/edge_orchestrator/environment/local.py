@@ -26,12 +26,14 @@ class Local(Config):
     def __init__(self):
         self.metadata_storage = MemoryMetadataStorage()
         self.model_forward = TFServingWrapper(self.SERVING_MODEL_URL, self.inventory, self.station_config)
-        self.binary_storage = FileSystemBinaryStorage(self.ROOT_PATH / "data" / "storage")
         self.inventory = JsonInventory(self.ROOT_PATH / "config" / "inventory.json")
         self.station_config = JsonStationConfig(
             self.ROOT_PATH / "config" / "station_configs",
             self.inventory,
             self.ROOT_PATH / "data",
+        )
+        self.binary_storage = FileSystemBinaryStorage(
+            self.ROOT_PATH / "data" / "storage", self.station_config.active_config_name
         )
         self.edge_station = EdgeStation(self.station_config)
         self.telemetry_sink = FakeTelemetrySink()

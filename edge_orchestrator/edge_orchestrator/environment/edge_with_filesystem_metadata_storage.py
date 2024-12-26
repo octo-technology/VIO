@@ -24,8 +24,12 @@ class EdgeWithFileSystemMetadataStorage(Config):
     SERVING_MODEL_URL = os.environ.get("SERVING_MODEL_URL", "http://edge_model_serving:8501")
 
     def __init__(self):
-        self.metadata_storage = FileSystemMetadataStorage(self.ROOT_PATH / "data" / "storage")
-        self.binary_storage = FileSystemBinaryStorage(self.ROOT_PATH / "data" / "storage")
+        self.metadata_storage = FileSystemMetadataStorage(
+            self.ROOT_PATH / "data" / "storage", self.station_config.active_config_name
+        )
+        self.binary_storage = FileSystemBinaryStorage(
+            self.ROOT_PATH / "data" / "storage", self.station_config.active_config_name
+        )
         self.inventory = JsonInventory(self.ROOT_PATH / "config" / "inventory.json")
         self.station_config = JsonStationConfig(
             self.ROOT_PATH / "config" / "station_configs",

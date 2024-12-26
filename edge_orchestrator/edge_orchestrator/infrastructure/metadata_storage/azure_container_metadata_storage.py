@@ -11,7 +11,8 @@ from edge_orchestrator.domain.ports.metadata_storage import MetadataStorage
 
 
 class AzureContainerMetadataStorage(MetadataStorage):
-    def __init__(self):
+    def __init__(self, active_config_name: str):
+        self.active_config_name = active_config_name
         self.azure_container_name = os.getenv("AZURE_CONTAINER_NAME")
         az_storage_connection_str = os.getenv("AZURE_STORAGE_CONNECTION_STRING")
         self._blob_service_client = BlobServiceClient.from_connection_string(az_storage_connection_str)
@@ -22,24 +23,24 @@ class AzureContainerMetadataStorage(MetadataStorage):
         self._container_client = self._blob_service_client.get_container_client(self.azure_container_name)
         self._transport_params = {"client": self._blob_service_client}
 
-    def save_item_metadata(self, item: Item, active_config_name: str):
+    def save_item_metadata(self, item: Item):
         with open(
-            f"azure://{self.azure_container_name}/{active_config_name}/{item.id}/metadata.json",
+            f"azure://{self.azure_container_name}/{self.active_config_name}/{item.id}/metadata.json",
             "wb",
             transport_params=self._transport_params,
         ) as f:
             f.write(json.dumps(item.get_metadata()).encode("utf-8"))
 
-    def get_item_metadata(self, item_id: str, active_config_name: str) -> Dict:
+    def get_item_metadata(self, item_id: str) -> Dict:
         with open(
-            f"azure://{self.azure_container_name}/{active_config_name}/{item_id}/metadata.json",
+            f"azure://{self.azure_container_name}/{self.active_config_name}/{item_id}/metadata.json",
             "rb",
             transport_params=self._transport_params,
         ) as f:
             return json.loads(f.read())
 
-    def get_item_state(self, item_id: str, active_config_name: str) -> str:
-        item_metadata = self.get_item_metadata(item_id, active_config_name)
+    def get_item_state(self, item_id: str) -> str:
+        item_metadata = self.get_item_metadata(item_id)
         return item_metadata["state"]
 
     def get_all_items_metadata(self) -> List[Dict]:

@@ -13,9 +13,9 @@ class TestFileSystemBinaryStorage:
         # Given
         generate_id_mocked.return_value = "my_item_id"
         src_directory_path = Path(tmpdir.mkdir("binaries"))
-        binary_storage = FileSystemBinaryStorage(src_directory_path)
         expected_picture = bytes([0, 1, 2, 3, 4])
         active_config_name = "detection_model"
+        binary_storage = FileSystemBinaryStorage(src_directory_path, active_config_name)
 
         item = Item(
             serial_number="serial_number",
@@ -26,7 +26,7 @@ class TestFileSystemBinaryStorage:
         )
 
         # When
-        binary_storage.save_item_binaries(item, active_config_name)
+        binary_storage.save_item_binaries(item)
 
         # Then
         path_to_my_picture = src_directory_path / active_config_name / "my_item_id" / "camera_id.jpg"
@@ -37,15 +37,15 @@ class TestFileSystemBinaryStorage:
     def test_get_item_binary_should_return_requested_item_binary(self, tmpdir):
         # Given
         src_directory_path = Path(tmpdir.mkdir("binaries"))
-        binary_storage = FileSystemBinaryStorage(src_directory_path)
         expected_picture = bytes([0, 1, 2, 3, 4])
         active_config_name = "detection_model"
+        binary_storage = FileSystemBinaryStorage(src_directory_path, active_config_name)
         (src_directory_path / active_config_name / "my_item_id").mkdir(parents=True)
         with (src_directory_path / active_config_name / "my_item_id" / "camera_id.jpg").open("wb") as f:
             f.write(expected_picture)
 
         # When
-        actual_binary = binary_storage.get_item_binary("my_item_id", "camera_id", active_config_name)
+        actual_binary = binary_storage.get_item_binary("my_item_id", "camera_id")
 
         # Then
         assert actual_binary == expected_picture
@@ -53,10 +53,10 @@ class TestFileSystemBinaryStorage:
     def test_get_item_binaries_should_return_all_item_binaries_names(self, tmpdir):
         # Given
         src_directory_path = Path(tmpdir.mkdir("binaries"))
-        binary_storage = FileSystemBinaryStorage(src_directory_path)
         expected_picture_1 = bytes([0, 1, 2, 3, 4])
         expected_picture_2 = bytes([5, 6, 7, 8, 9])
         active_config_name = "detection_model"
+        binary_storage = FileSystemBinaryStorage(src_directory_path, active_config_name)
 
         (src_directory_path / active_config_name / "my_item_id").mkdir(parents=True)
 
@@ -66,7 +66,7 @@ class TestFileSystemBinaryStorage:
                 f_2.write(expected_picture_2)
 
         # When
-        binaries_names = binary_storage.get_item_binaries("my_item_id", active_config_name)
+        binaries_names = binary_storage.get_item_binaries("my_item_id")
 
         # Then
         assert set(binaries_names) == {

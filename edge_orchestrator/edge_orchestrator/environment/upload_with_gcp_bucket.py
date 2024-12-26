@@ -28,14 +28,14 @@ class UploadWithGCPBucket(Config):
         if prefix is None:
             raise Exception("EDGE_NAME environment variable should be set")
 
-        self.metadata_storage = GCPMetadataStorage(prefix)
-        self.binary_storage = GCPBinaryStorage(prefix)
         self.inventory = JsonInventory(self.ROOT_PATH / "config" / "inventory.json")
         self.station_config = JsonStationConfig(
             self.ROOT_PATH / "config" / "station_configs",
             self.inventory,
             self.ROOT_PATH / "data",
         )
+        self.metadata_storage = GCPMetadataStorage(prefix, self.station_config.active_config_name)
+        self.binary_storage = GCPBinaryStorage(prefix, self.station_config.active_config_name)
         self.edge_station = EdgeStation(self.station_config)
         self.model_forward = TFServingWrapper(self.SERVING_MODEL_URL, self.inventory, self.station_config)
         self.telemetry_sink = FakeTelemetrySink()

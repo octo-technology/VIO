@@ -20,10 +20,10 @@ class TestGCPBinaryStorage:
         mock_gcs_client = mock_storage.Client.return_value
         mock_bucket = Mock()
         mock_gcs_client.get_bucket.return_value = mock_bucket
-        gcs = GCPBinaryStorage(prefix=EDGE_NAME)
+        gcs = GCPBinaryStorage(prefix=EDGE_NAME, active_config_name=test_active_config_name)
 
         # When
-        gcs.save_item_binaries(item, test_active_config_name)
+        gcs.save_item_binaries(item)
 
         # Then
         mock_storage.Client.assert_called_once()
@@ -44,11 +44,11 @@ class TestGCPBinaryStorage:
         mock_gcs_client = mock_storage.Client.return_value
         mock_bucket = Mock()
         mock_gcs_client.get_bucket.return_value = mock_bucket
-        gcs = GCPBinaryStorage(prefix=EDGE_NAME)
-        gcs.save_item_binaries(item, test_active_config_name)
+        gcs = GCPBinaryStorage(prefix=EDGE_NAME, active_config_name=test_active_config_name)
+        gcs.save_item_binaries(item)
 
         # When
-        gcs.get_item_binary(item.id, test_camera_id, test_active_config_name)
+        gcs.get_item_binary(item.id, test_camera_id)
 
         # Then
         mock_storage.Client.assert_called_once()

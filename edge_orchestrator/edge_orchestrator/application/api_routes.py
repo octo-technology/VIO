@@ -32,9 +32,8 @@ def read_all(metadata_storage: MetadataStorage = Depends(get_metadata_storage)):
 def get_item(
     item_id: str,
     metadata_storage: MetadataStorage = Depends(get_metadata_storage),
-    station_config: StationConfig = Depends(get_station_config),
 ):
-    return metadata_storage.get_item_metadata(item_id, station_config.active_config["name"])
+    return metadata_storage.get_item_metadata(item_id)
 
 
 @api_router.get("/items/{item_id}/binaries/{camera_id}")
@@ -42,9 +41,8 @@ def get_item_binary(
     item_id: str,
     camera_id: str,
     binary_storage: BinaryStorage = Depends(get_binary_storage),
-    station_config: StationConfig = Depends(get_station_config),
 ):
-    content_binary = binary_storage.get_item_binary(item_id, camera_id, station_config.active_config["name"])
+    content_binary = binary_storage.get_item_binary(item_id, camera_id)
     return Response(content=content_binary, status_code=HTTPStatus.OK, media_type="image/jpeg")
 
 
@@ -52,18 +50,16 @@ def get_item_binary(
 def get_item_binaries(
     item_id: str,
     binary_storage: BinaryStorage = Depends(get_binary_storage),
-    station_config: StationConfig = Depends(get_station_config),
 ):
-    return binary_storage.get_item_binaries(item_id, station_config.active_config["name"])
+    return binary_storage.get_item_binaries(item_id)
 
 
 @api_router.get("/items/{item_id}/state")
 def get_item_state(
     item_id: str,
     metadata_storage: MetadataStorage = Depends(get_metadata_storage),
-    station_config: StationConfig = Depends(get_station_config),
 ):
-    return metadata_storage.get_item_state(item_id, station_config.active_config["name"])
+    return metadata_storage.get_item_state(item_id)
 
 
 @api_router.get("/inventory")

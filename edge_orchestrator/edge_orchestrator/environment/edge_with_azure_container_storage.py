@@ -24,14 +24,14 @@ class EdgeWithAzureContainerStorage(Config):
     SERVING_MODEL_URL = os.environ.get("SERVING_MODEL_URL", "http://edge_model_serving:8501")
 
     def __init__(self):
-        self.metadata_storage = AzureContainerMetadataStorage()
-        self.binary_storage = AzureContainerBinaryStorage()
         self.inventory = JsonInventory(self.ROOT_PATH / "config" / "inventory.json")
         self.station_config = JsonStationConfig(
             self.ROOT_PATH / "config" / "station_configs",
             self.inventory,
             self.ROOT_PATH / "data",
         )
+        self.metadata_storage = AzureContainerMetadataStorage(self.station_config.active_config_name)
+        self.binary_storage = AzureContainerBinaryStorage(self.station_config.active_config_name)
         self.edge_station = EdgeStation(self.station_config)
         self.model_forward = TFServingWrapper(self.SERVING_MODEL_URL, self.inventory, self.station_config)
         self.telemetry_sink = AzureIotHubTelemetrySink()

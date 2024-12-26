@@ -24,8 +24,8 @@ class TestFileSystemMetadataStorage:
             dimensions=[],
         )
         src_directory_path = Path(tmpdir.mkdir("metadata"))
-        metadata_storage = FileSystemMetadataStorage(src_directory_path)
         active_config_name = "detection_model"
+        metadata_storage = FileSystemMetadataStorage(src_directory_path, active_config_name)
 
         expected_response = {
             "id": item.id,
@@ -42,7 +42,7 @@ class TestFileSystemMetadataStorage:
         }
 
         # When
-        metadata_storage.save_item_metadata(item, active_config_name)
+        metadata_storage.save_item_metadata(item)
 
         # Then
         path_to_my_metadata = src_directory_path / "detection_model" / "my_item_id" / "metadata.json"
