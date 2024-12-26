@@ -12,7 +12,8 @@ def list_cameras() -> List[str]:
         cap = cv2.VideoCapture(index)
         if not cap.read()[0]:
             break
-        available_cameras.append(f"Cam {index}")
+        else:
+            available_cameras.append(f"Cam {index}")
         cap.release()
         index += 1
     return available_cameras
