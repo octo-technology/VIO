@@ -60,7 +60,6 @@ def main():
         caps = {index: cv2.VideoCapture(index) for index in selected_cameras}
         columns = st.columns(len(selected_cameras))
         frames_video = {index: columns[i].empty() for i, index in enumerate(selected_cameras)}
-        frames_image = {index: columns[i].empty() for i, index in enumerate(selected_cameras)}
 
         if st.button("Trigger"):
             payload = None
