@@ -30,13 +30,7 @@ class GCPBinaryStorage(BinaryStorage):
         return blob.download_as_bytes()
 
     def get_item_binaries(self, item_id: str) -> List[str]:
-        binaries = []
-        for blob in self.bucket.list_blobs():
-            if item_id in blob.name:
-                for binary in self.bucket.list_blobs(prefix=blob.name):
-                    binary = binary.name
-                    binaries.append(binary)
-        return binaries
+        return [blob.name for blob in self.bucket.list_blobs() if item_id in blob.name]
 
     def get_item_binary_filepath(self, item_id: str, camera_id: str) -> str:
         return os.path.join(self.prefix, self.active_config_name, item_id, f"{camera_id}.jpg")
