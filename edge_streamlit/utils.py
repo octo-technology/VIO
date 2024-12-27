@@ -1,8 +1,8 @@
 import logging
 from typing import List
+
 import cv2
 import streamlit as st
-
 
 logger = logging.getLogger(__name__)
 logger.addHandler(logging.StreamHandler())
