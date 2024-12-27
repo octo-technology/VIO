@@ -4,7 +4,7 @@ from fastapi.testclient import TestClient
 
 from edge_orchestrator.api_config import get_metadata_storage
 from edge_orchestrator.application.server import server
-from tests.conftest import TEST_DATA_FOLDER_PATH
+from tests.conftest import EDGE_NAME, TEST_DATA_FOLDER_PATH
 
 
 class TestServer:
@@ -12,7 +12,7 @@ class TestServer:
         # Given
         client = TestClient(server())
         test_file = "camera_id1.jpg"
-        test_file_path = TEST_DATA_FOLDER_PATH / "test_config" / "item_2" / test_file
+        test_file_path = TEST_DATA_FOLDER_PATH / EDGE_NAME / "test_config" / "item_2" / test_file
         expected_logs = [
             "Starting Save Binaries",
             "Entering try Save Binaries",

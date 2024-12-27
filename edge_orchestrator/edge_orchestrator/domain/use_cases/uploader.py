@@ -29,7 +29,8 @@ class Uploader:
         async def wrapper(item: Item, *args):
             item.state = args[0].value
             await fct(item)
-            self.metadata_storage.save_item_metadata(item)
+            active_config_name = args[1]
+            self.metadata_storage.save_item_metadata(item, active_config_name)
 
         return wrapper
 
@@ -50,7 +51,7 @@ class Uploader:
             logger.info(f"Starting {uploader_state.value}")
             try:
                 logger.info(f"Entering try {uploader_state.value}")
-                await task_fct(item, uploader_state)
+                await task_fct(item, uploader_state, active_config_name)
             except Exception as e:
                 logger.error(f"Error during {uploader_state.value}: {e}")
                 await set_error_state(item, str(e))
@@ -58,4 +59,4 @@ class Uploader:
             logger.info(f"End of {uploader_state.value}")
 
         item.state = UploaderState.DONE.value
-        self.metadata_storage.save_item_metadata(item)
+        self.metadata_storage.save_item_metadata(item, active_config_name)

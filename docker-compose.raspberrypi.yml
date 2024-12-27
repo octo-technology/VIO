@@ -1,5 +1,3 @@
-version: '3'
-
 services:
   edge_db:
     image: webhippie/mongodb:latest-arm32v7

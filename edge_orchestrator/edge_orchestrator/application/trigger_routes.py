@@ -45,8 +45,17 @@ async def upload_job(
     station_config: StationConfig = Depends(get_station_config),
     background_tasks: BackgroundTasks = None,
 ):
-    item = Item.from_nothing()
-    contents = image.file.read()
-    item.binaries = {"0": contents}
-    background_tasks.add_task(uploader.upload, item, station_config.active_config["name"])
-    return {"item_id": item.id}
+    if station_config.active_config is None:
+        return JSONResponse(
+            status_code=403,
+            content={
+                "message": "No active configuration selected! "
+                "Set the active station configuration before triggering the inspection."
+            },
+        )
+    else:
+        item = Item.from_nothing()
+        contents = image.file.read()
+        item.binaries = {"0": contents}
+        background_tasks.add_task(uploader.upload, item, station_config.active_config["name"])
+        return {"item_id": item.id}

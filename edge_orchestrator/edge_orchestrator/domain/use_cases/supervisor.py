@@ -5,7 +5,6 @@ from collections import OrderedDict
 from pathlib import Path
 from typing import Any, Dict, List, Union
 
-from codecarbon import track_emissions
 from PIL import Image
 
 from edge_orchestrator.api_config import (
@@ -59,9 +58,6 @@ class Supervisor:
         self.edge_station = edge_station
         self.telemetry_sink = telemetry_sink
 
-    @track_emissions(
-        project_name="save_item_metadata", measure_power_secs=1, log_level="info", output_dir=str(emissions_path)
-    )
     def save_item_metadata(self, fct):
         @functools.wraps(fct)
         async def wrapper(item: Item, *args):
@@ -80,7 +76,6 @@ class Supervisor:
         tasks = OrderedDict()
 
         @self.save_item_metadata
-        @track_emissions(project_name="capture", measure_power_secs=1, log_level="info", output_dir=str(emissions_path))
         async def capture(item: Item):
             if item.binaries is None or len(item.binaries) == 0:
                 cameras_metadata, binaries = self.edge_station.capture()
@@ -89,23 +84,14 @@ class Supervisor:
             check_capture_according_to_config(item, self.station_config.get_cameras())
 
         @self.save_item_metadata
-        @track_emissions(
-            project_name="save_item_binaries", measure_power_secs=1, log_level="info", output_dir=str(emissions_path)
-        )
         async def save_item_binaries(item: Item):
             self.binary_storage.save_item_binaries(item, self.station_config.active_config["name"])
 
         @self.save_item_metadata
-        @track_emissions(
-            project_name="set_inferences", measure_power_secs=1, log_level="info", output_dir=str(emissions_path)
-        )
         async def set_inferences(item: Item):
             item.inferences = await self.get_predictions(item)
 
         @self.save_item_metadata
-        @track_emissions(
-            project_name="set_decision", measure_power_secs=1, log_level="info", output_dir=str(emissions_path)
-        )
         async def set_decision(item: Item):
             decision = self.apply_business_rules(item)
             item.decision = decision.value

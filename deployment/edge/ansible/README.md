@@ -4,12 +4,26 @@ export LOCAL_VIO_DIR=
 ```
 
 
-### Install sshpass
-https://stackoverflow.com/questions/42835626/ansible-to-use-the-ssh-connection-type-with-passwords-you-must-install-the-s
+### Install sshpass and the requirements
 
+On MacOS, you can install sshpass using brew:
+```bash
+brew install sshpass
 ```
+
+Then install requirements:
+```bash
 pip install -r requirements.txt
 ```
+
+### Find the IP of the edge
+
+Under Ubuntu, you can use the following command to find the IP of the edge
+```bash
+ip a | grep -A 2 'wlx' | grep 'inet ' | awk '{print $2}' | cut -d/ -f1
+```
+
+Then change the IP addresses on the inventory file
 
 ## docker-compose devices
 
