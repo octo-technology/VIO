@@ -30,7 +30,7 @@ class GCPMetadataStorage(MetadataStorage):
         return metadata
 
     def get_item_state(self, item_id: str) -> str:
-        item_metadata = self.get_item_metadata(item_id, self.active_config_name)
+        item_metadata = self.get_item_metadata(item_id)
         return item_metadata["state"]
 
     def get_all_items_metadata(self) -> List[Dict]:

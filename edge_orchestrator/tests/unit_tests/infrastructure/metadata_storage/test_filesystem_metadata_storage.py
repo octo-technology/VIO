@@ -58,10 +58,10 @@ class TestFileSystemMetadataStorage:
         (src_directory_path / active_config_name / "my_item_id").mkdir(parents=True)
         with (src_directory_path / active_config_name / "my_item_id" / "metadata.json").open("w") as f:
             json.dump(expected_metadata, f)
-        metadata_storage = FileSystemMetadataStorage(src_directory_path)
+        metadata_storage = FileSystemMetadataStorage(src_directory_path, active_config_name)
 
         # When
-        actual_metadata = metadata_storage.get_item_metadata("my_item_id", active_config_name)
+        actual_metadata = metadata_storage.get_item_metadata("my_item_id")
 
         # Then
         assert actual_metadata == expected_metadata
@@ -84,10 +84,10 @@ class TestFileSystemMetadataStorage:
         expected_state = item.state
         with (src_directory_path / active_config_name / "my_item_id" / "metadata.json").open("w") as f:
             json.dump(item.get_metadata(), f)
-        metadata_storage = FileSystemMetadataStorage(src_directory_path)
+        metadata_storage = FileSystemMetadataStorage(src_directory_path, active_config_name)
 
         # When
-        actual_state = metadata_storage.get_item_state("my_item_id", active_config_name)
+        actual_state = metadata_storage.get_item_state("my_item_id")
 
         # Then
         assert actual_state == expected_state
@@ -104,7 +104,7 @@ class TestFileSystemMetadataStorage:
         ).open("w") as f2:
             json.dump(my_cameras_metadata_0, f1)
             json.dump(my_cameras_metadata_1, f2)
-        metadata_storage = FileSystemMetadataStorage(src_directory_path)
+        metadata_storage = FileSystemMetadataStorage(src_directory_path, active_config_name)
 
         # When
         actual_items_metadata = metadata_storage.get_all_items_metadata()

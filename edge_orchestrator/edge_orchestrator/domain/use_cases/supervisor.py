@@ -84,7 +84,7 @@ class Supervisor:
 
         @self.save_item_metadata
         async def save_item_binaries(item: Item):
-            self.binary_storage.save_item_binaries(item, self.station_config.active_config["name"])
+            self.binary_storage.save_item_binaries(item)
 
         @self.save_item_metadata
         async def set_inferences(item: Item):
