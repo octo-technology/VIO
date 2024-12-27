@@ -10,10 +10,10 @@ def list_cameras() -> List[str]:
     available_cameras = []
     while True:
         cap = cv2.VideoCapture(index)
-        if not cap.read()[0]:
-            break
-        else:
+        if cap.isOpened():
             available_cameras.append(f"Cam {index}")
+        else:
+            break
         cap.release()
         index += 1
     return available_cameras
@@ -29,23 +29,3 @@ def display_camera_checkboxes(available_cameras: List[str]) -> List[int]:
         if st.sidebar.checkbox(camera_name, key=f"camera_{i}"):
             selected_cameras.append(i)
     return selected_cameras
-
-
-def capture_videos(selected_cameras: List[int]):
-    """
-    Capture et affiche les flux vidéo des caméras sélectionnées.
-    """
-    caps = {index: cv2.VideoCapture(index) for index in selected_cameras}
-    columns = st.columns(len(selected_cameras))
-    frames = {index: columns[i].empty() for i, index in enumerate(selected_cameras)}
-
-    while st.session_state.recording:
-        for index in selected_cameras:
-            ret, frame = caps[index].read()
-            if ret:
-                frames[index].image(frame, channels="BGR")
-            else:
-                frames[index].text(f"Camera {index} - Failed to capture video")
-
-    for cap in caps.values():
-        cap.release()
