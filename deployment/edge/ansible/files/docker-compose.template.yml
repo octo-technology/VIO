@@ -39,3 +39,15 @@ services:
       dockerfile: Dockerfile
     ports:
       - 8080:80
+
+  edge_streamlit:
+    container_name: edge_streamlit
+    build:
+      context: edge_streamlit
+      dockerfile: Dockerfile
+    devices:
+      - /dev/video0:/dev/video0
+      - /dev/video2:/dev/video2
+    ports:
+      - 8502:8501
+    profiles: [edge]
