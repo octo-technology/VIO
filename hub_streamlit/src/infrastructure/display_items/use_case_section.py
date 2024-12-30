@@ -7,11 +7,9 @@ class UseCaseSection:
         self.use_case_data = use_case_data
         self.n_cols = n_cols
         self.n_camera = n_camera
-        self.title_placeholder = st.empty()
         self.columns_placeholder = [st.columns(self.n_cols) for _ in range(n_camera + 1)]
 
     def show(self):
-        self.title_placeholder.markdown(f"##### Use case: {self.use_case.replace('_', ' ').title()}")
         idx_col = 0
         for item_id in self.use_case_data["item_list"]:
             item_data = self.use_case_data[item_id]
@@ -29,5 +27,4 @@ class UseCaseSection:
             idx_col += 1
 
     def empty(self):
-        self.title_placeholder.empty()
         self.columns_placeholder.empty()
