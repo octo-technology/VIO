@@ -34,9 +34,6 @@ def main():
     if active_data_sources:
         display_pictures(active_data_sources, 4)
 
-### Faire a l'horizontal
-### Séparer les caméras
-
 
 def sidebar(folders):
     # Select edge and use case
