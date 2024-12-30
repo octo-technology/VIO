@@ -1,8 +1,6 @@
-import os
-import datetime
 import streamlit as st
 from src.infrastructure.gcp_connector import get_gcp_client, extract_items
-from PIL import Image
+from src.edge_services import get_active_config
 
 
 def main():
@@ -71,6 +69,7 @@ def select_active_data_sources(folders, edges, use_cases):
     for edge in edges:
         active_data_sources[edge] = {}
         active_data_sources[edge]["use_case_list"] = use_cases[edge]
+        active_data_sources[edge]["edge_ip"] = folders[edge]["edge_ip"]
         for use_case in use_cases[edge]:
             active_data_sources[edge][use_case] = folders[edge][use_case]
 
@@ -80,8 +79,9 @@ def select_active_data_sources(folders, edges, use_cases):
 def display_pictures(active_data_sources, n_cols):
     # Display pictures from gcp bucket
     for edge in active_data_sources["edge_list"]:
-        st.markdown(f"### Edge: {edge.replace('_', ' ')}")
         edge_data = active_data_sources[edge]
+        display_edge_information(edge, edge_ip=edge_data["edge_ip"])
+
         for use_case in edge_data["use_case_list"]:
             use_case_data = edge_data[use_case]
             st.markdown(f"##### Use case: {use_case.replace('_', ' ').title()}")
@@ -95,6 +95,22 @@ def display_pictures(active_data_sources, n_cols):
                     columns_syst[idx_col].image(picture, caption=f"Creation date: {item_data['creation_date'].strftime('%Y-%m-%d %H:%M:%S')}",
                                                 use_container_width=True)
                     idx_col += 1
+
+
+def display_edge_information(edge: str, edge_ip: str):
+    title_placeholder = st.empty()
+    title_placeholder.markdown(f"### Edge: {edge.replace('_', ' ')}")
+    text_placeholder = st.empty()
+    text_placeholder.write("⏳Thinking...")
+
+    active_config = get_active_config(edge_ip)
+    if active_config is not False:
+        text_placeholder.write(f"Active configuration: {active_config['name']}")
+        title_placeholder.markdown(f"### 🟢 {edge.replace('_', ' ')}")
+    else:
+        text_placeholder.write("")
+        title_placeholder.markdown(f"### 🔴 {edge.replace('_', ' ')}")
+
 
 
 # Exécution du script principal
