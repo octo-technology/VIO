@@ -12,8 +12,8 @@ class EdgeSection:
 
         self.edge_title_placeholder = st.columns(3)
         self.title_placeholder = self.edge_title_placeholder[0].empty()
-        self.button_placeholder = self.edge_title_placeholder[1].empty()
-        self.active_config_placeholder = self.edge_title_placeholder[2].empty()
+        self.button_placeholder = self.edge_title_placeholder[2].empty()
+        self.active_config_placeholder = self.edge_title_placeholder[1].empty()
 
         self.use_case_sections = None
         self.selected_use_case = self.use_cases[0]
