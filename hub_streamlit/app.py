@@ -1,5 +1,5 @@
 import streamlit as st
-from src.infrastructure.gcp_connector import get_gcp_client, extract_items
+from src.infrastructure.cloud_connectors.gcp_connector import get_gcp_client, extract_items
 from src.edge_services import get_active_config
 
 
@@ -95,6 +95,7 @@ def display_pictures(active_data_sources, n_cols):
 
 
 def display_edge_information(edge: str, edge_ip: str):
+    st.markdown("---", unsafe_allow_html=True)
     title_placeholder = st.empty()
     title_placeholder.markdown(f"### Edge: {edge.replace('_', ' ')}")
     text_placeholder = st.empty()
