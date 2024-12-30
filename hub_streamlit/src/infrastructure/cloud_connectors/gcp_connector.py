@@ -51,7 +51,7 @@ def extract_items(gcp_client):
             folder_dict[edge_name][use_case][item_id]["pictures"] = []
             folder_dict[edge_name][use_case][item_id]["nbr_pictures"] = 0
             folder_dict[edge_name][use_case][item_id]["creation_date"] = blob.time_created
-            folder_dict[edge_name][use_case][item_id]["metadata"] = f"{edge_name}/{use_case}/{item_id}/metadata.json"
+            folder_dict[edge_name][use_case][item_id]["metadata"] = read_metadata(bucket, edge_name, use_case, item_id)
 
         if ".jpg" in file_name:
             # Downloading the first 10 pics
@@ -73,5 +73,10 @@ def read_edge_ip(bucket, edge_name):
     return ip
 
 
-folders = extract_items(get_gcp_client())
-print(folders)
+def read_metadata(bucket, edge_name, use_case, item_id):
+    blob = bucket.blob(f"{edge_name}/{use_case}/{item_id}/metadata.json")
+    if blob.exists():
+        metadata = blob.download_as_text()
+    else:
+        metadata = None
+    return metadata

@@ -18,4 +18,4 @@ env:
 
 .PHONY: run ## Run the streamlit app
 run:
-	streamlit run app.py
+	streamlit run app.py --server.port 8502
