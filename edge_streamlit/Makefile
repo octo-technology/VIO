@@ -18,7 +18,7 @@ env:
 
 .PHONY: run ## Run the streamlit app
 run:
-	streamlit run app.py
+	streamlit run app-basic.py
 
 .PHONY: lint  ## 🐍 Lint Python files to conform to the PEP 8 style guide
 lint:
