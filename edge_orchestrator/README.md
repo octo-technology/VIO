@@ -23,3 +23,17 @@ Do not get confused with the `BUILDPLATFORM` variable, that matches the current 
 Visit:
 - [Multi-platform build arguments](https://docs.docker.com/build/building/variables/#multi-platform-build-arguments) for more details on Build variables
 - [Multi-platform builds](https://docs.docker.com/build/building/multi-platform/) for more details on the Multi-platform build with Docker
+pg_config --version
+```
+
+If not, install it using the following command:
+
+MacOS:
+```bash
+brew install postgresql
+```
+MAC : 172.23.26.18
+ipconfig getifaddr en0
+
+Intel : 192.168.1.25
+ip a | grep -A 2 'wlx' | grep 'inet ' | awk '{print $2}' | cut -d/ -f1

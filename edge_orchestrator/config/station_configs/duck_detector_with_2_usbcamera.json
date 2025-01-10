@@ -1,0 +1,47 @@
+{
+  "name": "duck_detector_2_cams",
+  "cameras": {
+    "camera_id0": {
+      "type": "usb_camera",
+      "source": "/dev/video0",
+      "position": "front",
+      "exposition": 100,
+      "models_graph": {
+        "model_id4": {
+          "name": "duck_detector",
+          "depends_on": []
+        }
+      },
+      "camera_rule": {
+        "name": "expected_label_rule",
+        "parameters": {
+          "expected_label": ["OK"]
+        }
+      }
+    },
+    "camera_id2": {
+      "type": "usb_camera",
+      "source": "/dev/video2",
+      "position": "front",
+      "exposition": 100,
+      "models_graph": {
+        "model_id4": {
+          "name": "duck_detector",
+          "depends_on": []
+        }
+      },
+      "camera_rule": {
+        "name": "expected_label_rule",
+        "parameters": {
+          "expected_label": ["OK"]
+        }
+      }
+    }
+  },
+  "item_rule": {
+    "name": "min_threshold_ko_rule",
+    "parameters": {
+      "threshold": 1
+    }
+  }
+}
