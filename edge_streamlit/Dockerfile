@@ -19,9 +19,8 @@ COPY requirements.txt .
 
 RUN pip install -r requirements.txt
 
-COPY app-basic.py .
+COPY app.py .
 COPY prediction_boxes.py .
-COPY utils.py .
 
 EXPOSE 8501
 

@@ -18,10 +18,6 @@ url_trigger = URL_ORCH + "trigger"
 
 
 def main():
-    """
-    Fonction principale de l'application Streamlit.
-    """
-    # Init variables
     active_config = json.loads(requests.get(url_active_config).text)
     if active_config:
         st.session_state.active_config = active_config
@@ -75,8 +71,6 @@ def main():
             st.session_state.item_id = item_id
             col3.write(f"item id: {item_id}")
 
-    # TODO: Add camera inputs
-
     columns = st.columns(2)
 
     if st.session_state.item_id and (st.session_state.active_config is not None):
@@ -111,9 +105,6 @@ def main():
             unsafe_allow_html=True,
         )
 
-    # TODO: add prediction on picture
 
-
-# Exécution du script principal
 if __name__ == "__main__":
     main()
