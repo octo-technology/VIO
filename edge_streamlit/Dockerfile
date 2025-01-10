@@ -1,5 +1,11 @@
 FROM python:3.9-slim
 
+# let print debug messages log on the console
+ENV PYTHONUNBUFFERED=1
+ENV PYTHONIOENCODING=UTF-8
+
+ENV ORCHESTRATOR_URL=http://edge_orchestrator:8000/api/v1/
+
 WORKDIR /app
 
 RUN apt-get update && apt-get install -y \
@@ -9,14 +15,16 @@ RUN apt-get update && apt-get install -y \
     git \
     && rm -rf /var/lib/apt/lists/*
 
-COPY app.py .
-COPY utils.py .
 COPY requirements.txt .
 
 RUN pip install -r requirements.txt
 
-EXPOSE 8502
+COPY app-basic.py .
+COPY prediction_boxes.py .
+COPY utils.py .
 
-HEALTHCHECK CMD curl --fail http://localhost:8502/_stcore/health
+EXPOSE 8501
 
-ENTRYPOINT ["streamlit", "run", "app.py"]
+HEALTHCHECK CMD curl --fail http://localhost:8501/_stcore/health
+
+ENTRYPOINT ["streamlit", "run", "app-basic.py"]
