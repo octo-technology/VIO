@@ -22,6 +22,10 @@ def main():
     Fonction principale de l'application Streamlit.
     """
     # Init variables
+    active_config = json.loads(requests.get(url_active_config).text)
+    if active_config:
+        st.session_state.active_config = active_config
+
     if "active_config" not in st.session_state:
         st.session_state.active_config = None
     if "trigger" not in st.session_state:
@@ -32,15 +36,22 @@ def main():
     col1, col2, col3 = st.columns(3)
 
     configs = json.loads(requests.get(url_config).text)
-    option = col1.selectbox("Select an option", tuple(configs), label_visibility="collapsed")
 
-    if col2.button("Active", use_container_width=True):
+    active_config_index = 0
+    if st.session_state.active_config:
+        active_config_name = st.session_state.active_config.get('name')
+        active_config_index = next((index for (index, config) in enumerate(configs.values()) if config["name"] == active_config_name), 0)
+    option = col1.selectbox("Select an option", tuple(configs), index=active_config_index, label_visibility="collapsed")
+
+    if col2.button("Active", use_container_width=True, ):
         st.session_state.item_id = None
         body = {
             "config_name": option
         }
         requests.post(url=url_active_config, json=body)
         st.session_state.active_config = json.loads(requests.get(url_active_config).text)
+    
+    if st.session_state.active_config:
         active_config_name = st.session_state.active_config.get('name')
         col2.write(f"active config: {active_config_name}")
 
@@ -60,7 +71,7 @@ def main():
     if st.session_state.item_id and (st.session_state.active_config is not None):
         print("cameras", st.session_state.active_config["cameras"])
 
-        time.sleep(1)
+        time.sleep(10)
 
         url_metadata = URL_ORCH + f"items/{st.session_state.item_id}"
         response = requests.get(url_metadata)
@@ -82,7 +93,8 @@ def main():
                 image = Image.open(BytesIO(image))
                 image = plot_predictions(image, camera, metadata)
             columns[i].image(image, channels="BGR", width=450)
-            # columns[i].markdown(inferences[camera])
+            if inferences.get(camera):
+                columns[i].markdown(inferences[camera])
 
         st.markdown(
             f"<h1 style='text-align: center; color: #e67e22;'>{decision}</h1>",
