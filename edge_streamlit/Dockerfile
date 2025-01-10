@@ -27,4 +27,4 @@ EXPOSE 8501
 
 HEALTHCHECK CMD curl --fail http://localhost:8501/_stcore/health
 
-ENTRYPOINT ["streamlit", "run", "app-basic.py"]
+ENTRYPOINT ["streamlit", "run", "app.py"]
