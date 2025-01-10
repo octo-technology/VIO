@@ -1,6 +1,24 @@
 {
     "name": "yolo_coco",
     "cameras": {
+      "camera_id3": {
+        "type": "fake",
+        "source": "people_dataset",
+        "position": "back",
+        "exposition": 100,
+        "models_graph": {
+          "model_id4": {
+            "name": "yolo_coco_nano",
+            "depends_on": []
+          }
+        },
+        "camera_rule": {
+          "name": "expected_label_rule",
+          "parameters": {
+            "expected_label": ["person"]
+          }
+        }
+      },
       "camera_id4": {
         "type": "fake",
         "source": "people_dataset",
