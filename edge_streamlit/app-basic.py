@@ -9,7 +9,9 @@ from io import BytesIO
 # Page configuration
 st.set_page_config(page_title="VIO-edge", page_icon="🔦", layout="wide")
 
-URL_ORCH = "http://localhost:8000/api/v1/"
+# URL_ORCH = "http://localhost:8000/api/v1/"
+URL_ORCH = "http://edge_orchestrator:8000/api/v1/"
+
 url_config = URL_ORCH + "configs"
 url_active_config = URL_ORCH + "configs/active"
 url_trigger = URL_ORCH + "trigger"
@@ -56,6 +58,7 @@ def main():
     columns = st.columns(2)
 
     if st.session_state.item_id and (st.session_state.active_config is not None):
+        print("cameras", st.session_state.active_config["cameras"])
 
         time.sleep(1)
 
@@ -70,6 +73,7 @@ def main():
 
         cameras = st.session_state.active_config["cameras"]
         for i, camera in enumerate(cameras):
+            print("camera", camera)
             url_binaries = URL_ORCH + f"items/{st.session_state.item_id}/binaries/{camera}"
             response = requests.get(url_binaries)
             image = response.content
@@ -78,7 +82,7 @@ def main():
                 image = Image.open(BytesIO(image))
                 image = plot_predictions(image, camera, metadata)
             columns[i].image(image, channels="BGR", width=450)
-            columns[i].markdown(inferences[camera])
+            # columns[i].markdown(inferences[camera])
 
         st.markdown(
             f"<h1 style='text-align: center; color: #e67e22;'>{decision}</h1>",
