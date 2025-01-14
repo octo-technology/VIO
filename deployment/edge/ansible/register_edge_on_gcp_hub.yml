@@ -4,14 +4,13 @@
     - name: Create edge_ip file
       ansible.builtin.copy:
         content: "{{ IP_ADDRESS }}"
-        dest: "{{ REMOTE_VIO_DIR }}/edge_orchestrator/config/edge_ip.txt"
-
+        dest: "{{ LOCAL_VIO_DIR }}/edge_orchestrator/config/edge_ip.txt"
     - name: Upload edge_ip file on GCP
-      gcp_compute_file:
-        project: "{{ GCP_PROJECT }}"
-        auth_kind: "{{ GCP_AUTH_KIND }}"
-        service_account_file: "{{ GCP_SERVICE_ACCOUNT_FILE }}"
-        instance_name: "{{ GCP_INSTANCE_NAME }}"
-        zone: "{{ GCP_ZONE }}"
-        remote_src: "{{ REMOTE_VIO_DIR }}/edge_orchestrator/config/edge_ip.txt"
-        src: "{{ REMOTE_VIO_DIR }}/edge_orchestrator/config/edge_ip.txt"
+      google.cloud.gcp_storage_object:
+        action: upload
+        bucket: "{{ REMOTE_VIO_BUCKET }}"
+        dest: "{{ EDGE_NAME }}/edge_ip.txt"
+        src: "{{ LOCAL_VIO_DIR }}/edge_orchestrator/config/edge_ip.txt"
+        project: acn-gcp-octo-sas
+        auth_kind: "serviceaccount"
+        service_account_file: "{{ LOCAL_VIO_DIR }}/edge_orchestrator/acn-gcp-octo-sas-d657d0330cec.json"
