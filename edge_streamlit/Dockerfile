@@ -12,12 +12,6 @@ RUN apt-get update && apt-get install -y \
     build-essential \
     curl \
     software-properties-common \
-    # ffmpeg \
-    # libsm6 \
-    # libxext6 \
-    # fswebcam \
-    # libpq-dev \
-    # libnuma-dev \
     git \
     && rm -rf /var/lib/apt/lists/*
 

@@ -1,6 +1,3 @@
-from utils import display_camera_checkboxes, list_cameras
-import streamlit as st
-import requests
 import json
 
 import requests
