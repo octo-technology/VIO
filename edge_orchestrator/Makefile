@@ -19,13 +19,13 @@ help:
 	grep -E '^\.PHONY: [a-zA-Z0-9_-]+ .*?## .*$$' $(MAKEFILE_LIST) | \
 		awk 'BEGIN {FS = "(: |##)"}; {printf "\033[36m%-30s\033[0m %s\n", $$2, $$3}'
 
-.PHONY: linting  ## 🐍 Lint Python files to conform to the PEP 8 style guide
-linting:
+.PHONY: lint  ## 🐍 Lint Python files to conform to the PEP 8 style guide
+lint:
 	black .
 	isort . --gitignore
 	autoflake -i --remove-all-unused-imports -r --ignore-init-module-imports . --exclude .venv
 
-.PHONY: lint  ## 🐍 Check linting Python files to conform to the PEP 8 style guide
+.PHONY: lint  ## 🐍 Check lint Python files to conform to the PEP 8 style guide
 lint:
 	black . --check
 	isort . --gitignore --check

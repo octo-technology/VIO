@@ -24,8 +24,12 @@ class UploadWithGCPBucket(Config):
     SERVING_MODEL_URL = os.environ.get("SERVING_MODEL_URL", "http://edge_model_serving:8501")
 
     def __init__(self):
-        self.metadata_storage = GCPMetadataStorage()
-        self.binary_storage = GCPBinaryStorage()
+        prefix = os.getenv("EDGE_NAME")
+        if prefix is None:
+            raise Exception("EDGE_NAME environment variable should be set")
+
+        self.metadata_storage = GCPMetadataStorage(prefix)
+        self.binary_storage = GCPBinaryStorage(prefix)
         self.inventory = JsonInventory(self.ROOT_PATH / "config" / "inventory.json")
         self.station_config = JsonStationConfig(
             self.ROOT_PATH / "config" / "station_configs",

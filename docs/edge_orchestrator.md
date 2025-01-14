@@ -191,7 +191,7 @@ Here's a template of a config file.
     }
   },
   "item_rule": {
-    "name": "min_threshold_KO_rule", #the item rule name
+    "name": "min_threshold_ko_rule", #the item rule name
     "parameters": {
       "threshold": 1
     }

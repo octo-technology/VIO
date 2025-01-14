@@ -9,9 +9,10 @@ from edge_orchestrator.domain.ports.metadata_storage import MetadataStorage
 
 
 class GCPMetadataStorage(MetadataStorage):
-    def __init__(self):
+    def __init__(self, prefix: str):
         self.storage_client = storage.Client()
-        self.prefix = os.environ.get("EDGE_NAME", "")
+
+        self.prefix = prefix
         self.bucket = self.storage_client.get_bucket(os.getenv("GCP_BUCKET_NAME"))
 
     def save_item_metadata(self, item: Item, active_config_name: str):

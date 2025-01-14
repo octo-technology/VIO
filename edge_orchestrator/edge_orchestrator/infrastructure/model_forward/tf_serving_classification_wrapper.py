@@ -45,9 +45,17 @@ class TFServingClassificationWrapper(ModelForward):
 
     def perform_post_processing(self, model: ModelInfos, json_outputs: list, binary_name: str) -> dict:
         logger.debug(f"model classnames: {model.class_names}")
+        predictions = json_outputs[0]
+        number_predictions_classes = len(predictions)
+        number_model_classes = len(model.class_names)
+        if number_predictions_classes != number_model_classes:
+            logger.warning(
+                f"Number of classes in the model ({number_model_classes}) is different from"
+                "the number of predictions ({number_predictions_classes})"
+            )
         return {
             binary_name: {
-                "label": model.class_names[np.argmax(json_outputs[0])],
-                "probability": float(np.max(json_outputs[0])),
+                "label": model.class_names[np.argmax(predictions)],
+                "probability": float(np.max(predictions)),
             }
         }

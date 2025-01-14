@@ -1,4 +1,4 @@
-FROM --platform=linux/arm64 arm64v8/python:3.8.16
+FROM --platform=linux/arm64 arm64v8/python:3.8
 #FROM --platform=linux/arm/v7 arm32v7/python:3.9.16-bullseye
 
 WORKDIR /edge_orchestrator

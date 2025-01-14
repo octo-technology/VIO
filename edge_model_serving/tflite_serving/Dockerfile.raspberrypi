@@ -1,4 +1,4 @@
-FROM --platform=linux/arm64 arm64v8/python:3.8.10
+FROM --platform=linux/arm64 arm64v8/python:3.8
 
 WORKDIR /tflite_serving
 
