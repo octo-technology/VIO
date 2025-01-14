@@ -23,7 +23,7 @@ class EdgeSection:
         self.title_placeholder.markdown(f"### ⏳: {self.edge.replace('_', ' ')}")
 
         active_config = get_active_config(self.edge_ip)
-        if active_config is not False:
+        if active_config:
                 self.active_config_placeholder.write(f"Active configuration: {active_config['name']}")
                 self.title_placeholder.markdown(f"### 🟢 {self.edge.replace('_', ' ')}")
         else:
