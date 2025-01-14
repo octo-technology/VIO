@@ -35,6 +35,13 @@ devices:
 
 ### Test locally
 
+Set up the python venv:
+```bash
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+```
+
 Change the *REMOTE_VIO_DIR* to the local path to the vio directory.
 Uncomment the *edge_3* lines in the inventory file.
 
