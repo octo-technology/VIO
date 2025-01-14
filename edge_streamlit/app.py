@@ -1,14 +1,14 @@
-from utils import display_camera_checkboxes, list_cameras
-import streamlit as st
-import requests
 import json
 import os
 import time
+from io import BytesIO
+
 import requests
 import streamlit as st
-from prediction_boxes import camera_id_been_pinged
 from PIL import Image
-from io import BytesIO
+
+from prediction_boxes import (filtering_items_that_have_predictions,
+                              plot_predictions)
 
 # Page configuration
 st.set_page_config(page_title="VIO-edge", page_icon="🔦", layout="wide")
