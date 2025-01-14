@@ -20,8 +20,8 @@ env:
 run:
 	streamlit run app.py
 
-.PHONY: linting  ## 🐍 Lint Python files to conform to the PEP 8 style guide
-linting:
+.PHONY: lint  ## 🐍 Lint Python files to conform to the PEP 8 style guide
+lint:
 	black .
 	isort . --gitignore
 	autoflake -i --remove-all-unused-imports -r --ignore-init-module-imports . --exclude .venv
