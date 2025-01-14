@@ -32,3 +32,12 @@ We are adding those devices to be able to trigger capture from 2 cameras connect
 devices:
     - /dev/video0:/dev/video0
     - /dev/video2:/dev/video2
+
+### Test locally
+
+Change the *REMOTE_VIO_DIR* to the local path to the vio directory.
+Uncomment the *edge_3* lines in the inventory file.
+
+Then run the following command:
+```bash
+make register-edge-on-gcp-hub-locally
