@@ -1,24 +1,23 @@
-import os
 import json
+import os
 from PIL import Image
 from io import BytesIO
+from dotenv import load_dotenv
 from google.cloud import storage
 from src.utils.prediction_boxes import filtering_items_that_have_predictions, plot_predictions
+from google.api_core.exceptions import NotFound
 
-# GCP key path
-path_key_json = "/Users/thibaut.leibel/Documents/Projects/Octo/VIO-Conf/acn-gcp-octo-sas-d657d0330cec.json"
-
+load_dotenv()
 
 def get_gcp_client():
     # Client configuration for GCP
-    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = path_key_json
     client = storage.Client()
     return client
 
 
 def extract_items(gcp_client):
     # Get the bucket
-    bucket = gcp_client.bucket("tf-vio-bucket")
+    bucket = gcp_client.bucket(os.getenv("GCP_BUCKET_NAME"))
     blobs = bucket.list_blobs()
     blobs = [blob for blob in blobs if not (blob.name.endswith(".txt") or blob.name.endswith(".json"))]
     blobs = sorted(blobs, key=lambda x: x.time_created, reverse=True)
@@ -81,7 +80,11 @@ def extract_items(gcp_client):
 
 def read_edge_ip(bucket, edge_name):
     blob = bucket.blob(f"{edge_name}/edge_ip.txt")
-    ip = blob.download_as_text()
+    try:
+        ip = blob.download_as_text()
+    except NotFound as e:
+        print(f"Edge IP not found for {edge_name}. Error: {e}")
+        ip = None
     return ip
 
 

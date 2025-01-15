@@ -203,5 +203,4 @@ edge_orchestrator/config/secrets
 /deployment/edge/images/
 *package-lock.json
 
-# Emissions directory
-edge_orchestrator/emissions
+hub_streamlit/config/secrets
