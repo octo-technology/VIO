@@ -6,7 +6,7 @@
         repo: https://github.com/octo-technology/VIO.git
         dest: "{{ REMOTE_VIO_DIR }}"
         single_branch: yes
-        version: demo_grosse_conf
+        version: demo-grosse-conf
         force: true
 
     - name: Remove config folder
