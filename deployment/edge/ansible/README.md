@@ -6,30 +6,20 @@ export LOCAL_VIO_DIR=
 
 Install openssh-server on the edge:
 ```bash
-    sudo apt-get install openssh-server
-```
-Add public ssh key on the .ssh folder of the edge:
-```bash
-    ssh-copy-id -i ~/.ssh/id_rsa.pub user@edge_ip
+ sudo apt-get install openssh-server
 ```
 
 Then, try to connect through:
 ```bash
-    ssh user@edge_ip
+ ssh localhost
 ```
-
-Do not forget to install the google-cloud-storage package:
-```bash
-    pip install google-cloud-storage==3.0.0
-```
-
 
 Install Docker on the edge help you with [this link](https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository)
 Don't forget [post-installation](https://docs.docker.com/engine/install/linux-postinstall/) steps to run docker as a non-root user.
 
 Install *make* on the edge:
 ```bash
-    sudo apt-get install build-essential
+sudo apt-get install build-essential
 ```
 
 
