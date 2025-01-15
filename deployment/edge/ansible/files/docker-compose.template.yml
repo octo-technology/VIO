@@ -45,9 +45,9 @@ services:
     build:
       context: edge_streamlit
       dockerfile: Dockerfile
-    # devices:
-    #   - /dev/video0:/dev/video0
-    #   - /dev/video2:/dev/video2
+    devices:
+      - /dev/video0:/dev/video0
+      - /dev/video2:/dev/video2
     ports:
       - 8502:8501
     profiles: [edge]

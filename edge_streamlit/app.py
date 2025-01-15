@@ -6,6 +6,8 @@ import streamlit as st
 from prediction_boxes import filtering_items_that_have_predictions, plot_predictions
 from PIL import Image
 from io import BytesIO
+from utils import display_camera_checkboxes, list_cameras
+import cv2
 
 # Page configuration
 st.set_page_config(page_title="VIO-edge", page_icon="🔦", layout="wide")
@@ -28,6 +30,8 @@ def main():
         st.session_state.trigger = False
     if "item_id" not in st.session_state:
         st.session_state.item_id = None
+    if "recording" not in st.session_state:
+        st.session_state.recording = None
 
     col1, col2, col3 = st.columns(3)
 
@@ -104,6 +108,36 @@ def main():
             f"<h1 style='text-align: center; color: #e67e22;'>{decision}</h1>",
             unsafe_allow_html=True,
         )
+
+    # Sidebar parameters
+    st.sidebar.title("Configuration")
+    available_cameras = list_cameras()
+    selected_cameras = display_camera_checkboxes(available_cameras)
+    st.session_state.selected_cameras = selected_cameras
+
+    if st.sidebar.button("Start/Stop Recording"):
+        st.session_state.recording = not st.session_state.recording
+
+    # Video capture logic
+    if st.session_state.recording and selected_cameras:
+        caps = {index: cv2.VideoCapture(index) for index in selected_cameras}
+        columns = st.columns(len(selected_cameras))
+        frames_video = {
+            index: columns[i].empty() for i, index in enumerate(selected_cameras)
+        }
+
+        while st.session_state.recording:
+            for index in selected_cameras:
+                ret, frame = caps[index].read()
+                if st.session_state.trigger:
+                    st.session_state.image = frame
+
+                if ret:
+                    frames_video[index].image(frame, channels="BGR")
+                else:
+                    frames_video[index].text(
+                        f"Camera {index} - Failed to capture video"
+                    )
 
 
 if __name__ == "__main__":
