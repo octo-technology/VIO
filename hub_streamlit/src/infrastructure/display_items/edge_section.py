@@ -19,11 +19,11 @@ class EdgeSection:
         self.selected_use_case = self.use_cases[0]
 
     def show(self):
-        self.selected_use_case = self.button_placeholder.selectbox("Displayed use case", self.use_cases)
+        self.selected_use_case = self.button_placeholder.selectbox("", options=self.use_cases, label_visibility="collapsed")
         self.title_placeholder.markdown(f"### ⏳: {self.edge.replace('_', ' ')}")
 
         active_config = get_active_config(self.edge_ip)
-        if active_config:
+        if active_config is not False:
                 self.active_config_placeholder.write(f"Active configuration: {active_config['name']}")
                 self.title_placeholder.markdown(f"### 🟢 {self.edge.replace('_', ' ')}")
         else:

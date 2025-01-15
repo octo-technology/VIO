@@ -1,5 +1,5 @@
 import json
-import os
+import streamlit as st
 from PIL import Image
 from io import BytesIO
 from dotenv import load_dotenv
@@ -9,13 +9,15 @@ from google.api_core.exceptions import NotFound
 
 load_dotenv()
 
+
 def get_gcp_client():
     # Client configuration for GCP
     client = storage.Client()
     return client
 
 
-def extract_items(gcp_client):
+@st.cache_data(ttl=30)
+def extract_items(_gcp_client):
     # Get the bucket
     bucket = gcp_client.bucket(os.getenv("GCP_BUCKET_NAME"))
     blobs = bucket.list_blobs()
