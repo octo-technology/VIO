@@ -1,7 +1,7 @@
 from PIL import Image, ImageDraw, ImageFont
 
 
-def filtering_items_that_have_predictions(metadata: dict, camera_id: str):
+def filtering_items_that_have_predictions(metadata: dict, camera_id: str) -> bool:
     if metadata == {} or metadata is None:
         return False
     elif metadata["inferences"] == {}:
@@ -15,7 +15,7 @@ def filtering_items_that_have_predictions(metadata: dict, camera_id: str):
     return True
 
 
-def plot_predictions(img: Image, camera_id: str, metadata: dict):
+def plot_predictions(img: Image, camera_id: str, metadata: dict) -> Image:
     if metadata["inferences"] == {}:
         return img
     camera_prediction_metadata = metadata["inferences"][camera_id]

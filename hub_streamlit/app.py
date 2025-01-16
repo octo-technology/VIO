@@ -9,7 +9,7 @@ def main():
     """
     # Page configuration
     st.set_page_config(
-        page_title="Mon Application Streamlit",
+        page_title="VIO Hub Viewer",
         layout="wide"
     )
 

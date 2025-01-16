@@ -1,33 +1,37 @@
 import json
+import os
 import streamlit as st
 from PIL import Image
 from io import BytesIO
 from dotenv import load_dotenv
-from google.cloud import storage
 from src.utils.prediction_boxes import filtering_items_that_have_predictions, plot_predictions
 from google.api_core.exceptions import NotFound
+from google.cloud.storage import Client
 
 load_dotenv()
 
+BUCKET_NAME = os.getenv("GCP_BUCKET_NAME")
+IMG_EXTENSIONS = [".jpg", ".jpeg", ".png"]
 
 def get_gcp_client():
     # Client configuration for GCP
-    client = storage.Client()
-    return client
+    return Client()
 
 
 @st.cache_data(ttl=30)
-def extract_items(_gcp_client):
+def extract_items(_gcp_client: Client) -> dict:
     # Get the bucket
-    bucket = gcp_client.bucket(os.getenv("GCP_BUCKET_NAME"))
+    bucket = _gcp_client.bucket(os.getenv("GCP_BUCKET_NAME"))
     blobs = bucket.list_blobs()
-    blobs = [blob for blob in blobs if not (blob.name.endswith(".txt") or blob.name.endswith(".json"))]
-    blobs = sorted(blobs, key=lambda x: x.time_created, reverse=True)
+   
+    blobs_images = [blob for blob in blobs if any(blob.name.endswith(extension) for extension in IMG_EXTENSIONS)]
+    blobs_images_sorted = sorted(blobs_images, key=lambda x: x.time_created, reverse=True)
 
     folder_dict = {"edge_list": []}
-    for blob in blobs:
+    for blob in blobs_images_sorted:
         blob_name = blob.name
 
+        # TODO: Refactor this part
         # Extracting the edge, use case and item id
         blob_name_split = blob_name.split("/")
         edge_name = blob_name_split[0]

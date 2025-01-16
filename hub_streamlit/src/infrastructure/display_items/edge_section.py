@@ -23,12 +23,12 @@ class EdgeSection:
         self.title_placeholder.markdown(f"### ⏳: {self.edge.replace('_', ' ')}")
 
         active_config = get_active_config(self.edge_ip)
-        if active_config is not False:
-                self.active_config_placeholder.write(f"Active configuration: {active_config['name']}")
-                self.title_placeholder.markdown(f"### 🟢 {self.edge.replace('_', ' ')}")
+        if active_config:
+            self.active_config_placeholder.write(f"Active configuration: {active_config['name']}")
+            self.title_placeholder.markdown(f"### 🟢 {self.edge.replace('_', ' ')}")
         else:
-                self.active_config_placeholder.write("")
-                self.title_placeholder.markdown(f"### 🔴 {self.edge.replace('_', ' ')}")
+            self.active_config_placeholder.write("")
+            self.title_placeholder.markdown(f"### 🔴 {self.edge.replace('_', ' ')}")
 
         self.show_use_case(self.selected_use_case)
 
