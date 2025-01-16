@@ -43,8 +43,8 @@ pip install -r requirements.txt
 ```
 
 Change the *REMOTE_VIO_DIR* to the local path to the vio directory.
-Uncomment the *edge_3* lines in the inventory file.
+Uncomment the *localhost* lines in the inventory file.
 
 Then run the following command:
 ```bash
-make register-edge-on-gcp-hub-locally
+make test-registering-localhost-on-gcp-hub

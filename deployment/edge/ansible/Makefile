@@ -9,18 +9,18 @@ help:
 	grep -E '^\.PHONY: [a-zA-Z0-9_-]+ .*?## .*$$' $(MAKEFILE_LIST) | \
 		awk 'BEGIN {FS = "(: |##)"}; {printf "\033[36m%-30s\033[0m %s\n", $$2, $$3}'
 
-.PHONY: ping-edge ## 🏓 Ping the edge devices
-ping-edge:
+.PHONY: ping-inventory ## 🏓 Ping the edge devices describe in the inventory
+ping-inventory:
 	ansible all -i inventory.ini -m ping
 
-.PHONY: deploy-vio-on-edge ## 🚀 Deploy VIO on the edge devices
-deploy-vio-on-edge:
+.PHONY: deploy-vio-on-inventory ## 🚀 Deploy VIO on the edge devices describe in the inventory
+deploy-vio-on-inventory:
 	ansible-playbook -v -i inventory.ini deploy_vio_on_edge.yml
 
-.PHONY: register-edge-on-gcp-hub ## 🚀 Register the edge devices on the GCP hub
-register-edge-on-gcp-hub:
+.PHONY: register-inventory-on-gcp-hub ## 🚀 Register the edge devices on the GCP hub
+register-inventory-on-gcp-hub:
 	ansible-playbook -v -i inventory.ini register_edge_on_gcp_hub.yml -e ansible_python_interpreter=.venv/bin/python
 
-.PHONY: register-edge-on-gcp-hub-locally ## 🚀 Register the local edge device on the GCP hub
-register-edge-on-gcp-hub-locally:
-	ansible-playbook -v -c local -l edge_3 -i inventory.ini register_edge_on_gcp_hub.yml -e ansible_python_interpreter=.venv/bin/python
+.PHONY: test-registering-localhost-on-gcp-hub ## 🚀 Test registering localhost on the GCP hub
+test-registering-localhost-on-gcp-hub:
+	ansible-playbook -v -c local -l localhost -i inventory.ini register_edge_on_gcp_hub.yml -e ansible_python_interpreter=.venv/bin/python
