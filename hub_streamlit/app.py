@@ -15,52 +15,40 @@ def main():
     )
 
     # Init variables
-    if "active_edges" not in st.session_state:
+    if not st.session_state.get("active_edges"):
         st.session_state.active_edges = []
         st.session_state.active_edges_displays = []
         st.session_state.gcp_client = Client()
 
-    full_data = extract_items(st.session_state.gcp_client)
-    sidebar(full_data)
+        st.session_state.full_data = extract_items(st.session_state.gcp_client)
+
+    sidebar(st.session_state.full_data)
 
 
-def sidebar(full_data):
+def sidebar(full_data: dict):
     st.sidebar.title("# VIO Hub")
     st.sidebar.title("Configuration")
 
     # Select edge and use case
-    activating_edges = st.sidebar.multiselect("Available edges", full_data["edge_list"])
+    selected_edges = st.sidebar.multiselect("Available edges", full_data["edge_list"], key=full_data["edge_list"])
 
     # Refresh data
     if st.sidebar.button("↻"):
-        full_data = extract_items(st.session_state.gcp_client)
+        st.session_state.full_data = extract_items(st.session_state.gcp_client)
 
     # Computes the page display
-    removing_edges = [edge for edge in st.session_state.active_edges if edge not in activating_edges]
-    adding_edges = [edge for edge in activating_edges if edge not in st.session_state.active_edges]
-    for edge in activating_edges:
-        edge_section = EdgeSection(edge, full_data[edge])
+    removing_edges = [edge for edge in st.session_state.active_edges if edge not in selected_edges]
+    adding_edges = [edge for edge in selected_edges if edge not in st.session_state.active_edges]
+    for edge_name in selected_edges:
+        edge_section = EdgeSection(edge_name, full_data[edge_name])
         edge_section.show()
-        st.session_state.active_edges.append(edge)
+        st.session_state.active_edges.append(edge_name)
         st.session_state.active_edges_displays.append(edge_section)
 
-    for edge in removing_edges:
-        index_edge = st.session_state.active_edges.index(edge)
-        st.session_state.active_edges.pop(index_edge)
-        # st.session_state.active_edges_displays[index_edge].empty()
-        st.session_state.active_edges_displays.pop(index_edge)
-
-
-def select_active_data_sources(folders, edges, use_cases):
-    active_data_sources = {"edge_list": edges}
-    for edge in edges:
-        active_data_sources[edge] = {}
-        active_data_sources[edge]["use_case_list"] = use_cases[edge]
-        active_data_sources[edge]["edge_ip"] = folders[edge]["edge_ip"]
-        for use_case in use_cases[edge]:
-            active_data_sources[edge][use_case] = folders[edge][use_case]
-
-    return active_data_sources
+    for edge_name in removing_edges:
+        edge_index = st.session_state.active_edges.index(edge_name)
+        st.session_state.active_edges.pop(edge_index)
+        st.session_state.active_edges_displays.pop(edge_index)
 
 
 # Exécution du script principal

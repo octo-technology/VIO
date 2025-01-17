@@ -83,11 +83,11 @@ def extract_items(_gcp_client: Client) -> dict:
 def read_edge_ip(bucket: Bucket, edge_name: str) -> Optional[str]:
     blob = bucket.blob(f"{edge_name}/edge_ip.txt")
     try:
-        ip = blob.download_as_text()
+        edge_ip = blob.download_as_text()
     except NotFound as e:
         print(f"Edge IP not found for {edge_name}. Error: {e}")
-        ip = None
-    return ip
+        edge_ip = None
+    return edge_ip
 
 
 def read_metadata(bucket: Bucket, edge_name: str, use_case: str, item_id: str) -> Optional[dict]:
