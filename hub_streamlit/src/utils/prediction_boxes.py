@@ -30,7 +30,7 @@ def plot_predictions(img: Image, camera_id: str, metadata: dict) -> Image:
     return img
 
 
-def draw_bbox(img, bbox, label):
+def draw_bbox(img: Image, bbox: tuple[float, float, float, float], label: str) -> Image:
     draw = ImageDraw.Draw(img)
     width, height = img.size
 

@@ -32,7 +32,7 @@ class EdgeSection:
 
         self.show_use_case(self.selected_use_case)
 
-    def show_use_case(self, use_case):
+    def show_use_case(self, use_case: str):
         if self.use_case_sections is not None:
             self.use_case_sections.empty()
 

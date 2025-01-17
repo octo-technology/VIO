@@ -1,7 +1,8 @@
 import streamlit as st
-from src.infrastructure.cloud_connectors.gcp_connector import get_gcp_client, extract_items
+from src.infrastructure.cloud_connectors.gcp_connector import extract_items
 from src.infrastructure.display_items.edge_section import EdgeSection
 
+from google.cloud.storage import Client
 
 def main():
     """
@@ -17,7 +18,7 @@ def main():
     if "active_edges" not in st.session_state:
         st.session_state.active_edges = []
         st.session_state.active_edges_displays = []
-        st.session_state.gcp_client = get_gcp_client()
+        st.session_state.gcp_client = Client()
 
     full_data = extract_items(st.session_state.gcp_client)
     sidebar(full_data)

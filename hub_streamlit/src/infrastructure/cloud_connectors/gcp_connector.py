@@ -1,27 +1,23 @@
 import json
 import os
+from typing import Optional
 import streamlit as st
 from PIL import Image
 from io import BytesIO
 from dotenv import load_dotenv
 from src.utils.prediction_boxes import filtering_items_that_have_predictions, plot_predictions
 from google.api_core.exceptions import NotFound
-from google.cloud.storage import Client
+from google.cloud.storage import Client, Bucket
 
 load_dotenv()
 
 BUCKET_NAME = os.getenv("GCP_BUCKET_NAME")
 IMG_EXTENSIONS = [".jpg", ".jpeg", ".png"]
 
-def get_gcp_client():
-    # Client configuration for GCP
-    return Client()
-
-
 @st.cache_data(ttl=30)
 def extract_items(_gcp_client: Client) -> dict:
     # Get the bucket
-    bucket = _gcp_client.bucket(os.getenv("GCP_BUCKET_NAME"))
+    bucket = _gcp_client.bucket(BUCKET_NAME)
     blobs = bucket.list_blobs()
    
     blobs_images = [blob for blob in blobs if any(blob.name.endswith(extension) for extension in IMG_EXTENSIONS)]
@@ -84,7 +80,7 @@ def extract_items(_gcp_client: Client) -> dict:
     return folder_dict
 
 
-def read_edge_ip(bucket, edge_name):
+def read_edge_ip(bucket: Bucket, edge_name: str) -> Optional[str]:
     blob = bucket.blob(f"{edge_name}/edge_ip.txt")
     try:
         ip = blob.download_as_text()
@@ -94,7 +90,7 @@ def read_edge_ip(bucket, edge_name):
     return ip
 
 
-def read_metadata(bucket, edge_name, use_case, item_id):
+def read_metadata(bucket: Bucket, edge_name: str, use_case: str, item_id: str) -> Optional[dict]:
     blob = bucket.blob(f"{edge_name}/{use_case}/{item_id}/metadata.json")
     if blob.exists():
         metadata = json.loads(blob.download_as_text())
