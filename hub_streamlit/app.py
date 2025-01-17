@@ -1,19 +1,17 @@
 import streamlit as st
-from src.infrastructure.cloud_connectors.gcp_connector import extract_items
+from google.cloud.storage import Client
+
 from src.infrastructure.cloud_connectors.edge_data import EdgeData
+from src.infrastructure.cloud_connectors.gcp_connector import extract_items
 from src.infrastructure.display_items.edge_section import EdgeSection
 
-from google.cloud.storage import Client
 
 def main():
     """
     Fonction principale de l'application Streamlit.
     """
     # Page configuration
-    st.set_page_config(
-        page_title="VIO Hub Viewer",
-        layout="wide"
-    )
+    st.set_page_config(page_title="VIO Hub Viewer", layout="wide")
 
     # Init variables
     if not st.session_state.get("active_edges"):
@@ -38,8 +36,12 @@ def sidebar(edge_data: EdgeData):
         st.session_state.edge_data = extract_items(st.session_state.gcp_client)
 
     # Computes the page display
-    removing_edges = [edge for edge in st.session_state.active_edges if edge not in selected_edges]
-    adding_edges = [edge for edge in selected_edges if edge not in st.session_state.active_edges]
+    removing_edges = [
+        edge for edge in st.session_state.active_edges if edge not in selected_edges
+    ]
+    adding_edges = [
+        edge for edge in selected_edges if edge not in st.session_state.active_edges
+    ]
     for edge_name in selected_edges:
         edge_section = EdgeSection(edge_name, edge_data.edges[edge_name])
         edge_section.show()

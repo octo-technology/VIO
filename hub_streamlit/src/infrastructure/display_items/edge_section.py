@@ -1,6 +1,7 @@
 import streamlit as st
-from src.infrastructure.cloud_connectors.edge_data import Edge
+
 from src.edge_services import get_active_config
+from src.infrastructure.cloud_connectors.edge_data import Edge
 from src.infrastructure.display_items.use_case_section import UseCaseSection
 
 
@@ -21,12 +22,16 @@ class EdgeSection:
         self.selected_use_case = self.use_cases[0]
 
     def show(self):
-        self.selected_use_case = self.button_placeholder.selectbox("Select a use case", options=self.use_cases, label_visibility="collapsed") # TODO: fix if two edge has the same use_case it won't work because of duplicate keys on two different selectbox objects
+        self.selected_use_case = self.button_placeholder.selectbox(
+            "Select a use case", options=self.use_cases, label_visibility="collapsed"
+        )  # TODO: fix if two edge has the same use_case it won't work because of duplicate keys on two different selectbox objects
         self.title_placeholder.markdown(f"### ⏳ {self.edge_name_with_whitespaces}")
 
         active_config = get_active_config(self.edge_ip)
         if active_config:
-            self.active_config_placeholder.write(f"Active configuration: {active_config.get('name')}")
+            self.active_config_placeholder.write(
+                f"Active configuration: {active_config.get('name')}"
+            )
             self.title_placeholder.markdown(f"### 🟢 {self.edge_name_with_whitespaces}")
         else:
             self.active_config_placeholder.write("")
