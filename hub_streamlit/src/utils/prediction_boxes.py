@@ -7,7 +7,7 @@ def filtering_items_that_have_predictions(metadata: dict, camera_id: str) -> boo
     elif metadata["inferences"] == {}:
         return False
     for model_results in metadata["inferences"][camera_id].values():
-        if model_results == 'NO_DECISION' or model_results == {}:
+        if model_results == "NO_DECISION" or model_results == {}:
             return False
         for prediction in model_results.values():
             if "location" not in prediction:
@@ -41,7 +41,9 @@ def draw_bbox(img: Image, bbox: tuple[float, float, float, float], label: str) -
     bottom_right_y = int(bbox[3] * height)
 
     # Draw the bounding box
-    draw.rectangle([top_left_x, top_left_y, bottom_right_x, bottom_right_y], outline="red", width=2)
+    draw.rectangle(
+        [top_left_x, top_left_y, bottom_right_x, bottom_right_y], outline="red", width=2
+    )
 
     # Load a font
     font = ImageFont.load_default()
@@ -52,7 +54,9 @@ def draw_bbox(img: Image, bbox: tuple[float, float, float, float], label: str) -
     text_y = top_left_y - text_size[1] if top_left_y - text_size[1] > 0 else top_left_y
 
     # Draw the label background
-    draw.rectangle([text_x, text_y, text_x + text_size[0], text_y + text_size[1]], fill="red")
+    draw.rectangle(
+        [text_x, text_y, text_x + text_size[0], text_y + text_size[1]], fill="red"
+    )
 
     # Draw the label text
     draw.text((text_x, text_y), label, fill="white", font=font)
