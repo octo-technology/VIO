@@ -3,4 +3,4 @@ streamlit==1.41.0
 google-cloud-storage==2.2.1
 google==3.0.0
 backports.tarfile==1.2.0
-python-dotenv
+python-dotenv==1.0.1

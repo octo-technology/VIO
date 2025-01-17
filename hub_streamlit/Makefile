@@ -9,6 +9,18 @@ help:
 	grep -E '^\.PHONY: [a-zA-Z0-9_-]+ .*?## .*$$' $(MAKEFILE_LIST) | \
 		awk 'BEGIN {FS = "(: |##)"}; {printf "\033[36m%-30s\033[0m %s\n", $$2, $$3}'
 
+.PHONY: lint  ## 🐍 Lint Python files to conform to the PEP 8 style guide
+lint:
+	black .
+	isort . --gitignore
+	autoflake -i --remove-all-unused-imports -r --ignore-init-module-imports . --exclude .venv
+
+.PHONY: check  ## 🐍 Check lint Python files to conform to the PEP 8 style guide
+check:
+	black . --check
+	isort . --gitignore --check
+	flake8 --count --show-source --statistics
+
 .PHONY: env ## Create a virtual environment
 env:
 	python3 -m venv env

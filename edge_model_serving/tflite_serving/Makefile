@@ -15,8 +15,15 @@ help:
 
 .PHONY: lint  ## 🐍 Lint Python files to conform to the PEP 8 style guide
 lint:
-	flake8 --count --show-source --statistics
+	black .
+	isort . --gitignore
+	autoflake -i --remove-all-unused-imports -r --ignore-init-module-imports . --exclude .venv
+
+.PHONY: check  ## 🐍 Check lint Python files to conform to the PEP 8 style guide
+check:
 	black . --check
+	isort . --gitignore --check
+	flake8 --count --show-source --statistics
 
 .PHONY: autopep8  ## 🐍 Automatically formats Python code to conform to the PEP 8 style guide
 autopep8:

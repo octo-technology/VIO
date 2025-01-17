@@ -25,8 +25,8 @@ lint:
 	isort . --gitignore
 	autoflake -i --remove-all-unused-imports -r --ignore-init-module-imports . --exclude .venv
 
-.PHONY: lint  ## 🐍 Check lint Python files to conform to the PEP 8 style guide
-lint:
+.PHONY: check  ## 🐍 Check lint Python files to conform to the PEP 8 style guide
+check:
 	black . --check
 	isort . --gitignore --check
 	flake8 --count --show-source --statistics
