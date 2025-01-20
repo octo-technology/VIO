@@ -18,19 +18,15 @@ help:
 
 .PHONY: lint  ## 🐍 Lint Python files to conform to the PEP 8 style guide
 lint:
+	autoflake --in-place --remove-all-unused-imports --recursive --ignore-init-module-imports . --exclude .venv
+	isort . --skip-gitignore
 	black .
-	isort . --gitignore
-	autoflake -i --remove-all-unused-imports -r --ignore-init-module-imports . --exclude .venv
 
 .PHONY: check  ## 🐍 Check lint Python files to conform to the PEP 8 style guide
 check:
 	black . --check
 	isort . --gitignore --check
 	flake8 --count --show-source --statistics
-
-.PHONY: autopep8  ## 🐍 Automatically formats Python code to conform to the PEP 8 style guide
-autopep8:
-	autopep8 --in-place --aggressive -r hub_labelizer
 
 .PHONY: conda_env  ## 🐍 Create a Python conda environment
 conda_env:

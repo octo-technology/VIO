@@ -22,6 +22,6 @@ run:
 
 .PHONY: lint  ## 🐍 Lint Python files to conform to the PEP 8 style guide
 lint:
+	autoflake --in-place --remove-all-unused-imports --recursive --ignore-init-module-imports . --exclude .venv
+	isort . --skip-gitignore
 	black .
-	isort . --gitignore
-	autoflake -i --remove-all-unused-imports -r --ignore-init-module-imports . --exclude .venv
