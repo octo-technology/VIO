@@ -1,8 +1,9 @@
 import numpy as np
+
 from tflite_serving.utils.yolo_postprocessing import (
-    yolo_extract_boxes_information,
-    non_max_suppression,
     compute_severities,
+    non_max_suppression,
+    yolo_extract_boxes_information,
 )
 
 

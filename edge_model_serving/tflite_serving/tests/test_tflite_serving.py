@@ -1,10 +1,10 @@
+import io
 import os
 from pathlib import Path
-import io
-from PIL import Image
 
 import numpy as np
 from fastapi.testclient import TestClient
+from PIL import Image
 
 
 class TestTfliteServing:

@@ -11,14 +11,15 @@ help:
 
 .PHONY: lint  ## 🐍 Lint Python files to conform to the PEP 8 style guide
 lint:
+	autoflake --in-place --remove-all-unused-imports --recursive --ignore-init-module-imports . --exclude .venv
+	isort . --skip-gitignore
 	black .
-	isort . --gitignore
-	autoflake -i --remove-all-unused-imports -r --ignore-init-module-imports . --exclude .venv
 
 .PHONY: check  ## 🐍 Check lint Python files to conform to the PEP 8 style guide
 check:
+	autoflake --in-place --remove-all-unused-imports --recursive --ignore-init-module-imports . --exclude .venv --check
+	isort . --skip-gitignore --check
 	black . --check
-	isort . --gitignore --check
 	flake8 --count --show-source --statistics
 
 .PHONY: env ## Create a virtual environment
