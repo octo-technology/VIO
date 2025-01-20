@@ -16,7 +16,6 @@ def main():
     # Init variables
     if not st.session_state.get("active_edges"):
         st.session_state.active_edges = []
-        st.session_state.active_edges_displays = []
         st.session_state.gcp_client = Client()
 
         st.session_state.edge_data = extract_items(st.session_state.gcp_client)
@@ -39,19 +38,15 @@ def sidebar(edge_data: EdgeData):
     removing_edges = [
         edge for edge in st.session_state.active_edges if edge not in selected_edges
     ]
-    adding_edges = [
-        edge for edge in selected_edges if edge not in st.session_state.active_edges
-    ]
+
+    st.session_state.active_edges = selected_edges
     for edge_name in selected_edges:
         edge_section = EdgeSection(edge_name, edge_data.edges[edge_name])
         edge_section.show()
-        st.session_state.active_edges.append(edge_name)
-        st.session_state.active_edges_displays.append(edge_section)
 
     for edge_name in removing_edges:
         edge_index = st.session_state.active_edges.index(edge_name)
         st.session_state.active_edges.pop(edge_index)
-        st.session_state.active_edges_displays.pop(edge_index)
 
 
 # Exécution du script principal
