@@ -6,10 +6,10 @@ from src.infrastructure.data.edge_data import UseCase
 # todo: rename use_case_data
 class UseCaseSection:
     def __init__(
-        self, use_case: str, use_case_data: UseCase, number_cols: int = 5, number_cameras: int = 2
+        self, use_case_name: str, use_case: UseCase, number_cols: int = 8, number_cameras: int = 2
     ):
+        self.use_case = use_case_name
         self.use_case = use_case
-        self.use_case_data = use_case_data
         self.number_cols = number_cols
         self.number_cameras = number_cameras
         self.columns_placeholder = [
@@ -17,11 +17,11 @@ class UseCaseSection:
         ]
 
     def show(self):
-        for idx, item_id in enumerate(self.use_case_data.item_names):
+        for idx, item_id in enumerate(self.use_case.item_names):
             if idx >= self.number_cols:
                 break
 
-            item = self.use_case_data.items[item_id]
+            item = self.use_case.items[item_id]
             for idx_camera, camera_id in enumerate(item.camera_names):
                 camera_data = item.cameras[camera_id]
                 for picture in camera_data.pictures:
