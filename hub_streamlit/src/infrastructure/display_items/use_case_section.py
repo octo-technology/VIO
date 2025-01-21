@@ -3,7 +3,6 @@ import streamlit as st
 from src.infrastructure.data.edge_data import UseCase
 
 
-# todo: rename use_case_data
 class UseCaseSection:
     def __init__(
         self, use_case_name: str, use_case: UseCase, number_cols: int = 8, number_cameras: int = 2
