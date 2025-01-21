@@ -1,6 +1,6 @@
 import streamlit as st
 
-from src.infrastructure.cloud_connectors.edge_data import UseCase
+from src.infrastructure.data.edge_data import UseCase
 
 
 # todo: rename use_case_data

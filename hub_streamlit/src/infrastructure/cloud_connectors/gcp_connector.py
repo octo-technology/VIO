@@ -1,19 +1,16 @@
-import json
 import os
 from io import BytesIO
-from typing import Optional
 
 import streamlit as st
 from dotenv import load_dotenv
-from google.api_core.exceptions import NotFound
-from google.cloud.storage import Bucket, Client
+from google.cloud.storage import Client
 from PIL import Image
 
-from src.infrastructure.cloud_connectors.edge_data import (Camera, Edge,
-                                                           EdgeData, Item,
-                                                           UseCase)
-from src.utils.prediction_boxes import (filtering_items_that_have_predictions,
-                                        plot_predictions)
+from src.infrastructure.data.edge_data import EdgeData
+from src.utils.prediction_boxes import (
+    filtering_items_that_have_predictions,
+    plot_predictions,
+)
 
 load_dotenv()
 
@@ -55,18 +52,11 @@ def extract_items(_gcp_client: Client) -> EdgeData:
 
         # Init some parameters
         if edge_name not in edges_data.edge_names:
-            edges_data.edge_names.append(edge_name)
-            edges_data.edges[edge_name] = Edge()
+            edges_data.add_edge(edge_name)
         if use_case not in edges_data.edges[edge_name].use_case_names:
-            edges_data.edges[edge_name].use_case_names.append(use_case)
-            edges_data.edges[edge_name].edge_ip = read_edge_ip(bucket, edge_name)
-            edges_data.edges[edge_name].use_cases[use_case] = UseCase()
+            edges_data.add_usecase(edge_name, use_case, bucket)
         if item_id not in edges_data.edges[edge_name].use_cases[use_case].item_names:
-            edges_data.edges[edge_name].use_cases[use_case].item_names.append(item_id)
-            edges_data.edges[edge_name].use_cases[use_case].items[item_id] = Item(
-                creation_date=blob.time_created,
-                metadata=read_metadata(bucket, edge_name, use_case, item_id),
-            )
+            edges_data.add_item(edge_name, use_case, item_id, blob, bucket)
         if (
             camera_id
             not in edges_data.edges[edge_name]
@@ -74,24 +64,20 @@ def extract_items(_gcp_client: Client) -> EdgeData:
             .items[item_id]
             .camera_names
         ):
-            edges_data.edges[edge_name].use_cases[use_case].items[
-                item_id
-            ].camera_names.append(camera_id)
-            edges_data.edges[edge_name].use_cases[use_case].items[item_id].cameras[
-                camera_id
-            ] = Camera()
+            edges_data.add_camera(edge_name, use_case, item_id, camera_id)
 
         if ".jpg" in file_name:
             # Downloading the first 5 pics
+            number_pictures_to_download = 5
             if (
                 edges_data.edges[edge_name]
                 .use_cases[use_case]
                 .items[item_id]
                 .number_pictures
-                < 5
+                < number_pictures_to_download
             ):
                 binary_data = blob.download_as_bytes()
-                img = Image.open(BytesIO(binary_data))
+                picture = Image.open(BytesIO(binary_data))
 
                 # If metadata is not empty, we plot the predictions
                 if filtering_items_that_have_predictions(
@@ -101,8 +87,8 @@ def extract_items(_gcp_client: Client) -> EdgeData:
                     .metadata,
                     camera_id,
                 ):
-                    img = plot_predictions(
-                        img,
+                    picture = plot_predictions(
+                        picture,
                         camera_id,
                         metadata=edges_data.edges[edge_name]
                         .use_cases[use_case]
@@ -110,34 +96,8 @@ def extract_items(_gcp_client: Client) -> EdgeData:
                         .metadata,
                     )
             else:
-                img = Image.new("RGB", (100, 100), (200, 155, 255))
+                picture = Image.new("RGB", (100, 100), (200, 155, 255))
 
-            edges_data.edges[edge_name].use_cases[use_case].items[item_id].cameras[
-                camera_id
-            ].pictures.append(img)
-            edges_data.edges[edge_name].use_cases[use_case].items[
-                item_id
-            ].number_pictures += 1
+            edges_data.add_picture(edge_name, use_case, item_id, camera_id, picture)
 
     return edges_data
-
-
-def read_edge_ip(bucket: Bucket, edge_name: str) -> Optional[str]:
-    blob = bucket.blob(f"{edge_name}/edge_ip.txt")
-    try:
-        edge_ip = blob.download_as_text()
-    except NotFound as e:
-        print(f"Edge IP not found for {edge_name}. Error: {e}")
-        edge_ip = None
-    return edge_ip
-
-
-def read_metadata(
-    bucket: Bucket, edge_name: str, use_case: str, item_id: str
-) -> Optional[dict]:
-    blob = bucket.blob(f"{edge_name}/{use_case}/{item_id}/metadata.json")
-    if blob.exists():
-        metadata = json.loads(blob.download_as_text())
-    else:
-        metadata = None
-    return metadata

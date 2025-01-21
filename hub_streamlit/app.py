@@ -1,15 +1,12 @@
 import streamlit as st
 from google.cloud.storage import Client
 
-from src.infrastructure.cloud_connectors.edge_data import EdgeData
 from src.infrastructure.cloud_connectors.gcp_connector import extract_items
+from src.infrastructure.data.edge_data import EdgeData
 from src.infrastructure.display_items.edge_section import EdgeSection
 
 
 def main():
-    """
-    Fonction principale de l'application Streamlit.
-    """
     # Page configuration
     st.set_page_config(page_title="VIO Hub Viewer", layout="wide")
 
@@ -29,6 +26,7 @@ def sidebar(edge_data: EdgeData):
 
     # Select edge and use case
     selected_edges = st.sidebar.multiselect("Available edges", edge_data.edge_names)
+    st.session_state.active_edges = selected_edges
 
     # Refresh data
     if st.sidebar.button("↻"):
@@ -39,7 +37,6 @@ def sidebar(edge_data: EdgeData):
         edge for edge in st.session_state.active_edges if edge not in selected_edges
     ]
 
-    st.session_state.active_edges = selected_edges
     for edge_name in selected_edges:
         edge_section = EdgeSection(edge_name, edge_data.edges[edge_name])
         edge_section.show()
@@ -49,6 +46,5 @@ def sidebar(edge_data: EdgeData):
         st.session_state.active_edges.pop(edge_index)
 
 
-# Exécution du script principal
 if __name__ == "__main__":
     main()

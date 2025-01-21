@@ -1,7 +1,7 @@
 import streamlit as st
 
 from src.edge_services import get_active_config
-from src.infrastructure.cloud_connectors.edge_data import Edge
+from src.infrastructure.data.edge_data import Edge
 from src.infrastructure.display_items.use_case_section import UseCaseSection
 
 
@@ -13,10 +13,11 @@ class EdgeSection:
         self.use_cases = edge_data.use_case_names
         self.data = edge_data
 
-        self.edge_title_placeholder = st.columns(3)
-        self.title_placeholder = self.edge_title_placeholder[0].empty()
-        self.button_placeholder = self.edge_title_placeholder[2].empty()
-        self.active_config_placeholder = self.edge_title_placeholder[1].empty()
+        (
+            self.title_placeholder,
+            self.active_config_placeholder,
+            self.button_placeholder,
+        ) = st.columns(3)
 
         self.use_case_sections = None
         self.selected_use_case = self.use_cases[0]
