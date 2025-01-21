@@ -60,7 +60,7 @@ def extract_items(_gcp_client: Client) -> EdgeData:
             edge_ip = extract_edge_ip(bucket, edge_name)
             edges_data.add_usecase(edge_name, use_case, edge_ip)
         if item_id not in edges_data.edges[edge_name].use_cases[use_case].item_names:
-            metadata = read_metadata(bucket, edge_name, use_case, item_id)
+            metadata = extract_metadata(bucket, edge_name, use_case, item_id)
             edges_data.add_item(
                 edge_name, use_case, item_id, blob.time_created, metadata
             )
@@ -120,7 +120,7 @@ def extract_edge_ip(bucket: Bucket, edge_name: str) -> Optional[str]:
     return edge_ip
 
 
-def read_metadata(
+def extract_metadata(
     bucket: Bucket, edge_name: str, use_case: str, item_id: str
 ) -> Optional[dict]:
     blob = bucket.blob(f"{edge_name}/{use_case}/{item_id}/metadata.json")
