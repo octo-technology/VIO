@@ -26,18 +26,19 @@ class EdgeSection:
         self.selected_use_case = self.button_placeholder.selectbox(
             "Select a use case", options=self.use_cases, label_visibility="collapsed"
         )  # TODO: fix if two edge has the same use_case it won't work because of duplicate keys on two different selectbox objects
-        self.title_placeholder.markdown(f"### ⏳ {self.edge_name_with_whitespaces}")
+        
+        with st.spinner("Getting active config"):
+            active_config = get_active_config(self.edge_ip)
 
-        active_config = get_active_config(self.edge_ip)
         if active_config:
-            self.active_config_placeholder.write(
-                f"Active configuration: {active_config.get('name')}"
-            )
-            self.title_placeholder.markdown(f"### 🟢 {self.edge_name_with_whitespaces}")
+            active_config_placeholder = f"Active configuration: {active_config.get('name')}"
+            title_placeholder = f"### 🟢 {self.edge_name_with_whitespaces}"
         else:
-            self.active_config_placeholder.write("")
-            self.title_placeholder.markdown(f"### 🔴 {self.edge_name_with_whitespaces}")
-
+            active_config_placeholder = "No active configuration"
+            title_placeholder = f"### 🔴 {self.edge_name_with_whitespaces}"
+        
+        self.active_config_placeholder.write(active_config_placeholder)
+        self.title_placeholder.markdown(title_placeholder)
         self.show_use_case(self.selected_use_case)
 
     def show_use_case(self, use_case: str):
