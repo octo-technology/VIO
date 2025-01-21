@@ -5,7 +5,11 @@ from src.infrastructure.data.edge_data import UseCase
 
 class UseCaseSection:
     def __init__(
-        self, use_case_name: str, use_case: UseCase, number_cols: int = 8, number_cameras: int = 2
+        self,
+        use_case_name: str,
+        use_case: UseCase,
+        number_cols: int = 8,
+        number_cameras: int = 2,
     ):
         self.use_case = use_case_name
         self.use_case = use_case

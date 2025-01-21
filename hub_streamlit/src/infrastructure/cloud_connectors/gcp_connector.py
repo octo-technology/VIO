@@ -1,9 +1,12 @@
+import json
 import os
 from io import BytesIO
+from typing import Optional
 
 import streamlit as st
 from dotenv import load_dotenv
-from google.cloud.storage import Client
+from google.api_core.exceptions import NotFound
+from google.cloud.storage import Bucket, Client
 from PIL import Image
 
 from src.infrastructure.data.edge_data import EdgeData
@@ -54,9 +57,13 @@ def extract_items(_gcp_client: Client) -> EdgeData:
         if edge_name not in edges_data.edge_names:
             edges_data.add_edge(edge_name)
         if use_case not in edges_data.edges[edge_name].use_case_names:
-            edges_data.add_usecase(edge_name, use_case, bucket)
+            edge_ip = extract_edge_ip(bucket, edge_name)
+            edges_data.add_usecase(edge_name, use_case, edge_ip)
         if item_id not in edges_data.edges[edge_name].use_cases[use_case].item_names:
-            edges_data.add_item(edge_name, use_case, item_id, blob, bucket)
+            metadata = read_metadata(bucket, edge_name, use_case, item_id)
+            edges_data.add_item(
+                edge_name, use_case, item_id, blob.time_created, metadata
+            )
         if (
             camera_id
             not in edges_data.edges[edge_name]
@@ -101,3 +108,24 @@ def extract_items(_gcp_client: Client) -> EdgeData:
             edges_data.add_picture(edge_name, use_case, item_id, camera_id, picture)
 
     return edges_data
+
+
+def extract_edge_ip(bucket: Bucket, edge_name: str) -> Optional[str]:
+    blob = bucket.blob(f"{edge_name}/edge_ip.txt")
+    try:
+        edge_ip = blob.download_as_text()
+    except NotFound as e:
+        print(f"Edge IP not found for {edge_name}. Error: {e}")
+        edge_ip = None
+    return edge_ip
+
+
+def read_metadata(
+    bucket: Bucket, edge_name: str, use_case: str, item_id: str
+) -> Optional[dict]:
+    blob = bucket.blob(f"{edge_name}/{use_case}/{item_id}/metadata.json")
+    if blob.exists():
+        metadata = json.loads(blob.download_as_text())
+    else:
+        metadata = None
+    return metadata
