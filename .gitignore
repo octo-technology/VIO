@@ -204,3 +204,7 @@ edge_orchestrator/config/secrets
 *package-lock.json
 
 hub_streamlit/config/secrets
+
+
+edge_orchestrator/fake_images
+edge_orchestrator/data_storage
