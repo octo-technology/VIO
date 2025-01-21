@@ -58,11 +58,11 @@ def extract_items(_gcp_client: Client) -> EdgeData:
             edges_data.add_edge(edge_name)
         if use_case not in edges_data.edges[edge_name].use_case_names:
             edge_ip = extract_edge_ip(bucket, edge_name)
-            edges_data.add_usecase(edge_name, use_case, edge_ip)
+            edges_data.edges[edge_name].add_usecase(use_case, edge_ip)
         if item_id not in edges_data.edges[edge_name].use_cases[use_case].item_names:
             metadata = extract_metadata(bucket, edge_name, use_case, item_id)
-            edges_data.add_item(
-                edge_name, use_case, item_id, blob.time_created, metadata
+            edges_data.edges[edge_name].use_cases[use_case].add_item(
+                item_id, blob.time_created, metadata
             )
         if (
             camera_id
@@ -71,7 +71,9 @@ def extract_items(_gcp_client: Client) -> EdgeData:
             .items[item_id]
             .camera_names
         ):
-            edges_data.add_camera(edge_name, use_case, item_id, camera_id)
+            edges_data.edges[edge_name].use_cases[use_case].items[item_id].add_camera(
+                camera_id
+            )
 
         if ".jpg" in file_name:
             # Downloading the first 5 pics
@@ -105,7 +107,9 @@ def extract_items(_gcp_client: Client) -> EdgeData:
             else:
                 picture = Image.new("RGB", (100, 100), (200, 155, 255))
 
-            edges_data.add_picture(edge_name, use_case, item_id, camera_id, picture)
+            edges_data.edges[edge_name].use_cases[use_case].items[item_id].add_picture(
+                camera_id, picture
+            )
 
     return edges_data
 
