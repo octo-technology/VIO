@@ -40,6 +40,7 @@ def sidebar(edge_data: EdgeData):
     for edge_name in selected_edges:
         edge_section = EdgeSection(edge_name, edge_data.edges[edge_name])
         edge_section.show()
+        st.divider()
 
     for edge_name in removing_edges:
         edge_index = st.session_state.active_edges.index(edge_name)
