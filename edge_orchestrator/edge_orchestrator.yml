@@ -1,0 +1,14 @@
+services:
+  edge_orchestrator:
+    container_name: edge_orchestrator
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./data:/edge_orchestrator/data
+    ports:
+      - 8000:8000
+    environment:
+      EDGE_NAME: vio-edge-1
+      SERVING_MODEL_URL: http://edge_model_serving:8501
+    profiles: [edge]
