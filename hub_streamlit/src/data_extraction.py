@@ -16,6 +16,7 @@ load_dotenv()
 
 BUCKET_NAME = os.getenv("GCP_BUCKET_NAME")
 IMG_EXTENSIONS = [".jpg", ".jpeg", ".png"]
+NUMBER_CAMERAS = os.getenv("NUMBER_CAMERAS", 2)
 
 
 @st.cache_data(ttl=30)
@@ -62,12 +63,11 @@ def extract_items(_gcp_client: Client) -> EdgeDataManager:
             if camera_id not in edge.use_cases[use_case].items[item_id].camera_names:
                 edge.use_cases[use_case].items[item_id].add_camera(camera_id)
 
-            if ".jpg" in file_name:
-                # Downloading the first 5 pics
-                number_pictures_to_download = 5
+            if any(file_name.endswith(extension) for extension in IMG_EXTENSIONS):
+                # Downloading the first NUMBER_CAMERAS pics
                 if (
                     edge.use_cases[use_case].items[item_id].number_pictures
-                    < number_pictures_to_download
+                    < NUMBER_CAMERAS
                 ):
                     binary_data = blob.download_as_bytes()
                     picture = Image.open(BytesIO(binary_data))
@@ -85,10 +85,8 @@ def extract_items(_gcp_client: Client) -> EdgeDataManager:
                             picture = plot_predictions(
                                 picture, camera_inferences_metadata
                             )
-                else:
-                    picture = Image.new("RGB", (100, 100), (200, 155, 255))
-
-                edge.use_cases[use_case].items[item_id].add_picture(camera_id, picture)
+                    
+                    edge.use_cases[use_case].items[item_id].add_picture(camera_id, picture)
 
     return edges_data
 
