@@ -2,19 +2,19 @@ from datetime import datetime
 from typing import Dict, List, Optional
 
 from PIL import Image
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 
 
 class Camera(BaseModel):
-    pictures: List[dict] = Field(default_factory=list)
+    pictures: Optional[List[dict]] = []
 
 
 class Item(BaseModel):
     number_pictures: int = 0
     creation_date: datetime
     metadata: Optional[dict] = None
-    camera_names: List[str] = Field(default_factory=list)
-    cameras: Dict[str, Camera] = Field(default_factory=dict)
+    camera_names: Optional[List[str]] = []
+    cameras: Optional[Dict[str, Camera]] = {}
 
     def add_camera(self, camera_id: str):
         self.camera_names.append(camera_id)
@@ -30,8 +30,8 @@ class Item(BaseModel):
 
 
 class UseCase(BaseModel):
-    item_names: List[str] = Field(default_factory=list)
-    items: Dict[str, Item] = Field(default_factory=dict)
+    item_names: Optional[List[str]] = []
+    items: Optional[Dict[str, Item]] = {}
 
     def add_item(
         self,
@@ -47,9 +47,10 @@ class UseCase(BaseModel):
 
 
 class Edge(BaseModel):
+    name: str
     edge_ip: Optional[str] = None
-    use_case_names: List[str] = Field(default_factory=list)
-    use_cases: Dict[str, UseCase] = Field(default_factory=dict)
+    use_case_names: Optional[List[str]] = []
+    use_cases: Optional[Dict[str, UseCase]] = {}
 
     def add_usecase(self, use_case: str, edge_ip: str):
         self.edge_ip = edge_ip
@@ -58,9 +59,16 @@ class Edge(BaseModel):
 
 
 class EdgeData(BaseModel):
-    edge_names: List[str] = Field(default_factory=list)
-    edges: Dict[str, Edge] = Field(default_factory=dict)
+    edges: Optional[List[Edge]] = []
 
     def add_edge(self, edge_name: str):
-        self.edge_names.append(edge_name)
-        self.edges[edge_name] = Edge()
+        self.edges.append(Edge(name=edge_name))
+
+    def get_edge_names(self) -> List[str]:
+        return [edge.name for edge in self.edges]
+
+    def get_edge(self, name: str) -> Optional[Edge]:
+        for edge in self.edges:
+            if edge.name == name:
+                return edge
+        return None

@@ -25,7 +25,9 @@ def sidebar(edge_data: EdgeData):
     st.sidebar.title("Configuration")
 
     # Select edge and use case
-    selected_edges = st.sidebar.multiselect("Available edges", edge_data.edge_names)
+    selected_edges = st.sidebar.multiselect(
+        "Available edges", edge_data.get_edge_names()
+    )
     st.session_state.active_edges = selected_edges
 
     # Refresh data
@@ -38,7 +40,7 @@ def sidebar(edge_data: EdgeData):
     ]
 
     for edge_name in selected_edges:
-        edge_section = EdgeSection(edge_name, edge_data.edges[edge_name])
+        edge_section = EdgeSection(edge_name, edge_data.get_edge(edge_name))
         edge_section.show()
         st.divider()
 

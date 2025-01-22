@@ -54,62 +54,65 @@ def extract_items(_gcp_client: Client) -> EdgeData:
             continue
 
         # Init some parameters
-        if edge_name not in edges_data.edge_names:
+        if edge_name not in edges_data.get_edge_names():
             edges_data.add_edge(edge_name)
-        if use_case not in edges_data.edges[edge_name].use_case_names:
-            edge_ip = extract_edge_ip(bucket, edge_name)
-            edges_data.edges[edge_name].add_usecase(use_case, edge_ip)
-        if item_id not in edges_data.edges[edge_name].use_cases[use_case].item_names:
-            metadata = extract_metadata(bucket, edge_name, use_case, item_id)
-            edges_data.edges[edge_name].use_cases[use_case].add_item(
-                item_id, blob.time_created, metadata
-            )
-        if (
-            camera_id
-            not in edges_data.edges[edge_name]
-            .use_cases[use_case]
-            .items[item_id]
-            .camera_names
-        ):
-            edges_data.edges[edge_name].use_cases[use_case].items[item_id].add_camera(
-                camera_id
-            )
 
-        if ".jpg" in file_name:
-            # Downloading the first 5 pics
-            number_pictures_to_download = 5
+        edge = edges_data.get_edge(edge_name)
+        if edge:
+            if use_case not in edge.use_case_names:
+                edge_ip = extract_edge_ip(bucket, edge_name)
+                edge.add_usecase(use_case, edge_ip)
+            if item_id not in edge.use_cases[use_case].item_names:
+                metadata = extract_metadata(bucket, edge_name, use_case, item_id)
+                edge.use_cases[use_case].add_item(
+                    item_id, blob.time_created, metadata
+                )
             if (
-                edges_data.edges[edge_name]
+                camera_id
+                not in edge
                 .use_cases[use_case]
                 .items[item_id]
-                .number_pictures
-                < number_pictures_to_download
+                .camera_names
             ):
-                binary_data = blob.download_as_bytes()
-                picture = Image.open(BytesIO(binary_data))
+                edge.use_cases[use_case].items[item_id].add_camera(
+                    camera_id
+                )
 
-                # If metadata is not empty, we plot the predictions
-                if filtering_items_that_have_predictions(
-                    edges_data.edges[edge_name]
+            if ".jpg" in file_name:
+                # Downloading the first 5 pics
+                number_pictures_to_download = 5
+                if (
+                    edge
                     .use_cases[use_case]
                     .items[item_id]
-                    .metadata,
-                    camera_id,
+                    .number_pictures
+                    < number_pictures_to_download
                 ):
-                    picture = plot_predictions(
-                        picture,
-                        camera_id,
-                        metadata=edges_data.edges[edge_name]
+                    binary_data = blob.download_as_bytes()
+                    picture = Image.open(BytesIO(binary_data))
+
+                    # If metadata is not empty, we plot the predictions
+                    if filtering_items_that_have_predictions(
+                        edge
                         .use_cases[use_case]
                         .items[item_id]
                         .metadata,
-                    )
-            else:
-                picture = Image.new("RGB", (100, 100), (200, 155, 255))
+                        camera_id,
+                    ):
+                        picture = plot_predictions(
+                            picture,
+                            camera_id,
+                            metadata=edge
+                            .use_cases[use_case]
+                            .items[item_id]
+                            .metadata,
+                        )
+                else:
+                    picture = Image.new("RGB", (100, 100), (200, 155, 255))
 
-            edges_data.edges[edge_name].use_cases[use_case].items[item_id].add_picture(
-                camera_id, picture
-            )
+                edge.use_cases[use_case].items[item_id].add_picture(
+                    camera_id, picture
+                )
 
     return edges_data
 
