@@ -4,8 +4,8 @@ from typing import Dict, List, Optional
 from PIL import Image
 from pydantic import BaseModel
 
-from infrastructure.models.camera import Camera
-from infrastructure.models.decision import Decision
+from models.camera import Camera
+from models.decision import Decision
 
 
 class Item(BaseModel):

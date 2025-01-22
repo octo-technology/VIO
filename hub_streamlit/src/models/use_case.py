@@ -2,7 +2,7 @@ from typing import Dict, List, Optional
 
 from pydantic import BaseModel
 
-from infrastructure.models.item import Item
+from models.item import Item
 
 
 class UseCase(BaseModel):

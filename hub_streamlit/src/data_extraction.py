@@ -9,7 +9,7 @@ from google.api_core.exceptions import NotFound
 from google.cloud.storage import Bucket, Client
 from PIL import Image
 
-from infrastructure.models.edge_data import EdgeData
+from models.edge_data_manager import EdgeDataManager
 from utils.prediction_boxes import filter_inferences_on_camera_id, plot_predictions
 
 load_dotenv()
@@ -19,7 +19,7 @@ IMG_EXTENSIONS = [".jpg", ".jpeg", ".png"]
 
 
 @st.cache_data(ttl=30)
-def extract_items(_gcp_client: Client) -> EdgeData:
+def extract_items(_gcp_client: Client) -> EdgeDataManager:
     # Get the bucket
     bucket = _gcp_client.bucket(BUCKET_NAME)
     blobs = bucket.list_blobs()
@@ -33,7 +33,7 @@ def extract_items(_gcp_client: Client) -> EdgeData:
         blobs_images, key=lambda x: x.time_created, reverse=True
     )
 
-    edges_data = EdgeData()
+    edges_data = EdgeDataManager()
 
     for blob in blobs_images_sorted:
         blob_name = blob.name
@@ -78,11 +78,12 @@ def extract_items(_gcp_client: Client) -> EdgeData:
                         .items[item_id]
                         .contains_predictions(camera_id)
                     ):
-                        camera_inferences_metadata = filter_inferences_on_camera_id(camera_id, edge.use_cases[use_case].items[item_id].metadata)
+                        camera_inferences_metadata = filter_inferences_on_camera_id(
+                            camera_id, edge.use_cases[use_case].items[item_id].metadata
+                        )
                         if camera_inferences_metadata:
                             picture = plot_predictions(
-                                picture,
-                                camera_inferences_metadata
+                                picture, camera_inferences_metadata
                             )
                 else:
                     picture = Image.new("RGB", (100, 100), (200, 155, 255))

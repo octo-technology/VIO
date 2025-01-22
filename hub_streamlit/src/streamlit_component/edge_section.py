@@ -1,8 +1,8 @@
 import streamlit as st
 
-from hub_streamlit.src.edge_healthcheck import get_supervisor_active_config
-from infrastructure.display_items.use_case_section import UseCaseSection
-from infrastructure.models.edge import Edge
+from edge_healthcheck import get_supervisor_active_config
+from models.edge import Edge
+from streamlit_component.use_case_section import UseCaseSection
 
 
 class EdgeSection:

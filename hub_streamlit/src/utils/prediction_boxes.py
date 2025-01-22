@@ -1,11 +1,15 @@
 from typing import Dict, Optional
+
 from PIL import Image, ImageDraw, ImageFont
 
 
-def filter_inferences_on_camera_id(camera_id: str, metadata: dict) -> Optional[list[str]]:
+def filter_inferences_on_camera_id(
+    camera_id: str, metadata: dict
+) -> Optional[list[str]]:
     if metadata["inferences"] == {}:
         return None
     return metadata["inferences"][camera_id]
+
 
 def plot_predictions(img: Image, camera_inferences_metadata: Dict[str, Dict]) -> Image:
     models_names = camera_inferences_metadata.keys()

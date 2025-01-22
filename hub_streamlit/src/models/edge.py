@@ -2,7 +2,7 @@ from typing import Dict, List, Optional
 
 from pydantic import BaseModel
 
-from infrastructure.models.use_case import UseCase
+from models.use_case import UseCase
 
 
 class Edge(BaseModel):

@@ -2,10 +2,10 @@ from typing import List, Optional
 
 from pydantic import BaseModel
 
-from infrastructure.models.edge import Edge
+from models.edge import Edge
 
 
-class EdgeData(BaseModel):
+class EdgeDataManager(BaseModel):
     edges: Optional[List[Edge]] = []
 
     def add_edge(self, edge_name: str):

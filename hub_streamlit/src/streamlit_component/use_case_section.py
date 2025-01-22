@@ -1,6 +1,6 @@
 import streamlit as st
 
-from infrastructure.models.use_case import UseCase
+from models.use_case import UseCase
 
 
 class UseCaseSection:

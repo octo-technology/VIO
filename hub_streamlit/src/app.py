@@ -1,9 +1,9 @@
 import streamlit as st
 from google.cloud.storage import Client
 
-from infrastructure.cloud_connectors.gcp import extract_items
-from infrastructure.display_items.edge_section import EdgeSection
-from infrastructure.models.edge_data import EdgeData
+from data_extraction import extract_items
+from models.edge_data_manager import EdgeDataManager
+from streamlit_component.edge_section import EdgeSection
 
 
 def main():
@@ -20,7 +20,7 @@ def main():
     sidebar(st.session_state.edge_data)
 
 
-def sidebar(edge_data: EdgeData):
+def sidebar(edge_data: EdgeDataManager):
     st.sidebar.title("# VIO Hub")
     st.sidebar.title("Configuration")
 
