@@ -1,32 +1,20 @@
+from typing import Dict, Optional
 from PIL import Image, ImageDraw, ImageFont
 
 
-def filtering_items_that_have_predictions(metadata: dict, camera_id: str) -> bool:
-    if metadata == {} or metadata is None:
-        return False
-    elif metadata["inferences"] == {}:
-        return False
-    for model_results in metadata["inferences"][camera_id].values():
-        if model_results == "NO_DECISION" or model_results == {}:
-            return False
-        for prediction in model_results.values():
-            if "location" not in prediction:
-                return False
-    return True
-
-
-def plot_predictions(img: Image, camera_id: str, metadata: dict) -> Image:
+def filter_inferences_on_camera_id(camera_id: str, metadata: dict) -> Optional[list[str]]:
     if metadata["inferences"] == {}:
-        return img
-    camera_prediction_metadata = metadata["inferences"][camera_id]
-    models = camera_prediction_metadata.keys()
-    for model in models:
-        detected_objects = camera_prediction_metadata[model].values()
+        return None
+    return metadata["inferences"][camera_id]
+
+def plot_predictions(img: Image, camera_inferences_metadata: Dict[str, Dict]) -> Image:
+    models_names = camera_inferences_metadata.keys()
+    for model_name in models_names:
+        detected_objects = camera_inferences_metadata[model_name].values()
         for detected_object in detected_objects:
             bbox = detected_object["location"]
             label = detected_object["label"]
             img = draw_bbox(img, bbox, label)
-
     return img
 
 

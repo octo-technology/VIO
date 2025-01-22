@@ -48,3 +48,4 @@ Uncomment the *localhost* lines in the inventory file.
 Then run the following command:
 ```bash
 make test-registering-localhost-on-gcp-hub
+```

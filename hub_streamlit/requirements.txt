@@ -1,7 +1,7 @@
-opencv-python-headless==4.7.0.72
 streamlit==1.41.0
 google-cloud-storage==2.2.1
 google==3.0.0
 backports.tarfile==1.2.0
 python-dotenv==1.0.1
 pydantic==2.10.5
+pillow==11.1.0

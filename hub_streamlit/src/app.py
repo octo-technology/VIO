@@ -1,9 +1,9 @@
 import streamlit as st
 from google.cloud.storage import Client
 
-from src.infrastructure.cloud_connectors.gcp_connector import extract_items
-from src.infrastructure.data.edge_data import EdgeData
-from src.infrastructure.display_items.edge_section import EdgeSection
+from infrastructure.cloud_connectors.gcp import extract_items
+from infrastructure.display_items.edge_section import EdgeSection
+from infrastructure.models.edge_data import EdgeData
 
 
 def main():
