@@ -31,4 +31,4 @@ env:
 
 .PHONY: run ## Run the streamlit app
 run:
-	streamlit run src/app.py --server.port 8502
+	streamlit run src/app.py --server.port 8500
