@@ -1,4 +1,4 @@
-from typing import Dict, List, Optional
+from typing import List, Optional
 
 from pydantic import BaseModel
 
@@ -15,11 +15,13 @@ class UseCase(BaseModel):
         time_created: str,
         metadata: dict,
     ):
-        self.items.append(Item(
-            id=item_id,
-            creation_date=time_created,
-            metadata=metadata,
-        ))
+        self.items.append(
+            Item(
+                id=item_id,
+                creation_date=time_created,
+                metadata=metadata,
+            )
+        )
 
     def get_item_ids(self) -> List[str]:
         return [item.id for item in self.items]

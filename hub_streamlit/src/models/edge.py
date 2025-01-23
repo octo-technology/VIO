@@ -1,4 +1,4 @@
-from typing import Dict, List, Optional
+from typing import List, Optional
 
 from pydantic import BaseModel
 
@@ -16,7 +16,7 @@ class Edge(BaseModel):
 
     def get_use_case_names(self) -> List[str]:
         return [use_case.name for use_case in self.use_cases]
-    
+
     def get_use_case(self, name: str) -> Optional[UseCase]:
         for use_case in self.use_cases:
             if use_case.name == name:

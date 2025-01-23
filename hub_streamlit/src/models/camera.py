@@ -1,7 +1,7 @@
-from typing import List, Optional
+from typing import List
 
-from pydantic import BaseModel
 from PIL import Image
+from pydantic import BaseModel
 
 
 class Camera(BaseModel):

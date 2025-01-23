@@ -1,7 +1,7 @@
 import streamlit as st
 
-from edge_healthcheck import get_supervisor_active_config
 from data_extraction import NUMBER_CAMERAS
+from edge_healthcheck import get_supervisor_active_config
 from models.edge import Edge
 from streamlit_component.use_case_section import UseCaseSection
 
@@ -22,7 +22,9 @@ class EdgeSection:
 
         self.use_case_sections = None
 
-        default_use_case_name = self.use_cases_names[0] if self.use_cases_names else None
+        default_use_case_name = (
+            self.use_cases_names[0] if self.use_cases_names else None
+        )
         self.selected_use_case_name = default_use_case_name
 
     def show(self):
@@ -51,5 +53,7 @@ class EdgeSection:
 
     def show_use_case(self, use_case_name: str):
         use_case = self.edge.get_use_case(use_case_name)
-        self.use_case_sections = UseCaseSection(use_case_name, use_case, number_cameras=NUMBER_CAMERAS)
+        self.use_case_sections = UseCaseSection(
+            use_case_name, use_case, number_cameras=NUMBER_CAMERAS
+        )
         self.use_case_sections.show()

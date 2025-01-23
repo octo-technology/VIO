@@ -69,18 +69,12 @@ def extract_items(_gcp_client: Client) -> EdgeDataManager:
 
             if any(file_name.endswith(extension) for extension in IMG_EXTENSIONS):
                 # Downloading the first NUMBER_CAMERAS pics
-                if (
-                    item.number_pictures
-                    < NUMBER_CAMERAS
-                ):
+                if item.number_pictures < NUMBER_CAMERAS:
                     binary_data = blob.download_as_bytes()
                     picture = Image.open(BytesIO(binary_data))
 
                     # If metadata is not empty, we plot the predictions
-                    if (
-                        item
-                        .contains_predictions(camera_id)
-                    ):
+                    if item.contains_predictions(camera_id):
                         camera_inferences_metadata = filter_inferences_on_camera_id(
                             camera_id, item.metadata
                         )
@@ -88,7 +82,7 @@ def extract_items(_gcp_client: Client) -> EdgeDataManager:
                             picture = plot_predictions(
                                 picture, camera_inferences_metadata
                             )
-                    
+
                     camera = item.get_camera(camera_id)
                     camera.add_picture(picture)
                     item.number_pictures += 1
