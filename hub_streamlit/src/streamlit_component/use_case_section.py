@@ -39,6 +39,3 @@ class UseCaseSection:
                 f"Decision: {item.metadata.get('decision')}</div>",
                 unsafe_allow_html=True,
             )
-
-    def empty(self):
-        self.columns_placeholder.empty()
