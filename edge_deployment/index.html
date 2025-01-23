@@ -1,0 +1,1178 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://github.com/octo-technology/vio/edge_deployment/">
+      
+      
+        <link rel="prev" href="../edge_interface/">
+      
+      
+        <link rel="next" href="../hub_monitoring/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.50">
+    
+    
+      
+        <title>Edge deployment - VIO - Visual Inspection Orchestrator</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.a40c8224.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#edge-deployment" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="VIO - Visual Inspection Orchestrator" class="md-header__button md-logo" aria-label="VIO - Visual Inspection Orchestrator" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            VIO - Visual Inspection Orchestrator
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Edge deployment
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/octo-technology/VIO" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="VIO - Visual Inspection Orchestrator" class="md-nav__button md-logo" aria-label="VIO - Visual Inspection Orchestrator" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    VIO - Visual Inspection Orchestrator
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/octo-technology/VIO" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Getting Started
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../overview/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    vio-edge
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            vio-edge
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../edge_orchestrator/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Edge orchestrator
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../edge_model_serving/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Edge model serving
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../edge_interface/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Edge interface
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Edge deployment
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Edge deployment
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#raspberry-setup-raspbian-installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Raspberry Setup (Raspbian installation)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Raspberry Setup (Raspbian installation)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#optional-step-by-step-raspberry-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      [OPTIONAL] Step-by-step Raspberry Setup
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="[OPTIONAL] Step-by-step Raspberry Setup">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#identify-sd-card" class="md-nav__link">
+    <span class="md-ellipsis">
+      Identify SD card
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#format-sd-card" class="md-nav__link">
+    <span class="md-ellipsis">
+      Format SD card
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#verify-formatting" class="md-nav__link">
+    <span class="md-ellipsis">
+      Verify formatting
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#download-the-raspbian-image" class="md-nav__link">
+    <span class="md-ellipsis">
+      Download the Raspbian image
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flash-an-image" class="md-nav__link">
+    <span class="md-ellipsis">
+      Flash an image
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#enable-ssh-and-set-wifi-credentials" class="md-nav__link">
+    <span class="md-ellipsis">
+      Enable SSH and set WIFI credentials
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#eject-the-sd-card" class="md-nav__link">
+    <span class="md-ellipsis">
+      Eject the SD card
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#install-and-configure-the-iot-edge-agent-on-raspberrypi" class="md-nav__link">
+    <span class="md-ellipsis">
+      Install and configure the IoT Edge Agent on RaspberryPI
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Install and configure the IoT Edge Agent on RaspberryPI">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#install-ansible-on-the-raspberrypi" class="md-nav__link">
+    <span class="md-ellipsis">
+      Install Ansible on the RaspberryPI
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#check-ansible-is-correctly-installed" class="md-nav__link">
+    <span class="md-ellipsis">
+      Check Ansible is correctly installed
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-environment-variables" class="md-nav__link">
+    <span class="md-ellipsis">
+      Define environment variables
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#execute-the-playbook" class="md-nav__link">
+    <span class="md-ellipsis">
+      Execute the playbook
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    vio-hub
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            vio-hub
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hub_monitoring/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Hub monitoring
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hub_deployment/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Hub deployment
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Contribute
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Contribute
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CONTRIBUTING/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Contributing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ORGANIZATION/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Organization
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CICD/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    CI-CD
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DOCUMENTATION/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Documentation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../LICENSE/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    License
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../AUTHORS/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Authors
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#raspberry-setup-raspbian-installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Raspberry Setup (Raspbian installation)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Raspberry Setup (Raspbian installation)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#optional-step-by-step-raspberry-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      [OPTIONAL] Step-by-step Raspberry Setup
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="[OPTIONAL] Step-by-step Raspberry Setup">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#identify-sd-card" class="md-nav__link">
+    <span class="md-ellipsis">
+      Identify SD card
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#format-sd-card" class="md-nav__link">
+    <span class="md-ellipsis">
+      Format SD card
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#verify-formatting" class="md-nav__link">
+    <span class="md-ellipsis">
+      Verify formatting
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#download-the-raspbian-image" class="md-nav__link">
+    <span class="md-ellipsis">
+      Download the Raspbian image
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flash-an-image" class="md-nav__link">
+    <span class="md-ellipsis">
+      Flash an image
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#enable-ssh-and-set-wifi-credentials" class="md-nav__link">
+    <span class="md-ellipsis">
+      Enable SSH and set WIFI credentials
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#eject-the-sd-card" class="md-nav__link">
+    <span class="md-ellipsis">
+      Eject the SD card
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#install-and-configure-the-iot-edge-agent-on-raspberrypi" class="md-nav__link">
+    <span class="md-ellipsis">
+      Install and configure the IoT Edge Agent on RaspberryPI
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Install and configure the IoT Edge Agent on RaspberryPI">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#install-ansible-on-the-raspberrypi" class="md-nav__link">
+    <span class="md-ellipsis">
+      Install Ansible on the RaspberryPI
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#check-ansible-is-correctly-installed" class="md-nav__link">
+    <span class="md-ellipsis">
+      Check Ansible is correctly installed
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-environment-variables" class="md-nav__link">
+    <span class="md-ellipsis">
+      Define environment variables
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#execute-the-playbook" class="md-nav__link">
+    <span class="md-ellipsis">
+      Execute the playbook
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="edge-deployment">Edge Deployment</h1>
+<h2 id="raspberry-setup-raspbian-installation">Raspberry Setup (Raspbian installation)</h2>
+<p>The Raspberry can be set up thanks to this <a href="Makefile">Makefile</a>.</p>
+<p>First thing first, insert the SD card in your computer to mount it. <strong>Before typing any command</strong>, check that the SD card is effectively mounted on <code>/dev/disk2</code>, by typing:</p>
+<pre><code class="language-shell">$ diskutil list
+</code></pre>
+<p>Checklist before continuing:
+- If the SD card is mount on another disk, edit the Makefile by replacing <code>MOUNTING_DIR := /dev/disk2</code> by the disk seen thanks to <code>diskutil</code> command.
+- If you flash a Raspbian image <strong>WITHOUT Desktop ONLY</strong> you will need to connect on ssh on the Raspberry. To be able to connect, you need the Raspberry to be in the same local network than your computer. Therefore, setup your WIFI credentials on the Raspberry by editing the <a href="https://github.com/octo-technology/VIO/blob/main/deployment/wpa_supplicant.conf.template">wpa_supplicant.conf.template</a> replacing <code>ssid="YOUR-NETWORK-SSID"</code> and <code>psk="YOUR-NETWORK-PASSWORD"</code> values.
+- If you want to flash a Rasbian image with Desktop, edit the Makefile by replacing:
+  - <code>RASPIOS := raspios_lite_armhf</code> by <code>raspios_armhf</code> (Raspbian Desktop) or <code>raspios_full_armhf</code> (Raspbian Desktop + recommended Software) and
+  - <code>RASPIOS_IMAGE_NAME := 2021-05-07-raspios-buster-armhf-lite</code> by an existing image from <a href="https://downloads.raspberrypi.org/raspios_armhf/images/">here</a> or <a href="https://downloads.raspberrypi.org/raspios_full_armhf/images/">here</a>.</p>
+<p>Then, type:</p>
+<pre><code class="language-shell">$ make raspbian
+</code></pre>
+<p>This command will <strong>request information from you</strong> and last about <strong>10 minutes</strong>. Stay close to your computer until you gave your sudo password (at the beginning of the execution).</p>
+<p>Then you are all set! With the last command, you just :
+1. Formatted the SD card,
+2. Downloaded the Raspbian Buster lite image from 2021-05-07,
+3. Flashed the image on the SD card,
+4. Enabled SSH connection after boot,
+5. Setup WIFI credentials and eventually
+6. Ejected the SD card.</p>
+<p>You are now done and can insert the SD card in the Raspberry and make it boot.</p>
+<p>For more details on what you just have done, see the following parts.</p>
+<h3 id="optional-step-by-step-raspberry-setup">[OPTIONAL] Step-by-step Raspberry Setup</h3>
+<h4 id="identify-sd-card">Identify SD card</h4>
+<p>In Terminal, type the following command:</p>
+<pre><code class="language-shell">$ diskutil list
+</code></pre>
+<p>You should see something like:
+<img alt="diskutil-list-SDCARD" src="../images/diskutil-list-SDCARD.png" />
+In this case <code>/dev/disk2</code> is my SD card.</p>
+<h4 id="format-sd-card">Format SD card</h4>
+<p>To reformat the SD card, go in the deployment directory and type:</p>
+<pre><code class="language-shell">$ make format-sd-card
+</code></pre>
+<p>Or:</p>
+<pre><code class="language-shell">$ diskutil unmountDisk $(MOUNTING_DIR)
+$ diskutil eraseDisk FAT32 $(SD_CARD_NAME) MBRFormat $(MOUNTING_PATH)
+</code></pre>
+<p>The SD card will be formatted in <em>FAT32</em> format under the name <em>SDCARD</em> with a Master Boot Record (<em>MBRFormat</em>).</p>
+<h4 id="verify-formatting">Verify formatting</h4>
+<p>To check if the formatting was successful, use above command again:</p>
+<pre><code class="language-shell">$ diskutil list
+</code></pre>
+<p>Look for a disk named <code>SDCARD</code> like in the following picture:
+<img alt="diskutil-list-SDCARD" src="../images/diskutil-list-SDCARD.png" /></p>
+<h4 id="download-the-raspbian-image">Download the Raspbian image</h4>
+<p>It exists a lot of Raspbian images able to run on Raspberry. Here is an non exhaustive list:
+- Raspberry Pi OS with desktop and recommended software available <a href="https://downloads.raspberrypi.org/raspios_full_armhf/">here</a>
+- Raspberry Pi OS with desktop available <a href="https://downloads.raspberrypi.org/raspios_armhf/">here</a>
+- Raspberry Pi OS Lite available <a href="https://downloads.raspberrypi.org/raspios_lite_armhf/">here</a></p>
+<p>By default, you can download the Raspberry Pi OS Lite from 2021-05-07 by typing:</p>
+<pre><code class="language-shell">$ make download-raspbian-image
+</code></pre>
+<p>Or:</p>
+<pre><code class="language-shell">$ wget https://downloads.raspberrypi.org/$(RASPIOS)/images/$(RASPIOS)-2021-05-28/$(RASPIOS_IMAGE_NAME).zip -O $(IMAGES_DIR)/$(RASPIOS_IMAGE_NAME).zip
+$ unzip $(IMAGES_DIR)/$(RASPIOS_IMAGE_NAME).zip -d $(IMAGES_DIR)/
+</code></pre>
+<h4 id="flash-an-image">Flash an image</h4>
+<p>Choose an image and then flash it on the SD card as followed:</p>
+<pre><code class="language-shell">$ make flash-raspbian-image-on-sd-card
+</code></pre>
+<p>Or:</p>
+<pre><code class="language-shell">$ diskutil unmountDisk $(MOUNTING_DIR)
+$ sudo dd if=$(IMAGES_DIR)/$(RASPIOS_IMAGE_NAME).img of=$(MOUNTING_PATH) bs=1024
+</code></pre>
+<p>To check if the flashing was successful, use above command again:</p>
+<pre><code class="language-shell">$ diskutil list
+</code></pre>
+<p>Look for a disk named <code>SDCARD</code> like in the following picture:
+<img alt="diskutil-list-SDCARD" src="../images/diskutil-list-SDCARD.png" /></p>
+<h4 id="enable-ssh-and-set-wifi-credentials">Enable SSH and set WIFI credentials</h4>
+<p>Once formatted, to enable <em>ssh</em> and set your WIFI credentials, first edit <code>ssid="YOUR-NETWORK-SSID"</code> and <code>psk="YOUR-NETWORK-PASSWORD"</code> values in the <a href="https://github.com/octo-technology/VIO/blob/main/deployment/wpa_supplicant.conf.template">wpa_supplicant.conf.template</a>.</p>
+<p>Then, type:</p>
+<pre><code class="language-shell">$ make setup-wifi-credentials
+</code></pre>
+<p>It will copy the file named <code>wpa_supplicant.conf.template</code> with the following content (network parameters) on the SD card as <code>wpa_supplicant.conf</code>:</p>
+<pre><code class="language-shell">ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
+network={
+    ssid=&quot;&lt;YOUR-NETWORK-SSID&gt;&quot;
+    psk=&quot;&lt;YOUR-NETWORK-PASSWORD&gt;&quot;
+    key_mgmt=WPA-PSK
+}
+</code></pre>
+<p>To enable SSH connection after boot, you just need to create an empty file named <code>ssh</code> on your SD card by typing:</p>
+<pre><code class="language-shell">$ make enable-ssh
+</code></pre>
+<p>Or:</p>
+<pre><code class="language-shell">$ touch /Volumes/boot/ssh
+</code></pre>
+<h4 id="eject-the-sd-card">Eject the SD card</h4>
+<p>To eject the mounted SD card, type:</p>
+<pre><code class="language-shell">$ make eject-sd-card
+</code></pre>
+<p>Or:</p>
+<pre><code class="language-shell">$ diskutil unmountDisk $(MOUNTING_DIR)
+$ diskutil eject $(MOUNTING_DIR)
+</code></pre>
+<h2 id="install-and-configure-the-iot-edge-agent-on-raspberrypi">Install and configure the IoT Edge Agent on RaspberryPI</h2>
+<p>In order to be managed by Azure IoT Hub, each edge device must install an IoT Edge Agent and <em>connect</em> to the Hub.</p>
+<p>We use Ansible to automate the setup of the IoT Edge Agent.</p>
+<h3 id="install-ansible-on-the-raspberrypi">Install Ansible on the RaspberryPI</h3>
+<pre><code class="language-shell">$ pip3 install ansible
+</code></pre>
+<h3 id="check-ansible-is-correctly-installed">Check Ansible is correctly installed</h3>
+<pre><code class="language-shell">$ ansible --version
+</code></pre>
+<p>If <code>ansible</code> command is not found, add <code>/home/pi/.local/bin</code> to the PATH.</p>
+<h3 id="define-environment-variables">Define environment variables</h3>
+<p>For The moment, the RaspberryPI connects to the Azure IoT Hub using the connection string of the IoT Edge device identity.</p>
+<p>We need to provide this connection string through an environment variable.</p>
+<pre><code class="language-shell">$ export CONNECTION_STRING=&quot;&lt;primary_connection_string_from_iot_edge_device_on_azure_portal&gt;&quot;
+</code></pre>
+<h3 id="execute-the-playbook">Execute the playbook</h3>
+<p>The following command installs the necessary dependencies, creates the configuration file for the connection to IoT Hub, and applies the configuration.</p>
+<pre><code class="language-shell">$ cd &lt;path_to_vio_edge_repo&gt;/
+$ ansible-playbook deployment/ansible/install_iot_edge_agent_on_raspberry.yml
+</code></pre>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.60a45f97.min.js"></script>
+      
+    
+  </body>
+</html>
