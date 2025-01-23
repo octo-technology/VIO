@@ -4,6 +4,7 @@ from google.cloud.storage import Client
 from data_extraction import extract_items
 from models.edge_data_manager import EdgeDataManager
 from streamlit_component.edge_section import EdgeSection
+from streamlit_component.html_objects import vio_hub_title_object
 
 
 def main():
@@ -21,7 +22,7 @@ def main():
 
 
 def sidebar(edge_data: EdgeDataManager):
-    st.sidebar.title("# VIO Hub")
+    vio_hub_title_object()
     st.sidebar.title("Configuration")
 
     # Select edge and use case
