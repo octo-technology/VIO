@@ -32,3 +32,20 @@ We are adding those devices to be able to trigger capture from 2 cameras connect
 devices:
     - /dev/video0:/dev/video0
     - /dev/video2:/dev/video2
+
+### Test locally
+
+Set up the python venv:
+```bash
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+```
+
+Change the *REMOTE_VIO_DIR* to the local path to the vio directory.
+Uncomment the *localhost* lines in the inventory file.
+
+Then run the following command:
+```bash
+make test-registering-localhost-on-gcp-hub
+```

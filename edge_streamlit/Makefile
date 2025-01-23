@@ -11,8 +11,8 @@ help:
 
 .PHONY: env ## Create a virtual environment
 env:
-	python3 -m venv env
-	. env/bin/activate
+	python3 -m venv venv
+	. venv/bin/activate
 	pip install --upgrade pip
 	pip install -r requirements.txt
 
@@ -20,8 +20,8 @@ env:
 run:
 	streamlit run app.py
 
-.PHONY: linting  ## 🐍 Lint Python files to conform to the PEP 8 style guide
-linting:
+.PHONY: lint  ## 🐍 Lint Python files to conform to the PEP 8 style guide
+lint:
+	autoflake --in-place --remove-all-unused-imports --recursive --ignore-init-module-imports . --exclude .venv
+	isort . --skip-gitignore
 	black .
-	isort . --gitignore
-	autoflake -i --remove-all-unused-imports -r --ignore-init-module-imports . --exclude .venv

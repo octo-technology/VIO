@@ -27,7 +27,6 @@ requires-python = ">=3.8.10"
 [project.optional-dependencies]
 dev = [
     "alembic==1.11.1",
-    "autopep8==2.0.1",
     "behave @ git+https://github.com/behave/behave@v1.2.7.dev3#egg=behave[toml]",
     "black==23.7.0",
     "flake8==6.0.0",

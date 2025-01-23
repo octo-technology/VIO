@@ -28,10 +28,6 @@ from edge_orchestrator.domain.models.item import Item
 from edge_orchestrator.domain.models.model_infos import ModelInfos
 from edge_orchestrator.domain.models.supervisor_state import SupervisorState
 
-ROOT_PATH = Path(__file__).parents[3]
-emissions_path = ROOT_PATH / "emissions"
-
-
 def check_capture_according_to_config(item: Item, cameras: List[Dict]):
     binaries = set(item.binaries)
     cameras = set(cameras)

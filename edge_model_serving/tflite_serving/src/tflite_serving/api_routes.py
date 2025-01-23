@@ -1,12 +1,13 @@
 import logging
-from typing import Union, Any, List, Dict, AnyStr
+from typing import Any, AnyStr, Dict, List, Union
 
 import numpy as np
 from fastapi import APIRouter, HTTPException, Request
+
 from tflite_serving.utils.yolo_postprocessing import (
-    yolo_extract_boxes_information,
-    non_max_suppression,
     compute_severities,
+    non_max_suppression,
+    yolo_extract_boxes_information,
 )
 
 JSONObject = Dict[AnyStr, Any]

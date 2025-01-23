@@ -15,12 +15,16 @@ help:
 
 .PHONY: lint  ## 🐍 Lint Python files to conform to the PEP 8 style guide
 lint:
-	flake8 --count --show-source --statistics
-	black . --check
+	autoflake --in-place --remove-all-unused-imports --recursive --ignore-init-module-imports . --exclude .venv
+	isort . --skip-gitignore
+	black .
 
-.PHONY: autopep8  ## 🐍 Automatically formats Python code to conform to the PEP 8 style guide
-autopep8:
-	autopep8 --in-place --aggressive -r .
+.PHONY: check  ## 🐍 Check lint Python files to conform to the PEP 8 style guide
+check:
+	autoflake --in-place --remove-all-unused-imports --recursive --ignore-init-module-imports . --exclude .venv --check
+	isort . --skip-gitignore --check
+	black . --check
+	flake8 --count --show-source --statistics
 
 .PHONY: tflite_serving  ## 🐍 Create a tflite conda environment
 tflite_serving:
