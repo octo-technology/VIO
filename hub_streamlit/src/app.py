@@ -1,7 +1,7 @@
 import streamlit as st
 from google.cloud.storage import Client
 
-from data_extraction import extract_items
+from data_extraction import extract_edges
 from models.edge_data_manager import EdgeDataManager
 from streamlit_component.edge_section import EdgeSection
 
@@ -15,7 +15,7 @@ def main():
         st.session_state.active_edges = []
         st.session_state.gcp_client = Client()
 
-        st.session_state.edge_data = extract_items(st.session_state.gcp_client)
+        st.session_state.edge_data = extract_edges(st.session_state.gcp_client)
 
     sidebar(st.session_state.edge_data)
 
@@ -35,7 +35,7 @@ def sidebar(edge_data: EdgeDataManager):
 
     # Refresh data
     if st.sidebar.button("↻"):
-        st.session_state.edge_data = extract_items(st.session_state.gcp_client)
+        st.session_state.edge_data = extract_edges(st.session_state.gcp_client)
 
     # Computes the page display
     removing_edges = [
