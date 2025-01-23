@@ -25,8 +25,8 @@ class UseCaseSection:
                 break
 
             item = self.use_case.get_item(item_id)
-            for camera_idx, camera_id in enumerate(item.camera_names):
-                camera_data = item.cameras[camera_id]
+            for camera_idx, camera_id in enumerate(item.get_camera_ids()):
+                camera_data = item.get_camera(camera_id)
                 for picture in camera_data.pictures:
                     self.columns_placeholder[camera_idx][idx].image(
                         picture, use_container_width=True

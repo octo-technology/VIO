@@ -12,20 +12,27 @@ class Item(BaseModel):
     id: str
     number_pictures: int = 0
     creation_date: datetime
-    metadata: Optional[dict] = None
-    camera_names: List[str] = []
-    cameras: Optional[Dict[str, Camera]] = {}
+    metadata: Optional[Dict] = None
+    cameras: List[Camera] = []
 
     def add_camera(self, camera_id: str):
-        self.camera_names.append(camera_id)
-        self.cameras[camera_id] = Camera()
+        self.cameras.append(Camera(id=camera_id))
+
+    def get_camera_ids(self) -> List[str]:
+        return [camera.id for camera in self.cameras]
+
+    def get_camera(self, camera_id: str) -> Optional[Camera]:
+        for camera in self.cameras:
+            if camera.id == camera_id:
+                return camera
+        return None
 
     def add_picture(
         self,
         camera_id: str,
         picture: Image,
     ):
-        self.cameras[camera_id].pictures.append(picture)
+        self.get_camera(camera_id).pictures.append(picture)
         self.number_pictures += 1
 
     def contains_predictions(self, camera_id: str) -> bool:

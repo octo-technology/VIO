@@ -4,4 +4,5 @@ from pydantic import BaseModel
 
 
 class Camera(BaseModel):
+    id: str
     pictures: List[dict] = []

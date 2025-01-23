@@ -64,7 +64,7 @@ def extract_items(_gcp_client: Client) -> EdgeDataManager:
                 use_case.add_item(item_id, blob.time_created, metadata)
 
             item = use_case.get_item(item_id)
-            if camera_id not in item.camera_names:
+            if camera_id not in item.get_camera_ids():
                 item.add_camera(camera_id)
 
             if any(file_name.endswith(extension) for extension in IMG_EXTENSIONS):
