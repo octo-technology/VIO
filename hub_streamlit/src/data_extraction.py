@@ -43,7 +43,7 @@ def extract_items(_gcp_client: Client) -> EdgeDataManager:
         # Extracting the edge, use case and item id
         blob_name_split = blob_name.split("/")
         edge_name = blob_name_split[0]
-        use_case = blob_name_split[1]
+        use_case_name = blob_name_split[1]
         item_id = blob_name_split[2]
         file_name = blob_name_split[-1]
         camera_id = file_name.split(".")[0]
@@ -54,19 +54,22 @@ def extract_items(_gcp_client: Client) -> EdgeDataManager:
 
         edge = edges_data.get_edge(edge_name)
         if edge:
-            if use_case not in edge.use_cases_names:
+            if use_case_name not in edge.get_use_case_names():
                 edge_ip = extract_edge_ip(bucket, edge_name)
-                edge.add_usecase(use_case, edge_ip)
-            if item_id not in edge.use_cases[use_case].item_names:
-                metadata = extract_metadata(bucket, edge_name, use_case, item_id)
-                edge.use_cases[use_case].add_item(item_id, blob.time_created, metadata)
-            if camera_id not in edge.use_cases[use_case].items[item_id].camera_names:
-                edge.use_cases[use_case].items[item_id].add_camera(camera_id)
+                edge.add_usecase(use_case_name, edge_ip)
+
+            use_case = edge.get_use_case(use_case_name)
+            if item_id not in use_case.item_names:
+                metadata = extract_metadata(bucket, edge_name, use_case_name, item_id)
+                use_case.add_item(item_id, blob.time_created, metadata)
+
+            if camera_id not in use_case.items[item_id].camera_names:
+                use_case.items[item_id].add_camera(camera_id)
 
             if any(file_name.endswith(extension) for extension in IMG_EXTENSIONS):
                 # Downloading the first NUMBER_CAMERAS pics
                 if (
-                    edge.use_cases[use_case].items[item_id].number_pictures
+                    use_case.items[item_id].number_pictures
                     < NUMBER_CAMERAS
                 ):
                     binary_data = blob.download_as_bytes()
@@ -74,19 +77,19 @@ def extract_items(_gcp_client: Client) -> EdgeDataManager:
 
                     # If metadata is not empty, we plot the predictions
                     if (
-                        edge.use_cases[use_case]
+                        use_case
                         .items[item_id]
                         .contains_predictions(camera_id)
                     ):
                         camera_inferences_metadata = filter_inferences_on_camera_id(
-                            camera_id, edge.use_cases[use_case].items[item_id].metadata
+                            camera_id, use_case.items[item_id].metadata
                         )
                         if camera_inferences_metadata:
                             picture = plot_predictions(
                                 picture, camera_inferences_metadata
                             )
                     
-                    edge.use_cases[use_case].items[item_id].add_picture(camera_id, picture)
+                    use_case.items[item_id].add_picture(camera_id, picture)
 
     return edges_data
 

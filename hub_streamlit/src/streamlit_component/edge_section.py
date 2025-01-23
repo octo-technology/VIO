@@ -8,11 +8,11 @@ from streamlit_component.use_case_section import UseCaseSection
 
 class EdgeSection:
     def __init__(self, edge_name: str, edge: Edge):
+        self.edge = edge
         self.edge_name = edge_name
         self.edge_name_with_whitespaces = self.edge_name.replace("_", " ")
-        self.edge_ip = edge.edge_ip
-        self.use_cases_names = edge.use_cases_names
-        self.use_cases = edge.use_cases
+        self.edge_ip = self.edge.edge_ip
+        self.use_cases_names = self.edge.get_use_case_names()
 
         (
             self.title_placeholder,
@@ -21,10 +21,12 @@ class EdgeSection:
         ) = st.columns(3)
 
         self.use_case_sections = None
-        self.selected_use_case = self.use_cases_names[0]
+
+        default_use_case_name = self.use_cases_names[0] if self.use_cases_names else None
+        self.selected_use_case_name = default_use_case_name
 
     def show(self):
-        self.selected_use_case = self.button_placeholder.selectbox(
+        self.selected_use_case_name = self.button_placeholder.selectbox(
             "Select a use case",
             options=self.use_cases_names,
             label_visibility="collapsed",
@@ -45,8 +47,9 @@ class EdgeSection:
 
         self.active_config_placeholder.markdown(active_config_placeholder)
         self.title_placeholder.markdown(title_placeholder)
-        self.show_use_case(self.selected_use_case)
+        self.show_use_case(self.selected_use_case_name)
 
-    def show_use_case(self, use_case: str):
-        self.use_case_sections = UseCaseSection(use_case, self.use_cases[use_case], number_cameras=NUMBER_CAMERAS)
+    def show_use_case(self, use_case_name: str):
+        use_case = self.edge.get_use_case(use_case_name)
+        self.use_case_sections = UseCaseSection(use_case_name, use_case, number_cameras=NUMBER_CAMERAS)
         self.use_case_sections.show()

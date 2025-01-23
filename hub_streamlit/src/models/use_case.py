@@ -6,6 +6,7 @@ from models.item import Item
 
 
 class UseCase(BaseModel):
+    name: str
     item_names: Optional[List[str]] = []
     items: Optional[Dict[str, Item]] = {}
 
