@@ -1,11 +1,11 @@
-from typing import Dict, Optional
+from typing import Dict, List, Optional
 
 from PIL import Image, ImageDraw, ImageFont
 
 
 def filter_inferences_on_camera_id(
     camera_id: str, metadata: dict
-) -> Optional[list[str]]:
+) -> Optional[List[str]]:
     if metadata["inferences"] == {}:
         return None
     return metadata["inferences"][camera_id]

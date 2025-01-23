@@ -4,4 +4,4 @@ from pydantic import BaseModel
 
 
 class Camera(BaseModel):
-    pictures: Optional[List[dict]] = []
+    pictures: List[dict] = []

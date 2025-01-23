@@ -8,7 +8,7 @@ from models.use_case import UseCase
 class Edge(BaseModel):
     name: str
     edge_ip: Optional[str] = None
-    use_cases: Optional[List[UseCase]] = []
+    use_cases: List[UseCase] = []
 
     def add_usecase(self, use_case_name: str, edge_ip: str):
         self.edge_ip = edge_ip

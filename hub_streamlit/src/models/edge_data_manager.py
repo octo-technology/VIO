@@ -6,7 +6,7 @@ from models.edge import Edge
 
 
 class EdgeDataManager(BaseModel):
-    edges: Optional[List[Edge]] = []
+    edges: List[Edge] = []
 
     def add_edge(self, edge_name: str):
         self.edges.append(Edge(name=edge_name))

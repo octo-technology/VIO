@@ -59,17 +59,18 @@ def extract_items(_gcp_client: Client) -> EdgeDataManager:
                 edge.add_usecase(use_case_name, edge_ip)
 
             use_case = edge.get_use_case(use_case_name)
-            if item_id not in use_case.item_names:
+            if item_id not in use_case.get_item_ids():
                 metadata = extract_metadata(bucket, edge_name, use_case_name, item_id)
                 use_case.add_item(item_id, blob.time_created, metadata)
 
-            if camera_id not in use_case.items[item_id].camera_names:
-                use_case.items[item_id].add_camera(camera_id)
+            item = use_case.get_item(item_id)
+            if camera_id not in item.camera_names:
+                item.add_camera(camera_id)
 
             if any(file_name.endswith(extension) for extension in IMG_EXTENSIONS):
                 # Downloading the first NUMBER_CAMERAS pics
                 if (
-                    use_case.items[item_id].number_pictures
+                    item.number_pictures
                     < NUMBER_CAMERAS
                 ):
                     binary_data = blob.download_as_bytes()
@@ -77,19 +78,18 @@ def extract_items(_gcp_client: Client) -> EdgeDataManager:
 
                     # If metadata is not empty, we plot the predictions
                     if (
-                        use_case
-                        .items[item_id]
+                        item
                         .contains_predictions(camera_id)
                     ):
                         camera_inferences_metadata = filter_inferences_on_camera_id(
-                            camera_id, use_case.items[item_id].metadata
+                            camera_id, item.metadata
                         )
                         if camera_inferences_metadata:
                             picture = plot_predictions(
                                 picture, camera_inferences_metadata
                             )
                     
-                    use_case.items[item_id].add_picture(camera_id, picture)
+                    item.add_picture(camera_id, picture)
 
     return edges_data
 

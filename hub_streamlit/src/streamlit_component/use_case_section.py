@@ -20,11 +20,11 @@ class UseCaseSection:
         ]
 
     def show(self):
-        for idx, item_id in enumerate(self.use_case.item_names):
+        for idx, item_id in enumerate(self.use_case.get_item_ids()):
             if idx >= self.number_cols:
                 break
 
-            item = self.use_case.items[item_id]
+            item = self.use_case.get_item(item_id)
             for camera_idx, camera_id in enumerate(item.camera_names):
                 camera_data = item.cameras[camera_id]
                 for picture in camera_data.pictures:

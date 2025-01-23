@@ -9,10 +9,11 @@ from models.decision import Decision
 
 
 class Item(BaseModel):
+    id: str
     number_pictures: int = 0
     creation_date: datetime
     metadata: Optional[dict] = None
-    camera_names: Optional[List[str]] = []
+    camera_names: List[str] = []
     cameras: Optional[Dict[str, Camera]] = {}
 
     def add_camera(self, camera_id: str):
