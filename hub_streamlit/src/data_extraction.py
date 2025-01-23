@@ -89,7 +89,9 @@ def extract_items(_gcp_client: Client) -> EdgeDataManager:
                                 picture, camera_inferences_metadata
                             )
                     
-                    item.add_picture(camera_id, picture)
+                    camera = item.get_camera(camera_id)
+                    camera.add_picture(picture)
+                    item.number_pictures += 1
 
     return edges_data
 

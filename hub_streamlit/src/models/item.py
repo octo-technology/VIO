@@ -27,14 +27,6 @@ class Item(BaseModel):
                 return camera
         return None
 
-    def add_picture(
-        self,
-        camera_id: str,
-        picture: Image,
-    ):
-        self.get_camera(camera_id).pictures.append(picture)
-        self.number_pictures += 1
-
     def contains_predictions(self, camera_id: str) -> bool:
         if self.metadata is None or self.metadata == {}:
             return False
