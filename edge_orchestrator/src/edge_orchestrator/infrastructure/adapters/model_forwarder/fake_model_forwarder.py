@@ -41,7 +41,7 @@ class FakeModelForwarder(IModelForwarder):
             )
         elif model_type == ModelType.OBJECT_DETECTION.value:
             return DetectionPrediction(
-                prediction_type=ModelType.CLASSIFICATION,
+                prediction_type=ModelType.OBJECT_DETECTION,
                 detected_objects={
                     "object_1": DetectedObject(location=[4, 112, 244, 156], objectness=random.uniform(0, 1)),
                     "object_2": DetectedObject(location=[2, 56, 122, 78], objectness=random.uniform(0, 1)),
@@ -49,15 +49,17 @@ class FakeModelForwarder(IModelForwarder):
             )
         elif model_type == ModelType.OBJECT_DETECTION_WITH_CLASSIFICATION.value:
             return DetectionPredictionWithClassif(
-                prediction_type=ModelType.CLASSIFICATION,
+                prediction_type=ModelType.OBJECT_DETECTION_WITH_CLASSIFICATION,
                 detected_objects={
                     "object_1": DetectedObjectWithClassif(
+                        prediction_type=ModelType.CLASSIFICATION,
                         label=random.choice([Decision.OK, Decision.KO]),
                         probability=random.uniform(0, 1),
                         location=[4, 112, 244, 156],
                         objectness=random.uniform(0, 1),
                     ),
                     "object_2": DetectedObjectWithClassif(
+                        prediction_type=ModelType.CLASSIFICATION,
                         label=random.choice([Decision.OK, Decision.KO]),
                         probability=random.uniform(0, 1),
                         location=[2, 56, 122, 78],

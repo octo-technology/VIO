@@ -19,7 +19,8 @@ class UnexpectedLabelRule(ICameraRule):
         classif = prediction
         if classif.prediction_type != ModelType.CLASSIFICATION:
             self._logger.warning(
-                f"You can not use an ExpectedLabelRule on something other than {ModelType.CLASSIFICATION.value}, no decision returned."
+                "You can not use an ExpectedLabelRule on something other than "
+                f"{ModelType.CLASSIFICATION.value}, no decision returned."
             )
             return Decision.NO_DECISION
 

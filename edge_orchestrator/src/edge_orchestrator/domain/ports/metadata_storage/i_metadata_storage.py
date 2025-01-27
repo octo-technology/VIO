@@ -15,7 +15,11 @@ class IMetadataStorage:
     def save_item_metadata(self, item: Item):
         pass
 
-    # TODO: implement it
+    @abstractmethod
+    def get_item_metadata(self, item_id: UUID) -> Item:
+        pass
+
+    # TODO: see how it can be merged with same method in IBinaryStorage
     @abstractmethod
     def _get_storing_path(self, item_id: UUID) -> Path:
         pass

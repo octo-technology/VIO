@@ -39,7 +39,7 @@ class ModelForwarderFactory(IModelForwarderFactory):
             return DetectionModelForwarder(model_forwarder_config)
 
         elif model_forwarder_config.model_type == ModelType.OBJECT_DETECTION_WITH_CLASSIFICATION.value:
-            from edge_orchestrator.infrastructure.adapters.model_forwarder.detection_with_classif_model_forwarder import (
+            from edge_orchestrator.infrastructure.adapters.model_forwarder.detection_with_classif_model_forwarder import (  # noqa
                 DetectionWithClassifModelForwarder,
             )
 

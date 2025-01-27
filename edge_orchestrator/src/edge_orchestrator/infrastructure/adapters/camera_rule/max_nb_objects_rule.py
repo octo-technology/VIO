@@ -20,7 +20,8 @@ class MaxNbObjectsRule(ICameraRule):
         detec_predict_with_classif = prediction
         if detec_predict_with_classif.prediction_type != ModelType.OBJECT_DETECTION_WITH_CLASSIFICATION:
             self._logger.warning(
-                f"You can not use an MaxNbObjectsRule on something other than {ModelType.OBJECT_DETECTION_WITH_CLASSIFICATION.value}, no decision returned."
+                "You can not use an MaxNbObjectsRule on something other than "
+                f"{ModelType.OBJECT_DETECTION_WITH_CLASSIFICATION.value}, no decision returned."
             )
             return Decision.NO_DECISION
 
