@@ -1,6 +1,7 @@
 from enum import Enum
 
 
+# TODO: distinguish the model types from the prediction types
 class ModelType(str, Enum):
     FAKE = "fake"
     CLASSIFICATION = "classification"

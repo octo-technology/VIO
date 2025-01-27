@@ -17,6 +17,7 @@ class FileSystemBinaryStorage(IBinaryStorage):
 
     def save_item_binaries(self, item: Item):
         path = self._get_storing_path(item.id)
+        path.mkdir(parents=True, exist_ok=True)
         for camera_id, binary in item.binaries.items():
             filepath = path / f"{camera_id}.jpg"
             with filepath.open("wb") as f:
@@ -29,10 +30,9 @@ class FileSystemBinaryStorage(IBinaryStorage):
             with binary_path.open("rb") as f:
                 item_binaries[binary_path.stem] = f.read()
         return item_binaries
-    
+
     def _get_storing_path(self, item_id: UUID) -> Path:
         path = self._storage_config.target_directory / str(item_id)
         if self._storage_config.prefix:
             path = self._storage_config.target_directory / self._storage_config.prefix / str(item_id)
-        path.mkdir(parents=True, exist_ok=True)
         return path

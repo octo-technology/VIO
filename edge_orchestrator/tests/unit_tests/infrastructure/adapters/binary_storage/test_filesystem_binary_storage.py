@@ -1,5 +1,4 @@
 from pathlib import Path
-from unittest.mock import patch
 from uuid import UUID
 
 from pydantic import UUID4
@@ -9,7 +8,9 @@ from edge_orchestrator.domain.models.camera.camera_type import CameraType
 from edge_orchestrator.domain.models.item import Item
 from edge_orchestrator.domain.models.model_forwarder.decision import Decision
 from edge_orchestrator.domain.models.storage.storage_config import StorageConfig
-from edge_orchestrator.infrastructure.adapters.binary_storage.filesystem_binary_storage import FileSystemBinaryStorage
+from edge_orchestrator.infrastructure.adapters.binary_storage.filesystem_binary_storage import (
+    FileSystemBinaryStorage,
+)
 
 
 class TestFileSystemBinaryStorage:
@@ -29,7 +30,7 @@ class TestFileSystemBinaryStorage:
         binary_storage.save_item_binaries(item)
 
         # Then
-        assert len(list((target_directory/str(item.id)).iterdir())) == 0
+        assert len(list((target_directory / str(item.id)).iterdir())) == 0
 
     def test_save_item_binaries_should_write_images_on_filesystem(self, tmp_path: Path):
         # Given
@@ -57,7 +58,7 @@ class TestFileSystemBinaryStorage:
             assert path_to_picture.is_file()
             actual_picture = path_to_picture.open("rb").read()
             assert actual_picture == expected_picture
-    
+
     def test_save_item_binaries_with_prefix_should_write_images_on_filesystem(self, tmp_path: Path):
         # Given
         target_directory = tmp_path / "binaries"
@@ -93,7 +94,9 @@ class TestFileSystemBinaryStorage:
         item_id = UUID("00000000-0000-0000-0000-000000000001")
         item_storage_folder = target_directory / str(item_id)
         item_storage_folder.mkdir()
-        with (item_storage_folder / "camera_#1.jpg").open("wb") as f1, (item_storage_folder / "camera_#2.jpg").open("wb") as f2:
+        with (item_storage_folder / "camera_#1.jpg").open("wb") as f1, (item_storage_folder / "camera_#2.jpg").open(
+            "wb"
+        ) as f2:
             f1.write(expected_picture)
             f2.write(expected_picture)
         expected_camera_ids = ["camera_#1", "camera_#2"]

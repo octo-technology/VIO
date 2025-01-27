@@ -1,3 +1,4 @@
+import json
 import logging
 from pathlib import Path
 from uuid import UUID
@@ -18,12 +19,18 @@ class FileSystemMetadataStorage(IMetadataStorage):
 
     def save_item_metadata(self, item: Item):
         filepath = self._get_storing_path(item.id)
+        filepath.parent.mkdir(parents=True, exist_ok=True)
         with filepath.open("w") as f:
             f.write(item.model_dump_json(exclude={"binaries"}))
-    
+
+    def get_item_metadata(self, item_id: UUID) -> Item:
+        filepath = self._get_storing_path(item_id)
+        with filepath.open("r") as f:
+            metadata = json.load(f)
+        return metadata
+
     def _get_storing_path(self, item_id: UUID) -> Path:
         path = self._storage_config.target_directory / f"{str(item_id)}.json"
         if self._storage_config.prefix:
             path = self._storage_config.target_directory / self._storage_config.prefix / f"{str(item_id)}.json"
-        path.parent.mkdir(parents=True, exist_ok=True)
         return path

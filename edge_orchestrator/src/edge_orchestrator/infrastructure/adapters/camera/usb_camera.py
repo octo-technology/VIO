@@ -11,6 +11,7 @@ class UsbCamera(ICamera):
         self._camera_config = camera_config
         self._logger = logging.getLogger(__name__)
 
+    # TODO: implement me
     def capture(self) -> bytes:
         resolution = "640x640"
         source = self.settings["source"]

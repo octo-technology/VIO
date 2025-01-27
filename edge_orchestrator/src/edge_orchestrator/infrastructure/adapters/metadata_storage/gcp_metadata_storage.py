@@ -8,7 +8,7 @@ from edge_orchestrator.domain.ports.metadata_storage.i_metadata_storage import (
 )
 
 
-class GCPBinaryStorage(IMetadataStorage):
+class GCPMetadataStorage(IMetadataStorage):
     def __init__(self, binary_storage_config: StorageConfig):
         self.binary_storage_config: StorageConfig = binary_storage_config
         self._logger = logging.getLogger(__name__)
