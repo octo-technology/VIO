@@ -1,13 +1,12 @@
 import streamlit as st
 
-from data_extraction import NUMBER_CAMERAS
 from edge_healthcheck import get_supervisor_active_config
-from models.edge import Edge
+from models.edge_data import NUMBER_CAMERAS, EdgeData
 from streamlit_component.use_case_section import UseCaseSection
 
 
 class EdgeSection:
-    def __init__(self, edge_name: str, edge: Edge):
+    def __init__(self, edge_name: str, edge: EdgeData):
         self.edge = edge
         self.edge_name = edge_name
         self.edge_name_with_whitespaces = self.edge_name.replace("_", " ")
