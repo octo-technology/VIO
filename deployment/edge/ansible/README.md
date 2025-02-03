@@ -9,6 +9,11 @@ Install openssh-server on the edge:
  sudo apt-get install openssh-server
 ```
 
+Do not forget to install the google-cloud-storage package:
+```bash
+pip install google-cloud-storage==3.0.0
+```
+
 Then, try to connect through:
 ```bash
  ssh localhost
