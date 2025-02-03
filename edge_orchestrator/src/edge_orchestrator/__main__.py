@@ -1,4 +1,4 @@
-from edge_orchestrator import app
+from edge_orchestrator.interface.api.main import app
 
 
 def run_for_debug():

@@ -2,10 +2,10 @@ from typing import Dict, Optional
 
 from pydantic import ConfigDict, Field
 
-from edge_orchestrator.application.models.item_base import ItemBase
 from edge_orchestrator.domain.models.camera.camera_config import CameraConfig
 from edge_orchestrator.domain.models.model_forwarder.decision import Decision
 from edge_orchestrator.domain.models.model_forwarder.prediction import Prediction
+from edge_orchestrator.interface.api.models.item_base import ItemBase
 
 
 # TODO: add a state or "all steps" that the item passed

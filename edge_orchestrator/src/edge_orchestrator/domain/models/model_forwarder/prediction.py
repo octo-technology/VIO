@@ -8,11 +8,8 @@ from edge_orchestrator.domain.models.model_forwarder.classification_prediction i
 from edge_orchestrator.domain.models.model_forwarder.detection_prediction import (
     DetectionPrediction,
 )
-from edge_orchestrator.domain.models.model_forwarder.detection_prediction_with_classif import (
-    DetectionPredictionWithClassif,
-)
 
 Prediction = Annotated[
-    Union[ClassifPrediction, DetectionPrediction, DetectionPredictionWithClassif],
+    Union[ClassifPrediction, DetectionPrediction],
     Field(discriminator="prediction_type"),
 ]

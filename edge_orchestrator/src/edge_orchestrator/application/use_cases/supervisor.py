@@ -1,6 +1,5 @@
 import logging
 
-from edge_orchestrator.application.models.item_in import ItemIn
 from edge_orchestrator.domain.models.item import Item
 from edge_orchestrator.domain.models.model_forwarder.decision import Decision
 from edge_orchestrator.domain.models.station_config import StationConfig
@@ -20,6 +19,7 @@ from edge_orchestrator.domain.ports.metadata_storage.i_metadata_storage_manager 
 from edge_orchestrator.domain.ports.model_forwarder.i_model_forwarder_manager import (
     IModelForwarderManager,
 )
+from edge_orchestrator.interface.api.models.item_in import ItemIn
 from edge_orchestrator.utils.singleton import SingletonMeta
 
 
@@ -34,7 +34,7 @@ class Supervisor(metaclass=SingletonMeta):
         item_rule_manager: IItemRuleManager,
         camera_manager: ICameraManager,
     ):
-        self.logger = logging.getLogger(__name__)
+        self._logger = logging.getLogger(__name__)
         self._station_config = station_config
         self._metadata_storage = metadata_storage_manager.get_metadata_storage(station_config.metadata_storage_config)
         self._binary_storage = binary_storage_manager.get_binary_storage(station_config.binary_storage_config)
@@ -51,9 +51,16 @@ class Supervisor(metaclass=SingletonMeta):
             camera_decisions={},
             decision=Decision.NO_DECISION,
         )
+        self._logger.info("Taking pictures...")
         self._camera_manager.take_pictures(item)
+        self._logger.info("Saving pictures...")
         self._binary_storage.save_item_binaries(item)
-        self._model_forwarder_manager.predict_on_binaries(item)
+        self._logger.info("Predicting on pictures...")
+        await self._model_forwarder_manager.predict_on_binaries(item)
+        self._logger.info("Applying rule on each picture...")
         self._camera_rule_manager.apply_camera_rules(item)
+        self._logger.info("Applying rule on item...")
         self._item_rule.apply_item_rules(item)
+        self._logger.info("Saving item metadata...")
         self._metadata_storage.save_item_metadata(item)
+        self._logger.info("Inspection done!")

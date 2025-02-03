@@ -1,12 +1,7 @@
 from pathlib import Path
 from uuid import UUID
 
-from pydantic import UUID4
-
-from edge_orchestrator.domain.models.camera.camera_config import CameraConfig
-from edge_orchestrator.domain.models.camera.camera_type import CameraType
 from edge_orchestrator.domain.models.item import Item
-from edge_orchestrator.domain.models.model_forwarder.decision import Decision
 from edge_orchestrator.domain.models.storage.storage_config import StorageConfig
 from edge_orchestrator.infrastructure.adapters.binary_storage.filesystem_binary_storage import (
     FileSystemBinaryStorage,

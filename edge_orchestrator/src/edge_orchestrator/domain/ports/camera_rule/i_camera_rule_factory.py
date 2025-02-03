@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from logging import Logger
 
-from edge_orchestrator.domain.models.item_rule.camera_rule.camera_rule_config import (
+from edge_orchestrator.domain.models.camera_rule.camera_rule_config import (
     CameraRuleConfig,
 )
 from edge_orchestrator.domain.ports.camera_rule.i_camera_rule import ICameraRule

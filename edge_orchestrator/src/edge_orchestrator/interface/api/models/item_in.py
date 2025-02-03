@@ -3,7 +3,7 @@ from typing import Dict, Optional
 from fastapi import UploadFile
 from pydantic import ConfigDict, Field
 
-from edge_orchestrator.application.models.item_base import ItemBase
+from edge_orchestrator.interface.api.models.item_base import ItemBase
 
 
 class ItemIn(ItemBase):

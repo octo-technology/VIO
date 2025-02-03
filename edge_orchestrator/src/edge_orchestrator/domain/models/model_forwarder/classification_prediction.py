@@ -1,14 +1,16 @@
-from typing import Literal
+from typing import Literal, Optional
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel
 
-from edge_orchestrator.domain.models.model_forwarder.decision import Decision
-from edge_orchestrator.domain.models.model_forwarder.model_type import ModelType
+from edge_orchestrator.domain.models.model_forwarder.prediction_type import (
+    PredictionType,
+)
 
 
 class ClassifPrediction(BaseModel):
-    model_config = ConfigDict(use_enum_values=True)
+    # TODO: see the impact of this line in other BaseModel classes
+    # model_config = ConfigDict(use_enum_values=True)
 
-    prediction_type: Literal[ModelType.CLASSIFICATION]
-    label: Decision
-    probability: float
+    prediction_type: Literal[PredictionType.class_]
+    label: Optional[str] = None
+    probability: Optional[float] = None
