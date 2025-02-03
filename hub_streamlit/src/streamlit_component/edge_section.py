@@ -27,13 +27,6 @@ class EdgeSection:
         )
         self.selected_use_case_name = default_use_case_name
 
-    def refresh(self, gcp_client):
-        print(f"Refreshing data for edge: {self.edge_name}")
-        self.edge_data.extract(gcp_client)
-        self.use_cases_names = self.edge_data.get_use_case_names()
-        self.selected_use_case_name = self.selected_use_case_name
-        print(f"Refreshed data for edge: {self.edge_name}")
-
     def show(self):
         self.selected_use_case_name = self.usecase_selector_placeholder.selectbox(
             "Select a use case",

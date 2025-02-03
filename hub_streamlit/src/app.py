@@ -4,8 +4,6 @@ from gcp_binary_storage import GCPBinaryStorage
 from models.edge_data import EdgeData
 from streamlit_component.edge_section import EdgeSection
 
-EDGES = ["edge2", "localhost"]
-
 
 def main():
     # Page configuration
@@ -18,7 +16,10 @@ def main():
     if not st.session_state.get("edge_data_dict"):
         st.session_state.edge_data_dict = {}
 
-    for edge_name in EDGES:
+    if not st.session_state.get("edge_names"):
+        st.session_state.edge_names = st.session_state.gcp_client.get_edges_names()
+
+    for edge_name in st.session_state.edge_names:
         if edge_name not in st.session_state.edge_data_dict.keys():
             edge_data = EdgeData(name=edge_name)
             edge_data.get_ip(gcp_client=st.session_state.gcp_client)

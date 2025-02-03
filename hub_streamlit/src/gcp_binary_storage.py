@@ -1,6 +1,6 @@
 import json
 import os
-from typing import Optional
+from typing import List, Optional
 
 from dotenv import load_dotenv
 from google.api_core.exceptions import NotFound
@@ -15,6 +15,12 @@ class GCPBinaryStorage:
     def __init__(self, prefix: str = ""):
         self.prefix = prefix
         self.bucket = Client().bucket(BUCKET_NAME)
+
+    def get_edges_names(self) -> List[str]:
+        iterator = self.bucket.list_blobs(prefix=self.prefix, delimiter="/")
+        response = iterator._get_next_page_response()
+        edges_names = [prefix.rstrip("/") for prefix in response["prefixes"]]
+        return edges_names
 
     def get_text_blob(self, blobname: str) -> str:
         blob = self.bucket.blob(blobname)

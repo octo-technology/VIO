@@ -35,7 +35,7 @@ class UseCaseSection:
             # Writing some metadata
             self.columns_placeholder[self.number_cameras][idx].markdown(
                 f"<div style='text-align:center; color:grey; font-size:x-small'>"
-                f"{item.creation_date.strftime('%Y-%m-%d %H:%M:%S')}<br>"
+                f"{item.metadata.get('received_time')}<br>"
                 f"Decision: {item.metadata.get('decision')}</div>",
                 unsafe_allow_html=True,
             )
