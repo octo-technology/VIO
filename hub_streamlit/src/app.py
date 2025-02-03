@@ -20,10 +20,9 @@ def main():
         edge_data.get_ip(gcp_client=st.session_state.gcp_client)
         edge_data.extract(gcp_client=st.session_state.gcp_client)
         edge_section = EdgeSection(edge_name, edge_data)
-        # if st.button(key=f"update-{edge_name}", label="Update"):
-        #     edge_section.refresh(st.session_state.gcp_client)
-        edge_section.show()
-        st.divider()
+        if len(edge_section.use_cases_names) > 0:
+            edge_section.show()
+            st.divider()
 
 
 if __name__ == "__main__":

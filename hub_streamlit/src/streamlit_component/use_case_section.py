@@ -11,7 +11,7 @@ class UseCaseSection:
         number_cols: int = 8,
         number_cameras: int = 2,
     ):
-        self.use_case = use_case_name
+        self.use_case_name = use_case_name
         self.use_case = use_case
         self.number_cols = number_cols
         self.number_cameras = number_cameras

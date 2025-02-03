@@ -3,9 +3,11 @@ from io import BytesIO
 from typing import List, Optional
 
 from dotenv import load_dotenv
+from google.cloud.storage.blob import Blob
 from PIL import Image
 from pydantic import BaseModel
 
+from gcp_binary_storage import GCPBinaryStorage
 from models.use_case import UseCase
 from utils.prediction_boxes import filter_inferences_on_camera_id, plot_predictions
 
@@ -36,12 +38,12 @@ class EdgeData(BaseModel):
                 return use_case
         return None
 
-    def get_ip(self, gcp_client) -> Optional[str]:
+    def get_ip(self, gcp_client: GCPBinaryStorage):
         ip_blobname = f"{self.name}/edge_ip.txt"
         self.edge_ip = gcp_client.get_text_blob(ip_blobname)
 
-    def extract(self, gcp_client) -> None:
-        print(f"Extracting data for edge {self.name}")
+    def extract(self, gcp_client: GCPBinaryStorage):
+        print(f"Extracting data for edge: {self.name}")
 
         blobs = gcp_client.bucket.list_blobs(prefix=self.name)
 
@@ -57,7 +59,7 @@ class EdgeData(BaseModel):
 
         self.package(blobs_sorted, gcp_client)
 
-    def package(self, blobs, gcp_client) -> None:
+    def package(self, blobs: List[Blob], gcp_client: GCPBinaryStorage):
         for blob in blobs:
             blob_name = blob.name
 
