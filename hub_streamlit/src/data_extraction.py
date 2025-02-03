@@ -20,7 +20,7 @@ NUMBER_CAMERAS = os.getenv("NUMBER_CAMERAS", 2)
 
 
 @st.cache_data(ttl=30)
-def extract_edges(_gcp_client: Client) -> EdgeDataManager:
+def extract_items(_gcp_client: Client) -> EdgeDataManager:
     # Get the bucket
     bucket = _gcp_client.bucket(BUCKET_NAME)
     blobs = bucket.list_blobs()
