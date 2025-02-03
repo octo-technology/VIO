@@ -39,6 +39,7 @@ class EdgeData(BaseModel):
         return None
 
     def get_ip(self, gcp_client: GCPBinaryStorage):
+        print(f"Getting IP for edge: {self.name}")
         ip_blobname = f"{self.name}/edge_ip.txt"
         self.edge_ip = gcp_client.get_text_blob(ip_blobname)
 

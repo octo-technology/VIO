@@ -15,11 +15,19 @@ def main():
     if not st.session_state.get("gcp_client"):
         st.session_state.gcp_client = GCPBinaryStorage()
 
+    if not st.session_state.get("edge_data_dict"):
+        st.session_state.edge_data_dict = {}
+
     for edge_name in EDGES:
-        edge_data = EdgeData(name=edge_name)
-        edge_data.get_ip(gcp_client=st.session_state.gcp_client)
-        edge_data.extract(gcp_client=st.session_state.gcp_client)
+        if edge_name not in st.session_state.edge_data_dict.keys():
+            edge_data = EdgeData(name=edge_name)
+            edge_data.get_ip(gcp_client=st.session_state.gcp_client)
+            edge_data.extract(gcp_client=st.session_state.gcp_client)
+            st.session_state.edge_data_dict[edge_name] = edge_data
+
+        edge_data = st.session_state.edge_data_dict[edge_name]
         edge_section = EdgeSection(edge_name, edge_data)
+
         if len(edge_section.use_cases_names) > 0:
             edge_section.show()
             st.divider()

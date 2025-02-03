@@ -28,11 +28,11 @@ class EdgeSection:
         self.selected_use_case_name = default_use_case_name
 
     def refresh(self, gcp_client):
+        print(f"Refreshing data for edge: {self.edge_name}")
         self.edge_data.extract(gcp_client)
         self.use_cases_names = self.edge_data.get_use_case_names()
-        self.selected_use_case_name = (
-            self.use_cases_names[0] if self.use_cases_names else None
-        )
+        self.selected_use_case_name = self.selected_use_case_name
+        print(f"Refreshed data for edge: {self.edge_name}")
 
     def show(self):
         self.selected_use_case_name = self.usecase_selector_placeholder.selectbox(
@@ -56,16 +56,17 @@ class EdgeSection:
 
         self.title_placeholder.markdown(title_placeholder)
         self.active_config_placeholder.markdown(active_config_placeholder)
+
         if self.update_button_placeholder.button(
-            key=f"update-{self.edge_name}", label="Update", use_container_width=True
+            label="Update", key=f"update-{self.edge_name}", use_container_width=True
         ):
-            self.refresh(st.session_state.gcp_client)
+            self.edge_data.extract(st.session_state.gcp_client)
 
-        self.show_use_case(self.selected_use_case_name)
+        self.show_use_case()
 
-    def show_use_case(self, use_case_name: str):
-        use_case = self.edge_data.get_use_case(use_case_name)
+    def show_use_case(self):
+        use_case = self.edge_data.get_use_case(self.selected_use_case_name)
         self.use_case_sections = UseCaseSection(
-            use_case_name, use_case, number_cameras=NUMBER_CAMERAS
+            self.selected_use_case_name, use_case, number_cameras=NUMBER_CAMERAS
         )
         self.use_case_sections.show()
