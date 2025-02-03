@@ -30,7 +30,7 @@ class ModelForwarderManager(IModelForwarderManager):
             self._model_forwarders[model_id] = model_forwarder
         return self._model_forwarders[model_id]
 
-    def predict_on_binaries(self, item: Item):
+    async def predict_on_binaries(self, item: Item):
         if len(self._model_forwarders) == 0:
             self._logger.warning(
                 "No model forwarder available to predict on item pictures! May take some extra time to instantiate."
@@ -39,4 +39,4 @@ class ModelForwarderManager(IModelForwarderManager):
         for camera_id, camera_config in item.cameras_metadata.items():
             model_forwarder_config: ModelForwarderConfig = camera_config.model_forwarder_config
             model_forwarder = self._get_model_forwarder(model_forwarder_config)
-            item.predictions[camera_id] = model_forwarder.predict_on_binary(item.binaries[camera_id])
+            item.predictions[camera_id] = await model_forwarder.predict_on_binary(item.binaries[camera_id])

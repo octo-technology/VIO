@@ -13,19 +13,19 @@ class ItemRuleFactory(IItemRuleFactory):
         self._logger = logging.getLogger(__name__)
 
     def create_item_rule(self, item_rule_config: ItemRuleConfig) -> ItemRule:
-        if item_rule_config.item_rule_type == ItemRuleType.MIN_THRESHOLD_KO_RULE.value:
-            from edge_orchestrator.infrastructure.adapters.item_rule.min_threshold_ko_rule import (
-                MinThresholdKORule,
+        if item_rule_config.item_rule_type == ItemRuleType.MIN_THRESHOLD_RULE.value:
+            from edge_orchestrator.infrastructure.adapters.item_rule.min_threshold_rule import (
+                MinThresholdRule,
             )
 
-            return MinThresholdKORule(item_rule_config)
+            return MinThresholdRule(item_rule_config)
 
-        elif item_rule_config.item_rule_type == ItemRuleType.MIN_THRESHOLD_OK_RATIO_RULE.value:
-            from edge_orchestrator.infrastructure.adapters.item_rule.min_threshold_ok_ratio_rule import (
-                MinThresholdOKRatioRule,
+        elif item_rule_config.item_rule_type == ItemRuleType.MIN_THRESHOLD_RATIO_RULE.value:
+            from edge_orchestrator.infrastructure.adapters.item_rule.min_threshold_ratio_rule import (
+                MinThresholdRatioRule,
             )
 
-            return MinThresholdOKRatioRule(item_rule_config)
+            return MinThresholdRatioRule(item_rule_config)
 
         else:
             raise ValueError(f"Item rule type {item_rule_config.item_rule_type} is not supported")

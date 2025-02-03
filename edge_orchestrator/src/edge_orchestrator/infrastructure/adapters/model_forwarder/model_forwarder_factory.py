@@ -17,33 +17,25 @@ class ModelForwarderFactory(IModelForwarderFactory):
         self._logger = logging.getLogger(__name__)
 
     def create_model_forwarder(self, model_forwarder_config: ModelForwarderConfig) -> IModelForwarder:
-        if model_forwarder_config.model_type == ModelType.FAKE.value:
-            from edge_orchestrator.infrastructure.adapters.model_forwarder.fake_model_forwarder import (
-                FakeModelForwarder,
-            )
-
-            return FakeModelForwarder(model_forwarder_config)
-
-        elif model_forwarder_config.model_type == ModelType.CLASSIFICATION.value:
+        if model_forwarder_config.model_type == ModelType.classification.value:
             from edge_orchestrator.infrastructure.adapters.model_forwarder.classif_model_forwarder import (
                 ClassifModelForwarder,
             )
 
             return ClassifModelForwarder(model_forwarder_config)
 
-        elif model_forwarder_config.model_type == ModelType.OBJECT_DETECTION.value:
-            from edge_orchestrator.infrastructure.adapters.model_forwarder.detection_model_forwarder import (
-                DetectionModelForwarder,
+        elif model_forwarder_config.model_type == ModelType.object_detection.value:
+            from edge_orchestrator.infrastructure.adapters.model_forwarder.object_detection_model_forwarder import (
+                ObjectDetectionModelForwarder,
             )
 
-            return DetectionModelForwarder(model_forwarder_config)
+            return ObjectDetectionModelForwarder(model_forwarder_config)
 
-        elif model_forwarder_config.model_type == ModelType.OBJECT_DETECTION_WITH_CLASSIFICATION.value:
-            from edge_orchestrator.infrastructure.adapters.model_forwarder.detection_with_classif_model_forwarder import (  # noqa
-                DetectionWithClassifModelForwarder,
+        elif model_forwarder_config.model_type == ModelType.segmentation.value:
+            from edge_orchestrator.infrastructure.adapters.model_forwarder.segmentation_model_forwarder import (
+                SegmentationModelForwarder,
             )
 
-            return DetectionWithClassifModelForwarder(model_forwarder_config)
-
+            return SegmentationModelForwarder(model_forwarder_config)
         else:
             raise ValueError(f"Model type ({model_forwarder_config.model_type}) is not supported.")

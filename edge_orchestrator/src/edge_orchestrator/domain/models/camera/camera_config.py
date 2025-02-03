@@ -4,7 +4,7 @@ from typing import Optional
 from pydantic import BaseModel, ConfigDict
 
 from edge_orchestrator.domain.models.camera.camera_type import CameraType
-from edge_orchestrator.domain.models.item_rule.camera_rule.camera_rule_config import (
+from edge_orchestrator.domain.models.camera_rule.camera_rule_config import (
     CameraRuleConfig,
 )
 from edge_orchestrator.domain.models.model_forwarder.model_forwarder_config import (

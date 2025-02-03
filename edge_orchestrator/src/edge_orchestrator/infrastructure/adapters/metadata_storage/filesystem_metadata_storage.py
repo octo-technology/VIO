@@ -27,7 +27,7 @@ class FileSystemMetadataStorage(IMetadataStorage):
         filepath = self._get_storing_path(item_id)
         with filepath.open("r") as f:
             metadata = json.load(f)
-        return metadata
+        return Item(**metadata)
 
     def _get_storing_path(self, item_id: UUID) -> Path:
         path = self._storage_config.target_directory / f"{str(item_id)}.json"

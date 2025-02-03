@@ -46,7 +46,7 @@ class TestCameraManager:
             },
             binary_storage_config=StorageConfig(),
             metadata_storage_config=StorageConfig(),
-            item_rule_config=ItemRuleConfig(item_rule_type=ItemRuleType.MIN_THRESHOLD_KO_RULE, threshold=1),
+            item_rule_config=ItemRuleConfig(item_rule_type=ItemRuleType.MIN_THRESHOLD_RULE, threshold=1),
         )
 
         # When
@@ -90,7 +90,7 @@ class TestCameraManager:
             },
             binary_storage_config=StorageConfig(),
             metadata_storage_config=StorageConfig(),
-            item_rule_config=ItemRuleConfig(item_rule_type=ItemRuleType.MIN_THRESHOLD_KO_RULE, threshold=1),
+            item_rule_config=ItemRuleConfig(item_rule_type=ItemRuleType.MIN_THRESHOLD_RULE, threshold=1),
         )
         item = Item()
 

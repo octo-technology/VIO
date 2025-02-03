@@ -1,11 +1,13 @@
 import logging
 
-from edge_orchestrator.domain.models.item_rule.camera_rule.camera_rule_config import (
+from edge_orchestrator.domain.models.camera_rule.camera_rule_config import (
     CameraRuleConfig,
 )
 from edge_orchestrator.domain.models.model_forwarder.decision import Decision
-from edge_orchestrator.domain.models.model_forwarder.model_type import ModelType
 from edge_orchestrator.domain.models.model_forwarder.prediction import Prediction
+from edge_orchestrator.domain.models.model_forwarder.prediction_type import (
+    PredictionType,
+)
 from edge_orchestrator.domain.ports.camera_rule.i_camera_rule import ICameraRule
 
 
@@ -13,18 +15,19 @@ class UnexpectedLabelRule(ICameraRule):
     def __init__(self, camera_rule_config: CameraRuleConfig):
         self._camera_rule_config = camera_rule_config
         self._logger = logging.getLogger(__name__)
-        self.unexpected_label: str = self._camera_rule_config.params["unexpected_label"]
 
     def _get_camera_decision(self, prediction: Prediction) -> Decision:
         classif = prediction
-        if classif.prediction_type != ModelType.CLASSIFICATION:
+        if classif.prediction_type != PredictionType.class_:
             self._logger.warning(
                 "You can not use an ExpectedLabelRule on something other than "
-                f"{ModelType.CLASSIFICATION.value}, no decision returned."
+                f"{PredictionType.class_.value}, no decision returned."
             )
             return Decision.NO_DECISION
+        if classif.label is None:
+            return Decision.NO_DECISION
 
-        if classif.label == self.unexpected_label:
+        if classif.label == self._camera_rule_config.unexpected_class:
             return Decision.KO
         else:
             return Decision.OK

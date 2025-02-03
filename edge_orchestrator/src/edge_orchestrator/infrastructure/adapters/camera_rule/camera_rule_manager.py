@@ -1,9 +1,9 @@
 import logging
 
-from edge_orchestrator.domain.models.item import Item
-from edge_orchestrator.domain.models.item_rule.camera_rule.camera_rule_config import (
+from edge_orchestrator.domain.models.camera_rule.camera_rule_config import (
     CameraRuleConfig,
 )
+from edge_orchestrator.domain.models.item import Item
 from edge_orchestrator.domain.ports.camera_rule.i_camera_rule import ICameraRule
 from edge_orchestrator.domain.ports.camera_rule.i_camera_rule_factory import (
     ICameraRuleFactory,

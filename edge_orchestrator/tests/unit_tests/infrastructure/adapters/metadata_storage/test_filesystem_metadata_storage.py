@@ -9,7 +9,9 @@ from edge_orchestrator.domain.models.model_forwarder.classification_prediction i
     ClassifPrediction,
 )
 from edge_orchestrator.domain.models.model_forwarder.decision import Decision
-from edge_orchestrator.domain.models.model_forwarder.model_type import ModelType
+from edge_orchestrator.domain.models.model_forwarder.prediction_type import (
+    PredictionType,
+)
 from edge_orchestrator.domain.models.storage.storage_config import StorageConfig
 from edge_orchestrator.infrastructure.adapters.metadata_storage.filesystem_metadata_storage import (
     FileSystemMetadataStorage,
@@ -61,14 +63,10 @@ class TestFileSystemMetadataStorage:
             },
             binaries={"camera_#1": bytes([0, 1, 2, 3, 4]), "camera_#2": bytes([0, 1, 2, 3, 4])},
             predictions={
-                "camera#1": ClassifPrediction(
-                    prediction_type=ModelType.CLASSIFICATION, label=Decision.OK, probability=0.41
-                ),
-                "camera#2": ClassifPrediction(
-                    prediction_type=ModelType.CLASSIFICATION, label=Decision.OK, probability=0.96
-                ),
+                "camera_#1": ClassifPrediction(prediction_type=PredictionType.class_, label="OK", probability=0.41),
+                "camera_#2": ClassifPrediction(prediction_type=PredictionType.class_, label="OK", probability=0.96),
             },
-            camera_decisions={"camera#1": Decision.OK, "camera#2": Decision.OK},
+            camera_decisions={"camera_#1": Decision.OK, "camera_#2": Decision.OK},
             decision=Decision.OK,
         )
 
@@ -93,10 +91,10 @@ class TestFileSystemMetadataStorage:
                 },
             },
             "predictions": {
-                "camera#1": {"prediction_type": "classification", "label": "OK", "probability": 0.41},
-                "camera#2": {"prediction_type": "classification", "label": "OK", "probability": 0.96},
+                "camera_#1": {"prediction_type": "class", "label": "OK", "probability": 0.41},
+                "camera_#2": {"prediction_type": "class", "label": "OK", "probability": 0.96},
             },
-            "camera_decisions": {"camera#1": "OK", "camera#2": "OK"},
+            "camera_decisions": {"camera_#1": "OK", "camera_#2": "OK"},
             "decision": "OK",
         }
 
@@ -153,10 +151,10 @@ class TestFileSystemMetadataStorage:
                 "camera_#2": {"camera_id": "camera_#2", "camera_type": "usb"},
             },
             "predictions": {
-                "camera#1": {"prediction_type": "classification", "label": "OK", "probability": 0.41},
-                "camera#2": {"prediction_type": "classification", "label": "OK", "probability": 0.96},
+                "camera_#1": {"prediction_type": "class", "label": "OK", "probability": 0.41},
+                "camera_#2": {"prediction_type": "class", "label": "OK", "probability": 0.96},
             },
-            "camera_decisions": {"camera#1": "OK", "camera#2": "OK"},
+            "camera_decisions": {"camera_#1": "OK", "camera_#2": "OK"},
             "decision": "OK",
         }
 
@@ -164,7 +162,7 @@ class TestFileSystemMetadataStorage:
             json.dump(expected_metadata, f)
 
         # When
-        actual_metadata = metadata_storage.get_item_metadata(item_id)
+        actual_item_metadata = metadata_storage.get_item_metadata(item_id)
 
         # Then
-        assert actual_metadata == expected_metadata
+        assert actual_item_metadata == Item(**expected_metadata)
