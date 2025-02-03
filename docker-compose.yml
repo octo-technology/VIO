@@ -73,6 +73,20 @@ services:
       - ./hub_monitoring/grafana/provisioning:/etc/grafana/provisioning
     profiles: [hub]
 
+  hub_streamlit:
+    container_name: hub_streamlit
+    build:
+      context: hub_streamlit
+      dockerfile: Dockerfile
+    ports:
+      - 8500:8500
+    environment:
+      GCP_BUCKET_NAME: tf-vio-bucket
+      GOOGLE_APPLICATION_CREDENTIALS: /hub_streamlit/config/secrets/credentials.json
+    volumes:
+      - ./hub_streamlit/config:/hub_streamlit/config
+    profiles: [hub]
+
   hub_monitoring_db:
     container_name: hub_monitoring_db
     image: postgres:15.1

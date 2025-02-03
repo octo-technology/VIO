@@ -4,7 +4,6 @@ from google.cloud.storage import Client
 from data_extraction import extract_items
 from models.edge_data_manager import EdgeDataManager
 from streamlit_component.edge_section import EdgeSection
-from streamlit_component.html_objects import vio_hub_title_object
 
 
 def main():
@@ -22,7 +21,10 @@ def main():
 
 
 def sidebar(edge_data: EdgeDataManager):
-    vio_hub_title_object()
+    st.sidebar.markdown(
+        "<h1 style='font-size: 2em; text-align: left;'><b>VIO Hub</b></h1>",
+        unsafe_allow_html=True,
+    )
     st.sidebar.title("Configuration")
 
     # Select edge and use case
