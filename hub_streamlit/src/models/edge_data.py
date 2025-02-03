@@ -1,14 +1,14 @@
-from typing import List, Optional
-
-from pydantic import BaseModel
 import os
-from models.use_case import UseCase
 from io import BytesIO
 from typing import List, Optional
 
 from dotenv import load_dotenv
 from PIL import Image
+from pydantic import BaseModel
+
+from models.use_case import UseCase
 from utils.prediction_boxes import filter_inferences_on_camera_id, plot_predictions
+
 load_dotenv()
 
 BUCKET_NAME = os.getenv("GCP_BUCKET_NAME")
@@ -33,13 +33,12 @@ class EdgeData(BaseModel):
             if use_case.name == name:
                 return use_case
         return None
-    
+
     def get_ip(self, gcp_client) -> Optional[str]:
         ip_blobname = f"{self.name}/edge_ip.txt"
         self.edge_ip = gcp_client.get_text_blob(ip_blobname)
-    
-    def extract(self, gcp_client) -> None:
 
+    def extract(self, gcp_client) -> None:
         print(f"Extracting data for edge {self.name}")
 
         blobs = gcp_client.bucket.list_blobs(prefix=self.name)
@@ -54,9 +53,8 @@ class EdgeData(BaseModel):
         )
 
         self.package(blobs_images_sorted, gcp_client)
-    
-    def package(self, blobs, gcp_client) -> None:
 
+    def package(self, blobs, gcp_client) -> None:
         for blob in blobs:
             blob_name = blob.name
 
@@ -72,7 +70,9 @@ class EdgeData(BaseModel):
 
             use_case = self.get_use_case(use_case_name)
             if item_id not in use_case.get_item_ids():
-                metadata = gcp_client.extract_metadata(edge_name, use_case_name, item_id)
+                metadata = gcp_client.extract_metadata(
+                    edge_name, use_case_name, item_id
+                )
                 use_case.add_item(item_id, blob.time_created, metadata)
 
             item = use_case.get_item(item_id)
@@ -80,23 +80,21 @@ class EdgeData(BaseModel):
                 item.add_camera(camera_id)
 
             if any(file_name.endswith(extension) for extension in IMG_EXTENSIONS):
-                        # Downloading the first NUMBER_CAMERAS pics
+                # Downloading the first NUMBER_CAMERAS pics
                 if item.number_pictures < NUMBER_CAMERAS:
                     binary_data = blob.download_as_bytes()
                     picture = Image.open(BytesIO(binary_data))
 
-                            # If metadata is not empty, we plot the predictions
+                    # If metadata is not empty, we plot the predictions
                     if item.contains_predictions(camera_id):
                         camera_inferences_metadata = filter_inferences_on_camera_id(
-                                    camera_id, item.metadata
-                                )
+                            camera_id, item.metadata
+                        )
                         if camera_inferences_metadata:
                             picture = plot_predictions(
-                                        picture, camera_inferences_metadata
-                                    )
+                                picture, camera_inferences_metadata
+                            )
 
                     camera = item.get_camera(camera_id)
                     camera.add_picture(picture)
                     item.number_pictures += 1
-
-

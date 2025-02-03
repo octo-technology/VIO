@@ -15,9 +15,10 @@ class EdgeSection:
 
         (
             self.title_placeholder,
+            self.update_button_placeholder,
             self.active_config_placeholder,
-            self.button_placeholder,
-        ) = st.columns(3)
+            self.usecase_selector_placeholder,
+        ) = st.columns(4)
 
         self.use_case_sections = None
 
@@ -34,11 +35,11 @@ class EdgeSection:
         )
 
     def show(self):
-        self.selected_use_case_name = self.button_placeholder.selectbox(
+        self.selected_use_case_name = self.usecase_selector_placeholder.selectbox(
             "Select a use case",
             options=self.use_cases_names,
             label_visibility="collapsed",
-            key=self.edge_name,
+            key=self.edge_name_with_whitespaces,
         )
 
         with st.spinner("Getting active config"):
@@ -53,8 +54,13 @@ class EdgeSection:
             active_config_placeholder = ""
             title_placeholder = f"##### 🔴 {self.edge_name_with_whitespaces}"
 
-        self.active_config_placeholder.markdown(active_config_placeholder)
         self.title_placeholder.markdown(title_placeholder)
+        self.active_config_placeholder.markdown(active_config_placeholder)
+        if self.update_button_placeholder.button(
+            key=f"update-{self.edge_name}", label="Update", use_container_width=True
+        ):
+            self.refresh(st.session_state.gcp_client)
+
         self.show_use_case(self.selected_use_case_name)
 
     def show_use_case(self, use_case_name: str):

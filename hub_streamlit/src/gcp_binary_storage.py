@@ -11,13 +11,12 @@ load_dotenv()
 BUCKET_NAME = os.getenv("GCP_BUCKET_NAME")
 
 
-class GCPBinaryStorage():
+class GCPBinaryStorage:
     def __init__(self, prefix: str = ""):
-
         self.prefix = prefix
         self.bucket = Client().bucket(BUCKET_NAME)
-    
-    def get_text_blob(self, blobname:str) -> str:
+
+    def get_text_blob(self, blobname: str) -> str:
         blob = self.bucket.blob(blobname)
         try:
             text_blob = blob.download_as_text()
@@ -26,7 +25,6 @@ class GCPBinaryStorage():
             print(f"Error: {e}")
             text_blob = None
         return text_blob
-
 
     def extract_metadata(
         self, edge_name: str, use_case: str, item_id: str
