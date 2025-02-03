@@ -6,14 +6,6 @@ build-backend = "setuptools.build_meta"
 name = "edge_orchestrator"
 dynamic = ["readme"]
 version = "1.0.0"
-authors = [
-    { name = "BAPO", email = "bapo@octo.com" },
-    { name = "GIRE", email = "gire@octo.com" },
-    { name = "KSA", email = "ksa@octo.com" },
-    { name = "ROLO", email = "rolo@octo.com" },
-    { name = "THAN", email = "than@octo.com" },
-    { name = "YDR", email = "ydr@octo.com" },
-]
 description = 'vio-edge: orchestrator module'
 classifiers = [
     'Programming Language :: Python :: 3',
@@ -23,6 +15,8 @@ classifiers = [
 dependencies = [
     "aiohttp==3.11.11",
     "fastapi[all]==0.115.6",
+    "numpy==2.2.2",
+    "Pillow==11.1.0",
     "smart-open[all]==7.1.0",
 ]
 requires-python = ">=3.8.10"
@@ -35,6 +29,8 @@ dev = [
     "flake8==7.1.1",
     "isort==5.13.2",
     "pytest==8.3.4",
+    "pytest-asyncio==0.25.3",
+    "testcontainers==4.9.1",
 ]
 raspberry = ["picamera==1.13"]
 
@@ -60,3 +56,9 @@ readme = { file = ["README.rst", "USAGE.rst"] }
 [tool.setuptools.packages.find]
 where = ["src/"]
 exclude = ["tests*", "data"]
+
+[tool.pytest.ini_options]
+testpaths = "tests"
+asyncio_mode="auto"
+asyncio_default_fixture_loop_scope="session"
+norecursedirs = [".git", "venv/", ".pytest_cache/"]
