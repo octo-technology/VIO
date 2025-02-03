@@ -21,6 +21,8 @@ class EdgeData(BaseModel):
     edge_ip: Optional[str] = None
     use_cases: List[UseCase] = []
 
+    limit_blob_extracted: int = 20
+
     def add_usecase(self, use_case_name: str, edge_ip: str):
         self.edge_ip = edge_ip
         self.use_cases.append(UseCase(name=use_case_name))
@@ -48,11 +50,12 @@ class EdgeData(BaseModel):
             for blob in blobs
             if any(blob.name.endswith(extension) for extension in IMG_EXTENSIONS)
         ]
-        blobs_images_sorted = sorted(
-            blobs_images, key=lambda x: x.time_created, reverse=True
-        )
 
-        self.package(blobs_images_sorted, gcp_client)
+        blobs_sorted = sorted(blobs_images, key=lambda x: x.time_created, reverse=True)[
+            : self.limit_blob_extracted
+        ]
+
+        self.package(blobs_sorted, gcp_client)
 
     def package(self, blobs, gcp_client) -> None:
         for blob in blobs:
