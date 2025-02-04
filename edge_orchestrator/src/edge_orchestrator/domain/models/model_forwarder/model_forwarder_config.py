@@ -1,7 +1,7 @@
 from pathlib import Path
 from typing import List, Optional
 
-from pydantic import BaseModel, ConfigDict, Field, computed_field, model_validator
+from pydantic import BaseModel, Field, computed_field, model_validator
 from pydantic_core import Url
 
 from edge_orchestrator.domain.models.model_forwarder.image_resolution import (
@@ -17,8 +17,6 @@ from edge_orchestrator.domain.models.model_forwarder.model_type import ModelType
 
 
 class ModelForwarderConfig(BaseModel):
-    model_config = ConfigDict(use_enum_values=True)
-
     model_name: ModelName
     model_type: ModelType
     image_resolution: ImageResolution
@@ -31,7 +29,7 @@ class ModelForwarderConfig(BaseModel):
     @computed_field
     @property
     def model_id(self) -> str:
-        return f"{self.model_name}_{self.model_type}_{self.model_version}"
+        return f"{self.model_name.value}_{self.model_type.value}_{self.model_version}"
 
     @model_validator(mode="after")
     def check_class_names_or_class_names_path(self):

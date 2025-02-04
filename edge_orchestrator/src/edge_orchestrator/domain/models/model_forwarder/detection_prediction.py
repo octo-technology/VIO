@@ -1,6 +1,6 @@
 from typing import Dict, List, Literal, Optional
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, Field
 
 from edge_orchestrator.domain.models.model_forwarder.decision import Decision
 from edge_orchestrator.domain.models.model_forwarder.prediction_type import (
@@ -15,8 +15,6 @@ class DetectedObject(BaseModel):
 
 
 class DetectionPrediction(BaseModel):
-    model_config = ConfigDict(use_enum_values=True)
-
     prediction_type: Literal[PredictionType.objects]
     detected_objects: Dict[str, DetectedObject]
     label: Optional[Decision] = None

@@ -1,6 +1,7 @@
 import logging
 
 from edge_orchestrator.domain.models.item import Item
+from edge_orchestrator.domain.models.item_state import ItemState
 from edge_orchestrator.domain.models.model_forwarder.decision import Decision
 from edge_orchestrator.domain.models.station_config import StationConfig
 from edge_orchestrator.domain.ports.binary_storage.i_binary_storage_manager import (
@@ -53,14 +54,26 @@ class Supervisor(metaclass=SingletonMeta):
         )
         self._logger.info("Taking pictures...")
         self._camera_manager.take_pictures(item)
+        item.state = ItemState.CAPTURE
+
         self._logger.info("Saving pictures...")
         self._binary_storage.save_item_binaries(item)
+        item.state = ItemState.SAVE_BINARIES
+
         self._logger.info("Predicting on pictures...")
         await self._model_forwarder_manager.predict_on_binaries(item)
+        item.state = ItemState.INFERENCE
+
         self._logger.info("Applying rule on each picture...")
         self._camera_rule_manager.apply_camera_rules(item)
+        item.state = ItemState.CAMERA_RULE
+
         self._logger.info("Applying rule on item...")
         self._item_rule.apply_item_rules(item)
+        item.state = ItemState.ITEM_RULE
+
         self._logger.info("Saving item metadata...")
+        item.state = ItemState.DONE
         self._metadata_storage.save_item_metadata(item)
+
         self._logger.info("Inspection done!")

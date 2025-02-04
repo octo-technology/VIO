@@ -20,6 +20,10 @@ class IBinaryStorage:
     def get_item_binaries(self, item_id: UUID) -> Dict[str, bytes]:
         pass
 
+    @abstractmethod
+    def get_item_binary(self, item_id: UUID, camera_id: str) -> bytes:
+        pass
+
     # TODO: implement this method
     @abstractmethod
     def _get_storing_path(self, item_id: UUID) -> Path:

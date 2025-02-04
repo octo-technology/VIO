@@ -1,5 +1,6 @@
 import logging
 
+from edge_orchestrator.domain.models.binary import Image
 from edge_orchestrator.domain.models.camera.camera_config import CameraConfig
 from edge_orchestrator.domain.models.camera.camera_type import CameraType
 from edge_orchestrator.domain.models.item import Item
@@ -27,7 +28,7 @@ class TestModelForwarderManager:
 
         model_forwarder_manager = ModelForwarderManager(mocked_model_forwarder_factory)
         item = Item(
-            binaries={"camera_#1": b"fake_binary", "camera_#2": b"fake_binary"},
+            binaries={"camera_#1": Image(image_bytes=b"fake_binary"), "camera_#2": Image(image_bytes=b"fake_binary")},
             cameras_metadata={
                 "camera_#1": CameraConfig(
                     camera_id="camera_#1",

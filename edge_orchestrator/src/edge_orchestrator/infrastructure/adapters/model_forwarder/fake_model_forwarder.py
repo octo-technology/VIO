@@ -40,9 +40,9 @@ class FakeModelForwarder(IModelForwarder):
     async def _predict(self, preprocessed_binary: np.ndarray) -> Dict[str, Any]:
         model_type = self._model_forwarder_config.model_type
         # TODO: remove ModelType.FAKE
-        if model_type == ModelType.classification.value or model_type == ModelType.FAKE.value:
+        if model_type == ModelType.classification or model_type == ModelType.FAKE:
             return {"label": random.choice(["OK", "KO"]), "probability": random.uniform(0, 1)}
-        elif model_type == ModelType.object_detection.value:
+        elif model_type == ModelType.object_detection:
             return {
                 "detected_objects": {
                     "object_1": {
