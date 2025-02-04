@@ -58,9 +58,7 @@ class EdgeSection:
         self.show_use_case()
 
     def show_use_case(self):
-        print("show_use_case", self.selected_use_case_name)
         use_case = self.edge_data.get_use_case(self.selected_use_case_name)
-        print("use_case items number", len(use_case.items))
         self.use_case_sections = UseCaseSection(
             self.selected_use_case_name, use_case, number_cameras=NUMBER_CAMERAS
         )
