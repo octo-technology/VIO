@@ -43,7 +43,7 @@ class ConfigManager(metaclass=SingletonMeta):
 
     def _save_config_as_json(self, station_config: StationConfig):
         with (self.CONFIG_DIR / f"{station_config.station_profile}.json").open("w") as f:
-            f.write(station_config.model_dump_json())
+            f.write(station_config.model_dump_json(exclude_none=True))
 
     def _make_active_config_point_on(self, station_config: StationConfig):
         if self.ACTIVE_CONFIG_FILEPATH.exists():

@@ -1,7 +1,7 @@
 from pathlib import Path
 from typing import Optional
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel
 
 from edge_orchestrator.domain.models.camera.camera_type import CameraType
 from edge_orchestrator.domain.models.camera_rule.camera_rule_config import (
@@ -13,8 +13,6 @@ from edge_orchestrator.domain.models.model_forwarder.model_forwarder_config impo
 
 
 class CameraConfig(BaseModel):
-    model_config = ConfigDict(use_enum_values=True)
-
     camera_id: str
     camera_type: CameraType
     source_directory: Optional[Path] = None

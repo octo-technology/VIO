@@ -7,6 +7,7 @@ from edge_orchestrator.domain.models.camera.camera_type import CameraType
 from edge_orchestrator.domain.models.item import Item
 from edge_orchestrator.domain.models.item_rule.item_rule_config import ItemRuleConfig
 from edge_orchestrator.domain.models.item_rule.item_rule_type import ItemRuleType
+from edge_orchestrator.domain.models.model_forwarder.decision import Decision
 from edge_orchestrator.domain.models.station_config import StationConfig
 from edge_orchestrator.domain.models.storage.storage_config import StorageConfig
 from edge_orchestrator.infrastructure.adapters.camera.camera_factory import (
@@ -46,7 +47,9 @@ class TestCameraManager:
             },
             binary_storage_config=StorageConfig(),
             metadata_storage_config=StorageConfig(),
-            item_rule_config=ItemRuleConfig(item_rule_type=ItemRuleType.MIN_THRESHOLD_RULE, threshold=1),
+            item_rule_config=ItemRuleConfig(
+                item_rule_type=ItemRuleType.MIN_THRESHOLD_RULE, expected_decision=Decision.OK, threshold=1
+            ),
         )
 
         # When
@@ -90,7 +93,9 @@ class TestCameraManager:
             },
             binary_storage_config=StorageConfig(),
             metadata_storage_config=StorageConfig(),
-            item_rule_config=ItemRuleConfig(item_rule_type=ItemRuleType.MIN_THRESHOLD_RULE, threshold=1),
+            item_rule_config=ItemRuleConfig(
+                item_rule_type=ItemRuleType.MIN_THRESHOLD_RULE, expected_decision=Decision.KO, threshold=1
+            ),
         )
         item = Item()
 
@@ -101,4 +106,7 @@ class TestCameraManager:
         # Then
         assert len(item.binaries) == 2
         for camera_id in camera_ids:
-            assert isinstance(item.binaries[camera_id], bytes) and len(item.binaries[camera_id]) > 0
+            assert (
+                isinstance(item.binaries[camera_id].image_bytes, bytes)
+                and len(item.binaries[camera_id].image_bytes) > 0
+            )

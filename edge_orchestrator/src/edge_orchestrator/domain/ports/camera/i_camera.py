@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 from logging import Logger
 
 from edge_orchestrator.domain.models.camera.camera_config import CameraConfig
+from edge_orchestrator.domain.models.item import Image
 
 
 class ICamera(ABC):
@@ -9,7 +10,7 @@ class ICamera(ABC):
     _camera_config: CameraConfig
 
     @abstractmethod
-    def capture(self) -> bytes:
+    def capture(self) -> Image:
         pass
 
     @abstractmethod

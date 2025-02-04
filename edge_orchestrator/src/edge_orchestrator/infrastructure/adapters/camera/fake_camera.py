@@ -4,6 +4,7 @@ from pathlib import Path
 from typing import List
 
 from edge_orchestrator.domain.models.camera.camera_config import CameraConfig
+from edge_orchestrator.domain.models.item import Image
 from edge_orchestrator.domain.ports.camera.i_camera import ICamera
 
 
@@ -13,9 +14,9 @@ class FakeCamera(ICamera):
         self._logger = logging.getLogger(__name__)
         self._supported_image_extensions: List = ["*.jpg", "*.png"]
 
-    def capture(self) -> bytes:
+    def capture(self) -> Image:
         random_image_path = self._select_random_image()
-        return random_image_path.open("rb").read()
+        return Image(image_bytes=random_image_path.open("rb").read())
 
     def get_camera_config(self) -> CameraConfig:
         return self._camera_config

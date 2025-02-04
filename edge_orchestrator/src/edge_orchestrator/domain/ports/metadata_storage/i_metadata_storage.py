@@ -1,6 +1,7 @@
 from abc import abstractmethod
 from logging import Logger
 from pathlib import Path
+from typing import List
 from uuid import UUID
 
 from edge_orchestrator.domain.models.item import Item
@@ -17,6 +18,10 @@ class IMetadataStorage:
 
     @abstractmethod
     def get_item_metadata(self, item_id: UUID) -> Item:
+        pass
+
+    @abstractmethod
+    def get_all_items_metadata(self) -> List[Item]:
         pass
 
     # TODO: see how it can be merged with same method in IBinaryStorage

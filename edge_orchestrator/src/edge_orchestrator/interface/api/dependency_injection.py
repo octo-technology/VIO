@@ -1,5 +1,8 @@
-from fastapi import Depends
+from fastapi import Depends, HTTPException
 
+from edge_orchestrator.application.config.config_manager import ConfigManager
+from edge_orchestrator.application.use_cases.supervisor import Supervisor
+from edge_orchestrator.domain.models.station_config import StationConfig
 from edge_orchestrator.domain.ports.binary_storage.i_binary_storage_factory import (
     IBinaryStorageFactory,
 )
@@ -107,3 +110,33 @@ def get_item_rule_manager() -> ItemRuleManager:
 
 def get_camera_manager() -> ICameraManager:
     return CameraManager(camera_factory=CameraFactory())
+
+
+def get_config() -> StationConfig:
+    manager = ConfigManager()
+    config = manager.get_config()
+    if not config:
+        raise HTTPException(status_code=400, detail="No active configuration set")
+    return config
+
+
+def get_supervisor(
+    metadata_storage_manager: IMetadataStorageManager = Depends(get_metadata_storage_manager),
+    binary_storage_manager: IBinaryStorageManager = Depends(get_binary_storage_manager),
+    model_forwarder_manager: IModelForwarderManager = Depends(get_model_forwarder_manager),
+    camera_rule_manager: ICameraRuleManager = Depends(get_camera_rule_manager),
+    item_rule_manager: ItemRuleManager = Depends(get_item_rule_manager),
+    camera_manager: ICameraManager = Depends(get_camera_manager),
+    station_config: StationConfig = Depends(get_config),
+) -> Supervisor:
+    supervisor = Supervisor(
+        station_config,
+        metadata_storage_manager,
+        binary_storage_manager,
+        model_forwarder_manager,
+        camera_rule_manager,
+        item_rule_manager,
+        camera_manager,
+    )
+    supervisor._camera_manager.create_cameras(station_config)
+    return supervisor

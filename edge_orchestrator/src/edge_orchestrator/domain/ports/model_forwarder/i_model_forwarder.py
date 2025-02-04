@@ -38,7 +38,7 @@ class IModelForwarder(ABC):
         base_url = self._model_forwarder_config.model_serving_url
         model_name = self._model_forwarder_config.model_name
         model_version = self._model_forwarder_config.model_version
-        return f"{base_url}v1/models/{model_name}/versions/{model_version}:predict"
+        return f"{base_url}v1/models/{model_name.value}/versions/{model_version}:predict"
 
     def _get_class_names(self) -> List[str]:
         if self._model_forwarder_config.class_names:

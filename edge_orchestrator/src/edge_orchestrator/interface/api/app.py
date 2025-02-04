@@ -2,7 +2,7 @@ import logging
 
 from fastapi import FastAPI
 
-from edge_orchestrator.interface.api.router import router
+from edge_orchestrator.interface.api.routers.v1.router import router
 
 
 def create_app() -> FastAPI:
