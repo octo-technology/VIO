@@ -60,7 +60,15 @@ class EdgeData(BaseModel):
 
         self.package(blobs_sorted, gcp_client)
 
+    def extract_item_ids(self, blobs: List[Blob]):
+        item_ids = []
+        for blob in blobs:
+            item_id = blob.name.split("/")[2]
+            item_ids.append(item_id)
+        return item_ids
+
     def package(self, blobs: List[Blob], gcp_client: GCPBinaryStorage):
+        cloud_item_ids = self.extract_item_ids(blobs)
         for blob in blobs:
             blob_name = blob.name
 
@@ -75,7 +83,14 @@ class EdgeData(BaseModel):
                 self.add_usecase(use_case_name, self.edge_ip)
 
             use_case = self.get_use_case(use_case_name)
-            if item_id not in use_case.get_item_ids():
+
+            use_case_item_ids = use_case.get_item_ids()
+            extra_item_ids = list(set(use_case_item_ids) - set(cloud_item_ids))
+            if extra_item_ids != []:
+                for item_id in extra_item_ids:
+                    use_case.remove_item(item_id)
+                continue
+            if item_id not in use_case_item_ids:
                 metadata = gcp_client.extract_metadata(
                     edge_name, use_case_name, item_id
                 )
