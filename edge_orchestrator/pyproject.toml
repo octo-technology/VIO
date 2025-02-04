@@ -6,6 +6,14 @@ build-backend = "setuptools.build_meta"
 name = "edge_orchestrator"
 dynamic = ["readme"]
 version = "1.0.0"
+authors = [
+    { name = "BAPO", email = "bapo@octo.com" },
+    { name = "GIRE", email = "gire@octo.com" },
+    { name = "KSA", email = "ksa@octo.com" },
+    { name = "ROLO", email = "rolo@octo.com" },
+    { name = "THAN", email = "than@octo.com" },
+    { name = "YDR", email = "ydr@octo.com" },
+]
 description = 'vio-edge: orchestrator module'
 classifiers = [
     'Programming Language :: Python :: 3',
@@ -41,6 +49,12 @@ edge_orchestrator = "edge_orchestrator.__main__:run_for_debug"
 homepage = "https://github.com/octo-technology/VIO"
 documentation = "https://octo-technology.github.io/VIO/"
 changelog = "https://github.com/octo-technology/VIO/compare/"
+
+[tool.behave]
+junit = true
+junit_directory = "reports/behave/"
+logging_clear_handlers = true
+paths = ["tests/functional_tests"]
 
 [tool.black]
 line-length = 120
