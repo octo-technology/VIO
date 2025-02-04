@@ -23,6 +23,12 @@ class UseCase(BaseModel):
             )
         )
 
+    def remove_item(self, item_id: str):
+        for idx, item in enumerate(self.items):
+            if item.id == item_id:
+                self.items.pop(idx)
+                break
+
     def get_item_ids(self) -> List[str]:
         return [item.id for item in self.items]
 

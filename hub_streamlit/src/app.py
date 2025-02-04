@@ -1,7 +1,7 @@
 import streamlit as st
-from google.cloud.storage import Client
 
-from data_extraction import extract_items
+from gcp_binary_storage import GCPBinaryStorage
+from models.edge_data import EdgeData
 from models.edge_data_manager import EdgeDataManager
 from streamlit_component.edge_section import EdgeSection
 
@@ -11,45 +11,28 @@ def main():
     st.set_page_config(page_title="VIO Hub Viewer", layout="wide")
 
     # Init variables
-    if not st.session_state.get("active_edges"):
-        st.session_state.active_edges = []
-        st.session_state.gcp_client = Client()
+    if not st.session_state.get("gcp_client"):
+        st.session_state.gcp_client = GCPBinaryStorage()
 
-        st.session_state.edge_data = extract_items(st.session_state.gcp_client)
+    if not st.session_state.get("edge_data_manager"):
+        st.session_state.edge_data_manager = EdgeDataManager()
 
-    sidebar(st.session_state.edge_data)
+    if not st.session_state.get("edge_names"):
+        st.session_state.edge_names = st.session_state.gcp_client.get_edges_names()
 
+    for edge_name in st.session_state.edge_names:
+        if edge_name not in st.session_state.edge_data_manager.get_edges_data_names():
+            edge_data = EdgeData(name=edge_name)
+            edge_data.get_ip(gcp_client=st.session_state.gcp_client)
+            edge_data.extract(gcp_client=st.session_state.gcp_client)
+            st.session_state.edge_data_manager.add_edge_data(edge_data)
 
-def sidebar(edge_data: EdgeDataManager):
-    st.sidebar.markdown(
-        "<h1 style='font-size: 2em; text-align: left;'><b>VIO Hub</b></h1>",
-        unsafe_allow_html=True,
-    )
-    st.sidebar.title("Configuration")
+        edge_data = st.session_state.edge_data_manager.get_edge_data(edge_name)
+        edge_section = EdgeSection(edge_name, edge_data)
 
-    # Select edge and use case
-    selected_edges = st.sidebar.multiselect(
-        "Available edges", edge_data.get_edge_names()
-    )
-    st.session_state.active_edges = selected_edges
-
-    # Refresh data
-    if st.sidebar.button("↻"):
-        st.session_state.edge_data = extract_items(st.session_state.gcp_client)
-
-    # Computes the page display
-    removing_edges = [
-        edge for edge in st.session_state.active_edges if edge not in selected_edges
-    ]
-
-    for edge_name in selected_edges:
-        edge_section = EdgeSection(edge_name, edge_data.get_edge(edge_name))
-        edge_section.show()
-        st.divider()
-
-    for edge_name in removing_edges:
-        edge_index = st.session_state.active_edges.index(edge_name)
-        st.session_state.active_edges.pop(edge_index)
+        if len(edge_section.use_cases_names) > 0:
+            edge_section.show()
+            st.divider()
 
 
 if __name__ == "__main__":
