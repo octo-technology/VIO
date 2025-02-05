@@ -1,0 +1,47 @@
+from edge_orchestrator.domain.models.storage.storage_config import StorageConfig
+from edge_orchestrator.domain.models.storage.storage_type import StorageType
+from edge_orchestrator.infrastructure.adapters.binary_storage.aws_binary_storage import (
+    AWSBinaryStorage,
+)
+from edge_orchestrator.infrastructure.adapters.binary_storage.azure_binary_storage import (
+    AzureBinaryStorage,
+)
+from edge_orchestrator.infrastructure.adapters.binary_storage.binary_storage_factory import (
+    BinaryStorageFactory,
+)
+from edge_orchestrator.infrastructure.adapters.binary_storage.binary_storage_manager import (
+    BinaryStorageManager,
+)
+from edge_orchestrator.infrastructure.adapters.binary_storage.filesystem_binary_storage import (
+    FileSystemBinaryStorage,
+)
+from edge_orchestrator.infrastructure.adapters.binary_storage.gcp_binary_storage import (
+    GCPBinaryStorage,
+)
+
+
+class TestBinaryStorageManager:
+
+    def test_should_return_expected_binary_storage_and_store_it_as_attribute(
+        self,
+    ):
+        # Given
+        storage_type_binary_storage_classes = [
+            (StorageType.FILESYSTEM, FileSystemBinaryStorage),
+            (StorageType.AWS, AWSBinaryStorage),
+            (StorageType.AZURE, AzureBinaryStorage),
+            (StorageType.GCP, GCPBinaryStorage),
+        ]
+        binary_storage_manager = BinaryStorageManager(BinaryStorageFactory())
+
+        # When
+        for storage_type, binary_storage_class in storage_type_binary_storage_classes:
+            binary_storage_config = StorageConfig(storage_type=storage_type)
+            binary_storage = binary_storage_manager.get_binary_storage(binary_storage_config)
+            assert isinstance(binary_storage, binary_storage_class)
+
+        # Then
+        assert hasattr(binary_storage_manager, "_binary_storages")
+        assert len(binary_storage_manager._binary_storages) == 4
+        for storage_type, _ in storage_type_binary_storage_classes:
+            assert storage_type in binary_storage_manager._binary_storages
