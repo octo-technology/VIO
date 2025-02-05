@@ -90,7 +90,7 @@ class TestTfliteServing:
         fake_img_preprocessed = np.expand_dims(fake_img_array, axis=0).astype(np.uint8)
         payload = {"inputs": fake_img_preprocessed.tolist()}
 
-        expected_prediction = {"outputs": [[0.021249305456876755, 0.9787507057189941]]}
+        expected_prediction = {"outputs": [[0.02125023491680622, 0.9787498116493225]]}
 
         # When
         actual_response = self.test_client.post(model_url, json=payload)

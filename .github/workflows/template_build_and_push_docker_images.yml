@@ -10,10 +10,6 @@ on:
       image:
         required: true
         type: string
-      arm_build:
-        required: false
-        type: boolean
-        default: false
     secrets:
       username:
         required: true
@@ -55,12 +51,12 @@ jobs:
           flavor: latest=auto
 
       - name: Set up Docker Buildx (multi-platform build)
-        uses: docker/setup-buildx-action@v2
-        if: ${{ inputs.arm_build }}
+        uses: docker/setup-buildx-action@v3
 
       - name: Build and push Docker images
-        uses: docker/build-push-action@v4
+        uses: docker/build-push-action@v6
         with:
+          platforms: linux/amd64,linux/arm64
           context: ${{ inputs.context }}
           file: ${{ inputs.dockerfile }}
           push: ${{ github.event_name != 'pull_request' }}

@@ -1,7 +1,7 @@
-from edge_orchestrator.domain.models.item_rule.item_rule import ItemRule
 from edge_orchestrator.domain.models.item_rule.item_rule_config import ItemRuleConfig
 from edge_orchestrator.domain.models.item_rule.item_rule_type import ItemRuleType
 from edge_orchestrator.domain.models.model_forwarder.decision import Decision
+from edge_orchestrator.domain.ports.item_rule.i_item_rule import IItemRule
 from edge_orchestrator.infrastructure.adapters.item_rule.item_rule_factory import (
     ItemRuleFactory,
 )
@@ -25,6 +25,6 @@ class TestItemRuleManager:
         item_rule = item_rule_manager.get_item_rule(item_rule_config)
 
         # Then
-        assert isinstance(item_rule, ItemRule)
+        assert isinstance(item_rule, IItemRule)
         assert hasattr(item_rule_manager, "_item_rules")
         assert len(item_rule_manager._item_rules) == 1

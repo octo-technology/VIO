@@ -6,37 +6,43 @@ build-backend = "setuptools.build_meta"
 name = "tflite_serving"
 version = "1.0.0"
 dependencies = [
+    "ai-edge-litert==1.1.0",
+    "anyio==3.7.1",
     "fastapi==0.80.0",
-    "numpy==1.22",
+    "httpx==0.28.1",
+    "numpy~=1.26",
     "Pillow==8.4.0",
-    "uvicorn==0.22.0",
-    "anyio==3.7.1"
+    "setuptools==75.8.0",
+    "uvicorn==0.34.0",
 ]
-requires-python = ">=3.8"
+requires-python = ">=3.10"
+
+[project.scripts]
+edge_model_serving = "tflite_serving.__main__:run_for_debug"
+
+[project.optional-dependencies]
+dev = [
+    "autoflake==2.3.1",
+    "black==25.1.0",
+    "flake8==7.1.1",
+    "isort==6.0.0",
+    "pytest==8.3.4",
+    "pytest-cov==6.0.0",
+    "requests==2.32.3"
+]
+# TensorFlow Lite supported platforms: https://www.tensorflow.org/lite/guide/python#supported_platforms
+linux = [
+    "tflite-runtime==2.14.0"
+]
+# macos refer to https://www.tensorflow.org/lite/guide/build_cmake_pip
 
 [tool.setuptools.packages.find]
 where = ["src/"]
+exclude = ["tests*", "data"]
 
 #[tool.setuptools_scm]
 #root = "../.."
 #write_to = "edge_model_serving/tflite_serving/src/tflite_serving/_version.py"
-
-[project.optional-dependencies]
-dev = [
-    "black==23.3.0",
-    "isort==5.13.2",
-    "flake8==7.1.1",
-    "autoflake==2.3.1",
-    "pytest==7.2.2",
-    "pytest-cov==4.0.0",
-    "requests==2.26.0"
-]
-# TensorFlow Lite supported platforms: https://www.tensorflow.org/lite/guide/python#supported_platforms
-linux = [
-    "tflite-runtime==2.7.0"
-]
-
-# macos refer to https://www.tensorflow.org/lite/guide/build_cmake_pip
 
 [tool.pytest.ini_options]
 min_version = "6.0"

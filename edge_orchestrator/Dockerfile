@@ -1,18 +1,43 @@
-FROM python:3.12-slim
-
-RUN apt-get update -y
-RUN apt-get install fswebcam -y
-# to avoid error "psycopg2.OperationalError: SCRAM authentication requires libpq version 10 or above"
-RUN apt-get install libpq-dev zlib1g-dev jq gcc libnuma-dev -y
-RUN pip install --upgrade pip setuptools
+FROM --platform=$BUILDPLATFORM python:3.12-slim AS builder
+ARG TARGETPLATFORM
 
 WORKDIR /edge_ai
 
-COPY fake_images ./fake_images
-COPY src ./src
-COPY pyproject.toml pyproject.toml
+RUN apt-get update
+RUN apt-get install -y --no-install-recommends build-essential gcc
+RUN python -m venv /opt/venv
+RUN pip install --upgrade pip setuptools
 
-RUN pip install .
+ENV PATH="/opt/venv/bin:$PATH"
+
+COPY pyproject.toml ./
+COPY src/ ./src
+
+RUN if [ "$TARGETPLATFORM" = "linux/arm64" ]; then \
+        echo "[global]\nextra-index-url=https://www.piwheels.org/simple" >> /etc/pip.conf; \
+        pip install ".[raspberry]"; \
+    else \
+        pip install "."; \
+    fi
+
+
+FROM python:3.12-slim
+ARG TARGETPLATFORM
+
+# RUN if [ "$TARGETPLATFORM" = "linux/arm64" ]; then \
+#         apt-get update && apt-get install -y fswebcam rpicam-apps-lite; \
+#     else \
+#         apt-get update && apt-get install -y fswebcam; \
+#     fi
+
+RUN apt-get update && apt-get install -y fswebcam
+
+WORKDIR /edge_ai
+
+COPY --from=builder /opt/venv /opt/venv
+COPY fake_images ./fake_images
+
+ENV PATH="/opt/venv/bin:$PATH"
 
 EXPOSE 8000
 ENTRYPOINT ["uvicorn", "edge_orchestrator.interface.api.main:app"]
