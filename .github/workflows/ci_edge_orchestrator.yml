@@ -17,20 +17,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [ "3.8", "3.9" ] # TODO: add 3.10 and 3.11
+        python-version: [ "3.10", "3.11", "3.12" ]
     services:
-      edge_db:
-        image: mongo:5.0.2
-        ports:
-          - 27017:27017
-      hub_monitoring_db:
-        image: postgres:15.1
-        ports:
-          - 5432:5432
-        env:
-          POSTGRES_DB: test
-          POSTGRES_USER: test
-          POSTGRES_PASSWORD: test
       edge_model_serving:
         image: ghcr.io/octo-technology/vio/edge_model_serving:main
         ports:
@@ -40,18 +28,16 @@ jobs:
         ports:
           - 8502:8501
     env:
-      MONGO_DB_URI: mongodb://localhost:27017
-      POSTGRES_DB_URI: postgresql://test:test@localhost:5432/test
       TENSORFLOW_SERVING_HOST: localhost
       TENSORFLOW_SERVING_PORT: 8501
       TFLITE_SERVING_HOST: localhost
       TFLITE_SERVING_PORT: 8502
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
 
@@ -117,21 +103,3 @@ jobs:
       username: ${{ github.actor }}
       password: ${{ secrets.GITHUB_TOKEN }}
 
-  build_and_push_arm_images:
-    needs: lint_and_test_on_edge_orchestrator
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - dockerfile: ./edge_orchestrator/Dockerfile.raspberrypi
-            image: ghcr.io/${{ github.repository }}/edge_orchestrator.raspberrypi
-            context: ./edge_orchestrator
-    uses: ./.github/workflows/template_build_and_push_docker_images.yml
-    with:
-      context: ${{ matrix.context }}
-      dockerfile: ${{ matrix.dockerfile }}
-      image: ${{ matrix.image }}
-      arm_build: true
-    secrets:
-      username: ${{ github.actor }}
-      password: ${{ secrets.GITHUB_TOKEN }}
