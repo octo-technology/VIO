@@ -1,9 +1,9 @@
 import pytest
 
-from edge_orchestrator.domain.models.item_rule.item_rule import ItemRule
 from edge_orchestrator.domain.models.item_rule.item_rule_config import ItemRuleConfig
 from edge_orchestrator.domain.models.item_rule.item_rule_type import ItemRuleType
 from edge_orchestrator.domain.models.model_forwarder.decision import Decision
+from edge_orchestrator.domain.ports.item_rule.i_item_rule import IItemRule
 from edge_orchestrator.infrastructure.adapters.item_rule.item_rule_factory import (
     ItemRuleFactory,
 )
@@ -25,7 +25,7 @@ class TestItemRuleFactory:
         ],
     )
     def test_should_return_the_specified_item_rule_instance(
-        self, item_rule_type: ItemRuleType, item_rule_class: ItemRule, decision: Decision
+        self, item_rule_type: ItemRuleType, item_rule_class: IItemRule, decision: Decision
     ):
         # Given
         item_rule_factory = ItemRuleFactory()
