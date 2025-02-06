@@ -20,7 +20,7 @@ class BinaryStorageManager(IBinaryStorageManager):
 
     def get_binary_storage(self, binary_storage_config: StorageConfig) -> IBinaryStorage:
         binary_storage_type = binary_storage_config.storage_type
-        if binary_storage_type not in self._binary_storages:
+        if binary_storage_type not in self._binary_storages or binary_storage_config.recreate_me:
             binary_storage = self._binary_storage_factory.create_binary_storage(binary_storage_config)
             self._binary_storages[binary_storage_type] = binary_storage
         return self._binary_storages[binary_storage_type]

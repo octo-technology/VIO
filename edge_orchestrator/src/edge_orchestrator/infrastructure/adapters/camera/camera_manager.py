@@ -21,7 +21,7 @@ class CameraManager(ICameraManager):
 
     def create_cameras(self, station_config: StationConfig):
         for camera_id, camera_config in station_config.camera_configs.items():
-            if camera_id not in self._cameras:
+            if camera_id not in self._cameras or camera_config.recreate_me:
                 camera = self._camera_factory.create_camera(camera_config)
                 self._cameras[camera_id] = camera
 

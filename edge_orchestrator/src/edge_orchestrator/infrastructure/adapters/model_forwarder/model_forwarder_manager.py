@@ -24,7 +24,7 @@ class ModelForwarderManager(IModelForwarderManager):
 
     def _get_model_forwarder(self, model_forwarder_config: ModelForwarderConfig) -> IModelForwarder:
         model_id = model_forwarder_config.model_id
-        if model_id not in self._model_forwarders:
+        if model_id not in self._model_forwarders or model_forwarder_config.recreate_me:
             self._logger.info(f"Creating model forwarder for model_id: {model_id}")
             model_forwarder = self._model_forwarder_factory.create_model_forwarder(model_forwarder_config)
             self._model_forwarders[model_id] = model_forwarder
