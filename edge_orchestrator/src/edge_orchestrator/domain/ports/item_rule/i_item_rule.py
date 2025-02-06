@@ -2,12 +2,12 @@ from abc import ABC, abstractmethod
 from logging import Logger
 from typing import Dict
 
+from edge_orchestrator.domain.models.decision import Decision
 from edge_orchestrator.domain.models.item import Item
 from edge_orchestrator.domain.models.item_rule.item_rule_config import ItemRuleConfig
-from edge_orchestrator.domain.models.model_forwarder.decision import Decision
 
 
-class ItemRule(ABC):
+class IItemRule(ABC):
     _item_rule_config: ItemRuleConfig
     _logger: Logger
 

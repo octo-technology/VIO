@@ -108,4 +108,4 @@ class TestObjectDetectionModelForwarder:
         actual_record = records[0]
         assert actual_record[0] == "Error while trying to get prediction from model, returning no decision prediction"
         assert issubclass(actual_record[1][0], aiohttp.ClientError)
-        assert actual_prediction.label == None
+        assert actual_prediction.label is None

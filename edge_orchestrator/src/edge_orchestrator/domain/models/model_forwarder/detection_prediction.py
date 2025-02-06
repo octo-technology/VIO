@@ -2,7 +2,7 @@ from typing import Dict, List, Literal, Optional
 
 from pydantic import BaseModel, Field
 
-from edge_orchestrator.domain.models.model_forwarder.decision import Decision
+from edge_orchestrator.domain.models.decision import Decision
 from edge_orchestrator.domain.models.model_forwarder.prediction_type import (
     PredictionType,
 )

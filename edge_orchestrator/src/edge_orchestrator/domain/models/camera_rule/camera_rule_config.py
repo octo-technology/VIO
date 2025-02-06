@@ -25,10 +25,11 @@ class CameraRuleConfig(BaseModel):
             raise ValueError(
                 "Either expected_class or unexpected_class or (class_to_detect and threshold) is required (exclusive)"
             )
-        if (self.camera_rule_type == CameraRuleType.EXPECTED_LABEL_RULE and self.unexpected_class) or (
-            self.camera_rule_type == CameraRuleType.UNEXPECTED_LABEL_RULE and self.expected_class
+        if (self.camera_rule_type is CameraRuleType.EXPECTED_LABEL_RULE and self.unexpected_class) or (
+            self.camera_rule_type is CameraRuleType.UNEXPECTED_LABEL_RULE and self.expected_class
         ):
             raise ValueError(
-                "Either provide (EXPECTED_LABEL_RULE and expected_class) or (UNEXPECTED_LABEL_RULE and unexpected_class)"
+                "Either provide (EXPECTED_LABEL_RULE and expected_class) or "
+                "(UNEXPECTED_LABEL_RULE and unexpected_class)"
             )
         return self
