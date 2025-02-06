@@ -60,4 +60,4 @@ vio-edge-up-raspberrypi:
 
 .PHONY: vio-down ## ❌ Stop all services (model_serving, edge_orchestrator, ui)
 vio-down:
-	docker-compose down
+	docker-compose --profile hub --profile edge down

@@ -4,10 +4,10 @@ import pytest
 
 from edge_orchestrator.domain.models.camera.camera_config import CameraConfig
 from edge_orchestrator.domain.models.camera.camera_type import CameraType
+from edge_orchestrator.domain.models.decision import Decision
 from edge_orchestrator.domain.models.item import Item
 from edge_orchestrator.domain.models.item_rule.item_rule_config import ItemRuleConfig
 from edge_orchestrator.domain.models.item_rule.item_rule_type import ItemRuleType
-from edge_orchestrator.domain.models.model_forwarder.decision import Decision
 from edge_orchestrator.domain.models.station_config import StationConfig
 from edge_orchestrator.domain.models.storage.storage_config import StorageConfig
 from edge_orchestrator.infrastructure.adapters.camera.camera_factory import (

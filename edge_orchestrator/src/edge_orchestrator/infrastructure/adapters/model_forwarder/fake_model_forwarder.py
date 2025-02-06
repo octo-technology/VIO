@@ -29,9 +29,6 @@ class FakeModelForwarder(IModelForwarder):
         self._logger = logging.getLogger(__name__)
         self._model_forwarder_config = model_forwarder_config
 
-    async def predict_on_binary(self, binary: bytes) -> Prediction:
-        return await super().predict_on_binary(binary)
-
     def _pre_process_binary(self, binary: bytes) -> np.ndarray:
         width = self._model_forwarder_config.image_resolution.width
         height = self._model_forwarder_config.image_resolution.height

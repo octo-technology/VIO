@@ -51,18 +51,6 @@ services:
       - 8080:80
     profiles: [edge]
 
-  hub_monitoring:
-    container_name: hub_monitoring
-    image: grafana/grafana:latest
-    ports:
-      - 4000:3000
-    environment:
-      - GF_INSTALL_PLUGINS=yesoreyeram-infinity-datasource
-    volumes:
-      - ./hub_monitoring/grafana/dashboards:/var/lib/grafana/dashboards
-      - ./hub_monitoring/grafana/provisioning:/etc/grafana/provisioning
-    profiles: [hub]
-
   hub_streamlit:
     container_name: hub_streamlit
     build:
@@ -75,19 +63,4 @@ services:
       GOOGLE_APPLICATION_CREDENTIALS: /hub_streamlit/config/secrets/credentials.json
     volumes:
       - ./hub_streamlit/config:/hub_streamlit/config
-    profiles: [hub]
-
-  hub_monitoring_db:
-    container_name: hub_monitoring_db
-    image: postgres:15.1
-    restart: always
-    environment:
-      POSTGRES_DB: vio
-      POSTGRES_USER: vio
-      POSTGRES_PASSWORD: vio
-    ports:
-      - 5432:5432
-    volumes:
-      - vio-postgresql-data:/var/lib/postgresql/data
-      - ./hub_monitoring/docker/init-db.sh:/docker-entrypoint-initdb.d/init-db.sh
     profiles: [hub]

@@ -5,8 +5,8 @@ from pydantic import ConfigDict, Field
 
 from edge_orchestrator.domain.models.binary import Image
 from edge_orchestrator.domain.models.camera.camera_config import CameraConfig
+from edge_orchestrator.domain.models.decision import Decision
 from edge_orchestrator.domain.models.item_state import ItemState
-from edge_orchestrator.domain.models.model_forwarder.decision import Decision
 from edge_orchestrator.domain.models.model_forwarder.prediction import Prediction
 from edge_orchestrator.interface.api.models.item_base import ItemBase
 

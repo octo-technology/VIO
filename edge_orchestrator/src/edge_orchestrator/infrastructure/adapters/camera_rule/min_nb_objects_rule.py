@@ -3,7 +3,7 @@ import logging
 from edge_orchestrator.domain.models.camera_rule.camera_rule_config import (
     CameraRuleConfig,
 )
-from edge_orchestrator.domain.models.model_forwarder.decision import Decision
+from edge_orchestrator.domain.models.decision import Decision
 from edge_orchestrator.domain.models.model_forwarder.prediction import Prediction
 from edge_orchestrator.domain.models.model_forwarder.prediction_type import (
     PredictionType,

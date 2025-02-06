@@ -2,10 +2,10 @@ from edge_orchestrator.domain.models.camera_rule.camera_rule_config import (
     CameraRuleConfig,
 )
 from edge_orchestrator.domain.models.camera_rule.camera_rule_type import CameraRuleType
+from edge_orchestrator.domain.models.decision import Decision
 from edge_orchestrator.domain.models.model_forwarder.classification_prediction import (
     ClassifPrediction,
 )
-from edge_orchestrator.domain.models.model_forwarder.decision import Decision
 from edge_orchestrator.domain.models.model_forwarder.prediction_type import (
     PredictionType,
 )

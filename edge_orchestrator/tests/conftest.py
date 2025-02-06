@@ -13,6 +13,7 @@ from edge_orchestrator.infrastructure.adapters.model_forwarder.fake_model_forwar
 from edge_orchestrator.infrastructure.adapters.model_forwarder.model_forwarder_factory import (
     ModelForwarderFactory,
 )
+from edge_orchestrator.utils.singleton import SingletonMeta
 
 pytest_plugins = [
     "fixtures.binaries",
@@ -35,3 +36,9 @@ def mocked_model_forwarder_factory() -> IModelForwarderFactory:
     model_forwarder_factory = ModelForwarderFactory()
     model_forwarder_factory.create_model_forwarder = lambda config: FakeModelForwarder(config)
     return model_forwarder_factory
+
+
+@pytest.fixture()
+def cleanup_singleton():
+    yield
+    SingletonMeta._instances = {}

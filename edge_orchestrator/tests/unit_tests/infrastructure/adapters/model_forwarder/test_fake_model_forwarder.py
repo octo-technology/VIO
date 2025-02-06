@@ -3,10 +3,10 @@ from typing import List
 
 import pytest
 
+from edge_orchestrator.domain.models.decision import Decision
 from edge_orchestrator.domain.models.model_forwarder.classification_prediction import (
     ClassifPrediction,
 )
-from edge_orchestrator.domain.models.model_forwarder.decision import Decision
 from edge_orchestrator.domain.models.model_forwarder.detection_prediction import (
     DetectionPrediction,
 )

@@ -92,9 +92,10 @@ class TestFileSystemBinaryStorage:
         item_id = UUID("00000000-0000-0000-0000-000000000001")
         item_storage_folder = target_directory / str(item_id)
         item_storage_folder.mkdir()
-        with (item_storage_folder / "camera_#1.jpg").open("wb") as f1, (item_storage_folder / "camera_#2.jpg").open(
-            "wb"
-        ) as f2:
+        with (
+            (item_storage_folder / "camera_#1.jpg").open("wb") as f1,
+            (item_storage_folder / "camera_#2.jpg").open("wb") as f2,
+        ):
             f1.write(expected_picture)
             f2.write(expected_picture)
         expected_camera_ids = ["camera_#1", "camera_#2"]

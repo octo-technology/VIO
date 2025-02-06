@@ -1,8 +1,8 @@
 import pytest
 
+from edge_orchestrator.domain.models.decision import Decision
 from edge_orchestrator.domain.models.item_rule.item_rule_config import ItemRuleConfig
 from edge_orchestrator.domain.models.item_rule.item_rule_type import ItemRuleType
-from edge_orchestrator.domain.models.model_forwarder.decision import Decision
 from edge_orchestrator.domain.ports.item_rule.i_item_rule import IItemRule
 from edge_orchestrator.infrastructure.adapters.item_rule.item_rule_factory import (
     ItemRuleFactory,

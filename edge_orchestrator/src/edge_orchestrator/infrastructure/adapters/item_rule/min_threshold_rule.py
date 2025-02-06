@@ -1,13 +1,13 @@
 import logging
 from typing import Dict
 
+from edge_orchestrator.domain.models.decision import Decision
 from edge_orchestrator.domain.models.item import Item
-from edge_orchestrator.domain.models.item_rule.item_rule import ItemRule
 from edge_orchestrator.domain.models.item_rule.item_rule_config import ItemRuleConfig
-from edge_orchestrator.domain.models.model_forwarder.decision import Decision
+from edge_orchestrator.domain.ports.item_rule.i_item_rule import IItemRule
 
 
-class MinThresholdRule(ItemRule):
+class MinThresholdRule(IItemRule):
     def __init__(self, ItemRuleConfig: ItemRuleConfig):
         self._item_rule_config = ItemRuleConfig
         self._logger = logging.getLogger(__name__)

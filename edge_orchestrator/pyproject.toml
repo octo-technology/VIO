@@ -33,11 +33,13 @@ requires-python = ">=3.10"
 [project.optional-dependencies]
 dev = [
     "autoflake==2.3.1",
+    "behave @ git+https://github.com/behave/behave@v1.2.7.dev3#egg=behave[toml]",
     "black==24.10.0",
     "flake8==7.1.1",
     "isort==5.13.2",
     "pytest==8.3.4",
     "pytest-asyncio==0.25.3",
+    "pytest-cov==5.0.0",
     "testcontainers==4.9.1",
 ]
 raspberry = ["picamera==1.13"]
@@ -58,7 +60,7 @@ paths = ["tests/functional_tests"]
 
 [tool.black]
 line-length = 120
-target-version = ["py38", "py39", "py310", "py311", "py312", "py313"]
+target-version = ["py310", "py311", "py312", "py313"]
 verbose = true
 
 [tool.isort]
