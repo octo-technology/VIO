@@ -1,6 +1,9 @@
+import os
 from pathlib import Path
 
 from edge_orchestrator.application.config.config_manager import ConfigManager
+from edge_orchestrator.domain.models.camera.camera_config import CameraConfig
+from edge_orchestrator.domain.models.camera.camera_type import CameraType
 from edge_orchestrator.domain.models.decision import Decision
 from edge_orchestrator.domain.models.item_rule.item_rule_config import ItemRuleConfig
 from edge_orchestrator.domain.models.item_rule.item_rule_type import ItemRuleType
@@ -14,9 +17,9 @@ class TestConfigManager:
         # Given
         config_dir = tmp_path / "config"
         config_dir.mkdir()
+        os.environ["CONFIG_DIR"] = config_dir.as_posix()
         station_config = StationConfig(
             station_name="test_station",
-            station_profile="test_profile",
             camera_configs={},
             binary_storage_config=StorageConfig(),
             metadata_storage_config=StorageConfig(),
@@ -24,13 +27,13 @@ class TestConfigManager:
                 item_rule_type=ItemRuleType.MIN_THRESHOLD_RULE, expected_decision=Decision.OK, threshold=1
             ),
         )
-        config_filepath = config_dir / f"{station_config.station_profile}.json"
+        config_filepath = config_dir / f"{station_config.station_name}.json"
         with config_filepath.open("w") as f:
             f.write(station_config.model_dump_json(exclude_none=True))
             (config_dir / "active_station_config.json").symlink_to(config_filepath)
 
         # When
-        config_manager = ConfigManager(config_dir)
+        config_manager = ConfigManager()
 
         # Then
         active_station_config = config_manager.get_config()
@@ -40,15 +43,16 @@ class TestConfigManager:
             and isinstance(active_station_config, StationConfig)
             and active_station_config == station_config
         )
-        assert len(all_config) == 1 and active_station_config.station_profile in all_config
+        assert len(all_config) == 1 and active_station_config.station_name in all_config
 
     def test_config_manager_should_log_warning_with_no_config_dir(self, tmp_path: Path, caplog, cleanup_singleton):
         # Given
         unexisting_config_dir = tmp_path / "config"
+        os.environ["CONFIG_DIR"] = unexisting_config_dir.as_posix()
 
         # When
         with caplog.at_level("WARNING"):
-            config_manager = ConfigManager(unexisting_config_dir)
+            config_manager = ConfigManager()
 
         # Then
         log_messages = [(record.msg, record.levelname) for record in caplog.records]
@@ -65,10 +69,11 @@ class TestConfigManager:
         # Given
         config_dir = tmp_path / "config"
         config_dir.mkdir()
+        os.environ["CONFIG_DIR"] = config_dir.as_posix()
 
         # When
         with caplog.at_level("WARNING"):
-            config_manager = ConfigManager(config_dir)
+            config_manager = ConfigManager()
 
         # Then
         log_messages = [(record.msg, record.levelname) for record in caplog.records]
@@ -85,13 +90,14 @@ class TestConfigManager:
         # Given
         config_dir = tmp_path / "config"
         config_dir.mkdir()
+        os.environ["CONFIG_DIR"] = config_dir.as_posix()
         config_filepath = config_dir / "bad_config.json"
         with (config_filepath).open("w") as f:
             f.write("{'bad': 'config'}")
 
         # When
         with caplog.at_level("ERROR"):
-            config_manager = ConfigManager(config_dir)
+            config_manager = ConfigManager()
 
         # Then
         log_messages = [(record.msg, record.levelname) for record in caplog.records]
@@ -106,9 +112,9 @@ class TestConfigManager:
         # Given
         config_dir = tmp_path / "config"
         config_dir.mkdir()
+        os.environ["CONFIG_DIR"] = config_dir.as_posix()
         station_config_1 = StationConfig(
-            station_name="test_station",
-            station_profile="test_profile_1",
+            station_name="test_station_1",
             camera_configs={},
             binary_storage_config=StorageConfig(),
             metadata_storage_config=StorageConfig(),
@@ -116,14 +122,13 @@ class TestConfigManager:
                 item_rule_type=ItemRuleType.MIN_THRESHOLD_RULE, expected_decision=Decision.OK, threshold=1
             ),
         )
-        config_filepath = config_dir / f"{station_config_1.station_profile}.json"
+        config_filepath = config_dir / f"{station_config_1.station_name}.json"
         with config_filepath.open("w") as f:
             f.write(station_config_1.model_dump_json(exclude_none=True))
             (config_dir / "active_station_config.json").symlink_to(config_filepath)
 
         station_config_2 = StationConfig(
-            station_name="test_station",
-            station_profile="test_profile_2",
+            station_name="test_station_2",
             camera_configs={},
             binary_storage_config=StorageConfig(),
             metadata_storage_config=StorageConfig(),
@@ -131,7 +136,7 @@ class TestConfigManager:
                 item_rule_type=ItemRuleType.MIN_THRESHOLD_RULE, expected_decision=Decision.OK, threshold=1
             ),
         )
-        config_manager = ConfigManager(config_dir)
+        config_manager = ConfigManager()
 
         # When
         config_manager.set_config(station_config_2)
@@ -146,17 +151,17 @@ class TestConfigManager:
         )
         assert (
             len(all_config) == 2
-            and station_config_1.station_profile in all_config
-            and station_config_2.station_profile in all_config
+            and station_config_1.station_name in all_config
+            and station_config_2.station_name in all_config
         )
 
     def test_config_manager_should_write_active_config_on_disk(self, tmp_path: Path, cleanup_singleton):
         # Given
         config_dir = tmp_path / "config"
         config_dir.mkdir()
+        os.environ["CONFIG_DIR"] = config_dir.as_posix()
         station_config = StationConfig(
-            station_name="test_station",
-            station_profile="test_profile_1",
+            station_name="test_station_1",
             camera_configs={},
             binary_storage_config=StorageConfig(),
             metadata_storage_config=StorageConfig(),
@@ -164,14 +169,14 @@ class TestConfigManager:
                 item_rule_type=ItemRuleType.MIN_THRESHOLD_RULE, expected_decision=Decision.OK, threshold=1
             ),
         )
-        config_manager = ConfigManager(config_dir)
+        config_manager = ConfigManager()
 
         # When
         config_manager.set_config(station_config)
 
         # Then
         active_station_config = config_manager.get_config()
-        config_filepath = config_dir / f"{station_config.station_profile}.json"
+        config_filepath = config_dir / f"{station_config.station_name}.json"
         active_config_filepath = config_dir / "active_station_config.json"
         assert active_station_config is station_config
         assert config_filepath.exists()
@@ -184,9 +189,9 @@ class TestConfigManager:
         # Given
         config_dir = tmp_path / "config"
         config_dir.mkdir()
+        os.environ["CONFIG_DIR"] = config_dir.as_posix()
         station_config = StationConfig(
             station_name="test_station",
-            station_profile="test_profile_1",
             camera_configs={},
             binary_storage_config=StorageConfig(),
             metadata_storage_config=StorageConfig(),
@@ -194,21 +199,22 @@ class TestConfigManager:
                 item_rule_type=ItemRuleType.MIN_THRESHOLD_RULE, expected_decision=Decision.OK, threshold=1
             ),
         )
-        config_filepath = config_dir / f"{station_config.station_profile}.json"
+        config_filepath = config_dir / f"{station_config.station_name}.json"
         with config_filepath.open("w") as f:
             f.write(station_config.model_dump_json(exclude_none=True))
             (config_dir / "active_station_config.json").symlink_to(config_filepath)
 
-        config_manager = ConfigManager(config_dir)
+        config_manager = ConfigManager()
+        new_camera_config = {"camera_#1": CameraConfig(camera_id="camera_#1", camera_type=CameraType.FAKE)}
 
         # When
         with caplog.at_level("WARNING"):
-            station_config.station_name = "new_station_name"
+            station_config.camera_configs = new_camera_config
             config_manager.set_config(station_config)
 
         # Then
         log_messages = [(record.msg, record.levelname) for record in caplog.records]
         active_station_config = config_manager.get_config()
         assert active_station_config is station_config
-        assert active_station_config.station_name == "new_station_name"
-        assert ("Overwritting existing station config profile: test_profile_1", "WARNING") in log_messages
+        assert active_station_config.camera_configs == new_camera_config
+        assert ("Overwritting existing station config name: test_station", "WARNING") in log_messages

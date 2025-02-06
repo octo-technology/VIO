@@ -1,8 +1,11 @@
 import os
 from typing import Generator
 
-from conftest import EDGE_TFLITE_SERVING_IMG
-from helpers.container_utils import start_test_tf_serving, stop_test_container
+from helpers.container_utils import (
+    EDGE_TFLITE_SERVING_IMG,
+    start_test_tf_serving,
+    stop_test_container,
+)
 from pytest import fixture
 
 

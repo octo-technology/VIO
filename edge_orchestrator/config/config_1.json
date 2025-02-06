@@ -1,6 +1,5 @@
 {
-    "station_name": "bapo_workstation",
-    "station_profile": "config_1",
+    "station_name": "config_1",
     "camera_configs": {
         "camera_#1": {
             "camera_id": "camera_#1",
@@ -19,13 +18,15 @@
                     "OK",
                     "KO"
                 ],
-                "model_serving_url": null,
+                "recreate_me": false,
                 "model_id": "fake_model_classification_1"
             },
             "camera_rule_config": {
                 "camera_rule_type": "expected_label_rule",
-                "expected_class": "OK"
-            }
+                "expected_class": "OK",
+                "recreate_me": false
+            },
+            "recreate_me": false
         },
         "camera_#2": {
             "camera_id": "camera_#2",
@@ -44,29 +45,34 @@
                     "OK",
                     "KO"
                 ],
-                "model_serving_url": null,
+                "recreate_me": false,
                 "model_id": "fake_model_object_detection_1"
             },
             "camera_rule_config": {
                 "camera_rule_type": "min_nb_objects_rule",
                 "class_to_detect": "OK",
-                "threshold": 1
-            }
+                "threshold": 1,
+                "recreate_me": false
+            },
+            "recreate_me": false
         }
     },
     "binary_storage_config": {
         "storage_type": "filesystem",
         "target_directory": "data_storage",
-        "prefix": "bapo_workstation"
+        "prefix": "bapo_workstation",
+        "recreate_me": false
     },
     "metadata_storage_config": {
         "storage_type": "filesystem",
         "target_directory": "data_storage",
-        "prefix": "bapo_workstation"
+        "prefix": "bapo_workstation",
+        "recreate_me": false
     },
     "item_rule_config": {
         "item_rule_type": "min_threshold_ratio_rule",
         "expected_decision": "OK",
-        "threshold": 1
+        "threshold": 1,
+        "recreate_me": false
     }
 }

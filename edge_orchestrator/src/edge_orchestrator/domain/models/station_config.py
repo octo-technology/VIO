@@ -11,7 +11,6 @@ class StationConfig(BaseModel):
     model_config = ConfigDict(use_enum_values=True)
 
     station_name: str
-    station_profile: str
     camera_configs: Dict[str, CameraConfig]
     binary_storage_config: StorageConfig
     metadata_storage_config: StorageConfig
