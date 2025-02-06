@@ -38,8 +38,7 @@ class TestCameraManager:
 
         camera_manager = CameraManager(CameraFactory())
         station_config = StationConfig(
-            station_name="test_station",
-            station_profile="test_profile",
+            station_name="test_profile",
             camera_configs={
                 "camera_#1": CameraConfig(camera_id="camera_#1", camera_type=CameraType.FAKE),
                 "camera_#2": CameraConfig(camera_id="camera_#2", camera_type=CameraType.USB),
@@ -85,8 +84,7 @@ class TestCameraManager:
         mock_camera_factory = CameraFactory()
         camera_manager = CameraManager(mock_camera_factory)
         station_config = StationConfig(
-            station_name="test_station",
-            station_profile="test_profile",
+            station_name="test_profile",
             camera_configs={
                 "camera_#1": CameraConfig(camera_id="camera_#1", camera_type=CameraType.USB),
                 "camera_#2": CameraConfig(camera_id="camera_#2", camera_type=CameraType.RASPBERRY),

@@ -20,14 +20,7 @@ pytest_plugins = [
     "fixtures.containers",
 ]
 
-EDGE_MODEL_SERVING = {
-    "image_name": "ghcr.io/octo-technology/vio/edge_model_serving:main",
-    "container_volume_path": "/tf_serving",
-    "host_volume_path_suffix": "edge_model_serving",
-}
-EDGE_TFLITE_SERVING_IMG = "ghcr.io/octo-technology/vio/edge_tflite_serving:main"
-
-sys.path.append((Path(__file__).parent / "helpers").resolve())
+sys.path.append((Path(__file__).parent / "helpers").resolve().as_posix())
 os.environ["TESTCONTAINERS_RYUK_DISABLED"] = "true"
 
 

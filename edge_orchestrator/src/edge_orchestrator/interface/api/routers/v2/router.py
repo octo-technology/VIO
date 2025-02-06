@@ -31,17 +31,17 @@ def get_health():
     return {"status": "ok"}
 
 
-def set_config(station_name: Optional[str] = None, station_config: Optional[StationConfig] = None) -> StationConfig:
+def set_config(station_name: Optional[str] = None, station_config: Optional[StationConfig] = None):
     if (station_name and station_config) or (station_name is None and station_config is None):
         raise HTTPException(status_code=422, detail="Either provide a station_name or a StationConfig (exclusive)")
 
     manager = ConfigManager()
     if station_name:
         manager.set_config_by_name(station_name)
-        return manager.get_config()
+        return {"message": f"Configuration set successfully as {station_name}"}
     if station_config:
         manager.set_config(station_config)
-        return manager.get_config()
+        return {"message": f"Configuration updated successfully with {station_config.station_name}"}
 
 
 def get_all_configs() -> Dict[str, StationConfig]:
@@ -114,6 +114,6 @@ router.add_api_route("/items/{item_id}/binaries", get_item_binaries, methods=["G
 router.add_api_route("/items/{item_id}/state", get_item_state, methods=["GET"], response_model_exclude_none=True)
 router.add_api_route("/configs", get_all_configs, methods=["GET"], response_model_exclude_none=True)
 router.add_api_route("/configs/active", get_config, methods=["GET"], response_model_exclude_none=True)
-router.add_api_route("/configs/active/{station_name}", set_config, methods=["POST"], response_model_exclude_none=True)
+router.add_api_route("/configs/active/{station_name}", set_config, methods=["POST"])
 
 router.add_api_route("/trigger_job", trigger_job, methods=["POST"])
