@@ -25,6 +25,7 @@ class ModelForwarderConfig(BaseModel):
     class_names: Optional[List[str]] = Field(default_factory=list)
     class_names_filepath: Optional[Path] = None
     model_serving_url: Optional[Url] = None
+    recreate_me: Optional[bool] = False
 
     @computed_field
     @property

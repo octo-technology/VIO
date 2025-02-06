@@ -12,6 +12,7 @@ class CameraRuleConfig(BaseModel):
     unexpected_class: Optional[str] = None
     class_to_detect: Optional[str] = None
     threshold: Optional[PositiveInt] = None
+    recreate_me: Optional[bool] = False
 
     @model_validator(mode="after")
     def check_params(self):

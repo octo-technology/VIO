@@ -19,6 +19,6 @@ class ItemRuleManager(IItemRuleManager):
 
     def get_item_rule(self, item_rule_config: ItemRuleConfig) -> IItemRule:
         item_rule_type = item_rule_config.item_rule_type
-        if item_rule_type not in self._item_rules:
+        if item_rule_type not in self._item_rules or item_rule_config.recreate_me:
             self._item_rules[item_rule_type] = self._item_rule_factory.create_item_rule(item_rule_config)
         return self._item_rules[item_rule_type]

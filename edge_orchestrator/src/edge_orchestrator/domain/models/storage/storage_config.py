@@ -13,4 +13,5 @@ class StorageConfig(BaseModel):
     storage_type: StorageType = StorageType.FILESYSTEM
     target_directory: Path = Path("data_storage")
     prefix: Optional[str] = None
+    recreate_me: Optional[bool] = False
     cloud_storage_creds: Optional[Union[AWSCreds, AzureCreds, GCPCreds]] = None

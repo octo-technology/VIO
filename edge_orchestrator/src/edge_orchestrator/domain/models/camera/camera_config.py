@@ -19,3 +19,4 @@ class CameraConfig(BaseModel):
     position: Optional[str] = "front"
     model_forwarder_config: Optional[ModelForwarderConfig] = None
     camera_rule_config: Optional[CameraRuleConfig] = None
+    recreate_me: Optional[bool] = False
