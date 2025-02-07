@@ -46,7 +46,7 @@ class TestModelForwarderFactory:
             model_version="1",
             model_type=model_type,
             class_names=["OK", "KO"],
-            image_resolution={"width": 224, "height": 224},
+            expected_image_resolution={"width": 224, "height": 224},
         )
 
         # When

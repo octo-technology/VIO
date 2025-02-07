@@ -9,8 +9,8 @@ services:
     ports:
       - 8501:8501
     profiles: [edge]
-#    volumes:
-#      - ./edge_model_serving/models:/models
+    volumes:
+      - ./edge_model_serving/models:/models
 
   edge_orchestrator:
     container_name: edge_orchestrator
@@ -18,9 +18,12 @@ services:
       context: edge_orchestrator
       dockerfile: Dockerfile
     volumes:
-      - ./edge_orchestrator/data:/edge_orchestrator/data
-      - ./edge_orchestrator/config:/edge_orchestrator/config
-      - ./edge_orchestrator/emissions:/edge_orchestrator/emissions
+      - ./edge_orchestrator/data_storage:/edge_orchestrator/data_storage
+    devices:
+      - /dev/video0:/dev/video0
+      - /dev/video1:/dev/video1
+      - /dev/video2:/dev/video2
+      - /dev/video3:/dev/video3
     ports:
       - 8000:8000
     environment:

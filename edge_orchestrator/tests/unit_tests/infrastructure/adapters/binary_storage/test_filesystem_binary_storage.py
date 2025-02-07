@@ -109,6 +109,33 @@ class TestFileSystemBinaryStorage:
             assert actual_camera_id == expected_camera_ids[i]
             assert actual_binary == expected_picture
 
+    def test_get_item_binary_names_should_return_binary_names(self, tmp_path: Path):
+        # Given
+        target_directory = tmp_path / "binaries"
+        target_directory.mkdir()
+        storage_config = StorageConfig(target_directory=target_directory)
+        binary_storage = FileSystemBinaryStorage(storage_config)
+
+        expected_picture = bytes([0, 1, 2, 3, 4])
+        item_id = UUID("00000000-0000-0000-0000-000000000001")
+        item_storage_folder = target_directory / str(item_id)
+        item_storage_folder.mkdir()
+        with (
+            (item_storage_folder / "camera_#1.jpg").open("wb") as f1,
+            (item_storage_folder / "camera_#2.jpg").open("wb") as f2,
+        ):
+            f1.write(expected_picture)
+            f2.write(expected_picture)
+        expected_binary_names = ["camera_#1.jpg", "camera_#2.jpg"]
+
+        # When
+        actual_binary_names = binary_storage.get_item_binary_names(item_id)
+
+        # Then
+        assert len(actual_binary_names) == 2
+        for i, actual_binary in enumerate(actual_binary_names):
+            assert actual_binary == expected_binary_names[i]
+
     def test_get_item_binary_should_return_requested_binary(self, tmp_path: Path):
         # Given
         target_directory = tmp_path / "binaries"

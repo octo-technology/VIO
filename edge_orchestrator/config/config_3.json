@@ -1,15 +1,15 @@
 {
     "station_name": "config_3",
     "camera_configs": {
-        "camera_#1": {
-            "camera_id": "camera_#1",
+        "camera_1": {
+            "camera_id": "camera_1",
             "camera_type": "fake",
-            "source_directory": "/home/baptiste-ojeanson/Documents/edge_ai/fake_images",
+            "source_directory": "fake_images",
             "position": "front",
             "model_forwarder_config": {
                 "model_name": "pin_detection",
                 "model_type": "classification",
-                "image_resolution": {
+                "expected_image_resolution": {
                     "width": 224,
                     "height": 224
                 },
@@ -29,25 +29,24 @@
             },
             "recreate_me": false
         },
-        "camera_#2": {
-            "camera_id": "camera_#2",
+        "camera_2": {
+            "camera_id": "camera_2",
             "camera_type": "fake",
-            "source_directory": "/home/baptiste-ojeanson/Documents/edge_ai/fake_images",
+            "source_directory": "fake_images",
             "position": "front",
             "model_forwarder_config": {
-                "model_name": "fake_model",
+                "model_name": "mobilenet_ssd_v2_coco",
                 "model_type": "object_detection",
-                "image_resolution": {
-                    "width": 224,
-                    "height": 224
+                "expected_image_resolution": {
+                    "width": 300,
+                    "height": 300
                 },
                 "model_version": "1",
-                "class_names": [
-                    "OK",
-                    "KO"
-                ],
+                "class_names": [],
+                "class_names_filepath": "model_labels/imagenet_labels.txt",
+                "model_serving_url": "http://0.0.0.0:8501/",
                 "recreate_me": false,
-                "model_id": "fake_model_object_detection_1"
+                "model_id": "mobilenet_ssd_v2_coco_object_detection_1"
             },
             "camera_rule_config": {
                 "camera_rule_type": "min_nb_objects_rule",

@@ -27,8 +27,8 @@ class ClassifModelForwarder(IModelForwarder):
         self._model_forwarder_config = model_forwarder_config
 
     def _pre_process_binary(self, binary: bytes) -> np.ndarray:
-        width = self._model_forwarder_config.image_resolution.width
-        height = self._model_forwarder_config.image_resolution.height
+        width = self._model_forwarder_config.expected_image_resolution.width
+        height = self._model_forwarder_config.expected_image_resolution.height
         resized_image = ImageOps.fit(Image.open(io.BytesIO(binary)), (width, height), Image.Resampling.LANCZOS)
         image_array = np.asarray(resized_image)
         normalized_image_array = (image_array.astype(np.float32) / 127.0) - 1

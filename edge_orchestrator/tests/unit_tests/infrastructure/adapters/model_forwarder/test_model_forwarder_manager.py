@@ -38,7 +38,7 @@ class TestModelForwarderManager:
                         model_type=ModelType.classification,
                         model_version="1",
                         class_names=["OK", "KO"],
-                        image_resolution={"width": 224, "height": 224},
+                        expected_image_resolution={"width": 224, "height": 224},
                     ),
                 ),
                 "camera_#2": CameraConfig(
@@ -49,7 +49,7 @@ class TestModelForwarderManager:
                         model_type=ModelType.object_detection,
                         model_version="1",
                         class_names=["OK", "KO"],
-                        image_resolution={"width": 224, "height": 224},
+                        expected_image_resolution={"width": 224, "height": 224},
                     ),
                 ),
             },

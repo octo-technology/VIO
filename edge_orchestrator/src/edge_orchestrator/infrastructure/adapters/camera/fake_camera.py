@@ -22,7 +22,7 @@ class FakeCamera(ICamera):
         return self._camera_config
 
     def _select_random_image(self) -> Path:
-        source = self._camera_config.source_directory / self._camera_config.source_directory
+        source = self._camera_config.source_directory
         selected_images = []
         for extension in self._supported_image_extensions:
             selected_images += list(source.rglob(extension))

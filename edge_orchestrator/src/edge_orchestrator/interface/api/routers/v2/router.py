@@ -1,10 +1,19 @@
 from typing import Dict, List, Optional
 from uuid import UUID
 
-from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, Response
+from fastapi import (
+    APIRouter,
+    BackgroundTasks,
+    Depends,
+    HTTPException,
+    Response,
+    UploadFile,
+)
 
 from edge_orchestrator.application.config.config_manager import ConfigManager
 from edge_orchestrator.application.use_cases.supervisor import Supervisor
+from edge_orchestrator.domain.models.binary import Image
+from edge_orchestrator.domain.models.camera.camera_config import CameraConfig
 from edge_orchestrator.domain.models.item import Item
 from edge_orchestrator.domain.models.item_state import ItemState
 from edge_orchestrator.domain.models.station_config import StationConfig
@@ -20,7 +29,6 @@ from edge_orchestrator.interface.api.dependency_injection import (
     get_metadata_storage_manager,
     get_supervisor,
 )
-from edge_orchestrator.interface.api.models.item_in import ItemIn
 
 
 def home():
@@ -73,7 +81,7 @@ def get_item_binaries(
     item_id: UUID,
     binary_storage_manager: IBinaryStorageManager = Depends(get_binary_storage_manager),
     station_config: StationConfig = Depends(get_config),
-) -> List[bytes]:
+) -> Dict[str, bytes]:
     binary_storage = binary_storage_manager.get_binary_storage(station_config.binary_storage_config)
     return binary_storage.get_item_binaries(item_id)
 
@@ -98,10 +106,20 @@ def get_item_state(
 
 
 async def trigger_job(
-    item_in: ItemIn, supervisor: Supervisor = Depends(get_supervisor), background_tasks: BackgroundTasks = None
+    binaries: List[UploadFile] = [],
+    cameras_metadata: Dict[str, CameraConfig] = {},
+    supervisor: Supervisor = Depends(get_supervisor),
+    background_tasks: BackgroundTasks = None,
 ):
-    background_tasks.add_task(supervisor.inspect, item_in)
-    return {"item_id": item_in.id}
+    input_binaries = {}
+    for binary in binaries:
+        input_binaries[binary.filename] = Image(image_bytes=binary.read())
+    item = Item(
+        cameras_metadata=cameras_metadata,
+        binaries=input_binaries,
+    )
+    background_tasks.add_task(supervisor.inspect, item)
+    return {"item_id": item.id}
 
 
 router = APIRouter(prefix="/api/v1")

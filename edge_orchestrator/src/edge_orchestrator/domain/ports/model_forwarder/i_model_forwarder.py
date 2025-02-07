@@ -34,11 +34,19 @@ class IModelForwarder(ABC):
     def _post_process_prediction(self, prediction_response: Dict[str, Any]) -> Prediction:
         pass
 
+    @staticmethod
+    def _build_model_url(base_url: str, model_name: str, model_version: str) -> str:
+        if base_url.endswith("/"):
+            return f"{base_url}v1/models/{model_name}/versions/{model_version}:predict"
+        else:
+            return f"{base_url}/v1/models/{model_name}/versions/{model_version}:predict"
+
     def _get_model_url(self) -> str:
-        base_url = self._model_forwarder_config.model_serving_url
-        model_name = self._model_forwarder_config.model_name
-        model_version = self._model_forwarder_config.model_version
-        return f"{base_url}v1/models/{model_name.value}/versions/{model_version}:predict"
+        return self._build_model_url(
+            str(self._model_forwarder_config.model_serving_url),
+            self._model_forwarder_config.model_name.value,
+            self._model_forwarder_config.model_version,
+        )
 
     def _get_class_names(self) -> List[str]:
         if self._model_forwarder_config.class_names:

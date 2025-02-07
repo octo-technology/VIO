@@ -24,8 +24,10 @@ dependencies = [
     "aiohttp==3.11.11",
     "fastapi[all]==0.115.6",
     "numpy==2.2.2",
+    "opencv_python==4.11.0.86",
     "Pillow==11.1.0",
     "smart-open[all]==7.1.0",
+    "tenacity==9.0.0",
 ]
 requires-python = ">=3.10"
 
@@ -75,6 +77,6 @@ exclude = ["tests*", "data"]
 
 [tool.pytest.ini_options]
 testpaths = "tests"
-asyncio_mode="auto"
-asyncio_default_fixture_loop_scope="session"
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "session"
 norecursedirs = [".git", "venv/", ".pytest_cache/"]
