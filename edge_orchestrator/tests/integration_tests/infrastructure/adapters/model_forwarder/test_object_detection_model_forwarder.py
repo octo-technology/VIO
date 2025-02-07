@@ -60,7 +60,7 @@ class TestObjectDetectionModelForwarder:
             model_version="1",
             class_names=class_names,
             model_serving_url=setup_test_tflite_serving,
-            image_resolution=image_resolution,
+            expected_image_resolution=image_resolution,
         )
         model_fowarder = ObjectDetectionModelForwarder(model_forward_config)
 
@@ -93,7 +93,7 @@ class TestObjectDetectionModelForwarder:
             model_version="1",
             class_names=["person", "bicycle"],
             model_serving_url=setup_test_tflite_serving,
-            image_resolution=image_resolution,
+            expected_image_resolution=image_resolution,
         )
         model_fowarder = ObjectDetectionModelForwarder(model_forward_config)
         model_fowarder._get_model_url = lambda: "http://bad_url"

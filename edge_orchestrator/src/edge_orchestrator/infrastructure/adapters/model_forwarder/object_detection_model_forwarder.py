@@ -29,8 +29,8 @@ class ObjectDetectionModelForwarder(IModelForwarder):
         self._model_forwarder_config = model_forwarder_config
 
     def _pre_process_binary(self, binary: bytes) -> np.ndarray:
-        width = self._model_forwarder_config.image_resolution.width
-        height = self._model_forwarder_config.image_resolution.height
+        width = self._model_forwarder_config.expected_image_resolution.width
+        height = self._model_forwarder_config.expected_image_resolution.height
         image = Image.open(io.BytesIO(binary))
         resized_image = image.resize((width, height), Image.Resampling.LANCZOS)
         image_array = np.asarray(resized_image)

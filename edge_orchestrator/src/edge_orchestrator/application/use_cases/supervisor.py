@@ -1,6 +1,5 @@
 import logging
 
-from edge_orchestrator.domain.models.decision import Decision
 from edge_orchestrator.domain.models.item import Item
 from edge_orchestrator.domain.models.item_state import ItemState
 from edge_orchestrator.domain.models.station_config import StationConfig
@@ -20,7 +19,6 @@ from edge_orchestrator.domain.ports.metadata_storage.i_metadata_storage_manager 
 from edge_orchestrator.domain.ports.model_forwarder.i_model_forwarder_manager import (
     IModelForwarderManager,
 )
-from edge_orchestrator.interface.api.models.item_in import ItemIn
 from edge_orchestrator.utils.singleton import SingletonMeta
 
 
@@ -44,14 +42,7 @@ class Supervisor(metaclass=SingletonMeta):
         self._item_rule = item_rule_manager.get_item_rule(station_config.item_rule_config)
         self._camera_manager = camera_manager
 
-    async def inspect(self, item_in: ItemIn):
-        item = Item(
-            **item_in.model_dump(),
-            cameras_metadata={},
-            predictions={},
-            camera_decisions={},
-            decision=Decision.NO_DECISION,
-        )
+    async def inspect(self, item: Item):
         self._logger.info("Taking pictures...")
         self._camera_manager.take_pictures(item)
         item.state = ItemState.CAPTURE

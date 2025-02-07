@@ -38,7 +38,7 @@ class TestFakeModelForwarder:
             model_version="1",
             model_type=model_type,
             class_names=class_names,
-            image_resolution={"width": 224, "height": 224},
+            expected_image_resolution={"width": 224, "height": 224},
         )
         fake_model_forwarder = FakeModelForwarder(model_forwarder_config)
         fake_binary = b"fake_binary"

@@ -1,13 +1,11 @@
 import re
-from time import strptime
-from typing import Dict, Optional, Union
+from pathlib import Path
+from typing import Dict, Union
 
+import dateutil
 from behave import given
 from behave.runner import Context
 from starlette.status import HTTP_200_OK
-
-from edge_orchestrator.domain.models.decision import Decision
-from edge_orchestrator.domain.models.item_state import ItemState
 
 
 @given("the app is up and running")
@@ -26,46 +24,33 @@ def assert_metadata_almost_equal(
     ) in expected_item_metadata.items():
         if expected_item_key == "id":
             assert re.match(expected_item_value_or_pattern, actual_item_metadata[expected_item_key])
-        elif expected_item_key == "received_time":
-            assert strptime(actual_item_metadata[expected_item_key], expected_item_value_or_pattern)
-        elif expected_item_key == "inferences":
-            assert_classification_inference_almost_equal(
-                actual_item_metadata[expected_item_key], expected_item_value_or_pattern
-            )
-        elif expected_item_key == "decision":
-            assert_decision_is_valid(actual_item_metadata[expected_item_key], expected_item_value_or_pattern)
-        elif expected_item_key == "state":
-            assert_state_is_valid(actual_item_metadata[expected_item_key], expected_item_value_or_pattern)
+        elif expected_item_key == "creation_date":
+            assert dateutil.parser.isoparse(actual_item_metadata[expected_item_key])
+        elif expected_item_key == "binaries":
+            assert_binaries_almost_equal(actual_item_metadata[expected_item_key])
+        elif expected_item_key == "predictions":
+            assert_predictions_almost_equal(actual_item_metadata[expected_item_key], expected_item_value_or_pattern)
         else:
             assert expected_item_value_or_pattern == actual_item_metadata[expected_item_key]
 
 
-def assert_classification_inference_almost_equal(
-    actual_inference: Dict[str, Dict], expected_item_value_or_pattern: Dict[str, Dict]
+def assert_binaries_almost_equal(actual_binaries: Dict[str, Dict]):
+    for camera_id, binary in actual_binaries.items():
+        assert camera_id in actual_binaries
+        assert dateutil.parser.isoparse(binary["creation_date"])
+        assert Path(binary["storing_path"]).exists()
+
+
+def assert_predictions_almost_equal(
+    actual_predictions: Dict[str, Dict], expected_item_value_or_pattern: Dict[str, Dict]
 ):
-    for camera_id, cam_inferences in expected_item_value_or_pattern.items():
-        assert camera_id in actual_inference
-        for model_id, inference in cam_inferences.items():
-            assert model_id in actual_inference[camera_id]
-            assert re.match(
-                inference["full_image"]["label"],
-                actual_inference[camera_id][model_id]["full_image"]["label"],
-            )
-            assert re.match(
-                inference["full_image"]["probability"],
-                str(actual_inference[camera_id][model_id]["full_image"]["probability"]),
-            )
-
-
-def assert_state_is_valid(actual_state: str, expected_state: Optional[str] = None):
-    if expected_state:
-        assert re.match(expected_state, actual_state)
-    else:
-        assert actual_state in [state.value for state in ItemState]
-
-
-def assert_decision_is_valid(actual_decision: str, expected_decision: Optional[str] = None):
-    if expected_decision:
-        assert re.match(expected_decision, actual_decision)
-    else:
-        assert actual_decision in [decision.value for decision in Decision]
+    for camera_id, prediction in expected_item_value_or_pattern.items():
+        assert camera_id in actual_predictions
+        assert prediction["prediction_type"] == actual_predictions[camera_id]["prediction_type"]
+        if prediction["prediction_type"] == "class":
+            assert prediction["label"] == actual_predictions[camera_id]["label"]
+            assert 0 < actual_predictions[camera_id]["probability"] < 1
+        else:
+            assert len(actual_predictions[camera_id]["detected_objects"]) > 0
+            for key in ["location", "objectness", "label"]:
+                assert key in actual_predictions[camera_id]["detected_objects"]["object_1"]

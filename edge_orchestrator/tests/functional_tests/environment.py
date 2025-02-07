@@ -8,9 +8,10 @@ from behave.runner import Context
 from fastapi.testclient import TestClient
 
 sys.path.append((Path(__file__).parents[1]).resolve().as_posix())
+os.environ["TESTCONTAINERS_RYUK_DISABLED"] = "true"
 
-from helpers.container_utils import (
-    EDGE_MODEL_SERVING,
+from helpers.container_utils import (  # EDGE_MODEL_SERVING,
+    EDGE_TFLITE_SERVING_IMG,
     start_test_tf_serving,
     stop_test_container,
 )
@@ -31,21 +32,47 @@ def before_all(context: Context):
     active_config_filepath.unlink(missing_ok=True)
 
     os.environ["CONFIG_DIR"] = tmp_config_dir.as_posix()
-    os.environ["TESTCONTAINERS_RYUK_DISABLED"] = "true"
+    # (
+    #     model_serving_url,
+    #     context.tensorflow_serving_container,
+    # ) = start_test_tf_serving(
+    #     image_name=EDGE_MODEL_SERVING["image_name"],
+    #     starting_log=r"Entering the event loop ...",
+    #     env_vars={},
+    #     host_volume_path=((ROOT_REPOSITORY_PATH / EDGE_MODEL_SERVING["host_volume_path_suffix"]).as_posix()),
+    #     container_volume_path=EDGE_MODEL_SERVING["container_volume_path"],
+    # )
     (
-        context.tensorflow_serving_url,
+        model_serving_url,
         context.tensorflow_serving_container,
     ) = start_test_tf_serving(
-        image_name=EDGE_MODEL_SERVING["image_name"],
-        starting_log=r"Entering the event loop ...",
+        image_name=EDGE_TFLITE_SERVING_IMG,
+        starting_log=r"Uvicorn running on",
         env_vars={},
-        host_volume_path=((ROOT_REPOSITORY_PATH / EDGE_MODEL_SERVING["host_volume_path_suffix"]).as_posix()),
-        container_volume_path=EDGE_MODEL_SERVING["container_volume_path"],
+        tf_serving_host=os.environ.get("TFLITE_SERVING_HOST"),
+        tf_serving_port=os.environ.get("TFLITE_SERVING_PORT"),
     )
-    os.environ["SERVING_MODEL_URL"] = context.tensorflow_serving_url
     from edge_orchestrator.interface.api.main import app
 
     context.test_client = TestClient(app)
+
+    from edge_orchestrator.infrastructure.adapters.binary_storage.filesystem_binary_storage import (
+        FileSystemBinaryStorage,
+    )
+    from edge_orchestrator.infrastructure.adapters.metadata_storage.filesystem_metadata_storage import (
+        FileSystemMetadataStorage,
+    )
+
+    FileSystemBinaryStorage._get_storing_directory_path = lambda x: test_directory / "data_storage"
+    FileSystemMetadataStorage._get_storing_directory_path = lambda x: test_directory / "data_storage"
+
+    from edge_orchestrator.domain.ports.model_forwarder.i_model_forwarder import (
+        IModelForwarder,
+    )
+
+    IModelForwarder._build_model_url = (
+        lambda self, base_url, model_name, model_version: f"{model_serving_url}v1/models/{model_name}/versions/{model_version}:predict"
+    )
 
 
 def after_all(context: Context):

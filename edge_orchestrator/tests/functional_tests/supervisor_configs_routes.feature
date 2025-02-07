@@ -25,15 +25,15 @@ Feature: The client set an active configuration
 		{
 		"station_name": "config_1",
 		"camera_configs": {
-		"camera_#1": {
-		"camera_id": "camera_#1",
+		"camera_1": {
+		"camera_id": "camera_1",
 		"camera_type": "fake",
-		"source_directory": "/home/baptiste-ojeanson/Documents/edge_ai/fake_images",
+		"source_directory": "fake_images",
 		"position": "front",
 		"model_forwarder_config": {
 		"model_name": "fake_model",
 		"model_type": "classification",
-		"image_resolution": {
+		"expected_image_resolution": {
 		"width": 224,
 		"height": 224
 		},
@@ -52,15 +52,15 @@ Feature: The client set an active configuration
 		},
 		"recreate_me": false
 		},
-		"camera_#2": {
-		"camera_id": "camera_#2",
+		"camera_2": {
+		"camera_id": "camera_2",
 		"camera_type": "fake",
-		"source_directory": "/home/baptiste-ojeanson/Documents/edge_ai/fake_images",
+		"source_directory": "fake_images",
 		"position": "front",
 		"model_forwarder_config": {
 		"model_name": "fake_model",
 		"model_type": "object_detection",
-		"image_resolution": {
+		"expected_image_resolution": {
 		"width": 224,
 		"height": 224
 		},

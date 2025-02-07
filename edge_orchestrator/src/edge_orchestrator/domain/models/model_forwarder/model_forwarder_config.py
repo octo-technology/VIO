@@ -19,7 +19,7 @@ from edge_orchestrator.domain.models.model_forwarder.model_type import ModelType
 class ModelForwarderConfig(BaseModel):
     model_name: ModelName
     model_type: ModelType
-    image_resolution: ImageResolution
+    expected_image_resolution: ImageResolution
     # model_version: Optional[Version] = None
     model_version: str
     class_names: Optional[List[str]] = Field(default_factory=list)

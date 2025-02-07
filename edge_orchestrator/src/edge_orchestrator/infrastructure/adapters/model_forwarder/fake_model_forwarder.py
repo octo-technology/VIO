@@ -30,8 +30,8 @@ class FakeModelForwarder(IModelForwarder):
         self._model_forwarder_config = model_forwarder_config
 
     def _pre_process_binary(self, binary: bytes) -> np.ndarray:
-        width = self._model_forwarder_config.image_resolution.width
-        height = self._model_forwarder_config.image_resolution.height
+        width = self._model_forwarder_config.expected_image_resolution.width
+        height = self._model_forwarder_config.expected_image_resolution.height
         return np.ndarray(shape=(1, width, height, 3), dtype=np.float32, buffer=np.random.rand(1, width, height, 3))
 
     async def _predict(self, preprocessed_binary: np.ndarray) -> Dict[str, Any]:

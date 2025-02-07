@@ -1,6 +1,6 @@
 import logging
 from pathlib import Path
-from typing import Dict
+from typing import Dict, List
 from uuid import UUID
 
 from edge_orchestrator.domain.models.item import Item
@@ -30,6 +30,13 @@ class FileSystemBinaryStorage(IBinaryStorage):
         for binary_path in path.glob("*"):
             with binary_path.open("rb") as f:
                 item_binaries[binary_path.stem] = f.read()
+        return item_binaries
+
+    def get_item_binary_names(self, item_id: UUID) -> List[str]:
+        path = self._get_storing_path(item_id)
+        item_binaries = []
+        for binary_path in path.glob("*"):
+            item_binaries.append(binary_path.name)
         return item_binaries
 
     def get_item_binary(self, item_id: UUID, camera_id: str) -> bytes:

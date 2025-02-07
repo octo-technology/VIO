@@ -22,7 +22,7 @@ def client_requests_all_configurations(context: Context):
 @when("the client activates configuration '([a-zA-Z0-9-_]+)'")
 def client_set_active_configuration_as(context: Context, config_name: str):
     # TODO: update edge_interface to pass it as query param (not body!)
-    context.response = context.test_client.post(f"/api/v1/configs/active/{config_name}")
+    context.response = context.test_client.post(f"/api/v1/configs/active?station_name={config_name}")
     assert context.response.status_code == HTTP_200_OK
 
 

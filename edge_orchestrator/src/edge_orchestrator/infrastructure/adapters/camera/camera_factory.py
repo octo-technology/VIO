@@ -29,5 +29,11 @@ class CameraFactory(ICameraFactory):
             )
 
             return UsbCamera(camera_config)
+        elif camera_config.camera_type == CameraType.WEBCAM.value:
+            from edge_orchestrator.infrastructure.adapters.camera.webcam_camera import (
+                WebcamCamera,
+            )
+
+            return WebcamCamera(camera_config)
         else:
             raise ValueError(f"Camera type ({camera_config.camera_type}) is not supported.")

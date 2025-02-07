@@ -1,7 +1,7 @@
 from abc import abstractmethod
 from logging import Logger
 from pathlib import Path
-from typing import Dict
+from typing import Dict, List
 from uuid import UUID
 
 from edge_orchestrator.domain.models.item import Item
@@ -17,7 +17,11 @@ class IBinaryStorage:
         pass
 
     @abstractmethod
-    def get_item_binaries(self, item_id: UUID) -> Dict[str, bytes]:
+    def get_item_binary_names(self, item_id: UUID) -> List[str]:
+        pass
+
+    @abstractmethod
+    def get_item_binaries(self, item_id: UUID) -> Dict[str, str]:
         pass
 
     @abstractmethod

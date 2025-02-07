@@ -55,10 +55,11 @@ def start_test_tf_serving(
             container_volume_path=container_volume_path,
         )
         container.start(starting_log)
-        tf_serving_host = container.get_container_host_ip()
+        tf_serving_host = "0.0.0.0"
+        # tf_serving_host = container.get_container_host_ip()
         tf_serving_port = container.get_exposed_port(port_to_expose)
 
-    return f"http://{tf_serving_host}:{tf_serving_port}", container
+    return f"http://{tf_serving_host}:{tf_serving_port}/", container
 
 
 def stop_test_container(container: DockerContainer):

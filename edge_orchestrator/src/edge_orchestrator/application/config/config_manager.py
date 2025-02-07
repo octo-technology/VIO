@@ -4,6 +4,7 @@ import os
 from pathlib import Path
 from typing import Dict, List, Optional
 
+from fastapi import HTTPException
 from pydantic import ValidationError
 
 from edge_orchestrator.domain.models.station_config import StationConfig
@@ -74,5 +75,9 @@ class ConfigManager(metaclass=SingletonMeta):
 
     def set_config_by_name(self, station_name: str):
         if not self._is_an_existing_station_name(station_name):
-            raise ValueError(f"{station_name} is not one of existing station names: {self.get_all_config_names()}")
+            raise HTTPException(
+                status_code=422,
+                detail=f"{station_name} is not one of existing station names: {self.get_all_config_names()}",
+            )
         self._active_station_name = station_name
+        self._make_active_config_file_point_on(self._station_configs[station_name])
