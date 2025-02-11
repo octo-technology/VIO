@@ -1,9 +1,0 @@
-
-{
-    "sensor1":
-        {
-            "id": "sensor_id1",
-            "binary_filename": "picture1.jpg",
-            "metadata": {"type": "camera", "exposition": 100, "position": "right_camera"}
-        }
-}
