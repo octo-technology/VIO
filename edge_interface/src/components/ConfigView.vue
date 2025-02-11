@@ -1,9 +1,21 @@
 <template>
   <v-container>
     <v-row>
-      <v-col cols="12">
+      <v-col cols="12" md="4">
         <v-btn @click="showConfigs = true" color="primary">View All Configs</v-btn>
+      </v-col>
+      <v-col cols="12" md="4">
         <v-btn @click="showConfigs = false" color="secondary">Create New Config</v-btn>
+      </v-col>
+      <v-col cols="12" md="4">
+        <v-btn @click="triggerFileUpload" color="primary">Upload Config</v-btn>
+        <input type="file" ref="fileInput" @change="handleFileUpload" style="display: none;" />
+      </v-col>
+    </v-row>
+    <v-row v-if="fileName">
+      <v-col cols="12">
+        <p>Selected file: {{ fileName }}</p>
+        <v-btn @click="submitConfig" color="primary">Submit Config</v-btn>
       </v-col>
     </v-row>
     <v-row>
@@ -71,7 +83,7 @@
     </v-row>
     <v-row v-else>
       <v-col cols="12">
-        <new-config-form @config-submitted="fetchConfigs"></new-config-form>
+        <new-config-form ref="newConfigForm" @config-submitted="fetchConfigs"></new-config-form>
       </v-col>
     </v-row>
   </v-container>
@@ -91,7 +103,12 @@ export default {
       configs: [],
       selectedConfigs: [],
       showConfigs: true, // Boolean to toggle between viewing configs and creating a new config
-      activeConfig: {} // Object to store the active config
+      activeConfig: {}, // Object to store the active config
+      fileName: '', // Store the name of the selected file
+      snackbar: false,
+      snackbarMessage: '',
+      snackbarColor: '',
+      snackbarTimeout: 3000
     };
   },
   created() {
@@ -136,6 +153,51 @@ export default {
         })
         .catch(error => {
           console.error('Error setting active config:', error);
+        });
+    },
+    triggerFileUpload() {
+      this.$refs.fileInput.click();
+    },
+    handleFileUpload(event) {
+      const file = event.target.files[0];
+      if (file) {
+        this.fileName = file.name;
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          try {
+            const config = JSON.parse(e.target.result);
+            this.$refs.newConfigForm.newConfig = config;
+            this.snackbarMessage = 'Config loaded successfully';
+            this.snackbarColor = 'success';
+          } catch (error) {
+            this.snackbarMessage = 'Error loading config';
+            this.snackbarColor = 'error';
+            console.error('Error loading config:', error);
+          }
+          this.snackbar = true;
+        };
+        reader.readAsText(file);
+      }
+    },
+    submitConfig() {
+      const cleanedConfig = this.$refs.newConfigForm.cleanConfig(this.$refs.newConfigForm.newConfig);
+      ApiService.setActiveConfig(cleanedConfig)
+        .then(response => {
+          if (response.status === 200) {
+            this.snackbarMessage = 'Config submitted successfully';
+            this.snackbarColor = 'success';
+            this.fetchConfigs(); // Refresh the configs
+          } else {
+            this.snackbarMessage = 'Error submitting config';
+            this.snackbarColor = 'error';
+          }
+          this.snackbar = true;
+        })
+        .catch(error => {
+          this.snackbarMessage = 'Error submitting config';
+          this.snackbarColor = 'error';
+          this.snackbar = true;
+          console.error('Error submitting config:', error);
         });
     }
   }
