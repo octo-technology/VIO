@@ -6,8 +6,13 @@
         <v-btn @click="showConfigs = false" color="secondary">Create New Config</v-btn>
       </v-col>
     </v-row>
+    <v-row>
+      <v-col cols="12">
+        <h3>Active Config: {{ activeConfig.station_name || 'None' }}</h3>
+      </v-col>
+    </v-row>
     <v-row v-if="showConfigs">
-    <v-col cols="12">
+      <v-col cols="12">
         <v-select
           v-model="selectedConfigs"
           :items="configOptions"
@@ -17,21 +22,27 @@
           item-value="station_name"
         ></v-select>
       </v-col>
+    </v-row>
+    <v-row v-if="showConfigs">
       <v-col v-for="config in filteredConfigs" :key="config.station_name" cols="12" md="6">
         <v-card>
-          <v-card-title>{{ config.station_name }}</v-card-title>
+          <v-card-title>
+            {{ config.station_name }}
+            <v-btn @click="setActiveConfig(config.station_name)" small color="primary" class="ml-2">Set Active</v-btn>
+          </v-card-title>
           <v-card-text>
             <v-row>
               <v-col v-for="(cameraConfig, cameraId) in config.camera_configs" :key="cameraId" cols="12" md="6">
                 <h3>Camera: {{ cameraId }}</h3>
                 <p><strong>Camera ID:</strong> {{ cameraConfig.camera_id }}</p>
                 <p><strong>Camera Type:</strong> {{ cameraConfig.camera_type }}</p>
-                <p><strong>Source Directory:</strong> {{ cameraConfig.source_directory }}</p>
+                <p v-if="cameraConfig.source_directory"><strong>Source Directory:</strong> {{ cameraConfig.source_directory }}</p>
+                <p v-if="cameraConfig.camera_resolution"><strong>Camera Resolution:</strong> {{ cameraConfig.camera_resolution.width }}x{{ cameraConfig.camera_resolution.height }}</p>
                 <p><strong>Position:</strong> {{ cameraConfig.position }}</p>
                 <h4>Model Forwarder Config</h4>
                 <p><strong>Model Name:</strong> {{ cameraConfig.model_forwarder_config.model_name }}</p>
                 <p><strong>Model Type:</strong> {{ cameraConfig.model_forwarder_config.model_type }}</p>
-                <p><strong>Image Resolution:</strong> {{ cameraConfig.model_forwarder_config.image_resolution.width }}x{{ cameraConfig.model_forwarder_config.image_resolution.height }}</p>
+                <p><strong>Expected Image Resolution:</strong> {{ cameraConfig.model_forwarder_config.expected_image_resolution.width }}x{{ cameraConfig.model_forwarder_config.expected_image_resolution.height }}</p>
                 <p><strong>Model Version:</strong> {{ cameraConfig.model_forwarder_config.model_version }}</p>
                 <p><strong>Class Names:</strong> {{ cameraConfig.model_forwarder_config.class_names.join(', ') }}</p>
                 <p><strong>Model Serving URL:</strong> {{ cameraConfig.model_forwarder_config.model_serving_url }}</p>
@@ -79,11 +90,13 @@ export default {
     return {
       configs: [],
       selectedConfigs: [],
-      showConfigs: true // Boolean to toggle between viewing configs and creating a new config
+      showConfigs: true, // Boolean to toggle between viewing configs and creating a new config
+      activeConfig: {} // Object to store the active config
     };
   },
   created() {
     this.fetchConfigs();
+    this.fetchActiveConfig();
   },
   computed: {
     configOptions() {
@@ -103,6 +116,26 @@ export default {
         .catch(error => {
           console.error('Error fetching configs:', error);
           this.configs = [];
+        });
+    },
+    fetchActiveConfig() {
+      ApiService.getActiveConfig()
+        .then(response => {
+          this.activeConfig = response.data;
+        })
+        .catch(error => {
+          console.error('Error fetching active config:', error);
+          this.activeConfig = {};
+        });
+    },
+    setActiveConfig(stationName) {
+      ApiService.setActiveConfigByName(stationName)
+        .then(response => {
+          console.log('Active config set successfully:', response.data);
+          this.fetchActiveConfig(); // Refresh the active config
+        })
+        .catch(error => {
+          console.error('Error setting active config:', error);
         });
     }
   }

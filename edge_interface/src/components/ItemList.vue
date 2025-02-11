@@ -16,7 +16,7 @@
               <p>Position: {{ camera.position }}</p>
               <p>Model: {{ camera.model_forwarder_config.model_name }}</p>
               <p>Model Type: {{ camera.model_forwarder_config.model_type }}</p>
-              <p>Resolution: {{ camera.model_forwarder_config.image_resolution.width }}x{{ camera.model_forwarder_config.image_resolution.height }}</p>
+              <p>Resolution: {{ camera.model_forwarder_config.expected_image_resolution.width }}x{{ camera.model_forwarder_config.expected_image_resolution.height }}</p>
               <p>Version: {{ camera.model_forwarder_config.model_version }}</p>
               <p>Rule: {{ camera.camera_rule_config.camera_rule_type }}</p>
               <p>Decision: {{ item.camera_decisions[camera.camera_id] }}</p>
