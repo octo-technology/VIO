@@ -41,5 +41,14 @@ export default {
   },
   getConfigs() {
     return apiClient.get('/configs');
+  },
+  getActiveConfig() {
+    return apiClient.get('/configs/active');
+  },
+  setActiveConfig(config) {
+    return apiClient.post('/configs/active', config);
+  },
+  setActiveConfigByName(stationName) {
+    return apiClient.post('/configs/active?station_name='+stationName);
   }
 };
