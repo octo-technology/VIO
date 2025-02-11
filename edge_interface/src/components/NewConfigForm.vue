@@ -197,36 +197,9 @@ export default {
       newConfig: {
         station_name: '',
         camera_configs: {},
-        binary_storage_config: {
-          storage_type: 'filesystem',
-          target_directory: 'data_storage',
-          prefix: '',
-          recreate_me: false,
-          cloud_storage_creds: {
-            aws_access_key_id: '',
-            aws_secret_access_key: '',
-            aws_session_token: '',
-            bucket_name: ''
-          }
-        },
-        metadata_storage_config: {
-          storage_type: 'filesystem',
-          target_directory: 'data_storage',
-          prefix: '',
-          recreate_me: false,
-          cloud_storage_creds: {
-            aws_access_key_id: '',
-            aws_secret_access_key: '',
-            aws_session_token: '',
-            bucket_name: ''
-          }
-        },
-        item_rule_config: {
-          item_rule_type: 'min_threshold_ratio_rule',
-          expected_decision: 'KO',
-          threshold: 0,
-          recreate_me: false
-        }
+        binary_storage_config: {},
+        metadata_storage_config: {},
+        item_rule_config: {}
       },
       cameraTypes: ['fake', 'usb', 'raspberry', 'webcam'],
       modelTypes: ['fake', 'classification', 'object_detection', 'segmentation'],
@@ -239,19 +212,50 @@ export default {
       showBinaryPrefix: false,
       showMetadataPrefix: false,
       showAddCameraDialog: false,
-      newCameraId: ''
+      newCameraId: '',
+      snackbar: false,
+      snackbarMessage: '',
+      snackbarColor: '',
+      snackbarTimeout: 3000
     };
   },
   methods: {
     submitConfig() {
-      ApiService.setActiveConfig(this.newConfig)
+      const cleanedConfig = this.cleanConfig(this.newConfig);
+      ApiService.setActiveConfig(cleanedConfig)
         .then(response => {
-          console.log('Config submitted successfully:', response.data);
+          if (response.status === 200) {
+            this.snackbarMessage = 'Config submitted successfully';
+            this.snackbarColor = 'success';
+          } else {
+            this.snackbarMessage = 'Error submitting config';
+            this.snackbarColor = 'error';
+          }
+          this.snackbar = true;
           this.$emit('config-submitted'); // Emit an event to notify the parent component
         })
         .catch(error => {
+          this.snackbarMessage = 'Error submitting config';
+          this.snackbarColor = 'error';
+          this.snackbar = true;
           console.error('Error submitting config:', error);
         });
+    },
+    cleanConfig(config) {
+      if (Array.isArray(config)) {
+        return config.map(item => this.cleanConfig(item));
+      } else if (typeof config === 'object' && config !== null) {
+        return Object.keys(config).reduce((acc, key) => {
+          const value = this.cleanConfig(config[key]);
+          if (value !== '' && value !== null && value !== undefined) {
+            acc[key] = value;
+          } else if (value === '') {
+            acc[key] = null;
+          }
+          return acc;
+        }, {});
+      }
+      return config;
     },
     addCameraConfig() {
       if (!this.newCameraId) {
@@ -271,16 +275,12 @@ export default {
           },
           model_version: '1',
           class_names: ['OK', 'KO'],
-          class_names_filepath: '',
           model_serving_url: 'http://edge_model_serving:8501/',
           recreate_me: false
         },
         camera_rule_config: {
           camera_rule_type: 'expected_label_rule',
-          expected_class: '',
-          unexpected_class: '',
-          class_to_detect: '',
-          threshold: 1,
+          expected_class: 'OK',
           recreate_me: false
         },
         recreate_me: false
