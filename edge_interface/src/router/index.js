@@ -1,9 +1,9 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import AllItems from '@/components/AllItems.vue';
-import ItemDetail from '@/components/ItemDetail.vue';
-import TriggerView from '@/components/TriggerView.vue';
 import ConfigView from '@/components/ConfigView.vue';
+import ItemDetailView from '@/components/ItemDetailView.vue';
+import TriggerView from '@/components/TriggerView.vue';
+import AllItemsView from '@/components/AllItemsView.vue';
 
 Vue.use(Router);
 
@@ -12,13 +12,13 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'AllItems',
-      component: AllItems
+      name: 'AllItemsView',
+      component: AllItemsView
     },
     {
       path: '/item/:id',
-      name: 'ItemDetail',
-      component: ItemDetail
+      name: 'ItemDetailView',
+      component: ItemDetailView
     },
     {
       path: '/trigger',
@@ -27,7 +27,8 @@ export default new Router({
     },
     {
       path: '/configs',
-      component: ConfigView,
+      name: 'ConfigView',
+      component: ConfigView
     }
   ]
 });
