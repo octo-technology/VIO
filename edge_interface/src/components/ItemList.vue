@@ -53,6 +53,7 @@ export default {
         })
         .catch(error => {
           console.error('Error fetching items:', error);
+this.$emit('error', error);
         });
     },
     goToItemDetail(itemId) {

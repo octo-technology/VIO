@@ -26,6 +26,17 @@ const apiClient = axios.create({
   }
 });
 
+apiClient.interceptors.response.use(
+  response => response,
+  error => {
+    if (!error.response) {
+      // Network error (e.g., backend is not available)
+      error.message = 'Backend is not available. Please start or check the backend.';
+    }
+    return Promise.reject(error);
+  }
+);
+
 export default {
   getItems() {
     return apiClient.get('/items');
@@ -49,6 +60,6 @@ export default {
     return apiClient.post('/configs/active', config);
   },
   setActiveConfigByName(stationName) {
-    return apiClient.post('/configs/active?station_name='+stationName);
+    return apiClient.post('/configs/active?station_name=' + stationName);
   }
 };
