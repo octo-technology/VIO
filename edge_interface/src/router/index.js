@@ -27,8 +27,7 @@ export default new Router({
     },
     {
       path: '/configs',
-      name: 'ConfigView',
-      component: ConfigView
+      component: ConfigView,
     }
   ]
 });

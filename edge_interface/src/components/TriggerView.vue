@@ -17,6 +17,14 @@
         </v-card>
       </v-col>
     </v-row>
+    <v-row v-if="snackbar">
+      <v-col cols="12">
+        <v-alert :type="snackbarColor" :value="snackbar" dismissible @input="snackbar = false">
+          {{ snackbarMessage }}
+          <v-progress-linear v-if="snackbarColor === 'success'" :value="progress" height="4"></v-progress-linear>
+        </v-alert>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
@@ -27,7 +35,12 @@ export default {
   name: 'TriggerView',
   data() {
     return {
-      itemId: null
+      itemId: null,
+      snackbar: false,
+      snackbarMessage: '',
+      snackbarColor: '',
+      snackbarTimeout: 3000,
+      progress: 0
     };
   },
   methods: {
@@ -36,10 +49,29 @@ export default {
         .then(response => {
           console.log('API triggered successfully:', response);
           this.itemId = response.data.item_id;
+          this.snackbarMessage = 'API triggered successfully';
+          this.snackbarColor = 'success';
+          this.snackbar = true;
+          this.dismissCountDown();
         })
         .catch(error => {
           console.error('Error triggering API:', error);
+          this.snackbarMessage = error.message || 'Error triggering API';
+          this.snackbarColor = 'error';
+          this.snackbar = true;
         });
+    },
+    dismissCountDown() {
+      this.progress = 100;
+      const interval = 100; // Update every 100ms
+      const decrement = 100 / (this.snackbarTimeout / interval);
+      const timer = setInterval(() => {
+        this.progress -= decrement;
+        if (this.progress <= 0) {
+          clearInterval(timer);
+          this.snackbar = false;
+        }
+      }, interval);
     },
     goToItemDetail() {
       this.$router.push({ name: 'ItemDetail', params: { id: this.itemId } });
