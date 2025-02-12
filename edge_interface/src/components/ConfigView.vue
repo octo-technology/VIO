@@ -1,109 +1,61 @@
 <template>
-  <v-container>
-    <v-row>
-      <v-col cols="12" md="4">
-        <v-btn @click="showConfigs = true" color="primary">View All Configs</v-btn>
-      </v-col>
-      <v-col cols="12" md="4">
-        <v-btn @click="showConfigs = false" color="secondary">Create New Config</v-btn>
-      </v-col>
-      <v-col cols="12" md="4">
-        <v-btn @click="triggerFileUpload" color="primary">Upload Config</v-btn>
-        <input type="file" ref="fileInput" @change="handleFileUpload" style="display: none;" />
-      </v-col>
-    </v-row>
-    <v-row v-if="fileName">
-      <v-col cols="12">
-        <p>Selected file: {{ fileName }}</p>
-        <v-btn @click="submitConfig" color="primary">Submit Config</v-btn>
-      </v-col>
-    </v-row>
-    <v-row>
-      <v-col cols="12">
-        <h3>Active Config: {{ activeConfig.station_name || 'None' }}</h3>
-      </v-col>
-    </v-row>
-    <v-row v-if="showConfigs">
-      <v-col cols="12">
-        <v-select
-          v-model="selectedConfigs"
-          :items="configOptions"
-          label="Select Configs"
-          multiple
-          item-text="station_name"
-          item-value="station_name"
-        ></v-select>
-      </v-col>
-    </v-row>
-    <v-row v-if="showConfigs">
-      <v-col v-for="config in filteredConfigs" :key="config.station_name" cols="12" md="6">
-        <v-card>
-          <v-card-title>
-            {{ config.station_name }}
-            <v-btn @click="setActiveConfig(config.station_name)" small color="primary" class="ml-2">Set Active</v-btn>
-          </v-card-title>
-          <v-card-text>
-            <v-row>
-              <v-col v-for="(cameraConfig, cameraId) in config.camera_configs" :key="cameraId" cols="12" md="6">
-                <h3>Camera: {{ cameraId }}</h3>
-                <p><strong>Camera ID:</strong> {{ cameraConfig.camera_id }}</p>
-                <p><strong>Camera Type:</strong> {{ cameraConfig.camera_type }}</p>
-                <p v-if="cameraConfig.source_directory"><strong>Source Directory:</strong> {{ cameraConfig.source_directory }}</p>
-                <p v-if="cameraConfig.camera_resolution"><strong>Camera Resolution:</strong> {{ cameraConfig.camera_resolution.width }}x{{ cameraConfig.camera_resolution.height }}</p>
-                <p><strong>Position:</strong> {{ cameraConfig.position }}</p>
-                <h4>Model Forwarder Config</h4>
-                <p><strong>Model Name:</strong> {{ cameraConfig.model_forwarder_config.model_name }}</p>
-                <p><strong>Model Type:</strong> {{ cameraConfig.model_forwarder_config.model_type }}</p>
-                <p><strong>Expected Image Resolution:</strong> {{ cameraConfig.model_forwarder_config.expected_image_resolution.width }}x{{ cameraConfig.model_forwarder_config.expected_image_resolution.height }}</p>
-                <p><strong>Model Version:</strong> {{ cameraConfig.model_forwarder_config.model_version }}</p>
-                <p><strong>Class Names:</strong> {{ cameraConfig.model_forwarder_config.class_names.join(', ') }}</p>
-                <p><strong>Model Serving URL:</strong> {{ cameraConfig.model_forwarder_config.model_serving_url }}</p>
-                <p><strong>Model ID:</strong> {{ cameraConfig.model_forwarder_config.model_id }}</p>
-                <h4>Camera Rule Config</h4>
-                <pre>{{ cameraConfig.camera_rule_config }}</pre>
-              </v-col>
-            </v-row>
-            <v-divider></v-divider>
-            <v-row>
-              <v-col cols="12" md="6">
-                <h4>Binary Storage Config</h4>
-                <pre>{{ config.binary_storage_config }}</pre>
-              </v-col>
-              <v-col cols="12" md="6">
-                <h4>Metadata Storage Config</h4>
-                <pre>{{ config.metadata_storage_config }}</pre>
-              </v-col>
-            </v-row>
-            <v-divider></v-divider>
-            <h4>Item Rule Config</h4>
-            <pre>{{ config.item_rule_config }}</pre>
-          </v-card-text>
-        </v-card>
-      </v-col>
-    </v-row>
-    <v-row v-else>
-      <v-col cols="12">
-        <new-config-form ref="newConfigForm" @config-submitted="fetchConfigs"></new-config-form>
-      </v-col>
-    </v-row>
-  </v-container>
+  <v-app>
+    <v-navigation-drawer app v-model="drawer" permanent right>
+      <v-list dense>
+        <v-list-item @click="showConfigs = true; showActiveConfig = false; showNewConfig = false" :class="{ active: showConfigs && !showActiveConfig && !showNewConfig }">
+          <v-list-item-title>View All Configs</v-list-item-title>
+        </v-list-item>
+        <v-list-item @click="showConfigs = false; showActiveConfig = false; showNewConfig = true" :class="{ active: showNewConfig }">
+          <v-list-item-title>Create New Config</v-list-item-title>
+        </v-list-item>
+        <v-list-item @click="triggerFileUpload">
+          <v-list-item-title>Upload Config</v-list-item-title>
+        </v-list-item>
+        <v-list-item @click="showConfigs = false; showActiveConfig = true; showNewConfig = false" :class="{ active: showActiveConfig }">
+          <v-list-item-title>Active Config</v-list-item-title>
+        </v-list-item>
+      </v-list>
+    </v-navigation-drawer>
+
+    <v-main>
+      <v-container>
+        <v-row v-if="fileName">
+          <v-col cols="12">
+            <p>Selected file: {{ fileName }}</p>
+            <v-btn @click="submitConfig" color="primary">Submit Config</v-btn>
+          </v-col>
+        </v-row>
+        <active-config-view v-if="showActiveConfig"></active-config-view>
+        <all-configs-view v-if="showConfigs" @active-config-updated="fetchActiveConfig"></all-configs-view>
+        <v-row v-else-if="showNewConfig">
+          <v-col cols="12">
+            <new-config-view ref="newConfig" @config-submitted="fetchConfigs"></new-config-view>
+          </v-col>
+        </v-row>
+      </v-container>
+    </v-main>
+  </v-app>
 </template>
 
 <script>
 import ApiService from '@/services/ApiService.js';
-import NewConfigForm from './NewConfigForm.vue';
+import NewConfigView from './NewConfigView.vue';
+import ActiveConfigView from './ActiveConfigView.vue';
+import AllConfigsView from './AllConfigsView.vue';
 
 export default {
   name: 'ConfigView',
   components: {
-    NewConfigForm
+    NewConfigView,
+    ActiveConfigView,
+    AllConfigsView
   },
   data() {
     return {
-      configs: [],
-      selectedConfigs: [],
+      drawer: true, // Set drawer to true to display it by default
       showConfigs: true, // Boolean to toggle between viewing configs and creating a new config
-      activeConfig: {}, // Object to store the active config
+      showActiveConfig: false, // Boolean to toggle between viewing active config
+      showNewConfig: false, // Boolean to toggle between creating a new config
       fileName: '', // Store the name of the selected file
       snackbar: false,
       snackbarMessage: '',
@@ -111,50 +63,7 @@ export default {
       snackbarTimeout: 3000
     };
   },
-  created() {
-    this.fetchConfigs();
-    this.fetchActiveConfig();
-  },
-  computed: {
-    configOptions() {
-      return this.configs.map(config => config.station_name);
-    },
-    filteredConfigs() {
-      return this.configs.filter(config => this.selectedConfigs.includes(config.station_name));
-    }
-  },
   methods: {
-    fetchConfigs() {
-      ApiService.getConfigs()
-        .then(response => {
-          // Transform the response data to an array of configs
-          this.configs = Object.values(response.data);
-        })
-        .catch(error => {
-          console.error('Error fetching configs:', error);
-          this.configs = [];
-        });
-    },
-    fetchActiveConfig() {
-      ApiService.getActiveConfig()
-        .then(response => {
-          this.activeConfig = response.data;
-        })
-        .catch(error => {
-          console.error('Error fetching active config:', error);
-          this.activeConfig = {};
-        });
-    },
-    setActiveConfig(stationName) {
-      ApiService.setActiveConfigByName(stationName)
-        .then(response => {
-          console.log('Active config set successfully:', response.data);
-          this.fetchActiveConfig(); // Refresh the active config
-        })
-        .catch(error => {
-          console.error('Error setting active config:', error);
-        });
-    },
     triggerFileUpload() {
       this.$refs.fileInput.click();
     },
@@ -166,7 +75,7 @@ export default {
         reader.onload = (e) => {
           try {
             const config = JSON.parse(e.target.result);
-            this.$refs.newConfigForm.newConfig = config;
+            this.$refs.newConfig.NewConfig = config;
             this.snackbarMessage = 'Config loaded successfully';
             this.snackbarColor = 'success';
           } catch (error) {
@@ -180,13 +89,13 @@ export default {
       }
     },
     submitConfig() {
-      const cleanedConfig = this.$refs.newConfigForm.cleanConfig(this.$refs.newConfigForm.newConfig);
+      const cleanedConfig = this.$refs.newConfig.cleanConfig(this.$refs.newConfig.NewConfig);
       ApiService.setActiveConfig(cleanedConfig)
         .then(response => {
           if (response.status === 200) {
             this.snackbarMessage = 'Config submitted successfully';
             this.snackbarColor = 'success';
-            this.fetchConfigs(); // Refresh the configs
+            this.$refs.allConfigs.fetchConfigs(); // Refresh the configs
           } else {
             this.snackbarMessage = 'Error submitting config';
             this.snackbarColor = 'error';
@@ -205,5 +114,7 @@ export default {
 </script>
 
 <style scoped>
-/* Add any necessary styles here */
+.active {
+  background-color: rgba(0, 0, 0, 0.08);
+}
 </style>

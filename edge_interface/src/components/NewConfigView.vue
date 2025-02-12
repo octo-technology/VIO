@@ -1,9 +1,9 @@
 <template>
   <v-form @submit.prevent="submitConfig">
-    <v-text-field v-model="newConfig.station_name" label="Station Name" required></v-text-field>
+    <v-text-field v-model="NewConfig.station_name" label="Station Name" required></v-text-field>
     <v-divider></v-divider>
     <h4>Camera Configs</h4>
-    <div v-for="(cameraConfig, cameraId) in newConfig.camera_configs" :key="cameraId">
+    <div v-for="(cameraConfig, cameraId) in NewConfig.camera_configs" :key="cameraId">
       <v-row>
         <v-col cols="12" md="6">
           <v-text-field v-model="cameraConfig.camera_id" label="Camera ID" required></v-text-field>
@@ -106,66 +106,66 @@
     <v-btn @click="showAddCameraDialog = true" color="primary" small>+ Add Camera</v-btn>
     <h4>Binary Storage Config</h4>
     <v-select
-      v-model="newConfig.binary_storage_config.storage_type"
+      v-model="NewConfig.binary_storage_config.storage_type"
       :items="storageTypes"
       label="Storage Type"
       required
     ></v-select>
-    <v-text-field v-model="newConfig.binary_storage_config.target_directory" label="Target Directory" required></v-text-field>
+    <v-text-field v-model="NewConfig.binary_storage_config.target_directory" label="Target Directory" required></v-text-field>
     <v-btn @click="toggleBinaryPrefix" color="primary" small>
       {{ showBinaryPrefix ? 'Remove' : 'Add' }} Prefix
     </v-btn>
     <div v-if="showBinaryPrefix">
-      <v-text-field v-model="newConfig.binary_storage_config.prefix" label="Prefix"></v-text-field>
+      <v-text-field v-model="NewConfig.binary_storage_config.prefix" label="Prefix"></v-text-field>
     </div>
-    <v-switch v-model="newConfig.binary_storage_config.recreate_me" label="Recreate Me"></v-switch>
+    <v-switch v-model="NewConfig.binary_storage_config.recreate_me" label="Recreate Me"></v-switch>
     <v-btn @click="toggleBinaryCloudStorage" color="primary" small>
       {{ showBinaryCloudStorage ? 'Remove' : 'Add' }} Cloud Storage Credentials
     </v-btn>
     <div v-if="showBinaryCloudStorage">
       <h5>Cloud Storage Credentials</h5>
-      <v-text-field v-model="newConfig.binary_storage_config.cloud_storage_creds.aws_access_key_id" label="AWS Access Key ID"></v-text-field>
-      <v-text-field v-model="newConfig.binary_storage_config.cloud_storage_creds.aws_secret_access_key" label="AWS Secret Access Key"></v-text-field>
-      <v-text-field v-model="newConfig.binary_storage_config.cloud_storage_creds.aws_session_token" label="AWS Session Token"></v-text-field>
-      <v-text-field v-model="newConfig.binary_storage_config.cloud_storage_creds.bucket_name" label="Bucket Name"></v-text-field>
+      <v-text-field v-model="NewConfig.binary_storage_config.cloud_storage_creds.aws_access_key_id" label="AWS Access Key ID"></v-text-field>
+      <v-text-field v-model="NewConfig.binary_storage_config.cloud_storage_creds.aws_secret_access_key" label="AWS Secret Access Key"></v-text-field>
+      <v-text-field v-model="NewConfig.binary_storage_config.cloud_storage_creds.aws_session_token" label="AWS Session Token"></v-text-field>
+      <v-text-field v-model="NewConfig.binary_storage_config.cloud_storage_creds.bucket_name" label="Bucket Name"></v-text-field>
     </div>
     <v-divider></v-divider>
     <h4>Metadata Storage Config</h4>
     <v-select
-      v-model="newConfig.metadata_storage_config.storage_type"
+      v-model="NewConfig.metadata_storage_config.storage_type"
       :items="storageTypes"
       label="Storage Type"
       required
     ></v-select>
-    <v-text-field v-model="newConfig.metadata_storage_config.target_directory" label="Target Directory" required></v-text-field>
+    <v-text-field v-model="NewConfig.metadata_storage_config.target_directory" label="Target Directory" required></v-text-field>
     <v-btn @click="toggleMetadataPrefix" color="primary" small>
       {{ showMetadataPrefix ? 'Remove' : 'Add' }} Prefix
     </v-btn>
     <div v-if="showMetadataPrefix">
-      <v-text-field v-model="newConfig.metadata_storage_config.prefix" label="Prefix"></v-text-field>
+      <v-text-field v-model="NewConfig.metadata_storage_config.prefix" label="Prefix"></v-text-field>
     </div>
-    <v-switch v-model="newConfig.metadata_storage_config.recreate_me" label="Recreate Me"></v-switch>
+    <v-switch v-model="NewConfig.metadata_storage_config.recreate_me" label="Recreate Me"></v-switch>
     <v-btn @click="toggleMetadataCloudStorage" color="primary" small>
       {{ showMetadataCloudStorage ? 'Remove' : 'Add' }} Cloud Storage Credentials
     </v-btn>
     <div v-if="showMetadataCloudStorage">
       <h5>Cloud Storage Credentials</h5>
-      <v-text-field v-model="newConfig.metadata_storage_config.cloud_storage_creds.aws_access_key_id" label="AWS Access Key ID"></v-text-field>
-      <v-text-field v-model="newConfig.metadata_storage_config.cloud_storage_creds.aws_secret_access_key" label="AWS Secret Access Key"></v-text-field>
-      <v-text-field v-model="newConfig.metadata_storage_config.cloud_storage_creds.aws_session_token" label="AWS Session Token"></v-text-field>
-      <v-text-field v-model="newConfig.metadata_storage_config.cloud_storage_creds.bucket_name" label="Bucket Name"></v-text-field>
+      <v-text-field v-model="NewConfig.metadata_storage_config.cloud_storage_creds.aws_access_key_id" label="AWS Access Key ID"></v-text-field>
+      <v-text-field v-model="NewConfig.metadata_storage_config.cloud_storage_creds.aws_secret_access_key" label="AWS Secret Access Key"></v-text-field>
+      <v-text-field v-model="NewConfig.metadata_storage_config.cloud_storage_creds.aws_session_token" label="AWS Session Token"></v-text-field>
+      <v-text-field v-model="NewConfig.metadata_storage_config.cloud_storage_creds.bucket_name" label="Bucket Name"></v-text-field>
     </div>
     <v-divider></v-divider>
     <h4>Item Rule Config</h4>
     <v-select
-      v-model="newConfig.item_rule_config.item_rule_type"
+      v-model="NewConfig.item_rule_config.item_rule_type"
       :items="itemRuleTypes"
       label="Item Rule Type"
       required
     ></v-select>
-    <v-text-field v-model="newConfig.item_rule_config.expected_decision" label="Expected Decision" required></v-text-field>
-    <v-text-field v-model="newConfig.item_rule_config.threshold" label="Threshold" required></v-text-field>
-    <v-switch v-model="newConfig.item_rule_config.recreate_me" label="Recreate Me"></v-switch>
+    <v-text-field v-model="NewConfig.item_rule_config.expected_decision" label="Expected Decision" required></v-text-field>
+    <v-text-field v-model="NewConfig.item_rule_config.threshold" label="Threshold" required></v-text-field>
+    <v-switch v-model="NewConfig.item_rule_config.recreate_me" label="Recreate Me"></v-switch>
     <v-btn type="submit" color="primary">Submit</v-btn>
 
     <!-- Add Camera Dialog -->
@@ -191,10 +191,10 @@
 import ApiService from '@/services/ApiService.js';
 
 export default {
-  name: 'NewConfigForm',
+  name: 'NewConfig',
   data() {
     return {
-      newConfig: {
+      NewConfig: {
         station_name: '',
         camera_configs: {},
         binary_storage_config: {},
@@ -221,7 +221,7 @@ export default {
   },
   methods: {
     submitConfig() {
-      const cleanedConfig = this.cleanConfig(this.newConfig);
+      const cleanedConfig = this.cleanConfig(this.NewConfig);
       ApiService.setActiveConfig(cleanedConfig)
         .then(response => {
           if (response.status === 200) {
@@ -285,18 +285,18 @@ export default {
         },
         recreate_me: false
       };
-      this.$set(this.newConfig.camera_configs, this.newCameraId, newCameraConfig);
+      this.$set(this.NewConfig.camera_configs, this.newCameraId, newCameraConfig);
       this.newCameraId = '';
       this.showAddCameraDialog = false;
     },
     removeCameraConfig(cameraId) {
-      this.$delete(this.newConfig.camera_configs, cameraId);
+      this.$delete(this.NewConfig.camera_configs, cameraId);
     },
     addClassName(cameraId) {
-      this.newConfig.camera_configs[cameraId].model_forwarder_config.class_names.push('');
+      this.NewConfig.camera_configs[cameraId].model_forwarder_config.class_names.push('');
     },
     removeClassName(cameraId, index) {
-      this.newConfig.camera_configs[cameraId].model_forwarder_config.class_names.splice(index, 1);
+      this.NewConfig.camera_configs[cameraId].model_forwarder_config.class_names.splice(index, 1);
     },
     toggleBinaryCloudStorage() {
       this.showBinaryCloudStorage = !this.showBinaryCloudStorage;
@@ -305,7 +305,7 @@ export default {
       this.showMetadataCloudStorage = !this.showMetadataCloudStorage;
     },
     toggleClassNamesFilepath(cameraId) {
-      this.$set(this.newConfig.camera_configs[cameraId], 'showClassNamesFilepath', !this.newConfig.camera_configs[cameraId].showClassNamesFilepath);
+      this.$set(this.NewConfig.camera_configs[cameraId], 'showClassNamesFilepath', !this.NewConfig.camera_configs[cameraId].showClassNamesFilepath);
     },
     toggleBinaryPrefix() {
       this.showBinaryPrefix = !this.showBinaryPrefix;
