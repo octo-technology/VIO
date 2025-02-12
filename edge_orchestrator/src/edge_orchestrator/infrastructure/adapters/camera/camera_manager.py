@@ -18,8 +18,10 @@ class CameraManager(ICameraManager):
         self._camera_factory = camera_factory
         self._cameras: Dict[str, ICamera] = {}
         self._logger = logging.getLogger(__name__)
+        self._camera_configs: Dict[str, CameraConfig] = {}
 
     def create_cameras(self, station_config: StationConfig):
+        self._camera_configs = station_config.camera_configs
         for camera_id, camera_config in station_config.camera_configs.items():
             if camera_id not in self._cameras or camera_config.recreate_me:
                 camera = self._camera_factory.create_camera(camera_config)
@@ -31,8 +33,8 @@ class CameraManager(ICameraManager):
 
         binaries: Dict[str, bytes] = {}
         cameras_metadata: Dict[str, CameraConfig] = {}
-        for camera_id, camera in self._cameras.items():
-            binaries[camera_id] = camera.capture()
-            cameras_metadata[camera_id] = camera.get_camera_config()
+        for camera_id, camera_config in self._camera_configs.items():
+            binaries[camera_id] = self._cameras[camera_id].capture()
+            cameras_metadata[camera_id] = camera_config
         item.binaries = binaries
         item.cameras_metadata = cameras_metadata

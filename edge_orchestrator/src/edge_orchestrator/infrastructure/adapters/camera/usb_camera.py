@@ -21,6 +21,3 @@ class UsbCamera(ICamera):
         cmd_feedback = subprocess.run([cmd], shell=True)
         self._logger.info(f"Camera exit code: {cmd_feedback.returncode}")
         return Image(image_bytes=Path(img_save_path).open("rb").read())
-
-    def get_camera_config(self) -> CameraConfig:
-        return self._camera_config

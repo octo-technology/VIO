@@ -20,7 +20,7 @@ ROOT_REPOSITORY_PATH = Path(__file__).parents[3]
 
 
 def before_all(context: Context):
-    config_directory = Path(__file__).parents[2] / "config"
+    config_directory = Path(__file__).parents[1] / "config"
 
     context.tmp_dir = tempfile.TemporaryDirectory()
     test_directory = Path(context.tmp_dir.name)
@@ -28,8 +28,6 @@ def before_all(context: Context):
     tmp_config_dir = test_directory / "config"
 
     copytree(config_directory.as_posix(), tmp_config_dir.as_posix())
-    active_config_filepath = tmp_config_dir / "active_station_config.json"
-    active_config_filepath.unlink(missing_ok=True)
 
     os.environ["CONFIG_DIR"] = tmp_config_dir.as_posix()
     # (
