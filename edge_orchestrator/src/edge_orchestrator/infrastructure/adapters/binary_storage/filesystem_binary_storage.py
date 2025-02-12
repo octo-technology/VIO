@@ -3,6 +3,8 @@ from pathlib import Path
 from typing import Dict, List
 from uuid import UUID
 
+from fastapi import HTTPException
+
 from edge_orchestrator.domain.models.item import Item
 from edge_orchestrator.domain.models.storage.storage_config import StorageConfig
 from edge_orchestrator.domain.ports.binary_storage.i_binary_storage import (
@@ -41,6 +43,9 @@ class FileSystemBinaryStorage(IBinaryStorage):
 
     def get_item_binary(self, item_id: UUID, camera_id: str) -> bytes:
         filepath = self._get_storing_path(item_id) / f"{camera_id}.jpg"
+        # TODO: test with non existing item binary
+        if not filepath.exists():
+            raise HTTPException(status_code=400, detail=f"The item {item_id} has no binary for {camera_id}")
         with filepath.open("rb") as f:
             return f.read()
 

@@ -26,6 +26,3 @@ class RaspberryPiCamera(ICamera):
         self.pi_camera.capture(stream, "jpeg")
         stream.seek(0)
         return Image(image_bytes=stream.read())
-
-    def get_camera_config(self) -> CameraConfig:
-        return self._camera_config

@@ -3,6 +3,7 @@ import logging
 from pathlib import Path
 from uuid import UUID
 
+from fastapi import HTTPException
 from pydantic import ValidationError
 
 from edge_orchestrator.domain.models.item import Item
@@ -27,6 +28,9 @@ class FileSystemMetadataStorage(IMetadataStorage):
 
     def get_item_metadata(self, item_id: UUID) -> Item:
         filepath = self._get_storing_path(item_id)
+        # TODO: test with non existing item metadata
+        if not filepath.exists():
+            raise HTTPException(status_code=400, detail=f"The item {item_id} has no metadata")
         with filepath.open("r") as f:
             metadata = json.load(f)
         return Item(**metadata)

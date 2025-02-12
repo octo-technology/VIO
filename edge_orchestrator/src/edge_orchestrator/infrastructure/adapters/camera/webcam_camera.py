@@ -45,6 +45,3 @@ class WebcamCamera(ICamera):
         exit_code, img_encode = cv2.imencode(".jpg", frame_rgb)
         img_as_array = np.array(img_encode)
         return Image(image_bytes=img_as_array.tobytes())
-
-    def get_camera_config(self) -> CameraConfig:
-        return self._camera_config

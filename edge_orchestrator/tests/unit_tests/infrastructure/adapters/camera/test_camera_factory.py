@@ -36,4 +36,3 @@ class TestCameraFactory:
         # Then
         assert isinstance(camera, camera_class)
         assert hasattr(camera, "capture")
-        assert hasattr(camera, "get_camera_config")

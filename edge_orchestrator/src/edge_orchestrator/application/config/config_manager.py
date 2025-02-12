@@ -21,6 +21,7 @@ class ConfigManager(metaclass=SingletonMeta):
         self._load_all_configs()
 
     def _load_all_configs(self) -> StationConfig:
+        self._station_configs = {}
         if not self._config_dir.exists():
             self._logger.warning("No config directory found, creating it.")
             self._config_dir.mkdir(parents=True)
@@ -62,7 +63,10 @@ class ConfigManager(metaclass=SingletonMeta):
     def get_config(self) -> Optional[StationConfig]:
         return self._station_configs.get(self._active_station_name)
 
-    def get_all_configs(self) -> Dict[str, StationConfig]:
+    def get_all_configs(self, reload: Optional[bool] = False) -> Dict[str, StationConfig]:
+        # TODO: test me
+        if reload:
+            self._load_all_configs()
         return self._station_configs
 
     def get_all_config_names(self) -> List[str]:

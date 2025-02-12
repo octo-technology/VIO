@@ -13,6 +13,3 @@ class ICamera(ABC):
     def capture(self) -> Image:
         pass
 
-    @abstractmethod
-    def get_camera_config(self) -> CameraConfig:
-        pass
