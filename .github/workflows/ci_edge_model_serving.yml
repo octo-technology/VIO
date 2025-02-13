@@ -66,24 +66,3 @@ jobs:
     secrets:
       username: ${{ github.actor }}
       password: ${{ secrets.GITHUB_TOKEN }}
-
-  build_and_push_arm_images:
-    needs: lint_and_test_on_edge_model_serving
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - dockerfile: ./edge_model_serving/tflite_serving/Dockerfile.raspberrypi
-            image: ghcr.io/${{ github.repository }}/edge_tflite_serving.raspberrypi
-            context: ./edge_model_serving
-          - dockerfile: ./edge_model_serving/tf_serving/Dockerfile.raspberrypi
-            image: ghcr.io/${{ github.repository }}/edge_model_serving.raspberrypi
-            context: ./edge_model_serving
-    uses: ./.github/workflows/template_build_and_push_docker_images.yml
-    with:
-      context: ${{ matrix.context }}
-      dockerfile: ${{ matrix.dockerfile }}
-      image: ${{ matrix.image }}
-    secrets:
-      username: ${{ github.actor }}
-      password: ${{ secrets.GITHUB_TOKEN }}
