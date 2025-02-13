@@ -1,4 +1,4 @@
-FROM --platform=$BUILDPLATFORM python:3.10-slim AS builder
+FROM --platform=$TARGETPLATFORM python:3.10-slim AS builder
 ARG TARGETPLATFORM
 
 WORKDIR /tflite_serving
@@ -21,7 +21,7 @@ RUN if [ "$TARGETPLATFORM" = "linux/arm64" ]; then \
     fi
 
 
-FROM python:3.10-slim
+FROM --platform=$TARGETPLATFORM python:3.10-slim
 ARG TARGETPLATFORM
 
 # RUN if [ "$TARGETPLATFORM" = "linux/arm64" ]; then \

@@ -1,4 +1,4 @@
-FROM --platform=$BUILDPLATFORM node:lts-alpine AS builder
+FROM --platform=$TARGETPLATFORM node:lts-alpine AS builder
 ARG TARGETPLATFORM
 
 RUN apk add g++ make py3-pip
@@ -15,7 +15,8 @@ RUN npm install
 RUN npm run build
 
 
-FROM --platform=$BUILDPLATFORM nginx AS production-stage
+FROM --platform=$TARGETPLATFORM nginx AS production-stage
+ARG TARGETPLATFORM
 
 WORKDIR /edge_interface
 
