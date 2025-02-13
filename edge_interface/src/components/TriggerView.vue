@@ -56,7 +56,7 @@ export default {
         })
         .catch(error => {
           console.error('Error triggering API:', error);
-          this.snackbarMessage = error.message || 'Error triggering API';
+          this.snackbarMessage = error.response && error.response.data && error.response.data.detail || 'Error triggering API';
           this.snackbarColor = 'error';
           this.snackbar = true;
         });
@@ -74,7 +74,7 @@ export default {
       }, interval);
     },
     goToItemDetail() {
-      this.$router.push({ name: 'ItemDetail', params: { id: this.itemId } });
+      this.$router.push({ name: 'ItemDetailView', params: { id: this.itemId } });
     }
   }
 };

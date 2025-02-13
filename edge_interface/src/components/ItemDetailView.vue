@@ -77,7 +77,7 @@
 import ApiService from '@/services/ApiService.js';
 
 export default {
-  name: 'ItemDetail',
+  name: 'ItemDetailView',
   data() {
     return {
       item: {},
