@@ -17,10 +17,10 @@ ping-inventory:
 deploy-vio-on-inventory:
 	ansible-playbook -v -i inventory.ini deploy_vio_on_edge.yml
 
-.PHONY: register-inventory-on-gcp-hub ## 🚀 Register the edge devices on the GCP hub
+.PHONY: register-inventory-on-gcp-hub ## 🚀 Register the inventory on the GCP hub
 register-inventory-on-gcp-hub:
-	ansible-playbook -v -i inventory.ini register_edge_on_gcp_hub.yml -e ansible_python_interpreter=.venv/bin/python
+	ansible-playbook -v -i inventory.ini register_inventory_on_gcp_hub.yml -e ansible_python_interpreter=.venv/bin/python
 
-.PHONY: test-registering-localhost-on-gcp-hub ## 🚀 Test registering localhost on the GCP hub
-test-registering-localhost-on-gcp-hub:
-	ansible-playbook -v -c local -l localhost -i inventory.ini register_edge_on_gcp_hub.yml -e ansible_python_interpreter=.venv/bin/python
+.PHONY: test-register-localhost-on-gcp-hub ## 🚀 Test register localhost on the GCP hub
+test-register-localhost-on-gcp-hub:
+	ansible-playbook -v -c local -l localhost -i inventory.ini register_inventory_on_gcp_hub.yml -e ansible_python_interpreter=.venv/bin/python

@@ -32,22 +32,10 @@ services:
       GCP_BUCKET_NAME: tf-vio-bucket
       ACTIVE_CONFIG_NAME: marker_classification_with_1_fake_camera
 
-  edge_interface:
-    container_name: edge_interface
-    build:
-      context: edge_interface
-      dockerfile: Dockerfile
-    ports:
-      - 8080:80
-
   edge_streamlit:
     container_name: edge_streamlit
     build:
       context: edge_streamlit
       dockerfile: Dockerfile
-    # devices:
-    #   - /dev/video0:/dev/video0
-    #   - /dev/video2:/dev/video2
     ports:
       - 8502:8501
-    profiles: [edge]
