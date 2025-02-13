@@ -10,7 +10,6 @@ on:
     paths:
       - 'edge_orchestrator/**'
 
-
 jobs:
   lint_and_test_on_edge_orchestrator:
     name: Run Python linter and tests (unit > integration > functional)

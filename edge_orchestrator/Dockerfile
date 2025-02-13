@@ -1,36 +1,39 @@
-FROM --platform=$BUILDPLATFORM python:3.12-slim AS builder
+FROM --platform=$TARGETPLATFORM python:3.12-slim AS builder
 ARG TARGETPLATFORM
 
 WORKDIR /edge_orchestrator
 
-RUN apt-get update
-RUN apt-get install -y --no-install-recommends build-essential gcc
-RUN python -m venv /opt/venv
-RUN pip install --upgrade pip setuptools
+RUN apt-get update && apt-get install -y --no-install-recommends build-essential gcc
 
+RUN python -m venv /opt/venv
 ENV PATH="/opt/venv/bin:$PATH"
+
+RUN pip install --upgrade pip setuptools
 
 COPY pyproject.toml ./
 COPY src/ ./src
+COPY pip.conf /opt/venv/pip.conf
 
 RUN if [ "$TARGETPLATFORM" = "linux/arm64" ]; then \
-    echo "[global]\nextra-index-url=https://www.piwheels.org/simple" >> /etc/pip.conf; \
     pip install ".[raspberry]"; \
     else \
     pip install "."; \
     fi
 
+# Use a conditional statement to select the appropriate base image for the second stage
+FROM --platform=$TARGETPLATFORM python:3.12-slim AS base_amd64
+FROM --platform=$TARGETPLATFORM bluenviron/mediamtx:latest-rpi AS base_arm64
 
-FROM python:3.12-slim
+FROM --platform=$TARGETPLATFORM base_${TARGETPLATFORM##*/} AS final
 ARG TARGETPLATFORM
 
-# RUN if [ "$TARGETPLATFORM" = "linux/arm64" ]; then \
-#         apt-get update && apt-get install -y fswebcam rpicam-apps-lite; \
-#     else \
-#         apt-get update && apt-get install -y fswebcam; \
-#     fi
+RUN if [ "$TARGETPLATFORM" = "linux/adm64" ]; then \
+        apt-get update && apt-get install -y fswebcam; \
+    else \
+        apt-get update; \
+    fi
 
-RUN apt-get update && apt-get install -y fswebcam ffmpeg libsm6 libxext6
+# RUN apt-get update && apt-get install -y fswebcam ffmpeg libsm6 libxext6
 
 WORKDIR /edge_orchestrator
 
