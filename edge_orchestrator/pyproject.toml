@@ -44,7 +44,7 @@ dev = [
     "pytest-cov==5.0.0",
     "testcontainers==4.9.1",
 ]
-raspberry = ["picamera==1.13"]
+raspberry = ["picamera2==0.3.25"]
 
 [project.scripts]
 edge_orchestrator = "edge_orchestrator.__main__:run_for_debug"

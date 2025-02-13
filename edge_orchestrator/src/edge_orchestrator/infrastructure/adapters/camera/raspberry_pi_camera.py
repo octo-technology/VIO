@@ -13,16 +13,17 @@ class RaspberryPiCamera(ICamera):
         self._camera_config = camera_config
         self._logger = logging.getLogger(__name__)
         try:
-            PiCamera = getattr(importlib.import_module("picamera"), "PiCamera")
+            from picamera2 import Picamera2
 
-            self.pi_camera = PiCamera()
-            self.pi_camera.start_preview()
+            self._picam2 = Picamera2()
+            self.capture_config = self._picam2.create_still_configuration(buffer_count=1)
+            self._picam2.start()
         except ModuleNotFoundError:
             self._logger.error("PiCamera module not found. Please make sure it is installed. Defaulting to FakeCamera.")
             self.capture = FakeCamera(camera_config).capture
 
     def capture(self) -> Image:
         stream = BytesIO()
-        self.pi_camera.capture(stream, "jpeg")
+        self._picam2.capture_file(stream, format='jpeg')
         stream.seek(0)
         return Image(image_bytes=stream.read())
