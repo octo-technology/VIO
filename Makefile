@@ -26,15 +26,19 @@ edge_interface:
 edge_db:
 	docker-compose up -d --build edge_db
 
-.PHONY: hub_monitoring ## ⚙️ Start hub_monitoring inside a docker container
+.PHONY: hub_streamlit ## 🚀 Start hub_streamlit inside a docker container
+hub_streamlit:
+	docker-compose up -d --build hub_streamlit
+
+.PHONY: hub_monitoring ## 🚀 Start hub_monitoring inside a docker container
 hub_monitoring:
 	docker-compose up -d --build hub_monitoring
 
-.PHONY: hub_labelizer ## ⚙️ Start hub_labelizer inside a docker container
+.PHONY: hub_labelizer ## 🚀 Start hub_labelizer inside a docker container
 hub_labelizer:
 	docker-compose up -d --build hub_labelizer
 
-.PHONY: hub_monitoring_db ## ⚙️ Start hub_monitoring database inside a docker container
+.PHONY: hub_monitoring_db ## 🚀 Start hub_monitoring database inside a docker container
 hub_monitoring_db:
 	docker-compose up -d --build hub_monitoring_db
 

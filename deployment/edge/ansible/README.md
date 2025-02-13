@@ -2,18 +2,47 @@ Before launching ansible export a env to specify your local vio directory
 ```
 export LOCAL_VIO_DIR=
 ```
+### Setup the edge
+
+Install openssh-server on the edge:
+```bash
+    sudo apt-get install openssh-server
+```
+Add public ssh key on the .ssh folder of the edge:
+```bash
+    ssh-copy-id -i ~/.ssh/id_rsa.pub user@edge_ip
+```
+
+Then, try to connect through:
+```bash
+    ssh user@edge_ip
+```
+
+Do not forget to install the google-cloud-storage package:
+```bash
+    pip install google-cloud-storage==3.0.0
+```
+
+
+Install Docker on the edge help you with [this link](https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository)
+Don't forget [post-installation](https://docs.docker.com/engine/install/linux-postinstall/) steps to run docker as a non-root user.
+
+Install *make* on the edge:
+```bash
+    sudo apt-get install build-essential
+```
 
 
 ### Install sshpass and the requirements
 
 On MacOS, you can install sshpass using brew:
 ```bash
-brew install sshpass
+    brew install sshpass
 ```
 
 Then install requirements:
 ```bash
-pip install -r requirements.txt
+    pip install -r requirements.txt
 ```
 
 ### Find the IP of the edge

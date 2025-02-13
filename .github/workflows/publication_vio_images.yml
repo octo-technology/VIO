@@ -17,14 +17,20 @@ jobs:
           - dockerfile: ./edge_interface/Dockerfile
             image: ghcr.io/${{ github.repository }}/edge_interface
             context: ./edge_interface
+          - dockerfile: ./edge_streamlit/Dockerfile
+            image: ghcr.io/${{ github.repository }}/edge_streamlit
+            context: ./edge_streamlit
           - dockerfile: ./edge_orchestrator/Dockerfile
             image: ghcr.io/${{ github.repository }}/edge_orchestrator
             context: ./edge_orchestrator
           - dockerfile: ./edge_model_serving/tf_serving/Dockerfile
-            image: ghcr.io/${{ github.repository }}/edge_model_serving
+            image: ghcr.io/${{ github.repository }}/edge_tf_serving
             context: ./edge_model_serving
           - dockerfile: ./edge_model_serving/tflite_serving/Dockerfile
             image: ghcr.io/${{ github.repository }}/edge_tflite_serving
+            context: ./edge_model_serving
+          - dockerfile: ./edge_model_serving/torch_serving/Dockerfile
+            image: ghcr.io/${{ github.repository }}/edge_torch_serving
             context: ./edge_model_serving
     uses: ./.github/workflows/template_build_and_push_docker_images.yml
     with:
