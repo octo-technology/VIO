@@ -1,5 +1,6 @@
 FROM --platform=$TARGETPLATFORM python:3.10-slim AS builder
 ARG TARGETPLATFORM
+ARG BUILDOS
 
 WORKDIR /tflite_serving
 
@@ -13,7 +14,7 @@ ENV PATH="/opt/venv/bin:$PATH"
 COPY tflite_serving/pyproject.toml ./
 COPY tflite_serving/src/ ./src
 
-RUN if [ "$TARGETPLATFORM" = "linux/arm64" ]; then \
+RUN if [ "$TARGETPLATFORM" = "linux/arm64" ] && [ "$BUILDOS" = "linux" ]; then \
         echo "[global]\nextra-index-url=https://www.piwheels.org/simple" >> /etc/pip.conf; \
         pip install ".[linux]"; \
     else \
@@ -23,12 +24,6 @@ RUN if [ "$TARGETPLATFORM" = "linux/arm64" ]; then \
 
 FROM --platform=$TARGETPLATFORM python:3.10-slim
 ARG TARGETPLATFORM
-
-# RUN if [ "$TARGETPLATFORM" = "linux/arm64" ]; then \
-#         apt-get update && apt-get install -y fswebcam rpicam-apps-lite; \
-#     else \
-#         apt-get update && apt-get install -y fswebcam; \
-#     fi
 
 RUN apt-get update && apt-get upgrade -y
 

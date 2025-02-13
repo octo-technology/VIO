@@ -4,8 +4,10 @@ services:
     build:
       context: edge_model_serving
       dockerfile: tflite_serving/Dockerfile
+      args:
+        BUILDOS: ${BUILDOS:-mac}
     environment:
-      - TF_CPP_MIN_VLOG_LEVEL=0
+      TF_CPP_MIN_VLOG_LEVEL: 0
     ports:
       - 8501:8501
     profiles: [edge]
@@ -17,6 +19,8 @@ services:
     build:
       context: edge_orchestrator
       dockerfile: Dockerfile
+      args:
+        BUILDOS: ${BUILDOS:-mac}
     volumes:
       - ./data_storage:/edge_orchestrator/data_storage
       - /run/udev:/run/udev:ro
