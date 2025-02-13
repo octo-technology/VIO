@@ -1,11 +1,14 @@
 import json
 import os
 import time
+from io import BytesIO
+
 import requests
 import streamlit as st
-from prediction_boxes import filtering_items_that_have_predictions, plot_predictions
 from PIL import Image
-from io import BytesIO
+
+from prediction_boxes import (filtering_items_that_have_predictions,
+                              plot_predictions)
 
 # Page configuration
 st.set_page_config(page_title="VIO-edge", page_icon="🔦", layout="wide")
