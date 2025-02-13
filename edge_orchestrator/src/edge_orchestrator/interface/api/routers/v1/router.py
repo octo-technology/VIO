@@ -52,7 +52,7 @@ def set_config(station_name: Optional[str] = None, station_config: Optional[Stat
         return manager.get_config()
 
 
-def get_all_configs(reload: Optional[bool]= False) -> Dict[str, StationConfig]:
+def get_all_configs(reload: Optional[bool] = False) -> Dict[str, StationConfig]:
     manager = ConfigManager()
     configs = manager.get_all_configs(reload)
     if not configs:

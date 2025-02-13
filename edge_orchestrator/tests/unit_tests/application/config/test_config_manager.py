@@ -30,7 +30,7 @@ class TestConfigManager:
         config_filepath = config_dir / f"{station_config.station_name}.json"
         with config_filepath.open("w") as f:
             f.write(station_config.model_dump_json(exclude_none=True))
-            (config_dir / "active_station_config.json").symlink_to(config_filepath)
+            (config_dir / "active_station_config").symlink_to(config_filepath)
 
         # When
         config_manager = ConfigManager()
@@ -80,7 +80,7 @@ class TestConfigManager:
         active_station_config = config_manager.get_config()
         assert active_station_config is None
         assert (
-            f"No active json station config found at {(config_dir/'active_station_config.json').as_posix()}",
+            f"No active json station config found at {(config_dir/'active_station_config').as_posix()}",
             "WARNING",
         ) in log_messages
 
@@ -125,7 +125,7 @@ class TestConfigManager:
         config_filepath = config_dir / f"{station_config_1.station_name}.json"
         with config_filepath.open("w") as f:
             f.write(station_config_1.model_dump_json(exclude_none=True))
-            (config_dir / "active_station_config.json").symlink_to(config_filepath)
+            (config_dir / "active_station_config").symlink_to(config_filepath)
 
         station_config_2 = StationConfig(
             station_name="test_station_2",
@@ -177,7 +177,7 @@ class TestConfigManager:
         # Then
         active_station_config = config_manager.get_config()
         config_filepath = config_dir / f"{station_config.station_name}.json"
-        active_config_filepath = config_dir / "active_station_config.json"
+        active_config_filepath = config_dir / "active_station_config"
         assert active_station_config is station_config
         assert config_filepath.exists()
         assert active_config_filepath.exists()
@@ -202,7 +202,7 @@ class TestConfigManager:
         config_filepath = config_dir / f"{station_config.station_name}.json"
         with config_filepath.open("w") as f:
             f.write(station_config.model_dump_json(exclude_none=True))
-            (config_dir / "active_station_config.json").symlink_to(config_filepath)
+            (config_dir / "active_station_config").symlink_to(config_filepath)
 
         config_manager = ConfigManager()
         new_camera_config = {"camera_#1": CameraConfig(camera_id="camera_#1", camera_type=CameraType.FAKE)}

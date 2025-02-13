@@ -1,37 +1,62 @@
-FROM --platform=$TARGETPLATFORM python:3.12-slim AS builder
+ARG PYTHON_VERSION="3.11"
+
+FROM --platform=$TARGETPLATFORM python:${PYTHON_VERSION}-slim
 ARG TARGETPLATFORM
-
-WORKDIR /edge_orchestrator
-
-RUN apt-get update && apt-get install -y --no-install-recommends build-essential gcc
-
-RUN python -m venv /opt/venv
-ENV PATH="/opt/venv/bin:$PATH"
-
-RUN pip install --upgrade pip setuptools
-
-COPY pyproject.toml ./
-COPY src/ ./src
-COPY pip.conf /opt/venv/pip.conf
 
 RUN if [ "$TARGETPLATFORM" = "linux/arm64" ]; then \
-    pip install ".[raspberry]"; \
-    else \
-    pip install "."; \
+    apt update && apt install -y --no-install-recommends gnupg; \
+        echo "deb http://archive.raspberrypi.org/debian/ bookworm main" > /etc/apt/sources.list.d/raspi.list \
+        && apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 82B129927FA3303E; \
     fi
 
-FROM --platform=$TARGETPLATFORM python:3.12-slim AS final
-ARG TARGETPLATFORM
-
-RUN apt-get update && apt-get install -y fswebcam ffmpeg libsm6 libxext6
+RUN if [ "$TARGETPLATFORM" = "linux/arm64" ]; then \
+        apt update && apt install -y \
+            python3-pip \
+            python3-venv \
+            python3-picamera2 \
+            gcc \
+        && apt clean \
+        && apt autoremove \
+        && rm -rf /var/cache/apt/archives/* \
+        && rm -rf /var/lib/apt/lists/*; \
+    else \
+        apt update && apt install -y --no-install-recommends \
+            build-essential \
+            gcc \
+            fswebcam \
+            ffmpeg \
+            libsm6 \
+            libxext6 \
+        && apt clean \
+        && apt autoremove \
+        && rm -rf /var/cache/apt/archives/* \
+        && rm -rf /var/lib/apt/lists/*; \
+    fi
 
 WORKDIR /edge_orchestrator
 
-COPY --from=builder /opt/venv /opt/venv
-COPY fake_images ./fake_images
-COPY model_labels ./model_labels
+RUN if [ "$TARGETPLATFORM" = "linux/arm64" ]; then \
+        /usr/bin/python3 -m venv --system-site-packages /opt/venv; \
+    else \
+        python -m venv /opt/venv; \
+    fi
 
 ENV PATH="/opt/venv/bin:$PATH"
+
+RUN pip install --no-cache-dir --upgrade pip setuptools
+
+COPY pip.conf /opt/venv/pip.conf
+COPY pyproject.toml ./
+COPY config/*.json ./config
+COPY fake_images ./fake_images
+COPY model_labels ./model_labels
+COPY src/ ./src
+
+RUN if [ "$TARGETPLATFORM" = "linux/arm64" ]; then \
+        pip install --no-cache-dir ".[raspberry]"; \
+    else \
+        pip install --no-cache-dir "."; \
+    fi
 
 EXPOSE 8000
 ENTRYPOINT ["uvicorn", "edge_orchestrator.interface.api.main:app"]
