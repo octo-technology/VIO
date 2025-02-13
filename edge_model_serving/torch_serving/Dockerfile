@@ -1,15 +1,18 @@
-FROM python:3.7
+FROM python:3.12
 
 WORKDIR /torch_serving
 
-COPY requirements.txt .
+COPY torch_serving/requirements.txt .
 
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 
-RUN download-models
-RUN build-mar-file
+COPY models/torch ./models/torch
 
-COPY ../models/torch ./models
+COPY torch_serving/model.py .
 
-RUN torchserve --start --model-store ../models --models fastrcnn=fastrcnn.mar
+COPY torch_serving/Makefile .
+RUN make download-models
+RUN make build-mar-file
+
+RUN torchserve --start --model-store models --models fastrcnn=fastrcnn.mar
