@@ -1,4 +1,3 @@
-import importlib
 import logging
 from io import BytesIO
 
@@ -24,6 +23,6 @@ class RaspberryPiCamera(ICamera):
 
     def capture(self) -> Image:
         stream = BytesIO()
-        self._picam2.capture_file(stream, format='jpeg')
+        self._picam2.capture_file(stream, format="jpeg")
         stream.seek(0)
         return Image(image_bytes=stream.read())

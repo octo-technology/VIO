@@ -39,7 +39,7 @@ class WebcamCamera(ICamera):
         if not exit_code and attempt < 5:
             self._logger.error("Failed to capture image")
             self._open_webcam(iter([0, 1, 2, 3]))
-            self.capture(attempt+1)
+            self.capture(attempt + 1)
 
         frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         exit_code, img_encode = cv2.imencode(".jpg", frame_rgb)

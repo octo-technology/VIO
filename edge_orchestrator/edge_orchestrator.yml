@@ -5,7 +5,7 @@ services:
       context: .
       dockerfile: Dockerfile
     volumes:
-      - ./data:/edge_orchestrator/data
+      - ./data_storage:/edge_orchestrator/data_storage
     ports:
       - 8000:8000
     environment:

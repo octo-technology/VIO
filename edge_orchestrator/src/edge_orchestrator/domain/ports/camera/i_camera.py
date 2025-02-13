@@ -12,4 +12,3 @@ class ICamera(ABC):
     @abstractmethod
     def capture(self) -> Image:
         pass
-
