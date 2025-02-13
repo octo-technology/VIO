@@ -20,20 +20,10 @@ RUN if [ "$TARGETPLATFORM" = "linux/arm64" ]; then \
     pip install "."; \
     fi
 
-# Use a conditional statement to select the appropriate base image for the second stage
-FROM --platform=$TARGETPLATFORM python:3.12-slim AS base_amd64
-FROM --platform=$TARGETPLATFORM bluenviron/mediamtx:latest-rpi AS base_arm64
-
-FROM --platform=$TARGETPLATFORM base_${TARGETPLATFORM##*/} AS final
+FROM --platform=$TARGETPLATFORM python:3.12-slim AS final
 ARG TARGETPLATFORM
 
-RUN if [ "$TARGETPLATFORM" = "linux/adm64" ]; then \
-        apt-get update && apt-get install -y fswebcam; \
-    else \
-        apt-get update; \
-    fi
-
-# RUN apt-get update && apt-get install -y fswebcam ffmpeg libsm6 libxext6
+RUN apt-get update && apt-get install -y fswebcam ffmpeg libsm6 libxext6
 
 WORKDIR /edge_orchestrator
 
