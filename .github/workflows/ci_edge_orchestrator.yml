@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [ "3.10", "3.11", "3.12" ]
+        python-version: [ "3.9", "3.10", "3.11" ]
     services:
       edge_model_serving:
         image: ghcr.io/octo-technology/vio/edge_model_serving:main
@@ -47,7 +47,6 @@ jobs:
       - name: Lint with flake8 and black
         run: make lint
         working-directory: ./edge_orchestrator
-
       - name: Run unit tests
         run: make unit_tests
         working-directory: ./edge_orchestrator
