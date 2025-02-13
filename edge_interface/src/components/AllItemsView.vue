@@ -77,7 +77,7 @@ export default {
       this.items.sort((a, b) => new Date(b.creation_date) - new Date(a.creation_date));
     },
     goToItemDetail(itemId) {
-      this.$router.push({ name: 'ItemDetail', params: { id: itemId } });
+      this.$router.push({ name: 'ItemDetailView', params: { id: itemId } });
     },
     getDecisionClass(decision) {
       switch (decision) {

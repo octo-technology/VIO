@@ -18,7 +18,8 @@ services:
       context: edge_orchestrator
       dockerfile: Dockerfile
     volumes:
-      - ./edge_orchestrator/data_storage:/edge_orchestrator/data_storage
+      - ./data_storage:/edge_orchestrator/data_storage
+      - /run/udev:/run/udev:ro
     devices:
       - /dev/video0:/dev/video0
       - /dev/video1:/dev/video1
@@ -30,6 +31,7 @@ services:
       EDGE_NAME: vio-edge-1
       SERVING_MODEL_URL: http://edge_model_serving:8501
     profiles: [edge]
+    privileged: true
 
   hub_labelizer:
     container_name: hub_labelizer
