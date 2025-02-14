@@ -23,13 +23,20 @@ class CameraManager(ICameraManager):
     def create_cameras(self, station_config: StationConfig):
         self._camera_configs = station_config.camera_configs
         for camera_id, camera_config in station_config.camera_configs.items():
-            if camera_id not in self._cameras or camera_config.recreate_me:
+            if camera_config.recreate_me and camera_id in self._cameras:
+                try:
+                    self._cameras[camera_id].release()
+                except Exception:
+                    pass
+                self._cameras[camera_id] = self._camera_factory.create_camera(camera_config)
+            elif camera_id not in self._cameras or camera_config.recreate_me:
                 camera = self._camera_factory.create_camera(camera_config)
                 self._cameras[camera_id] = camera
 
     def take_pictures(self, item: Item):
         if self._cameras is None or len(self._cameras) == 0:
-            raise NoCameraAvailableError("No camera available to take picture!")
+            self._logger.error("No camera available to take picture!")
+            return
 
         binaries: Dict[str, bytes] = {}
         cameras_metadata: Dict[str, CameraConfig] = {}

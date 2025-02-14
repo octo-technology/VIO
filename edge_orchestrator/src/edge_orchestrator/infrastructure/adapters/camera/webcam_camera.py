@@ -2,7 +2,6 @@ import logging
 from threading import Thread
 
 import cv2
-from edge_orchestrator.domain.models.camera.camera_type import CameraType
 import numpy as np
 
 from edge_orchestrator.domain.models.binary import Image
@@ -37,7 +36,7 @@ class WebcamCamera(ICamera):
                 return
             (self._grabbed, self._frame) = self._stream.read()
 
-    def _release_webcam(self):
+    def release(self):
         self._stopped = True
         self._stream.release()
 

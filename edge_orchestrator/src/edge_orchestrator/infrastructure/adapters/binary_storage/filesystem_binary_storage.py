@@ -21,6 +21,8 @@ class FileSystemBinaryStorage(IBinaryStorage):
         path = self._get_storing_path(item.id)
         path.mkdir(parents=True, exist_ok=True)
         for camera_id, image in item.binaries.items():
+            if image.image_bytes is None:
+                continue
             filepath = path / f"{camera_id}.jpg"
             item.binaries[camera_id].storing_path = filepath
             with filepath.open("wb") as f:

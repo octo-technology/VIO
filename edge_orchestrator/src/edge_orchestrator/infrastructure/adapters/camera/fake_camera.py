@@ -18,6 +18,9 @@ class FakeCamera(ICamera):
         random_image_path = self._select_random_image()
         return Image(image_bytes=random_image_path.open("rb").read())
 
+    def release(self):
+        pass
+
     def _select_random_image(self) -> Path:
         source = self._camera_config.source_directory
         selected_images = []

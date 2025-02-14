@@ -26,3 +26,9 @@ class RaspberryPiCamera(ICamera):
         self._picam2.capture_file(stream, format="jpeg")
         stream.seek(0)
         return Image(image_bytes=stream.read())
+
+    def release(self):
+        try:
+            self._picam2.close()
+        except RuntimeError:
+            self._logger.exception("Camera closing failed")
