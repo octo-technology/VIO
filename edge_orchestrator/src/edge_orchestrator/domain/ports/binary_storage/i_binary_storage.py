@@ -21,7 +21,7 @@ class IBinaryStorage:
         pass
 
     @abstractmethod
-    def get_item_binaries(self, item_id: UUID) -> Dict[str, str]:
+    def get_item_binaries(self, item_id: UUID) -> Dict[str, bytes]:
         pass
 
     @abstractmethod
