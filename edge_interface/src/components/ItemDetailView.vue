@@ -3,12 +3,13 @@
     <v-row>
       <v-col cols="12">
         <v-card>
-          <v-card-title>
+          <v-card-title class="centered">
             <v-select
               v-model="selectedItemId"
               :items="itemIds"
               label="Select Item ID"
               @change="fetchItem"
+              class="max-width-500"
             ></v-select>
           </v-card-title>
           <v-card-subtitle v-if="item.id">
@@ -160,6 +161,15 @@ export default {
 </script>
 
 <style scoped>
+.centered {
+  display: flex;
+  justify-content: center;
+}
+
+.max-width-500 {
+  max-width: 500px;
+}
+
 .image-container {
   position: relative;
 }
