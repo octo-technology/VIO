@@ -1,9 +1,7 @@
 services:
   edge_model_serving:
     container_name: edge_model_serving
-    build:
-      context: edge_model_serving
-      dockerfile: tflite_serving/Dockerfile
+    image: ghcr.io/octo-technology/vio/edge_model_serving:latest
     environment:
       - TF_CPP_MIN_VLOG_LEVEL=0
     ports:
@@ -13,9 +11,7 @@ services:
 
   edge_orchestrator:
     container_name: edge_orchestrator
-    build:
-      context: edge_orchestrator
-      dockerfile: Dockerfile
+    image: ghcr.io/octo-technology/vio/edge_orchestrator:latest
     volumes:
       - ./edge_orchestrator/data:/edge_orchestrator/data
       - ./edge_orchestrator/config:/edge_orchestrator/config
@@ -34,8 +30,6 @@ services:
 
   edge_streamlit:
     container_name: edge_streamlit
-    build:
-      context: edge_streamlit
-      dockerfile: Dockerfile
+    image: ghcr.io/octo-technology/vio/edge_streamlit:latest
     ports:
       - 8502:8501
