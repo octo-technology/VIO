@@ -16,29 +16,7 @@
     </v-row>
     <v-row v-else>
       <v-col v-for="item in items" :key="item.id" cols="12" md="8">
-        <v-card>
-          <v-card-title @click="goToItemDetail(item.id)" class="cursor-pointer">{{ item.id }}</v-card-title>
-          <v-card-subtitle>
-            <p>Creation Date: {{ item.creation_date }}</p>
-            <p :class="getDecisionClass(item.decision)">Overall Decision: {{ item.decision }}</p>
-            <p>State: {{ item.state }}</p>
-          </v-card-subtitle>
-          <v-card-text>
-            <v-row>
-              <v-col v-for="(camera, cameraId) in getVisibleCameras(item)" :key="cameraId" cols="12" md="6">
-                <h4>{{ camera.camera_id }}</h4>
-                <p>Type: {{ camera.camera_type }}</p>
-                <p>Position: {{ camera.position }}</p>
-                <p>Model: {{ camera.model_forwarder_config.model_name }}</p>
-                <p>Model Type: {{ camera.model_forwarder_config.model_type }}</p>
-                <p>Resolution: {{ camera.model_forwarder_config.expected_image_resolution.width }}x{{ camera.model_forwarder_config.expected_image_resolution.height }}</p>
-                <p>Version: {{ camera.model_forwarder_config.model_version }}</p>
-                <p>Rule: {{ camera.camera_rule_config.camera_rule_type }}</p>
-                <p>Decision: {{ item.camera_decisions[camera.camera_id] }}</p>
-              </v-col>
-            </v-row>
-          </v-card-text>
-        </v-card>
+        <item-details :item="item"></item-details>
       </v-col>
     </v-row>
   </v-container>
@@ -46,9 +24,13 @@
 
 <script>
 import ApiService from '@/services/ApiService.js';
+import ItemDetails from './ItemDetails.vue';
 
 export default {
-  name: 'AllItems',
+  name: 'AllItemsView',
+  components: {
+    ItemDetails
+  },
   data() {
     return {
       items: [],
@@ -75,25 +57,6 @@ export default {
     },
     sortItemsByCreationDate() {
       this.items.sort((a, b) => new Date(b.creation_date) - new Date(a.creation_date));
-    },
-    goToItemDetail(itemId) {
-      this.$router.push({ name: 'ItemDetailView', params: { id: itemId } });
-    },
-    getDecisionClass(decision) {
-      switch (decision) {
-        case 'OK':
-          return 'decision-ok';
-        case 'KO':
-          return 'decision-ko';
-        case 'NO_DECISION':
-          return 'decision-no-decision';
-        default:
-          return '';
-      }
-    },
-    getVisibleCameras(item) {
-      const camerasArray = Object.values(item.cameras_metadata);
-      return camerasArray.slice(0, 2);
     }
   }
 };
