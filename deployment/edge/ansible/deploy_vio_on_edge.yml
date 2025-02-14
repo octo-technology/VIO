@@ -1,14 +1,6 @@
 - name: "Deploy vio on edge and launch"
   hosts: all
   tasks:
-    - name: Clone vio git repo
-      ansible.builtin.git:
-        repo: https://github.com/octo-technology/VIO.git
-        dest: "{{ REMOTE_VIO_DIR }}"
-        single_branch: yes
-        version: main
-        force: true
-
     - name: Remove config folder
       ansible.builtin.file:
         path: "{{ REMOTE_VIO_DIR }}/edge_orchestrator/config"

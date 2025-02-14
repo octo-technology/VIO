@@ -1,11 +1,7 @@
 services:
   edge_model_serving:
     container_name: edge_model_serving
-    build:
-      context: edge_model_serving
-      dockerfile: tflite_serving/Dockerfile
-      args:
-        BUILDOS: ${BUILDOS:-linux}
+    image: ghcr.io/octo-technology/vio/edge_model_serving:latest
     environment:
       TF_CPP_MIN_VLOG_LEVEL: 0   # TensorFlow logging level
     ports:
@@ -15,11 +11,7 @@ services:
 
   edge_orchestrator:
     container_name: edge_orchestrator
-    build:
-      context: edge_orchestrator
-      dockerfile: Dockerfile
-      args:
-        BUILDOS: ${BUILDOS:-linux}
+    image: ghcr.io/octo-technology/vio/edge_orchestrator:latest
     volumes:
       - ./data_storage:/edge_orchestrator/data_storage
       - /run/udev:/run/udev:ro  # udev is the device manager for the Linux kernel, responsible for managing device nodes in the /dev directory dynamically
@@ -42,8 +34,6 @@ services:
 
   edge_streamlit:
     container_name: edge_streamlit
-    build:
-      context: edge_streamlit
-      dockerfile: Dockerfile
+    image: ghcr.io/octo-technology/vio/edge_streamlit:latest
     ports:
       - 8502:8502
