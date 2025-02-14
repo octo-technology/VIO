@@ -15,27 +15,9 @@ services:
       - ./edge_model_serving/models:/models
 
   edge_orchestrator:
-    container_name: edge_orchestrator
-    build:
-      context: edge_orchestrator
-      dockerfile: Dockerfile
-      args:
-        BUILDOS: ${BUILDOS:-mac}
-    volumes:
-      - ./data_storage:/edge_orchestrator/data_storage
-      - /run/udev:/run/udev:ro
-    devices:
-      - /dev/video0:/dev/video0
-      - /dev/video1:/dev/video1
-      - /dev/video2:/dev/video2
-      - /dev/video3:/dev/video3
-    ports:
-      - 8000:8000
-    environment:
-      EDGE_NAME: vio-edge-1
-      SERVING_MODEL_URL: http://edge_model_serving:8501
-    profiles: [edge]
-    privileged: true
+    extends:
+      file: edge_orchestrator/edge_orchestrator.yml
+      service: edge_orchestrator
 
   hub_labelizer:
     container_name: hub_labelizer

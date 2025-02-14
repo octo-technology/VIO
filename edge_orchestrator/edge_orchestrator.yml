@@ -4,11 +4,17 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      args:
+        BUILDOS: ${BUILDOS:-mac}
     volumes:
       - ./data_storage:/edge_orchestrator/data_storage
+    devices:
+      - /dev/video0:/dev/video0  # Corresponds to mounting point of integrated webcam device
+      - /dev/video4:/dev/video4  # Corresponds to mounting point of USB camera device
+      - /run/udev:/run/udev:ro  # Corresponds to mounting point of Raspberry Pi camera device
     ports:
       - 8000:8000
     environment:
-      EDGE_NAME: vio-edge-1
       SERVING_MODEL_URL: http://edge_model_serving:8501
+    privileged: true
     profiles: [edge]
