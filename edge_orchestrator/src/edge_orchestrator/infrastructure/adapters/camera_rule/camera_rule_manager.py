@@ -37,4 +37,7 @@ class CameraRuleManager(ICameraRuleManager):
         for camera_id, camera_config in item.cameras_metadata.items():
             camera_rule_config: CameraRuleConfig = camera_config.camera_rule_config
             camera_rule = self._get_camera_rule(camera_rule_config)
-            item.camera_decisions[camera_id] = camera_rule.apply_camera_rule(item.predictions[camera_id])
+            if camera_id not in item.predictions:
+                self._logger.warning(f"Camera {camera_id} has no prediction to apply camera rule.")
+            else:
+                item.camera_decisions[camera_id] = camera_rule.apply_camera_rule(item.predictions[camera_id])

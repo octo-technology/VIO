@@ -41,7 +41,11 @@ class CameraManager(ICameraManager):
         binaries: Dict[str, bytes] = {}
         cameras_metadata: Dict[str, CameraConfig] = {}
         for camera_id, camera_config in self._camera_configs.items():
-            binaries[camera_id] = self._cameras[camera_id].capture()
             cameras_metadata[camera_id] = camera_config
+            try:
+                binaries[camera_id] = self._cameras[camera_id].capture()
+            except Exception:
+                self._logger.exception(f"Error while capturing image from camera {camera_id}")
+                continue
         item.binaries = binaries
         item.cameras_metadata = cameras_metadata

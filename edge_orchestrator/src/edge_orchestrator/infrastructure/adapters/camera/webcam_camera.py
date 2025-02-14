@@ -41,10 +41,6 @@ class WebcamCamera(ICamera):
         self._stream.release()
 
     def capture(self) -> Image:
-        if not self._grabbed and self._frame is None:
-            self._logger.error("Error while capturing image")
-            return Image()
-        frame = self._frame
-        _, img_encode = cv2.imencode(".jpg", frame)
+        _, img_encode = cv2.imencode(".jpg", self._frame)
         img_as_array = np.array(img_encode)
         return Image(image_bytes=img_as_array.tobytes())

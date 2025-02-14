@@ -39,4 +39,9 @@ class ModelForwarderManager(IModelForwarderManager):
         for camera_id, camera_config in item.cameras_metadata.items():
             model_forwarder_config: ModelForwarderConfig = camera_config.model_forwarder_config
             model_forwarder = self._get_model_forwarder(model_forwarder_config)
-            item.predictions[camera_id] = await model_forwarder.predict_on_binary(item.binaries[camera_id].image_bytes)
+            if camera_id not in item.binaries or item.binaries[camera_id].image_bytes is None:
+                self._logger.warning(f"Camera {camera_id} has no image bytes to predict on.")
+            else:
+                item.predictions[camera_id] = await model_forwarder.predict_on_binary(
+                    item.binaries[camera_id].image_bytes
+                )
