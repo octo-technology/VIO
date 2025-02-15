@@ -1,22 +1,5 @@
 <template>
   <v-app>
-    <v-navigation-drawer app v-model="drawer" permanent right>
-      <v-list dense>
-        <v-list-item @click="showConfigs = true; showActiveConfig = false; showNewConfig = false" :class="{ active: showConfigs && !showActiveConfig && !showNewConfig }">
-          <v-list-item-title>View All Configs</v-list-item-title>
-        </v-list-item>
-        <v-list-item @click="showConfigs = false; showActiveConfig = false; showNewConfig = true" :class="{ active: showNewConfig }">
-          <v-list-item-title>Create New Config</v-list-item-title>
-        </v-list-item>
-        <v-list-item @click="triggerFileUpload">
-          <v-list-item-title>Upload Config</v-list-item-title>
-        </v-list-item>
-        <v-list-item @click="showConfigs = false; showActiveConfig = true; showNewConfig = false" :class="{ active: showActiveConfig }">
-          <v-list-item-title>Active Config</v-list-item-title>
-        </v-list-item>
-      </v-list>
-    </v-navigation-drawer>
-
     <v-main>
       <v-container>
         <v-row v-if="fileName">
@@ -52,7 +35,6 @@ export default {
   },
   data() {
     return {
-      drawer: true, // Set drawer to true to display it by default
       showConfigs: true, // Boolean to toggle between viewing configs and creating a new config
       showActiveConfig: false, // Boolean to toggle between viewing active config
       showNewConfig: false, // Boolean to toggle between creating a new config
@@ -114,7 +96,7 @@ export default {
 </script>
 
 <style scoped>
-.active {
-  background-color: rgba(0, 0, 0, 0.08);
+.max-width-500 {
+  max-width: 500px;
 }
 </style>

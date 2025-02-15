@@ -3,13 +3,21 @@
     <v-row>
       <v-col cols="12">
         <v-card>
-          <v-card-title>Trigger API</v-card-title>
+          <v-card-title class="d-flex justify-center align-center">
+            <span>Trigger Inspection</span>
+            <v-btn @click="triggerApi" class="ml-4" icon>
+              <v-icon>mdi-play-circle</v-icon>
+            </v-btn>
+            <v-progress-circular
+              v-if="loading"
+              indeterminate
+              color="primary"
+              class="ml-4"
+            ></v-progress-circular>
+          </v-card-title>
           <v-card-text>
             <v-row>
-              <v-col>
-                <v-btn @click="triggerApi">Trigger</v-btn>
-              </v-col>
-              <v-col v-if="itemId">
+              <v-col v-if="itemId" class="d-flex justify-center align-center">
                 <p>Item ID: <a @click="goToItemDetail">{{ itemId }}</a></p>
               </v-col>
             </v-row>
@@ -40,11 +48,13 @@ export default {
       snackbarMessage: '',
       snackbarColor: '',
       snackbarTimeout: 3000,
-      progress: 0
+      progress: 0,
+      loading: false
     };
   },
   methods: {
     triggerApi() {
+      this.loading = true;
       ApiService.triggerApi()
         .then(response => {
           console.log('API triggered successfully:', response);
@@ -56,9 +66,16 @@ export default {
         })
         .catch(error => {
           console.error('Error triggering API:', error);
-          this.snackbarMessage = error.response && error.response.data && error.response.data.detail || 'Error triggering API';
+          if (!error.response) {
+            this.snackbarMessage = 'Backend is not available. Please start or check the backend.';
+          } else {
+            this.snackbarMessage = error.response.data && error.response.data.detail || 'Error triggering API';
+          }
           this.snackbarColor = 'error';
           this.snackbar = true;
+        })
+        .finally(() => {
+          this.loading = false;
         });
     },
     dismissCountDown() {

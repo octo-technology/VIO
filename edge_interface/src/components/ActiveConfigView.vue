@@ -1,17 +1,22 @@
 <template>
-  <v-row>
-    <v-col cols="12">
-      <v-alert v-if="error" type="error" dismissible @input="error = false">
-        {{ errorMessage }}
-      </v-alert>
-      <v-alert v-else-if="!activeConfig.station_name" type="info">
-        No active config available
-      </v-alert>
-      <div v-else>
-        <config-details :config="activeConfig"></config-details>
-      </div>
-    </v-col>
-  </v-row>
+  <v-container>
+    <v-row>
+      <v-col cols="12">
+        <v-alert v-if="error" type="error" dismissible @input="error = false">
+          {{ errorMessage }}
+        </v-alert>
+        <v-alert v-else-if="!activeConfig.station_name" type="info">
+          No active config available
+        </v-alert>
+        <v-card v-else>
+          <v-card-title>Active Config: {{activeConfig.station_name}}</v-card-title>
+          <v-card-text>
+            <config-details :config="activeConfig"></config-details>
+          </v-card-text>
+        </v-card>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
@@ -37,7 +42,14 @@ export default {
     fetchActiveConfig() {
       ApiService.getActiveConfig()
         .then(response => {
-          this.activeConfig = response.data;
+          if (response.data && response.data.station_name) {
+            this.activeConfig = response.data;
+            this.error = false;
+          } else {
+            this.activeConfig = {};
+            this.errorMessage = 'No active config available';
+            this.error = true;
+          }
         })
         .catch(error => {
           console.error('Error fetching active config:', error);

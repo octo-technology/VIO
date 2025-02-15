@@ -1,25 +1,174 @@
 <template>
   <v-card>
-    <v-card-title>{{ item.id }}</v-card-title>
+    <v-card-title><v-icon class="mr-2">mdi-package-variant</v-icon>{{ item.id }}</v-card-title>
     <v-card-subtitle>
-      <p>Creation Date: {{ item.creation_date }}</p>
-      <p :class="getDecisionClass(item.decision)">Overall Decision: {{ item.decision }}</p>
-      <p>State: {{ item.state }}</p>
+      <v-row dense>
+        <v-col cols="4">
+          <v-list-item>
+            <v-list-item-content>
+              <v-list-item-title>Creation Date</v-list-item-title>
+              <v-list-item-subtitle>{{ item.creation_date }}</v-list-item-subtitle>
+            </v-list-item-content>
+          </v-list-item>
+        </v-col>
+        <v-col cols="4">
+          <v-list-item>
+            <v-list-item-content>
+              <v-list-item-title>Overall Decision</v-list-item-title>
+              <v-list-item-subtitle><span :class="getDecisionClass(item.decision)">{{ item.decision }}</span></v-list-item-subtitle>
+            </v-list-item-content>
+          </v-list-item>
+        </v-col>
+        <v-col cols="4">
+          <v-list-item>
+            <v-list-item-content>
+              <v-list-item-title>State</v-list-item-title>
+              <v-list-item-subtitle>{{ item.state }}</v-list-item-subtitle>
+            </v-list-item-content>
+          </v-list-item>
+        </v-col>
+      </v-row>
     </v-card-subtitle>
     <v-card-text>
-      <v-row>
+      <v-row class="reduced-spacing">
         <v-col v-for="(camera, cameraId) in item.cameras_metadata" :key="cameraId" cols="6">
           <v-card>
-            <v-card-title>{{ camera.camera_id }}</v-card-title>
+            <v-card-title><v-icon class="mr-2">mdi-camera</v-icon>Camera details: {{ camera.camera_id }}</v-card-title>
             <v-card-subtitle>
-              <p>Type: {{ camera.camera_type }}</p>
-              <p>Position: {{ camera.position }}</p>
-              <p>Model: {{ camera.model_forwarder_config.model_name }}</p>
-              <p>Model Type: {{ camera.model_forwarder_config.model_type }}</p>
-              <p>Resolution: {{ camera.model_forwarder_config.expected_image_resolution.width }}x{{ camera.model_forwarder_config.expected_image_resolution.height }}</p>
-              <p>Version: {{ camera.model_forwarder_config.model_version }}</p>
-              <p v-if="camera.camera_rule_config"><strong>Rule:</strong> {{ camera.camera_rule_config.camera_rule_type }}</p>
-              <p v-if="item.camera_decisions && item.camera_decisions[camera.camera_id]"><strong>Decision:</strong> {{ item.camera_decisions[camera.camera_id] }}</p>
+              <v-list dense>
+                <v-list-item>
+                  <v-list-item-content>
+                    <v-list-item-title>Type</v-list-item-title>
+                    <v-list-item-subtitle>{{ camera.camera_type }}</v-list-item-subtitle>
+                  </v-list-item-content>
+                </v-list-item>
+                <v-list-item v-if="camera.source_directory">
+                  <v-list-item-content>
+                    <v-list-item-title>Source Directory</v-list-item-title>
+                    <v-list-item-subtitle>{{ camera.source_directory }}</v-list-item-subtitle>
+                  </v-list-item-content>
+                </v-list-item>
+                <v-list-item>
+                  <v-list-item-content>
+                    <v-list-item-title>Position</v-list-item-title>
+                    <v-list-item-subtitle>{{ camera.position }}</v-list-item-subtitle>
+                  </v-list-item-content>
+                </v-list-item>
+                <v-list-item>
+                  <v-list-item-content>
+                    <v-list-item-title>Resolution</v-list-item-title>
+                    <v-list-item-subtitle>{{ camera.camera_resolution.width }}x{{ camera.camera_resolution.height }}</v-list-item-subtitle>
+                  </v-list-item-content>
+                </v-list-item>
+                <v-list-item v-if="camera.recreate_me">
+                  <v-list-item-content>
+                    <v-list-item-title>Recreate Me</v-list-item-title>
+                    <v-list-item-subtitle>{{ camera.recreate_me }}</v-list-item-subtitle>
+                  </v-list-item-content>
+                </v-list-item>
+              </v-list>
+              <div>
+                <h4>Model Details</h4>
+                <v-list dense>
+                  <v-list-item>
+                    <v-list-item-content>
+                      <v-list-item-title>Model Name</v-list-item-title>
+                      <v-list-item-subtitle>{{ camera.model_forwarder_config.model_name }}</v-list-item-subtitle>
+                    </v-list-item-content>
+                  </v-list-item>
+                  <v-list-item>
+                    <v-list-item-content>
+                      <v-list-item-title>Model Type</v-list-item-title>
+                      <v-list-item-subtitle>{{ camera.model_forwarder_config.model_type }}</v-list-item-subtitle>
+                    </v-list-item-content>
+                  </v-list-item>
+                  <v-list-item>
+                    <v-list-item-content>
+                      <v-list-item-title>Expected Image Resolution</v-list-item-title>
+                      <v-list-item-subtitle>{{ camera.model_forwarder_config.expected_image_resolution.width }}x{{ camera.model_forwarder_config.expected_image_resolution.height }}</v-list-item-subtitle>
+                    </v-list-item-content>
+                  </v-list-item>
+                  <v-list-item>
+                    <v-list-item-content>
+                      <v-list-item-title>Version</v-list-item-title>
+                      <v-list-item-subtitle>{{ camera.model_forwarder_config.model_version }}</v-list-item-subtitle>
+                    </v-list-item-content>
+                  </v-list-item>
+                  <v-list-item>
+                    <v-list-item-content>
+                      <v-list-item-title>Model Serving URL</v-list-item-title>
+                      <v-list-item-subtitle><a :href="camera.model_forwarder_config.model_serving_url" target="_blank">{{ camera.model_forwarder_config.model_serving_url }}</a></v-list-item-subtitle>
+                    </v-list-item-content>
+                  </v-list-item>
+                  <v-list-item v-if="camera.model_forwarder_config.recreate_me">
+                    <v-list-item-content>
+                      <v-list-item-title>Recreate Me</v-list-item-title>
+                      <v-list-item-subtitle>{{ camera.model_forwarder_config.recreate_me }}</v-list-item-subtitle>
+                    </v-list-item-content>
+                  </v-list-item>
+                </v-list>
+              </div>
+              <v-list dense>
+                <v-list-item v-if="camera.camera_rule_config">
+                  <v-list-item-content>
+                    <v-list-item-title>Rule</v-list-item-title>
+                    <v-list-item-subtitle>{{ camera.camera_rule_config.camera_rule_type }}</v-list-item-subtitle>
+                  </v-list-item-content>
+                </v-list-item>
+                <v-list-item v-if="item.camera_decisions && item.camera_decisions[camera.camera_id]">
+                  <v-list-item-content>
+                    <v-list-item-title>Decision</v-list-item-title>
+                    <v-list-item-subtitle>{{ item.camera_decisions[camera.camera_id] }}</v-list-item-subtitle>
+                  </v-list-item-content>
+                </v-list-item>
+              </v-list>
+              <div>
+                <h4 @click="togglePredictions(cameraId)">
+                  Predictions
+                  <v-icon>{{ showPredictions[cameraId] ? 'mdi-eye-off' : 'mdi-eye' }}</v-icon>
+                </h4>
+                <v-list dense v-if="showPredictions[cameraId] && item.predictions && item.predictions[cameraId]">
+                  <v-list-item v-if="item.predictions[cameraId].prediction_type === 'class'">
+                    <v-list-item-content>
+                      <v-list-item-title>Label</v-list-item-title>
+                      <v-list-item-subtitle>{{ item.predictions[cameraId].label }}</v-list-item-subtitle>
+                    </v-list-item-content>
+                  </v-list-item>
+                  <v-list-item v-if="item.predictions[cameraId].prediction_type === 'class'">
+                    <v-list-item-content>
+                      <v-list-item-title>Probability</v-list-item-title>
+                      <v-list-item-subtitle>{{ item.predictions[cameraId].probability }}</v-list-item-subtitle>
+                    </v-list-item-content>
+                  </v-list-item>
+                  <v-list-item v-if="item.predictions[cameraId].prediction_type === 'objects'">
+                    <v-list-item-content>
+                      <v-list-item-title>Detected Objects</v-list-item-title>
+                      <v-list-item-subtitle>
+                        <v-list dense>
+                          <v-list-item v-for="(object, objectId) in item.predictions[cameraId].detected_objects" :key="objectId">
+                            <v-list-item-content>
+                              <v-list-item-title>Location</v-list-item-title>
+                              <v-list-item-subtitle>{{ object.location }}</v-list-item-subtitle>
+                            </v-list-item-content>
+                          </v-list-item>
+                          <v-list-item>
+                            <v-list-item-content>
+                              <v-list-item-title>Objectness</v-list-item-title>
+                              <v-list-item-subtitle>{{ object.objectness }}</v-list-item-subtitle>
+                            </v-list-item-content>
+                          </v-list-item>
+                          <v-list-item>
+                            <v-list-item-content>
+                              <v-list-item-title>Label</v-list-item-title>
+                              <v-list-item-subtitle>{{ object.label }}</v-list-item-subtitle>
+                            </v-list-item-content>
+                          </v-list-item>
+                        </v-list>
+                      </v-list-item-subtitle>
+                    </v-list-item-content>
+                  </v-list-item>
+                </v-list>
+              </div>
             </v-card-subtitle>
             <v-card-text>
               <div class="image-container">
@@ -37,25 +186,6 @@
           </v-card>
         </v-col>
       </v-row>
-      <div>
-        <h4 @click="togglePredictions(item.id)">Predictions</h4>
-        <div v-if="showPredictions[item.id] && item.predictions">
-          <div v-for="(prediction, cameraId) in item.predictions" :key="cameraId">
-            <h5>Camera {{ cameraId }}</h5>
-            <div v-if="prediction.prediction_type === 'class'">
-              <p>Label: {{ prediction.label }}</p>
-              <p>Probability: {{ prediction.probability }}</p>
-            </div>
-            <div v-if="prediction.prediction_type === 'objects'">
-              <div v-for="(object, objectId) in prediction.detected_objects" :key="objectId">
-                <p>Location: {{ object.location }}</p>
-                <p>Objectness: {{ object.objectness }}</p>
-                <p>Label: {{ object.label }}</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
     </v-card-text>
   </v-card>
 </template>
@@ -89,8 +219,8 @@ export default {
         height: `${(y2 - y1) * 100}%`
       };
     },
-    togglePredictions(itemId) {
-      this.$set(this.showPredictions, itemId, !this.showPredictions[itemId]);
+    togglePredictions(cameraId) {
+      this.$set(this.showPredictions, cameraId, !this.showPredictions[cameraId]);
     },
     getDecisionClass(decision) {
       switch (decision) {
@@ -140,7 +270,7 @@ export default {
 .classification-label {
   position: absolute;
   top: 10px;
-  left: 10px;
+  right: 10px;
   background-color: rgba(255, 255, 255, 0.7);
   padding: 5px;
   border-radius: 3px;
@@ -170,5 +300,9 @@ export default {
 
 .decision-no-decision {
   color: lightgray;
+}
+
+.reduced-spacing .v-row {
+  margin-bottom: 8px; /* Adjust this value to reduce the space between rows */
 }
 </style>
