@@ -127,13 +127,6 @@
         <v-btn @click="toggleBinaryCloudStorage" color="primary" small>
           {{ showBinaryCloudStorage ? 'Remove' : 'Add' }} Cloud Storage Credentials
         </v-btn>
-        <div v-if="showBinaryCloudStorage">
-          <h5>Cloud Storage Credentials</h5>
-          <v-text-field v-model="NewConfig.binary_storage_config.cloud_storage_creds.aws_access_key_id" label="AWS Access Key ID"></v-text-field>
-          <v-text-field v-model="NewConfig.binary_storage_config.cloud_storage_creds.aws_secret_access_key" label="AWS Secret Access Key"></v-text-field>
-          <v-text-field v-model="NewConfig.binary_storage_config.cloud_storage_creds.aws_session_token" label="AWS Session Token"></v-text-field>
-          <v-text-field v-model="NewConfig.binary_storage_config.cloud_storage_creds.bucket_name" label="Bucket Name"></v-text-field>
-        </div>
         <v-divider></v-divider>
         <h4>Metadata Storage Config</h4>
         <v-select
@@ -153,13 +146,6 @@
         <v-btn @click="toggleMetadataCloudStorage" color="primary" small>
           {{ showMetadataCloudStorage ? 'Remove' : 'Add' }} Cloud Storage Credentials
         </v-btn>
-        <div v-if="showMetadataCloudStorage">
-          <h5>Cloud Storage Credentials</h5>
-          <v-text-field v-model="NewConfig.metadata_storage_config.cloud_storage_creds.aws_access_key_id" label="AWS Access Key ID"></v-text-field>
-          <v-text-field v-model="NewConfig.metadata_storage_config.cloud_storage_creds.aws_secret_access_key" label="AWS Secret Access Key"></v-text-field>
-          <v-text-field v-model="NewConfig.metadata_storage_config.cloud_storage_creds.aws_session_token" label="AWS Session Token"></v-text-field>
-          <v-text-field v-model="NewConfig.metadata_storage_config.cloud_storage_creds.bucket_name" label="Bucket Name"></v-text-field>
-        </div>
         <v-divider></v-divider>
         <h4>Item Rule Config</h4>
         <v-select

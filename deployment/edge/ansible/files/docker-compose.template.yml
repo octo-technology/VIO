@@ -4,8 +4,10 @@ services:
     build:
       context: edge_model_serving
       dockerfile: tflite_serving/Dockerfile
+      args:
+        BUILDOS: ${BUILDOS:-linux}
     environment:
-      - TF_CPP_MIN_VLOG_LEVEL=0
+      TF_CPP_MIN_VLOG_LEVEL: 0
     ports:
       - 8501:8501
     volumes:
@@ -16,12 +18,14 @@ services:
     build:
       context: edge_orchestrator
       dockerfile: Dockerfile
+      args:
+        BUILDOS: ${BUILDOS:-linux}
     volumes:
-      - ./edge_orchestrator/data:/edge_orchestrator/data
-      - ./edge_orchestrator/config:/edge_orchestrator/config
+      - ./data_storage:/edge_orchestrator/data_storage
     devices:
-      - /dev/video0:/dev/video0
-      - /dev/video2:/dev/video2
+      - /dev/video0:/dev/video0  # Corresponds to mounting point of integrated webcam device
+      - /dev/video4:/dev/video4  # Corresponds to mounting point of USB camera device
+      - /run/udev:/run/udev:ro  # Corresponds to mounting point of Raspberry Pi camera device
     ports:
       - 8000:8000
     environment:
@@ -29,7 +33,7 @@ services:
       API_CONFIG: upload-gcp
       SERVING_MODEL_URL: http://edge_model_serving:8501
       GOOGLE_APPLICATION_CREDENTIALS: /edge_orchestrator/config/secrets/credentials.json
-      GCP_BUCKET_NAME: tf-vio-bucket
+      BUCKET_NAME: tf-vio-bucket
       ACTIVE_CONFIG_NAME: marker_classification_with_1_fake_camera
 
   edge_streamlit:
