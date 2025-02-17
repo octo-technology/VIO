@@ -44,7 +44,7 @@ vio-hub-up:
 
 .PHONY: vio-edge-up ## 🐳 Start all edge services (db, model_serving, orchestrator, interface)
 vio-edge-up:
-	docker-compose --profile edge up -d --build
+	docker compose --profile edge up -d --build
 
 .PHONY: vio-up ## 🐳 Start all edge services (db, model_serving, orchestrator, interface) and hubs (monitoring, monitoring_db, labelizer)
 vio-up:
