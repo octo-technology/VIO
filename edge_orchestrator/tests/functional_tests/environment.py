@@ -31,6 +31,7 @@ def before_all(context: Context):
 
     os.environ["CONFIG_DIR"] = tmp_config_dir.as_posix()
     os.environ["ACTIVE_CONFIG_NAME"] = "unknown_config"
+    # TODO: take a decision on the model serving to use, what should be the right abstraction
     # (
     #     model_serving_url,
     #     context.tensorflow_serving_container,

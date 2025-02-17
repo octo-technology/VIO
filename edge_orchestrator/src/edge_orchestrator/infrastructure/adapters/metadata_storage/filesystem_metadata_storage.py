@@ -48,7 +48,9 @@ class FileSystemMetadataStorage(IMetadataStorage):
 
     def _get_storing_directory_path(self) -> Path:
         return (
-            self._station_config.metadata_storage_config.target_directory / self._station_config.station_name / self._station_config.metadata_storage_config.prefix
+            self._station_config.metadata_storage_config.target_directory
+            / self._station_config.station_name
+            / self._station_config.metadata_storage_config.prefix
             if self._station_config.metadata_storage_config.prefix
             else self._station_config.metadata_storage_config.target_directory / self._station_config.station_name
         )

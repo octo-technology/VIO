@@ -40,4 +40,6 @@ class MetadataStorageFactory(IMetadataStorageFactory):
 
             return AzureMetadataStorage(station_config)
         else:
-            raise ValueError(f"Metadata storage type {station_config.metadata_storage_config.storage_type} is not supported")
+            raise ValueError(
+                f"Metadata storage type {station_config.metadata_storage_config.storage_type} is not supported"
+            )

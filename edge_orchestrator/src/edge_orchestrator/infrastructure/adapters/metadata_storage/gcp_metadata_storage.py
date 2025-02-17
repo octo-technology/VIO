@@ -19,7 +19,9 @@ class GCPMetadataStorage(IMetadataStorage):
         self._station_config: StationConfig = station_config
         self._logger = logging.getLogger(__name__)
         self._storage_client = storage.Client()
-        self._bucket = self._storage_client.get_bucket(self._station_config.binary_storage_config.target_directory.as_posix())
+        self._bucket = self._storage_client.get_bucket(
+            self._station_config.binary_storage_config.target_directory.as_posix()
+        )
 
     def save_item_metadata(self, item: Item):
         item_metadata = item.model_dump_json(exclude_none=True)
