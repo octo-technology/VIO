@@ -21,7 +21,7 @@ class GCPBinaryStorage(IBinaryStorage):
 
     def save_item_binaries(self, item: Item):
         for camera_id, image in item.binaries.items():
-            blob = self._bucket.blob(self._get_storing_path(item.id) / f"{camera_id}.jpg")
+            blob = self._bucket.blob((self._get_storing_path(item.id) / f"{camera_id}.jpg").as_posix())
             if blob is None:
                 raise Exception("An image should be upload")
             blob.upload_from_string(image.image_bytes, content_type="image/jpg")
@@ -43,7 +43,7 @@ class GCPBinaryStorage(IBinaryStorage):
         return binaries
 
     def get_item_binary(self, item_id: UUID, camera_id: str) -> bytes:
-        filename = self._get_storing_path(item_id) / f"{camera_id}.jpg"
+        filename = (self._get_storing_path(item_id) / f"{camera_id}.jpg").as_posix()
         blob = self._bucket.get_blob(filename)
         if blob is None:
             raise HTTPException(status_code=400, detail=f"The item {item_id} has no binary for {camera_id}")
@@ -51,9 +51,11 @@ class GCPBinaryStorage(IBinaryStorage):
 
     def _get_storing_directory_path(self) -> Path:
         return (
-            self._storage_config.target_directory / self._storage_config.prefix
+            Path(self._storage_config.prefix)
             if self._storage_config.prefix
-            else self._storage_config.target_directory
+            else Path("")
+            # todo need to get station name from somewhere
+            # else self._config_manager.get_config().station_name
         )
 
     def _get_storing_path(self, item_id: UUID) -> Path:

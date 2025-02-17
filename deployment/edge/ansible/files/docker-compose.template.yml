@@ -23,9 +23,8 @@ services:
     volumes:
       - ./data_storage:/edge_orchestrator/data_storage
     devices:
-      - /dev/video0:/dev/video0  # Corresponds to mounting point of integrated webcam device
-      - /dev/video4:/dev/video4  # Corresponds to mounting point of USB camera device
-      - /run/udev:/run/udev:ro  # Corresponds to mounting point of Raspberry Pi camera device
+      - /dev/video0:/dev/video0 
+      - /dev/video2:/dev/video2
     ports:
       - 8000:8000
     environment:
@@ -35,6 +34,14 @@ services:
       GOOGLE_APPLICATION_CREDENTIALS: /edge_orchestrator/config/secrets/credentials.json
       BUCKET_NAME: tf-vio-bucket
       ACTIVE_CONFIG_NAME: marker_classification_with_1_fake_camera
+
+  edge_interface:
+    container_name: edge_interface
+    build:
+      context: edge_interface
+      dockerfile: Dockerfile
+    ports:
+      - 8080:80
 
   edge_streamlit:
     container_name: edge_streamlit
