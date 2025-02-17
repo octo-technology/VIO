@@ -5,7 +5,7 @@ services:
       context: .
       dockerfile: Dockerfile
       args:
-        BUILDOS: ${BUILDOS:-mac}
+        BUILDOS: ${BUILDOS:-linux}
     volumes:
       - ./data_storage:/edge_orchestrator/data_storage
     devices:

@@ -5,7 +5,7 @@ services:
       context: edge_model_serving
       dockerfile: tflite_serving/Dockerfile
       args:
-        BUILDOS: ${BUILDOS:-mac}
+        BUILDOS: ${BUILDOS:-linux}
     environment:
       TF_CPP_MIN_VLOG_LEVEL: 0
     ports:
