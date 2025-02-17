@@ -1,16 +1,17 @@
-from http.client import HTTPException
 import json
 import logging
+from http.client import HTTPException
 from pathlib import Path
 from typing import List
 from uuid import UUID
+
+from google.cloud import storage
 
 from edge_orchestrator.domain.models.item import Item
 from edge_orchestrator.domain.models.station_config import StationConfig
 from edge_orchestrator.domain.ports.metadata_storage.i_metadata_storage import (
     IMetadataStorage,
 )
-from google.cloud import storage
 
 
 class GCPMetadataStorage(IMetadataStorage):
