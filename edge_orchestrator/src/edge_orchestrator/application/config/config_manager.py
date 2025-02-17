@@ -18,7 +18,7 @@ class ConfigManager(metaclass=SingletonMeta):
         self._logger = logging.getLogger(__name__)
         self._config_dir = Path(os.getenv("CONFIG_DIR", "config")).resolve()
         # todo: test me
-        self._active_config_filepath = self._config_dir / os.getenv("ACTIVE_CONFIG_NAME", "active_station_config")
+        self._active_config_filepath = self._config_dir / f"{os.getenv('ACTIVE_CONFIG_NAME', 'config_1')}.json"
         self._load_all_configs()
 
     def _load_all_configs(self) -> StationConfig:
@@ -31,12 +31,14 @@ class ConfigManager(metaclass=SingletonMeta):
         found_active_station_config = False
         for json_config_path in self._config_dir.iterdir():
             try:
-                with json_config_path.open() as f:
-                    station_config = StationConfig(**json.load(f))
-                    self._station_configs[station_config.station_name] = station_config
-                    if json_config_path == self._active_config_filepath:
-                        self._active_station_name = station_config.station_name
-                        found_active_station_config = True
+                if json_config_path.is_file():
+                    with json_config_path.open() as f:
+                        station_config = StationConfig(**json.load(f))
+                        self._station_configs[station_config.station_name] = station_config
+                        if json_config_path == self._active_config_filepath:
+                            self._active_station_name = station_config.station_name
+                            found_active_station_config = True
+                            self._logger.info(f"Active station config found and set: {station_config.station_name}")
             except (ValidationError, Exception):
                 self._logger.exception(
                     f"The json station config file is invalid. Fix it or delete it: {json_config_path.as_posix()}"
