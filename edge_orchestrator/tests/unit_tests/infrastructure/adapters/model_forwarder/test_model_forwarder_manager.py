@@ -33,6 +33,7 @@ class TestModelForwarderManager:
                 "camera_#1": CameraConfig(
                     camera_id="camera_#1",
                     camera_type=CameraType.FAKE,
+                    source_directory="fake",
                     model_forwarder_config=ModelForwarderConfig(
                         model_name=ModelName.fake_model,
                         model_type=ModelType.classification,
@@ -44,6 +45,7 @@ class TestModelForwarderManager:
                 "camera_#2": CameraConfig(
                     camera_id="camera_#2",
                     camera_type=CameraType.RASPBERRY,
+                    source_directory="fake",
                     model_forwarder_config=ModelForwarderConfig(
                         model_name=ModelName.fake_model,
                         model_type=ModelType.object_detection,

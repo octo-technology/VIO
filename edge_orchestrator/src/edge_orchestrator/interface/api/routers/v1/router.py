@@ -54,7 +54,9 @@ def set_config(station_name: Optional[str] = None, station_config: Optional[Stat
 
 def get_all_configs(reload: Optional[bool] = False) -> Dict[str, StationConfig]:
     manager = ConfigManager()
-    configs = manager.get_all_configs(reload)
+    if reload:
+        manager.reload_configs()
+    configs = manager.all_configs
     if not configs:
         raise HTTPException(status_code=400, detail="No existing configuration")
     return configs

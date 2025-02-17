@@ -61,8 +61,8 @@ class TestFileSystemMetadataStorage:
             id=item_id,
             creation_date="2025-02-04T09:23:10.437614",
             cameras_metadata={
-                "camera_#1": CameraConfig(camera_id="camera_#1", camera_type=CameraType.FAKE),
-                "camera_#2": CameraConfig(camera_id="camera_#2", camera_type=CameraType.USB),
+                "camera_#1": CameraConfig(camera_id="camera_#1", camera_type=CameraType.FAKE, source_directory="fake"),
+                "camera_#2": CameraConfig(camera_id="camera_#2", camera_type=CameraType.USB, source_directory="fake"),
             },
             binaries={
                 "camera_#1": Image(
@@ -97,12 +97,14 @@ class TestFileSystemMetadataStorage:
                     "camera_id": "camera_#1",
                     "camera_type": "fake",
                     "position": "front",
+                    "source_directory": "fake",
                     "recreate_me": False,
                 },
                 "camera_#2": {
                     "camera_id": "camera_#2",
                     "camera_type": "usb",
                     "position": "front",
+                    "source_directory": "fake",
                     "recreate_me": False,
                 },
             },
@@ -170,8 +172,18 @@ class TestFileSystemMetadataStorage:
             "id": "00000000-0000-0000-0000-000000000003",
             "creation_date": "2025-02-04T09:18:09.433619",
             "cameras_metadata": {
-                "camera_#1": {"camera_id": "camera_#1", "camera_type": "fake", "reacreate_me": False},
-                "camera_#2": {"camera_id": "camera_#2", "camera_type": "usb", "reacreate_me": False},
+                "camera_#1": {
+                    "camera_id": "camera_#1",
+                    "camera_type": "fake",
+                    "source_directory": "fake",
+                    "reacreate_me": False,
+                },
+                "camera_#2": {
+                    "camera_id": "camera_#2",
+                    "camera_type": "usb",
+                    "source_directory": "fake",
+                    "reacreate_me": False,
+                },
             },
             "binaries": {
                 "camera_#1": {"creation_date": "2025-02-04T12:05:39.744489", "storing_path": "/fake/path/image_1.jpg"},
@@ -208,8 +220,18 @@ class TestFileSystemMetadataStorage:
                 "id": uid,
                 "creation_date": "2025-02-04T09:18:09.433619",
                 "cameras_metadata": {
-                    "camera_#1": {"camera_id": "camera_#1", "camera_type": "fake", "reacreate_me": False},
-                    "camera_#2": {"camera_id": "camera_#2", "camera_type": "usb", "reacreate_me": False},
+                    "camera_#1": {
+                        "camera_id": "camera_#1",
+                        "camera_type": "fake",
+                        "source_directory": "fake",
+                        "reacreate_me": False,
+                    },
+                    "camera_#2": {
+                        "camera_id": "camera_#2",
+                        "camera_type": "usb",
+                        "source_directory": "fake",
+                        "reacreate_me": False,
+                    },
                 },
                 "binaries": {
                     "camera_#1": {

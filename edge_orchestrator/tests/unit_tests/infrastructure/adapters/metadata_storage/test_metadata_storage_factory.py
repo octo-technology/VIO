@@ -1,3 +1,5 @@
+from unittest.mock import MagicMock, patch
+
 import pytest
 
 from edge_orchestrator.domain.models.storage.storage_config import StorageConfig
@@ -33,10 +35,16 @@ class TestMetadataStorageFactory:
             (StorageType.GCP, GCPMetadataStorage),
         ],
     )
+    @patch("edge_orchestrator.infrastructure.adapters.metadata_storage.gcp_metadata_storage.storage.Client")
     def test_should_return_the_specified_metadata_storage_instance(
-        self, storage_type: StorageType, metadata_storage_class: IMetadataStorage
+        self, mock_storage_client, storage_type: StorageType, metadata_storage_class: IMetadataStorage
     ):
         # Given
+        mock_client_instance = MagicMock()
+        mock_bucket = MagicMock()
+        mock_client_instance.get_bucket.return_value = mock_bucket
+        mock_storage_client.return_value = mock_client_instance
+
         metadata_storage_factory = MetadataStorageFactory()
         metadata_storage_config = StorageConfig(storage_type=storage_type)
 
@@ -47,3 +55,7 @@ class TestMetadataStorageFactory:
         assert isinstance(metadata_storage, metadata_storage_class)
         assert hasattr(metadata_storage, "save_item_metadata")
         assert hasattr(metadata_storage, "get_item_metadata")
+
+        if storage_type == StorageType.GCP:
+            mock_storage_client.assert_called_once()
+            mock_client_instance.get_bucket.assert_called_once_with(metadata_storage_config.target_directory.as_posix())

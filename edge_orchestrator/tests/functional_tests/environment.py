@@ -30,6 +30,7 @@ def before_all(context: Context):
     copytree(config_directory.as_posix(), tmp_config_dir.as_posix())
 
     os.environ["CONFIG_DIR"] = tmp_config_dir.as_posix()
+    os.environ["ACTIVE_CONFIG_NAME"] = "unknown_config"
     # (
     #     model_serving_url,
     #     context.tensorflow_serving_container,

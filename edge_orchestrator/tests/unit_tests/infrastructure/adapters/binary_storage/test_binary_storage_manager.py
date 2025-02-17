@@ -1,3 +1,5 @@
+from unittest.mock import MagicMock, patch
+
 from edge_orchestrator.domain.models.storage.storage_config import StorageConfig
 from edge_orchestrator.domain.models.storage.storage_type import StorageType
 from edge_orchestrator.infrastructure.adapters.binary_storage.aws_binary_storage import (
@@ -22,9 +24,16 @@ from edge_orchestrator.infrastructure.adapters.binary_storage.gcp_binary_storage
 
 class TestBinaryStorageManager:
 
+    @patch("edge_orchestrator.infrastructure.adapters.binary_storage.gcp_binary_storage.storage.Client")
     def test_should_return_expected_binary_storage_and_store_it_as_attribute(
         self,
+        mock_storage_client,
     ):
+        mock_client_instance = MagicMock()
+        mock_bucket = MagicMock()
+        mock_client_instance.get_bucket.return_value = mock_bucket
+        mock_storage_client.return_value = mock_client_instance
+
         # Given
         storage_type_binary_storage_classes = [
             (StorageType.FILESYSTEM, FileSystemBinaryStorage),
@@ -45,3 +54,7 @@ class TestBinaryStorageManager:
         assert len(binary_storage_manager._binary_storages) == 4
         for storage_type, _ in storage_type_binary_storage_classes:
             assert storage_type in binary_storage_manager._binary_storages
+
+        if storage_type == StorageType.GCP:
+            mock_storage_client.assert_called_once()
+            mock_client_instance.get_bucket.assert_called_once_with(binary_storage_config.target_directory.as_posix())

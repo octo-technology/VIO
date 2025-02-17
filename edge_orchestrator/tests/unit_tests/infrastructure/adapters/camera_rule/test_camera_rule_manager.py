@@ -39,6 +39,7 @@ class TestCameraRuleManager:
                 "camera_#1": CameraConfig(
                     camera_id="camera_#1",
                     camera_type=CameraType.FAKE,
+                    source_directory="fake",
                     camera_rule_config=CameraRuleConfig(
                         camera_rule_type=CameraRuleType.EXPECTED_LABEL_RULE, expected_class="OK"
                     ),
@@ -46,6 +47,7 @@ class TestCameraRuleManager:
                 "camera_#2": CameraConfig(
                     camera_id="camera_#2",
                     camera_type=CameraType.USB,
+                    source_directory="fake",
                     camera_rule_config=CameraRuleConfig(
                         camera_rule_type=CameraRuleType.UNEXPECTED_LABEL_RULE, unexpected_class="KO"
                     ),
@@ -53,6 +55,7 @@ class TestCameraRuleManager:
                 "camera_#3": CameraConfig(
                     camera_id="camera_#3",
                     camera_type=CameraType.RASPBERRY,
+                    source_directory="fake",
                     camera_rule_config=CameraRuleConfig(
                         camera_rule_type=CameraRuleType.MIN_NB_OBJECTS_RULE, class_to_detect="bike", threshold=1
                     ),
@@ -60,6 +63,7 @@ class TestCameraRuleManager:
                 "camera_#4": CameraConfig(
                     camera_id="camera_#4",
                     camera_type=CameraType.RASPBERRY,
+                    source_directory="fake",
                     camera_rule_config=CameraRuleConfig(
                         camera_rule_type=CameraRuleType.MAX_NB_OBJECTS_RULE, class_to_detect="moto", threshold=1
                     ),

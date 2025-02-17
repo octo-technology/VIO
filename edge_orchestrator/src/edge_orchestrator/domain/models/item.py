@@ -10,7 +10,6 @@ from edge_orchestrator.domain.models.model_forwarder.prediction import Predictio
 from edge_orchestrator.interface.api.models.item_base import ItemBase
 
 
-# TODO: add a state or "all steps" that the item passed
 class Item(ItemBase):
     model_config = ConfigDict(use_enum_values=True)
 

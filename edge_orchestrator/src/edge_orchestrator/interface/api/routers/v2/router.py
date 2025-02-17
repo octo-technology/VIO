@@ -54,7 +54,7 @@ def set_config(station_name: Optional[str] = None, station_config: Optional[Stat
 
 def get_all_configs() -> Dict[str, StationConfig]:
     manager = ConfigManager()
-    configs = manager.get_all_configs()
+    configs = manager.all_configs
     if not configs:
         raise HTTPException(status_code=400, detail="No existing configuration")
     return configs
@@ -122,7 +122,7 @@ async def trigger_job(
     return {"item_id": item.id}
 
 
-router = APIRouter(prefix="/api/v1")
+router = APIRouter(prefix="/api/v2")
 router.add_api_route("/", home, methods=["GET"])
 router.add_api_route("/health/live", get_health, methods=["GET"])
 router.add_api_route("/items", get_all_items_metadata, methods=["GET"], response_model_exclude_none=True)

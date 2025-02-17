@@ -13,7 +13,9 @@ from edge_orchestrator.domain.models.storage.storage_config import StorageConfig
 
 class TestConfigManager:
 
-    def test_config_manager_should_load_existing_active_config_from_disk(self, tmp_path: Path, cleanup_singleton):
+    def test_config_manager_should_load_existing_active_config_from_env_variable_and_log(
+        self, tmp_path: Path, cleanup_singleton, caplog
+    ):
         # Given
         config_dir = tmp_path / "config"
         config_dir.mkdir()
@@ -27,23 +29,25 @@ class TestConfigManager:
                 item_rule_type=ItemRuleType.MIN_THRESHOLD_RULE, expected_decision=Decision.OK, threshold=1
             ),
         )
-        config_filepath = config_dir / f"{station_config.station_name}.json"
+        config_filepath = (config_dir / station_config.station_name).with_suffix(".json")
         with config_filepath.open("w") as f:
             f.write(station_config.model_dump_json(exclude_none=True))
-            (config_dir / "active_station_config").symlink_to(config_filepath)
+        os.environ["ACTIVE_CONFIG_NAME"] = station_config.station_name
 
         # When
-        config_manager = ConfigManager()
+        with caplog.at_level("INFO"):
+            config_manager = ConfigManager()
 
         # Then
         active_station_config = config_manager.get_config()
-        all_config = config_manager.get_all_configs()
         assert (
             active_station_config is not None
             and isinstance(active_station_config, StationConfig)
             and active_station_config == station_config
         )
-        assert len(all_config) == 1 and active_station_config.station_name in all_config
+        assert len(config_manager.all_configs) == 1 and active_station_config.station_name in config_manager.all_configs
+        caplog_messages = [(record.msg, record.levelname) for record in caplog.records]
+        assert (f"Active station config found and set: {station_config.station_name}", "INFO") in caplog_messages
 
     def test_config_manager_should_log_warning_with_no_config_dir(self, tmp_path: Path, caplog, cleanup_singleton):
         # Given
@@ -63,13 +67,14 @@ class TestConfigManager:
             "WARNING",
         ) in log_messages
 
-    def test_config_manager_should_log_warning_with_no_active_config_on_disk(
+    def test_config_manager_should_log_warning_with_no_active_config_found(
         self, tmp_path: Path, caplog, cleanup_singleton
     ):
         # Given
         config_dir = tmp_path / "config"
         config_dir.mkdir()
         os.environ["CONFIG_DIR"] = config_dir.as_posix()
+        os.environ["ACTIVE_CONFIG_NAME"] = "config_1"
 
         # When
         with caplog.at_level("WARNING"):
@@ -80,7 +85,7 @@ class TestConfigManager:
         active_station_config = config_manager.get_config()
         assert active_station_config is None
         assert (
-            f"No active json station config found at {(config_dir/'active_station_config').as_posix()}",
+            f"No active json station config found at {(config_dir/'config_1').with_suffix('.json').as_posix()}",
             "WARNING",
         ) in log_messages
 
@@ -125,7 +130,7 @@ class TestConfigManager:
         config_filepath = config_dir / f"{station_config_1.station_name}.json"
         with config_filepath.open("w") as f:
             f.write(station_config_1.model_dump_json(exclude_none=True))
-            (config_dir / "active_station_config").symlink_to(config_filepath)
+        os.environ["ACTIVE_CONFIG_NAME"] = station_config_1.station_name
 
         station_config_2 = StationConfig(
             station_name="test_station_2",
@@ -143,16 +148,15 @@ class TestConfigManager:
 
         # Then
         active_station_config = config_manager.get_config()
-        all_config = config_manager.get_all_configs()
         assert (
             active_station_config is not None
             and isinstance(active_station_config, StationConfig)
             and active_station_config == station_config_2
         )
         assert (
-            len(all_config) == 2
-            and station_config_1.station_name in all_config
-            and station_config_2.station_name in all_config
+            len(config_manager.all_configs) == 2
+            and station_config_1.station_name in config_manager.all_configs
+            and station_config_2.station_name in config_manager.all_configs
         )
 
     def test_config_manager_should_write_active_config_on_disk(self, tmp_path: Path, cleanup_singleton):
@@ -177,13 +181,10 @@ class TestConfigManager:
         # Then
         active_station_config = config_manager.get_config()
         config_filepath = config_dir / f"{station_config.station_name}.json"
-        active_config_filepath = config_dir / "active_station_config"
         assert active_station_config is station_config
         assert config_filepath.exists()
-        assert active_config_filepath.exists()
-        assert config_filepath.read_text() == active_config_filepath.read_text()
 
-    def test_config_manager_should_overwrite_existing_config_with_same_profile(
+    def test_config_manager_should_overwrite_existing_config_with_same_name(
         self, tmp_path: Path, caplog, cleanup_singleton
     ):
         # Given
@@ -202,10 +203,12 @@ class TestConfigManager:
         config_filepath = config_dir / f"{station_config.station_name}.json"
         with config_filepath.open("w") as f:
             f.write(station_config.model_dump_json(exclude_none=True))
-            (config_dir / "active_station_config").symlink_to(config_filepath)
+        os.environ["ACTIVE_CONFIG_NAME"] = station_config.station_name
 
         config_manager = ConfigManager()
-        new_camera_config = {"camera_#1": CameraConfig(camera_id="camera_#1", camera_type=CameraType.FAKE)}
+        new_camera_config = {
+            "camera_#1": CameraConfig(camera_id="camera_#1", camera_type=CameraType.FAKE, source_directory="fake")
+        }
 
         # When
         with caplog.at_level("WARNING"):

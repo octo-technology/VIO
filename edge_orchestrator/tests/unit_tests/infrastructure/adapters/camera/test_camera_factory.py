@@ -28,7 +28,7 @@ class TestCameraFactory:
     ):
         # Given
         camera_factory = CameraFactory()
-        camera_config = CameraConfig(camera_id=camera_id, camera_type=camera_type)
+        camera_config = CameraConfig(camera_id=camera_id, camera_type=camera_type, source_directory="fake")
 
         # When
         camera = camera_factory.create_camera(camera_config)
@@ -36,3 +36,4 @@ class TestCameraFactory:
         # Then
         assert isinstance(camera, camera_class)
         assert hasattr(camera, "capture")
+        camera.release()

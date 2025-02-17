@@ -11,6 +11,7 @@ class RaspberryPiCamera(ICamera):
     def __init__(self, camera_config: CameraConfig):
         self._camera_config = camera_config
         self._logger = logging.getLogger(__name__)
+        self._picam2 = None
         try:
             from picamera2 import Picamera2
 
@@ -29,6 +30,7 @@ class RaspberryPiCamera(ICamera):
 
     def release(self):
         try:
-            self._picam2.close()
+            if self._picam2:
+                self._picam2.close()
         except RuntimeError:
             self._logger.exception("Camera closing failed")

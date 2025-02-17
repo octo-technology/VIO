@@ -1,3 +1,5 @@
+from unittest.mock import MagicMock, patch
+
 import pytest
 
 from edge_orchestrator.domain.models.storage.storage_config import StorageConfig
@@ -33,10 +35,16 @@ class TestBinaryStorageFactory:
             (StorageType.GCP, GCPBinaryStorage),
         ],
     )
+    @patch("edge_orchestrator.infrastructure.adapters.binary_storage.gcp_binary_storage.storage.Client")
     def test_should_return_the_specified_binary_storage_instance(
-        self, storage_type: StorageType, binary_storage_class: IBinaryStorage
+        self, mock_storage_client, storage_type: StorageType, binary_storage_class: IBinaryStorage
     ):
         # Given
+        mock_client_instance = MagicMock()
+        mock_bucket = MagicMock()
+        mock_client_instance.get_bucket.return_value = mock_bucket
+        mock_storage_client.return_value = mock_client_instance
+
         binary_storage_factory = BinaryStorageFactory()
         binary_storage_config = StorageConfig(storage_type=storage_type)
 
@@ -47,3 +55,7 @@ class TestBinaryStorageFactory:
         assert isinstance(binary_storage, binary_storage_class)
         assert hasattr(binary_storage, "save_item_binaries")
         assert hasattr(binary_storage, "get_item_binaries")
+
+        if storage_type == StorageType.GCP:
+            mock_storage_client.assert_called_once()
+            mock_client_instance.get_bucket.assert_called_once_with(binary_storage_config.target_directory.as_posix())
