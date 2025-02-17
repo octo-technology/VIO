@@ -17,6 +17,7 @@ from edge_orchestrator.utils.singleton import SingletonMeta
 
 pytest_plugins = [
     "fixtures.binaries",
+    "fixtures.configs",
     "fixtures.containers",
 ]
 

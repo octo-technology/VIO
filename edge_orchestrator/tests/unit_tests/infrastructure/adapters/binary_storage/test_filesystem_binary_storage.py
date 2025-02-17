@@ -2,19 +2,19 @@ from pathlib import Path
 from uuid import UUID
 
 from edge_orchestrator.domain.models.item import Image, Item
-from edge_orchestrator.domain.models.storage.storage_config import StorageConfig
+from edge_orchestrator.domain.models.station_config import StationConfig
 from edge_orchestrator.infrastructure.adapters.binary_storage.filesystem_binary_storage import (
     FileSystemBinaryStorage,
 )
 
 
 class TestFileSystemBinaryStorage:
-    def test_save_item_binaries_should_do_nothing_without_binaries(self, tmp_path: Path):
+    def test_save_item_binaries_should_do_nothing_without_binaries(self, tmp_path: Path, station_config: StationConfig):
         # Given
         target_directory = tmp_path / "binaries"
         target_directory.mkdir()
-        storage_config = StorageConfig(target_directory=target_directory)
-        binary_storage = FileSystemBinaryStorage(storage_config)
+        station_config.binary_storage_config.target_directory = target_directory
+        binary_storage = FileSystemBinaryStorage(station_config)
         item_id = UUID("00000000-0000-0000-0000-000000000002")
 
         item = Item(
@@ -25,14 +25,14 @@ class TestFileSystemBinaryStorage:
         binary_storage.save_item_binaries(item)
 
         # Then
-        assert len(list((target_directory / str(item.id)).iterdir())) == 0
+        assert len(list((target_directory / station_config.station_name / str(item.id)).iterdir())) == 0
 
-    def test_save_item_binaries_should_write_images_on_filesystem(self, tmp_path: Path):
+    def test_save_item_binaries_should_write_images_on_filesystem(self, tmp_path: Path, station_config: StationConfig):
         # Given
         target_directory = tmp_path / "binaries"
         target_directory.mkdir()
-        storage_config = StorageConfig(target_directory=target_directory)
-        binary_storage = FileSystemBinaryStorage(storage_config)
+        station_config.binary_storage_config.target_directory = target_directory
+        binary_storage = FileSystemBinaryStorage(station_config)
         expected_picture = bytes([0, 1, 2, 3, 4])
         item_id = UUID("00000000-0000-0000-0000-000000000001")
 
@@ -49,21 +49,24 @@ class TestFileSystemBinaryStorage:
 
         # Then
         path_to_pictures = [
-            target_directory / str(item.id) / "camera_#1.jpg",
-            target_directory / str(item.id) / "camera_#2.jpg",
+            target_directory / station_config.station_name / str(item.id) / "camera_#1.jpg",
+            target_directory / station_config.station_name / str(item.id) / "camera_#2.jpg",
         ]
         for path_to_picture in path_to_pictures:
             assert path_to_picture.is_file()
             actual_picture = path_to_picture.open("rb").read()
             assert actual_picture == expected_picture
 
-    def test_save_item_binaries_with_prefix_should_write_images_on_filesystem(self, tmp_path: Path):
+    def test_save_item_binaries_with_prefix_should_write_images_on_filesystem(
+        self, tmp_path: Path, station_config: StationConfig
+    ):
         # Given
         target_directory = tmp_path / "binaries"
         target_directory.mkdir()
         prefix = "station_#1"
-        storage_config = StorageConfig(target_directory=target_directory, prefix=prefix)
-        binary_storage = FileSystemBinaryStorage(storage_config)
+        station_config.binary_storage_config.target_directory = target_directory
+        station_config.binary_storage_config.prefix = prefix
+        binary_storage = FileSystemBinaryStorage(station_config)
         expected_picture = bytes([0, 1, 2, 3, 4])
         item_id = UUID("00000000-0000-0000-0000-000000000001")
 
@@ -76,22 +79,22 @@ class TestFileSystemBinaryStorage:
         binary_storage.save_item_binaries(item)
 
         # Then
-        path_to_picture = target_directory / prefix / str(item.id) / "camera_#1.jpg"
+        path_to_picture = target_directory / station_config.station_name / prefix / str(item.id) / "camera_#1.jpg"
         assert path_to_picture.is_file()
         actual_picture = path_to_picture.open("rb").read()
         assert actual_picture == expected_picture
 
-    def test_get_item_binaries_should_return_item_binaries(self, tmp_path: Path):
+    def test_get_item_binaries_should_return_item_binaries(self, tmp_path: Path, station_config: StationConfig):
         # Given
         target_directory = tmp_path / "binaries"
         target_directory.mkdir()
-        storage_config = StorageConfig(target_directory=target_directory)
-        binary_storage = FileSystemBinaryStorage(storage_config)
+        station_config.binary_storage_config.target_directory = target_directory
+        binary_storage = FileSystemBinaryStorage(station_config)
 
         expected_picture = bytes([0, 1, 2, 3, 4])
         item_id = UUID("00000000-0000-0000-0000-000000000001")
-        item_storage_folder = target_directory / str(item_id)
-        item_storage_folder.mkdir()
+        item_storage_folder = target_directory / station_config.station_name / str(item_id)
+        item_storage_folder.mkdir(parents=True)
         with (
             (item_storage_folder / "camera_#1.jpg").open("wb") as f1,
             (item_storage_folder / "camera_#2.jpg").open("wb") as f2,
@@ -109,17 +112,17 @@ class TestFileSystemBinaryStorage:
             assert actual_camera_id == expected_camera_ids[i]
             assert actual_binary == expected_picture
 
-    def test_get_item_binary_names_should_return_binary_names(self, tmp_path: Path):
+    def test_get_item_binary_names_should_return_binary_names(self, tmp_path: Path, station_config: StationConfig):
         # Given
         target_directory = tmp_path / "binaries"
         target_directory.mkdir()
-        storage_config = StorageConfig(target_directory=target_directory)
-        binary_storage = FileSystemBinaryStorage(storage_config)
+        station_config.binary_storage_config.target_directory = target_directory
+        binary_storage = FileSystemBinaryStorage(station_config)
 
         expected_picture = bytes([0, 1, 2, 3, 4])
         item_id = UUID("00000000-0000-0000-0000-000000000001")
-        item_storage_folder = target_directory / str(item_id)
-        item_storage_folder.mkdir()
+        item_storage_folder = target_directory / station_config.station_name / str(item_id)
+        item_storage_folder.mkdir(parents=True)
         with (
             (item_storage_folder / "camera_#1.jpg").open("wb") as f1,
             (item_storage_folder / "camera_#2.jpg").open("wb") as f2,
@@ -136,17 +139,17 @@ class TestFileSystemBinaryStorage:
         for i, actual_binary in enumerate(actual_binary_names):
             assert actual_binary == expected_binary_names[i]
 
-    def test_get_item_binary_should_return_requested_binary(self, tmp_path: Path):
+    def test_get_item_binary_should_return_requested_binary(self, tmp_path: Path, station_config: StationConfig):
         # Given
         target_directory = tmp_path / "binaries"
         target_directory.mkdir()
-        storage_config = StorageConfig(target_directory=target_directory)
-        binary_storage = FileSystemBinaryStorage(storage_config)
+        station_config.binary_storage_config.target_directory = target_directory
+        binary_storage = FileSystemBinaryStorage(station_config)
 
         expected_picture = bytes([0, 1, 2, 3, 4])
         item_id = UUID("00000000-0000-0000-0000-000000000001")
-        item_storage_folder = target_directory / str(item_id)
-        item_storage_folder.mkdir()
+        item_storage_folder = target_directory / station_config.station_name / str(item_id)
+        item_storage_folder.mkdir(parents=True)
         with (item_storage_folder / "camera_#1.jpg").open("wb") as f:
             f.write(expected_picture)
 

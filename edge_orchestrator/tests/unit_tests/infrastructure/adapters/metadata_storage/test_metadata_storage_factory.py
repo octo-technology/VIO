@@ -2,7 +2,7 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from edge_orchestrator.domain.models.storage.storage_config import StorageConfig
+from edge_orchestrator.domain.models.station_config import StationConfig
 from edge_orchestrator.domain.models.storage.storage_type import StorageType
 from edge_orchestrator.domain.ports.metadata_storage.i_metadata_storage import (
     IMetadataStorage,
@@ -37,7 +37,11 @@ class TestMetadataStorageFactory:
     )
     @patch("edge_orchestrator.infrastructure.adapters.metadata_storage.gcp_metadata_storage.storage.Client")
     def test_should_return_the_specified_metadata_storage_instance(
-        self, mock_storage_client, storage_type: StorageType, metadata_storage_class: IMetadataStorage
+        self,
+        mock_storage_client,
+        storage_type: StorageType,
+        metadata_storage_class: IMetadataStorage,
+        station_config: StationConfig,
     ):
         # Given
         mock_client_instance = MagicMock()
@@ -46,10 +50,10 @@ class TestMetadataStorageFactory:
         mock_storage_client.return_value = mock_client_instance
 
         metadata_storage_factory = MetadataStorageFactory()
-        metadata_storage_config = StorageConfig(storage_type=storage_type)
+        station_config.metadata_storage_config.storage_type = storage_type
 
         # When
-        metadata_storage = metadata_storage_factory.create_metadata_storage(metadata_storage_config)
+        metadata_storage = metadata_storage_factory.create_metadata_storage(station_config)
 
         # Then
         assert isinstance(metadata_storage, metadata_storage_class)
@@ -58,4 +62,6 @@ class TestMetadataStorageFactory:
 
         if storage_type == StorageType.GCP:
             mock_storage_client.assert_called_once()
-            mock_client_instance.get_bucket.assert_called_once_with(metadata_storage_config.target_directory.as_posix())
+            mock_client_instance.get_bucket.assert_called_once_with(
+                station_config.metadata_storage_config.target_directory.as_posix()
+            )

@@ -1,5 +1,6 @@
 from unittest.mock import MagicMock, patch
 
+from edge_orchestrator.domain.models.station_config import StationConfig
 from edge_orchestrator.domain.models.storage.storage_config import StorageConfig
 from edge_orchestrator.domain.models.storage.storage_type import StorageType
 from edge_orchestrator.infrastructure.adapters.metadata_storage.aws_metadata_storage import (
@@ -26,8 +27,7 @@ class TestMetadataStorageManager:
 
     @patch("edge_orchestrator.infrastructure.adapters.metadata_storage.gcp_metadata_storage.storage.Client")
     def test_should_return_expected_metadata_storage_and_store_it_as_attribute(
-        self,
-        mock_storage_client,
+        self, mock_storage_client, station_config: StationConfig
     ):
         # Given
         mock_client_instance = MagicMock()
@@ -45,8 +45,8 @@ class TestMetadataStorageManager:
 
         # When
         for storage_type, metadata_storage_class in storage_type_metadata_storage_classes:
-            metadata_storage_config = StorageConfig(storage_type=storage_type)
-            metadata_storage = metadata_storage_manager.get_metadata_storage(metadata_storage_config)
+            station_config.metadata_storage_config = StorageConfig(storage_type=storage_type)
+            metadata_storage = metadata_storage_manager.get_metadata_storage(station_config)
             assert isinstance(metadata_storage, metadata_storage_class)
 
         # Then
@@ -57,4 +57,6 @@ class TestMetadataStorageManager:
 
         if storage_type == StorageType.GCP:
             mock_storage_client.assert_called_once()
-            mock_client_instance.get_bucket.assert_called_once_with(metadata_storage_config.target_directory.as_posix())
+            mock_client_instance.get_bucket.assert_called_once_with(
+                station_config.metadata_storage_config.target_directory.as_posix()
+            )
