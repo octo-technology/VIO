@@ -42,7 +42,7 @@ In case you want to run a specific module, each module has its own make command:
 Indeed each of the above target correspond to a command [docker-compose.yml](https://github.com/octo-technology/VIO/blob/main/docker-compose.yml). For example, the target `edge_orchestrator` correspond to :
 
 ```shell
-$ docker-compose up -d --build edge_orchestrator
+$ docker compose up -d --build edge_orchestrator
 ```
 
 To check all services are up and running you can run the command `docker ps`, you should see something like below:

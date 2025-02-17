@@ -51,7 +51,7 @@ target based on the [docker-compose.yml](../docker-compose.yml) as described bel
 #### OS specific setup
 
 - **Linux**: You can run the stack directly with docker-compose
-- **MacOS**: You can run the stack with docker-compose but you need to run : `export BUILDOS=mac` before running the commands.
+- **MacOS**: You can run the stack with docker compose but you need to run : `export BUILDOS=mac` before running the commands.
 
 #### Start vio
 
