@@ -21,7 +21,7 @@ from edge_orchestrator.infrastructure.adapters.camera.fake_camera import FakeCam
 from edge_orchestrator.infrastructure.adapters.camera.raspberry_pi_camera import (
     RaspberryPiCamera,
 )
-from edge_orchestrator.infrastructure.adapters.camera.usb_camera import UsbCamera
+from edge_orchestrator.infrastructure.adapters.camera.webcam_camera import WebcamCamera
 
 
 class TestCameraManager:
@@ -32,7 +32,7 @@ class TestCameraManager:
         # Given
         camera_id_camera_classes = [
             ("camera_#1", FakeCamera),
-            ("camera_#2", UsbCamera),
+            ("camera_#2", WebcamCamera),
             ("camera_#3", RaspberryPiCamera),
         ]
 
@@ -41,7 +41,7 @@ class TestCameraManager:
             station_name="test_profile",
             camera_configs={
                 "camera_#1": CameraConfig(camera_id="camera_#1", camera_type=CameraType.FAKE),
-                "camera_#2": CameraConfig(camera_id="camera_#2", camera_type=CameraType.USB),
+                "camera_#2": CameraConfig(camera_id="camera_#2", camera_type=CameraType.WEBCAM),
                 "camera_#3": CameraConfig(camera_id="camera_#3", camera_type=CameraType.RASPBERRY),
             },
             binary_storage_config=StorageConfig(),

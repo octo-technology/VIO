@@ -54,7 +54,7 @@
                     <v-list-item-subtitle>{{ camera.position }}</v-list-item-subtitle>
                   </v-list-item-content>
                 </v-list-item>
-                <v-list-item>
+                <v-list-item v-if="camera.camera_resolution">
                   <v-list-item-content>
                     <v-list-item-title>Resolution</v-list-item-title>
                     <v-list-item-subtitle>{{ camera.camera_resolution.width }}x{{ camera.camera_resolution.height }}</v-list-item-subtitle>
@@ -82,7 +82,7 @@
                       <v-list-item-subtitle>{{ camera.model_forwarder_config.model_type }}</v-list-item-subtitle>
                     </v-list-item-content>
                   </v-list-item>
-                  <v-list-item>
+                  <v-list-item v-if="camera.model_forwarder_config.expected_image_resolution">
                     <v-list-item-content>
                       <v-list-item-title>Expected Image Resolution</v-list-item-title>
                       <v-list-item-subtitle>{{ camera.model_forwarder_config.expected_image_resolution.width }}x{{ camera.model_forwarder_config.expected_image_resolution.height }}</v-list-item-subtitle>
