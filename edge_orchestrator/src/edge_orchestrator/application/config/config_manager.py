@@ -42,7 +42,7 @@ class ConfigManager(metaclass=SingletonMeta):
                 )
         if not found_active_station_config:
             self._logger.warning(
-                f"No active json station config found at {(self._config_dir/self._active_station_name).with_suffix(".json").as_posix()}"
+                f"No active json station config found at {(self._config_dir/self._active_station_name).with_suffix('.json').as_posix()}"
             )
         else:
             self._logger.info(f"Active station config found and set: {station_config.station_name}")
