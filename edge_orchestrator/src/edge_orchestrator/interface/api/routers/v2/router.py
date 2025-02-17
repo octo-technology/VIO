@@ -64,7 +64,7 @@ def get_all_items_metadata(
     metadata_storage_manager: IMetadataStorageManager = Depends(get_metadata_storage_manager),
     station_config: StationConfig = Depends(get_config),
 ) -> List[Item]:
-    metadata_storage = metadata_storage_manager.get_metadata_storage(station_config.metadata_storage_config)
+    metadata_storage = metadata_storage_manager.get_metadata_storage(station_config)
     return metadata_storage.get_all_items_metadata()
 
 
@@ -73,7 +73,7 @@ def get_item_metadata(
     metadata_storage_manager: IMetadataStorageManager = Depends(get_metadata_storage_manager),
     station_config: StationConfig = Depends(get_config),
 ) -> Item:
-    metadata_storage = metadata_storage_manager.get_metadata_storage(station_config.metadata_storage_config)
+    metadata_storage = metadata_storage_manager.get_metadata_storage(station_config)
     return metadata_storage.get_item_metadata(item_id)
 
 
@@ -82,7 +82,7 @@ def get_item_binaries(
     binary_storage_manager: IBinaryStorageManager = Depends(get_binary_storage_manager),
     station_config: StationConfig = Depends(get_config),
 ) -> Dict[str, bytes]:
-    binary_storage = binary_storage_manager.get_binary_storage(station_config.binary_storage_config)
+    binary_storage = binary_storage_manager.get_binary_storage(station_config)
     return binary_storage.get_item_binaries(item_id)
 
 
@@ -92,7 +92,7 @@ def get_item_binary(
     binary_storage_manager: IBinaryStorageManager = Depends(get_binary_storage_manager),
     station_config: StationConfig = Depends(get_config),
 ) -> bytes:
-    binary_storage = binary_storage_manager.get_binary_storage(station_config.binary_storage_config)
+    binary_storage = binary_storage_manager.get_binary_storage(station_config)
     return Response(content=binary_storage.get_item_binary(item_id, camera_id), media_type="image/jpeg")
 
 
@@ -101,7 +101,7 @@ def get_item_state(
     metadata_storage_manager: IMetadataStorageManager = Depends(get_metadata_storage_manager),
     station_config: StationConfig = Depends(get_config),
 ) -> ItemState:
-    metadata_storage = metadata_storage_manager.get_metadata_storage(station_config.metadata_storage_config)
+    metadata_storage = metadata_storage_manager.get_metadata_storage(station_config)
     return metadata_storage.get_item_metadata(item_id).state
 
 

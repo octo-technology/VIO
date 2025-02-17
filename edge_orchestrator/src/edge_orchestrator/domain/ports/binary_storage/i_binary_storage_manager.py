@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from logging import Logger
 
-from edge_orchestrator.domain.models.storage.storage_config import StorageConfig
+from edge_orchestrator.domain.models.station_config import StationConfig
 from edge_orchestrator.domain.models.storage.storage_type import StorageType
 from edge_orchestrator.domain.ports.binary_storage.i_binary_storage import (
     IBinaryStorage,
@@ -17,5 +17,5 @@ class IBinaryStorageManager(ABC):
     _logger: Logger
 
     @abstractmethod
-    def get_binary_storage(self, storage_config: StorageConfig) -> IBinaryStorage:
+    def get_binary_storage(self, station_config: StationConfig) -> IBinaryStorage:
         pass

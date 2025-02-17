@@ -35,8 +35,8 @@ class Supervisor(metaclass=SingletonMeta):
     ):
         self._logger = logging.getLogger(__name__)
         self._station_config = station_config
-        self._metadata_storage = metadata_storage_manager.get_metadata_storage(station_config.metadata_storage_config)
-        self._binary_storage = binary_storage_manager.get_binary_storage(station_config.binary_storage_config)
+        self._metadata_storage = metadata_storage_manager.get_metadata_storage(station_config)
+        self._binary_storage = binary_storage_manager.get_binary_storage(station_config)
         self._model_forwarder_manager = model_forwarder_manager
         self._camera_rule_manager = camera_rule_manager
         self._item_rule = item_rule_manager.get_item_rule(station_config.item_rule_config)

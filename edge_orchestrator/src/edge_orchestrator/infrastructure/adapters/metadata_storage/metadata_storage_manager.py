@@ -1,6 +1,6 @@
 import logging
 
-from edge_orchestrator.domain.models.storage.storage_config import StorageConfig
+from edge_orchestrator.domain.models.station_config import StationConfig
 from edge_orchestrator.domain.ports.metadata_storage.i_metadata_storage import (
     IMetadataStorage,
 )
@@ -18,9 +18,9 @@ class MetadataStorageManager(IMetadataStorageManager):
         self._metadata_storages = {}
         self._logger = logging.getLogger(__name__)
 
-    def get_metadata_storage(self, metadata_storage_config: StorageConfig) -> IMetadataStorage:
-        metadata_storage_type = metadata_storage_config.storage_type
-        if metadata_storage_type not in self._metadata_storages or metadata_storage_config.recreate_me:
-            metadata_storage = self._metadata_storage_factory.create_metadata_storage(metadata_storage_config)
+    def get_metadata_storage(self, station_config: StationConfig) -> IMetadataStorage:
+        metadata_storage_type = station_config.metadata_storage_config.storage_type
+        if metadata_storage_type not in self._metadata_storages or station_config.metadata_storage_config.recreate_me:
+            metadata_storage = self._metadata_storage_factory.create_metadata_storage(station_config)
             self._metadata_storages[metadata_storage_type] = metadata_storage
         return self._metadata_storages[metadata_storage_type]

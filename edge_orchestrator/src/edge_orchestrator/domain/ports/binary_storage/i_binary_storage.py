@@ -5,11 +5,11 @@ from typing import Dict, List
 from uuid import UUID
 
 from edge_orchestrator.domain.models.item import Item
-from edge_orchestrator.domain.models.storage.storage_config import StorageConfig
+from edge_orchestrator.domain.models.station_config import StationConfig
 
 
 class IBinaryStorage:
-    _storage_config: StorageConfig
+    _station_config: StationConfig
     _logger: Logger
 
     @abstractmethod

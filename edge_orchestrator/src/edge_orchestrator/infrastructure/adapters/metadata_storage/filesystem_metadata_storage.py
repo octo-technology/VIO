@@ -7,17 +7,17 @@ from fastapi import HTTPException
 from pydantic import ValidationError
 
 from edge_orchestrator.domain.models.item import Item
-from edge_orchestrator.domain.models.storage.storage_config import StorageConfig
+from edge_orchestrator.domain.models.station_config import StationConfig
 from edge_orchestrator.domain.ports.metadata_storage.i_metadata_storage import (
     IMetadataStorage,
 )
 
 
 class FileSystemMetadataStorage(IMetadataStorage):
-    def __init__(self, metadata_storage_config: StorageConfig):
-        self._storage_config: StorageConfig = metadata_storage_config
+    def __init__(self, station_config: StationConfig):
+        self._station_config: StationConfig = station_config
         self._logger = logging.getLogger(__name__)
-        self.target_directory: Path = self._storage_config.target_directory
+        self.target_directory: Path = self._station_config.metadata_storage_config.target_directory
         self.target_directory.mkdir(parents=True, exist_ok=True)
 
     def save_item_metadata(self, item: Item):
@@ -48,9 +48,9 @@ class FileSystemMetadataStorage(IMetadataStorage):
 
     def _get_storing_directory_path(self) -> Path:
         return (
-            self._storage_config.target_directory / self._storage_config.prefix
-            if self._storage_config.prefix
-            else self._storage_config.target_directory
+            self._station_config.metadata_storage_config.target_directory / self._station_config.station_name / self._station_config.metadata_storage_config.prefix
+            if self._station_config.metadata_storage_config.prefix
+            else self._station_config.metadata_storage_config.target_directory / self._station_config.station_name
         )
 
     def _get_storing_path(self, item_id: UUID) -> Path:

@@ -1,6 +1,6 @@
 import logging
 
-from edge_orchestrator.domain.models.storage.storage_config import StorageConfig
+from edge_orchestrator.domain.models.station_config import StationConfig
 from edge_orchestrator.domain.ports.binary_storage.i_binary_storage import (
     IBinaryStorage,
 )
@@ -18,9 +18,9 @@ class BinaryStorageManager(IBinaryStorageManager):
         self._binary_storages = {}
         self._logger = logging.getLogger(__name__)
 
-    def get_binary_storage(self, binary_storage_config: StorageConfig) -> IBinaryStorage:
-        binary_storage_type = binary_storage_config.storage_type
-        if binary_storage_type not in self._binary_storages or binary_storage_config.recreate_me:
-            binary_storage = self._binary_storage_factory.create_binary_storage(binary_storage_config)
+    def get_binary_storage(self, station_config: StationConfig) -> IBinaryStorage:
+        binary_storage_type = station_config.binary_storage_config.storage_type
+        if binary_storage_type not in self._binary_storages or station_config.binary_storage_config.recreate_me:
+            binary_storage = self._binary_storage_factory.create_binary_storage(station_config)
             self._binary_storages[binary_storage_type] = binary_storage
         return self._binary_storages[binary_storage_type]
