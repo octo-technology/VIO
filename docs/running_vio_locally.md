@@ -35,7 +35,7 @@ In the `VIO/edge_orchestrator/edge_orchestrator/api_config.py` file, inform the 
 
 ```
 def load_config():
-    configuration = os.environ.get("API_CONFIG", "local")
+    configuration = os.getenv("API_CONFIG", "local")
 ```
 
 Now start the server :

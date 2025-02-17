@@ -21,10 +21,10 @@ def check_image_presence_or_pull_it_from_registry(image_name: str):
         auth_config = None
         logging.debug(f"Pulling docker image {image_name} from registry when running tests for the first time...")
         if image_name.startswith("ghcr.io/octo-technology"):
-            if os.environ.get("REGISTRY_USERNAME") and os.environ.get("REGISTRY_PASSWORD"):
+            if os.getenv("REGISTRY_USERNAME") and os.getenv("REGISTRY_PASSWORD"):
                 auth_config = {
-                    "username": os.environ.get("REGISTRY_USERNAME"),
-                    "password": os.environ.get("REGISTRY_PASSWORD"),
+                    "username": os.getenv("REGISTRY_USERNAME"),
+                    "password": os.getenv("REGISTRY_PASSWORD"),
                 }
             else:
                 raise PermissionError(
@@ -38,8 +38,8 @@ def start_test_tf_serving(
     image_name: str,
     starting_log: str,
     env_vars: Dict[str, str],
-    tf_serving_host: Union[str, None] = os.environ.get("TENSORFLOW_SERVING_HOST"),
-    tf_serving_port: Union[int, None] = os.environ.get("TENSORFLOW_SERVING_PORT"),
+    tf_serving_host: Union[str, None] = os.getenv("TENSORFLOW_SERVING_HOST"),
+    tf_serving_port: Union[int, None] = os.getenv("TENSORFLOW_SERVING_PORT"),
     host_volume_path: str = None,
     container_volume_path: str = None,
 ) -> Tuple[str, TfServingContainer]:

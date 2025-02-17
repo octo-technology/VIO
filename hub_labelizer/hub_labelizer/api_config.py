@@ -4,7 +4,7 @@ from hub_labelizer import logger
 
 
 def load_config():
-    configuration = os.environ.get("API_CONFIG", "default")
+    configuration = os.getenv("API_CONFIG", "default")
     logger.info(f"App running with configuration: {configuration}")
 
     available_configurations = ["default", "docker"]

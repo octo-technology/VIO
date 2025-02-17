@@ -16,8 +16,9 @@ class ConfigManager(metaclass=SingletonMeta):
         self._station_configs: Dict[str, StationConfig] = {}
         self._active_station_name: Optional[str] = None
         self._logger = logging.getLogger(__name__)
-        self._config_dir = Path(os.environ.get("CONFIG_DIR", "config")).resolve()
-        self._active_config_filepath = self._config_dir / "active_station_config"
+        self._config_dir = Path(os.getenv("CONFIG_DIR", "config")).resolve()
+        # todo: test me
+        self._active_config_filepath = self._config_dir / os.getenv("ACTIVE_CONFIG_NAME", "active_station_config")
         self._load_all_configs()
 
     def _load_all_configs(self) -> StationConfig:

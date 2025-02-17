@@ -15,8 +15,8 @@ def setup_test_tflite_serving() -> Generator[str, None, None]:
         image_name=EDGE_TFLITE_SERVING_IMG,
         starting_log=r"Uvicorn running on",
         env_vars={},
-        tf_serving_host=os.environ.get("TFLITE_SERVING_HOST"),
-        tf_serving_port=os.environ.get("TFLITE_SERVING_PORT"),
+        tf_serving_host=os.getenv("TFLITE_SERVING_HOST"),
+        tf_serving_port=os.getenv("TFLITE_SERVING_PORT"),
     )
     yield connection_url
     stop_test_container(tflite_serving_container)

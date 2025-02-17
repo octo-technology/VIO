@@ -47,8 +47,8 @@ def before_all(context: Context):
         image_name=EDGE_TFLITE_SERVING_IMG,
         starting_log=r"Uvicorn running on",
         env_vars={},
-        tf_serving_host=os.environ.get("TFLITE_SERVING_HOST"),
-        tf_serving_port=os.environ.get("TFLITE_SERVING_PORT"),
+        tf_serving_host=os.getenv("TFLITE_SERVING_HOST"),
+        tf_serving_port=os.getenv("TFLITE_SERVING_PORT"),
     )
     from edge_orchestrator.interface.api.main import app
 
