@@ -28,7 +28,7 @@ check:
 
 .PHONY: tflite_serving  ## 🐍 Create a tflite conda environment
 tflite_serving:
-	conda create --name tflite_serving python=3.8 -y
+	conda create --name tflite_serving python=3.10 -y
 
 .PHONY: install_tflite_linux  ## ⏬ Install tflite development dependencies on linux
 install_tflite_linux:
