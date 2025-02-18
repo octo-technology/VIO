@@ -108,7 +108,7 @@ class TestTfliteServing:
         model_url = f"{self.base_url}/models/yolo_coco_nano/versions/1:predict"
         with open(self.image_test_path, "rb") as image_file:
             image = Image.open(io.BytesIO(image_file.read()))
-            resized_image = image.resize((320, 320), Image.ANTIALIAS)
+            resized_image = image.resize((320, 320), Image.Resampling.LANCZOS)
             img = np.expand_dims(resized_image, axis=0).astype(np.uint8)
 
         payload = {"inputs": img.tolist(), "model_type": "yolo"}
