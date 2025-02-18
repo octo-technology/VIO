@@ -1,7 +1,21 @@
 # vio-interface
 
-## Project setup
+## Prerequisites
+
+### Linux setup
+```bash
+sudo apt update
+sudo apt install nodejs
 ```
+
+### Mac setuo
+```bash
+brew update
+brew install node
+```
+
+## Project setup
+```bash
 npm install
 ```
 

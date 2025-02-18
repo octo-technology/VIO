@@ -2,10 +2,10 @@ import json
 from pathlib import Path
 from uuid import UUID
 
-from edge_orchestrator.domain.models.binary import Image
 from edge_orchestrator.domain.models.camera.camera_config import CameraConfig
 from edge_orchestrator.domain.models.camera.camera_type import CameraType
 from edge_orchestrator.domain.models.decision import Decision
+from edge_orchestrator.domain.models.image import Image
 from edge_orchestrator.domain.models.item import Item
 from edge_orchestrator.domain.models.item_state import ItemState
 from edge_orchestrator.domain.models.model_forwarder.classification_prediction import (

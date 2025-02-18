@@ -10,18 +10,12 @@ from edge_orchestrator.domain.models.model_forwarder.image_resolution import (
 from edge_orchestrator.domain.models.model_forwarder.model_name import ModelName
 from edge_orchestrator.domain.models.model_forwarder.model_type import ModelType
 
-# Version = Annotated[
-#     str,
-#     StringConstraints(pattern=r"^(0|[1-9]\d{0,2})\.(0|[1-9]\d{0,2})\.(0|[1-9]\d{0,2})$"),
-# ]
-
 
 class ModelForwarderConfig(BaseModel):
     model_name: ModelName
     model_type: ModelType
     expected_image_resolution: ImageResolution
-    # model_version: Optional[Version] = None
-    model_version: str
+    model_version: Optional[str] = "1"
     class_names: Optional[List[str]] = Field(default_factory=list)
     class_names_filepath: Optional[Path] = None
     model_serving_url: Optional[Url] = None

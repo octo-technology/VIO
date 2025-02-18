@@ -15,15 +15,15 @@ help:
 
 .PHONY: lint  ## 🐍 Lint Python files to conform to the PEP 8 style guide
 lint:
-	autoflake --in-place --remove-all-unused-imports --recursive --ignore-init-module-imports . --exclude .venv
-	isort . --skip-gitignore
-	black .
+	autoflake --in-place --remove-all-unused-imports --recursive --ignore-init-module-imports src tests convert_pb_to_tflite.py --exclude .venv
+	isort src tests convert_pb_to_tflite.py --skip-gitignore
+	black src tests convert_pb_to_tflite.py
 
 .PHONY: check  ## 🐍 Check lint Python files to conform to the PEP 8 style guide
 check:
-	autoflake --in-place --remove-all-unused-imports --recursive --ignore-init-module-imports . --exclude .venv --check
-	isort . --skip-gitignore --check
-	black . --check
+	autoflake --in-place --remove-all-unused-imports --recursive --ignore-init-module-imports src tests convert_pb_to_tflite.py --exclude .venv --check
+	isort src tests convert_pb_to_tflite.py --skip-gitignore --check
+	black src tests convert_pb_to_tflite.py --check
 	flake8 --count --show-source --statistics
 
 .PHONY: tflite_serving  ## 🐍 Create a tflite conda environment

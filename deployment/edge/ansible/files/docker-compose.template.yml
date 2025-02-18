@@ -23,7 +23,7 @@ services:
     volumes:
       - ./data_storage:/edge_orchestrator/data_storage
     devices:
-      - /dev/video0:/dev/video0 
+      - /dev/video0:/dev/video0
       - /dev/video2:/dev/video2
     ports:
       - 8000:8000

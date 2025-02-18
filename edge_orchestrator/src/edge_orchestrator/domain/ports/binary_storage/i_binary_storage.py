@@ -1,4 +1,4 @@
-from abc import abstractmethod
+from abc import ABC, abstractmethod
 from logging import Logger
 from pathlib import Path
 from typing import Dict, List
@@ -8,7 +8,7 @@ from edge_orchestrator.domain.models.item import Item
 from edge_orchestrator.domain.models.station_config import StationConfig
 
 
-class IBinaryStorage:
+class IBinaryStorage(ABC):
     _station_config: StationConfig
     _logger: Logger
 

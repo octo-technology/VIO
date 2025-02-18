@@ -4,8 +4,8 @@ from threading import Thread
 import cv2
 import numpy as np
 
-from edge_orchestrator.domain.models.binary import Image
 from edge_orchestrator.domain.models.camera.camera_config import CameraConfig
+from edge_orchestrator.domain.models.image import Image
 from edge_orchestrator.domain.ports.camera.i_camera import ICamera
 
 
