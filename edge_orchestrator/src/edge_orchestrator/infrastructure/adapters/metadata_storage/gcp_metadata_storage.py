@@ -29,7 +29,7 @@ class GCPMetadataStorage(IMetadataStorage):
         blob.upload_from_string(item_metadata, content_type="application/json")
 
     def get_item_metadata(self, item_id: UUID) -> Item:
-        filename = self._get_storing_path(item_id).as_posix()
+        filename = (self._get_storing_path(item_id) / "metadata.json").as_posix()
         blob = self._bucket.get_blob(filename)
         if blob is None:
             raise HTTPException(status_code=400, detail=f"The item {item_id} has no metadata")
@@ -52,4 +52,4 @@ class GCPMetadataStorage(IMetadataStorage):
         )
 
     def _get_storing_path(self, item_id: UUID) -> Path:
-        return self._get_storing_directory_path() / f"{str(item_id)}.json"
+        return self._get_storing_directory_path() / str(item_id)

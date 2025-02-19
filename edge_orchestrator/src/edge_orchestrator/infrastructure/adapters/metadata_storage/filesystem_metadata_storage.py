@@ -27,7 +27,7 @@ class FileSystemMetadataStorage(IMetadataStorage):
             f.write(item.model_dump_json(exclude_none=True))
 
     def get_item_metadata(self, item_id: UUID) -> Item:
-        filepath = self._get_storing_path(item_id)
+        filepath = (self._get_storing_path(item_id) / "metadata.json").as_posix()
         # TODO: test with non existing item metadata
         if not filepath.exists():
             raise HTTPException(status_code=400, detail=f"The item {item_id} has no metadata")
@@ -56,4 +56,4 @@ class FileSystemMetadataStorage(IMetadataStorage):
         )
 
     def _get_storing_path(self, item_id: UUID) -> Path:
-        return self._get_storing_directory_path() / f"{str(item_id)}.json"
+        return self._get_storing_directory_path() / str(item_id)
