@@ -1,14 +1,14 @@
 {
-    "station_name": "config_4",
+    "station_name": "pin_detection_with_2_usbcamera",
     "camera_configs": {
         "camera_1": {
             "camera_id": "camera_1",
-            "camera_type": "webcam",
+            "camera_type": "usb",
             "source_directory": "/dev/video0",
             "position": "front",
             "camera_resolution": {
-                "width": 1366,
-                "height": 768
+                "width": 224,
+                "height": 224
             },
             "model_forwarder_config": {
                 "model_name": "pin_detection",
@@ -35,12 +35,12 @@
         },
         "camera_2": {
             "camera_id": "camera_2",
-            "camera_type": "webcam",
-            "source_directory": "/dev/video4",
+            "camera_type": "usb",
+            "source_directory": "/dev/video2",
             "position": "front",
             "camera_resolution": {
-                "width": 1366,
-                "height": 768
+                "width": 224,
+                "height": 224
             },
             "model_forwarder_config": {
                 "model_name": "pin_detection",
@@ -67,15 +67,11 @@
         }
     },
     "binary_storage_config": {
-        "storage_type": "filesystem",
-        "target_directory": "data_storage",
-        "prefix": "bapo_workstation",
+        "storage_type": "gcp",
         "recreate_me": false
     },
     "metadata_storage_config": {
-        "storage_type": "filesystem",
-        "target_directory": "data_storage",
-        "prefix": "bapo_workstation",
+        "storage_type": "gcp",
         "recreate_me": false
     },
     "item_rule_config": {
