@@ -153,12 +153,6 @@
                   <v-list-item-subtitle>{{ config.binary_storage_config.target_directory }}</v-list-item-subtitle>
                 </v-list-item-content>
               </v-list-item>
-              <v-list-item>
-                <v-list-item-content>
-                  <v-list-item-title>Prefix</v-list-item-title>
-                  <v-list-item-subtitle>{{ config.binary_storage_config.prefix }}</v-list-item-subtitle>
-                </v-list-item-content>
-              </v-list-item>
               <v-list-item v-if="config.binary_storage_config.recreate_me">
                 <v-list-item-content>
                   <v-list-item-title>Recreate Binary Storage</v-list-item-title>
@@ -180,12 +174,6 @@
                 <v-list-item-content>
                   <v-list-item-title>Target Directory</v-list-item-title>
                   <v-list-item-subtitle>{{ config.metadata_storage_config.target_directory }}</v-list-item-subtitle>
-                </v-list-item-content>
-              </v-list-item>
-              <v-list-item>
-                <v-list-item-content>
-                  <v-list-item-title>Prefix</v-list-item-title>
-                  <v-list-item-subtitle>{{ config.metadata_storage_config.prefix }}</v-list-item-subtitle>
                 </v-list-item-content>
               </v-list-item>
               <v-list-item v-if="config.metadata_storage_config.recreate_me">

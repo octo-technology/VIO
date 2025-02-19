@@ -57,15 +57,15 @@ class TestFileSystemBinaryStorage:
             actual_picture = path_to_picture.open("rb").read()
             assert actual_picture == expected_picture
 
-    def test_save_item_binaries_with_prefix_should_write_images_on_filesystem(
+    def test_save_item_binaries_with_target_directory_should_write_images_on_filesystem(
         self, tmp_path: Path, station_config: StationConfig
     ):
         # Given
-        target_directory = tmp_path / "binaries"
-        target_directory.mkdir()
-        prefix = "station_#1"
+        bucket_name = tmp_path / "binaries"
+        bucket_name.mkdir()
+        target_directory = "station_#1"
+        station_config.binary_storage_config.bucket_name = bucket_name
         station_config.binary_storage_config.target_directory = target_directory
-        station_config.binary_storage_config.prefix = prefix
         binary_storage = FileSystemBinaryStorage(station_config)
         expected_picture = bytes([0, 1, 2, 3, 4])
         item_id = UUID("00000000-0000-0000-0000-000000000001")
@@ -79,7 +79,7 @@ class TestFileSystemBinaryStorage:
         binary_storage.save_item_binaries(item)
 
         # Then
-        path_to_picture = target_directory / station_config.station_name / prefix / str(item.id) / "camera_#1.jpg"
+        path_to_picture = bucket_name / target_directory / station_config.station_name / str(item.id) / "camera_#1.jpg"
         assert path_to_picture.is_file()
         actual_picture = path_to_picture.open("rb").read()
         assert actual_picture == expected_picture

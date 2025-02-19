@@ -84,13 +84,11 @@ Feature: The client set an active configuration
 		"binary_storage_config": {
 		"storage_type": "filesystem",
 		"target_directory": "data_storage",
-		"prefix": "bapo_workstation",
 		"recreate_me": false
 		},
 		"metadata_storage_config": {
 		"storage_type": "filesystem",
 		"target_directory": "data_storage",
-		"prefix": "bapo_workstation",
 		"recreate_me": false
 		},
 		"item_rule_config": {

@@ -117,12 +117,6 @@
           required
         ></v-select>
         <v-text-field v-model="NewConfig.binary_storage_config.target_directory" label="Target Directory" required></v-text-field>
-        <v-btn @click="toggleBinaryPrefix" color="primary" small>
-          {{ showBinaryPrefix ? 'Remove' : 'Add' }} Prefix
-        </v-btn>
-        <div v-if="showBinaryPrefix">
-          <v-text-field v-model="NewConfig.binary_storage_config.prefix" label="Prefix"></v-text-field>
-        </div>
         <v-switch v-model="NewConfig.binary_storage_config.recreate_me" label="Recreate Me"></v-switch>
         <v-btn @click="toggleBinaryCloudStorage" color="primary" small>
           {{ showBinaryCloudStorage ? 'Remove' : 'Add' }} Cloud Storage Credentials
@@ -136,12 +130,6 @@
           required
         ></v-select>
         <v-text-field v-model="NewConfig.metadata_storage_config.target_directory" label="Target Directory" required></v-text-field>
-        <v-btn @click="toggleMetadataPrefix" color="primary" small>
-          {{ showMetadataPrefix ? 'Remove' : 'Add' }} Prefix
-        </v-btn>
-        <div v-if="showMetadataPrefix">
-          <v-text-field v-model="NewConfig.metadata_storage_config.prefix" label="Prefix"></v-text-field>
-        </div>
         <v-switch v-model="NewConfig.metadata_storage_config.recreate_me" label="Recreate Me"></v-switch>
         <v-btn @click="toggleMetadataCloudStorage" color="primary" small>
           {{ showMetadataCloudStorage ? 'Remove' : 'Add' }} Cloud Storage Credentials
@@ -202,8 +190,6 @@ export default {
       itemRuleTypes: ['min_threshold_ratio_rule', 'min_threshold_rule'],
       showBinaryCloudStorage: false,
       showMetadataCloudStorage: false,
-      showBinaryPrefix: false,
-      showMetadataPrefix: false,
       showAddCameraDialog: false,
       newCameraId: '',
       snackbar: false,
@@ -300,12 +286,6 @@ export default {
     toggleClassNamesFilepath(cameraId) {
       this.$set(this.NewConfig.camera_configs[cameraId], 'showClassNamesFilepath', !this.NewConfig.camera_configs[cameraId].showClassNamesFilepath);
     },
-    toggleBinaryPrefix() {
-      this.showBinaryPrefix = !this.showBinaryPrefix;
-    },
-    toggleMetadataPrefix() {
-      this.showMetadataPrefix = !this.showMetadataPrefix;
-    }
   }
 };
 </script>

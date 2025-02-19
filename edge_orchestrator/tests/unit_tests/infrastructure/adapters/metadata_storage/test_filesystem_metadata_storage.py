@@ -134,15 +134,15 @@ class TestFileSystemMetadataStorage:
         actual_metadata = json.load(path_to_metadata.open("r"))
         assert actual_metadata == expected_metadata
 
-    def test_save_item_metadata_with_prefix_should_write_metadata_on_filesystem(
+    def test_save_item_metadata_with_target_directory_should_write_metadata_on_filesystem(
         self, tmp_path: Path, station_config: StationConfig
     ):
         # Given
-        target_directory = tmp_path / "metadata"
-        target_directory.mkdir()
-        prefix = "station_#1"
+        bucket_name = tmp_path / "metadata"
+        bucket_name.mkdir()
+        target_directory = "station_#1"
+        station_config.metadata_storage_config.bucket_name = bucket_name
         station_config.metadata_storage_config.target_directory = target_directory
-        station_config.metadata_storage_config.prefix = prefix
         metadata_storage = FileSystemMetadataStorage(station_config)
         item_id = UUID("00000000-0000-0000-0000-000000000001")
 
@@ -162,7 +162,7 @@ class TestFileSystemMetadataStorage:
         metadata_storage.save_item_metadata(item)
 
         # Then
-        path_to_metadata = target_directory / station_config.station_name / prefix / f"{str(item.id)}.json"
+        path_to_metadata = bucket_name / target_directory / station_config.station_name / f"{str(item.id)}.json"
         assert path_to_metadata.is_file()
         actual_metadata = json.load(path_to_metadata.open("r"))
         assert actual_metadata

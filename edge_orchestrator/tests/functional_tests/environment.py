@@ -56,15 +56,11 @@ def before_all(context: Context):
 
     context.test_client = TestClient(app)
 
-    from edge_orchestrator.infrastructure.adapters.binary_storage.filesystem_binary_storage import (
-        FileSystemBinaryStorage,
-    )
-    from edge_orchestrator.infrastructure.adapters.metadata_storage.filesystem_metadata_storage import (
-        FileSystemMetadataStorage,
+    from edge_orchestrator.domain.ports.metadata_storage.i_metadata_storage import (
+        IMetadataStorage,
     )
 
-    FileSystemBinaryStorage._get_storing_directory_path = lambda x: test_directory / "data_storage"
-    FileSystemMetadataStorage._get_storing_directory_path = lambda x: test_directory / "data_storage"
+    IMetadataStorage._get_storing_directory_path = lambda x: test_directory / "data_storage"
 
     from edge_orchestrator.domain.ports.model_forwarder.i_model_forwarder import (
         IModelForwarder,

@@ -65,5 +65,5 @@ class TestBinaryStorageFactory:
         if storage_type == StorageType.GCP:
             mock_storage_client.assert_called_once()
             mock_client_instance.get_bucket.assert_called_once_with(
-                station_config.binary_storage_config.target_directory.as_posix()
+                station_config.binary_storage_config.bucket_name.as_posix()
             )
