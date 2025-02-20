@@ -27,6 +27,12 @@ class ModelForwarderConfig(BaseModel):
         return f"{self.model_name.value}_{self.model_type.value}_{self.model_version}"
 
     @model_validator(mode="after")
+    def check_class_names_path(self):
+        if self.class_names_filepath and not self.class_names_filepath.exists():
+            raise ValueError(f"Class names file {self.class_names_filepath} does not exist")
+        return self
+
+    @model_validator(mode="after")
     def check_class_names_or_class_names_path(self):
         if self.model_type in [ModelType.classification, ModelType.object_detection] and (
             (not self.class_names and not self.class_names_filepath) or (self.class_names and self.class_names_filepath)

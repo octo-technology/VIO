@@ -13,10 +13,6 @@ from edge_orchestrator.domain.ports.camera_rule.i_camera_rule_manager import (
 )
 
 
-class NoCameraRuleAvailableError(Exception):
-    pass
-
-
 class CameraRuleManager(ICameraRuleManager):
     def __init__(self, camera_rule_factory: ICameraRuleFactory):
         self._camera_rule_factory = camera_rule_factory
@@ -31,9 +27,6 @@ class CameraRuleManager(ICameraRuleManager):
         return self._camera_rules[camera_rule_type]
 
     def apply_camera_rules(self, item: Item):
-        # if self._camera_rules is None or len(self._camera_rules) == 0:
-        #     raise NoCameraRuleAvailableError("No camera rule available to apply for each camera!")
-
         for camera_id, camera_config in item.cameras_metadata.items():
             camera_rule_config: CameraRuleConfig = camera_config.camera_rule_config
             camera_rule = self._get_camera_rule(camera_rule_config)
