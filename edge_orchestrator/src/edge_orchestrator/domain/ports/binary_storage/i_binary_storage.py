@@ -1,6 +1,5 @@
 from abc import ABC, abstractmethod
 from logging import Logger
-from pathlib import Path
 from typing import Dict, List
 from uuid import UUID
 
@@ -28,9 +27,4 @@ class IBinaryStorage(ABC):
 
     @abstractmethod
     def get_item_binary(self, item_id: UUID, camera_id: str) -> bytes:
-        pass
-
-    # TODO: implement this method
-    @abstractmethod
-    def _get_storing_path(self, item_id: UUID) -> Path:
         pass

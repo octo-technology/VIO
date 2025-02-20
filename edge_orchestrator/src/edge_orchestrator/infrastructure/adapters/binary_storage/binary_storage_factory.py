@@ -16,7 +16,7 @@ class BinaryStorageFactory(IBinaryStorageFactory):
         self._logger = logging.getLogger(__name__)
 
     def create_binary_storage(self, station_config: StationConfig) -> IBinaryStorage:
-        storing_path_manager = StoringPathManager(station_config.metadata_storage_config)
+        storing_path_manager = StoringPathManager(station_config.binary_storage_config, station_config.station_name)
 
         if station_config.binary_storage_config.storage_type == StorageType.FILESYSTEM.value:
             from edge_orchestrator.infrastructure.adapters.binary_storage.filesystem_binary_storage import (

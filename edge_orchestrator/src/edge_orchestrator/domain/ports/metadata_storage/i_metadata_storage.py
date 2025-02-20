@@ -1,6 +1,5 @@
 from abc import ABC, abstractmethod
 from logging import Logger
-from pathlib import Path
 from typing import List
 from uuid import UUID
 
@@ -24,9 +23,4 @@ class IMetadataStorage(ABC):
 
     @abstractmethod
     def get_all_items_metadata(self) -> List[Item]:
-        pass
-
-    # TODO: see how it can be merged with same method in IBinaryStorage
-    @abstractmethod
-    def _get_storing_path(self, item_id: UUID) -> Path:
         pass

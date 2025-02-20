@@ -3,6 +3,7 @@ from uuid import UUID
 
 from edge_orchestrator.domain.models.item import Image, Item
 from edge_orchestrator.domain.models.station_config import StationConfig
+from edge_orchestrator.domain.ports.storing_path_manager import StoringPathManager
 from edge_orchestrator.infrastructure.adapters.binary_storage.filesystem_binary_storage import (
     FileSystemBinaryStorage,
 )
@@ -14,7 +15,9 @@ class TestFileSystemBinaryStorage:
         target_directory = tmp_path / "binaries"
         target_directory.mkdir()
         station_config.binary_storage_config.target_directory = target_directory
-        binary_storage = FileSystemBinaryStorage(station_config)
+        binary_storage = FileSystemBinaryStorage(
+            station_config, StoringPathManager(station_config.binary_storage_config, station_config.station_name)
+        )
         item_id = UUID("00000000-0000-0000-0000-000000000002")
 
         item = Item(
@@ -32,7 +35,9 @@ class TestFileSystemBinaryStorage:
         target_directory = tmp_path / "binaries"
         target_directory.mkdir()
         station_config.binary_storage_config.target_directory = target_directory
-        binary_storage = FileSystemBinaryStorage(station_config)
+        binary_storage = FileSystemBinaryStorage(
+            station_config, StoringPathManager(station_config.binary_storage_config, station_config.station_name)
+        )
         expected_picture = bytes([0, 1, 2, 3, 4])
         item_id = UUID("00000000-0000-0000-0000-000000000001")
 
@@ -61,12 +66,12 @@ class TestFileSystemBinaryStorage:
         self, tmp_path: Path, station_config: StationConfig
     ):
         # Given
-        bucket_name = tmp_path / "binaries"
-        bucket_name.mkdir()
-        target_directory = "station_#1"
-        station_config.binary_storage_config.bucket_name = bucket_name
+        target_directory = tmp_path / "binaries"
+        target_directory.mkdir()
         station_config.binary_storage_config.target_directory = target_directory
-        binary_storage = FileSystemBinaryStorage(station_config)
+        binary_storage = FileSystemBinaryStorage(
+            station_config, StoringPathManager(station_config.binary_storage_config, station_config.station_name)
+        )
         expected_picture = bytes([0, 1, 2, 3, 4])
         item_id = UUID("00000000-0000-0000-0000-000000000001")
 
@@ -79,7 +84,7 @@ class TestFileSystemBinaryStorage:
         binary_storage.save_item_binaries(item)
 
         # Then
-        path_to_picture = bucket_name / target_directory / station_config.station_name / str(item.id) / "camera_#1.jpg"
+        path_to_picture = target_directory / station_config.station_name / str(item.id) / "camera_#1.jpg"
         assert path_to_picture.is_file()
         actual_picture = path_to_picture.open("rb").read()
         assert actual_picture == expected_picture
@@ -89,7 +94,9 @@ class TestFileSystemBinaryStorage:
         target_directory = tmp_path / "binaries"
         target_directory.mkdir()
         station_config.binary_storage_config.target_directory = target_directory
-        binary_storage = FileSystemBinaryStorage(station_config)
+        binary_storage = FileSystemBinaryStorage(
+            station_config, StoringPathManager(station_config.binary_storage_config, station_config.station_name)
+        )
 
         expected_picture = bytes([0, 1, 2, 3, 4])
         item_id = UUID("00000000-0000-0000-0000-000000000001")
@@ -117,7 +124,9 @@ class TestFileSystemBinaryStorage:
         target_directory = tmp_path / "binaries"
         target_directory.mkdir()
         station_config.binary_storage_config.target_directory = target_directory
-        binary_storage = FileSystemBinaryStorage(station_config)
+        binary_storage = FileSystemBinaryStorage(
+            station_config, StoringPathManager(station_config.binary_storage_config, station_config.station_name)
+        )
 
         expected_picture = bytes([0, 1, 2, 3, 4])
         item_id = UUID("00000000-0000-0000-0000-000000000001")
@@ -144,7 +153,9 @@ class TestFileSystemBinaryStorage:
         target_directory = tmp_path / "binaries"
         target_directory.mkdir()
         station_config.binary_storage_config.target_directory = target_directory
-        binary_storage = FileSystemBinaryStorage(station_config)
+        binary_storage = FileSystemBinaryStorage(
+            station_config, StoringPathManager(station_config.binary_storage_config, station_config.station_name)
+        )
 
         expected_picture = bytes([0, 1, 2, 3, 4])
         item_id = UUID("00000000-0000-0000-0000-000000000001")

@@ -16,8 +16,8 @@ class MetadataStorageFactory(IMetadataStorageFactory):
         self._logger = logging.getLogger(__name__)
 
     def create_metadata_storage(self, station_config: StationConfig) -> IMetadataStorage:
-        storing_path_manager = StoringPathManager(station_config.metadata_storage_config)
-        
+        storing_path_manager = StoringPathManager(station_config.metadata_storage_config, station_config.station_name)
+
         if station_config.metadata_storage_config.storage_type == StorageType.FILESYSTEM.value:
             from edge_orchestrator.infrastructure.adapters.metadata_storage.filesystem_metadata_storage import (
                 FileSystemMetadataStorage,

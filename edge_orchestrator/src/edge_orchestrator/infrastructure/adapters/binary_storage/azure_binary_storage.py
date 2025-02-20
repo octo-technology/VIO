@@ -1,5 +1,4 @@
 import logging
-from pathlib import Path
 from typing import Dict, List
 from uuid import UUID
 
@@ -27,7 +26,4 @@ class AzureBinaryStorage(IBinaryStorage):
         raise NotImplementedError("Not implemented yet")
 
     def get_item_binary(self, item_id: UUID, camera_id: str) -> bytes:
-        raise NotImplementedError("Not implemented yet")
-
-    def _get_storing_path(self, item_id: UUID) -> Path:
         raise NotImplementedError("Not implemented yet")

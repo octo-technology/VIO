@@ -42,10 +42,15 @@ class TestMetadataStorageManager:
             (StorageType.GCP, GCPMetadataStorage),
         ]
         metadata_storage_manager = MetadataStorageManager(MetadataStorageFactory())
-
         # When
         for storage_type, metadata_storage_class in storage_type_metadata_storage_classes:
-            station_config.metadata_storage_config = StorageConfig(storage_type=storage_type)
+            if storage_type in [StorageType.AWS, StorageType.AZURE, StorageType.GCP]:
+                station_config.metadata_storage_config = StorageConfig(
+                    storage_type=storage_type, bucket_name="test_bucket"
+                )
+            else:
+                station_config.metadata_storage_config = StorageConfig(storage_type=storage_type)
+
             metadata_storage = metadata_storage_manager.get_metadata_storage(station_config)
             assert isinstance(metadata_storage, metadata_storage_class)
 
@@ -57,6 +62,4 @@ class TestMetadataStorageManager:
 
         if storage_type == StorageType.GCP:
             mock_storage_client.assert_called_once()
-            mock_client_instance.get_bucket.assert_called_once_with(
-                station_config.metadata_storage_config.target_directory.as_posix()
-            )
+            mock_client_instance.get_bucket.assert_called_once_with(station_config.metadata_storage_config.bucket_name)

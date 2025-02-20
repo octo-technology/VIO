@@ -15,6 +15,7 @@ from edge_orchestrator.domain.models.model_forwarder.prediction_type import (
     PredictionType,
 )
 from edge_orchestrator.domain.models.station_config import StationConfig
+from edge_orchestrator.domain.ports.storing_path_manager import StoringPathManager
 from edge_orchestrator.infrastructure.adapters.metadata_storage.filesystem_metadata_storage import (
     FileSystemMetadataStorage,
 )
@@ -28,7 +29,9 @@ class TestFileSystemMetadataStorage:
         target_directory = tmp_path / "metadata"
         target_directory.mkdir()
         station_config.metadata_storage_config.target_directory = target_directory
-        metadata_storage = FileSystemMetadataStorage(station_config)
+        metadata_storage = FileSystemMetadataStorage(
+            station_config, StoringPathManager(station_config.metadata_storage_config, station_config.station_name)
+        )
         item_id = UUID("00000000-0000-0000-0000-000000000001")
 
         item = Item(
@@ -46,7 +49,7 @@ class TestFileSystemMetadataStorage:
         metadata_storage.save_item_metadata(item)
 
         # Then
-        path_to_metadata = target_directory / station_config.station_name / f"{str(item.id)}.json"
+        path_to_metadata = target_directory / station_config.station_name / str(item.id) / "metadata.json"
         assert path_to_metadata.is_file()
         actual_metadata = json.load(path_to_metadata.open("r"))
         assert actual_metadata
@@ -58,7 +61,9 @@ class TestFileSystemMetadataStorage:
         target_directory = tmp_path / "metadata"
         target_directory.mkdir()
         station_config.metadata_storage_config.target_directory = target_directory
-        metadata_storage = FileSystemMetadataStorage(station_config)
+        metadata_storage = FileSystemMetadataStorage(
+            station_config, StoringPathManager(station_config.metadata_storage_config, station_config.station_name)
+        )
         item_id = UUID("00000000-0000-0000-0000-000000000002")
 
         item = Item(
@@ -129,7 +134,7 @@ class TestFileSystemMetadataStorage:
         metadata_storage.save_item_metadata(item)
 
         # Then
-        path_to_metadata = target_directory / station_config.station_name / f"{str(item.id)}.json"
+        path_to_metadata = target_directory / station_config.station_name / str(item.id) / "metadata.json"
         assert path_to_metadata.is_file()
         actual_metadata = json.load(path_to_metadata.open("r"))
         assert actual_metadata == expected_metadata
@@ -138,12 +143,12 @@ class TestFileSystemMetadataStorage:
         self, tmp_path: Path, station_config: StationConfig
     ):
         # Given
-        bucket_name = tmp_path / "metadata"
-        bucket_name.mkdir()
-        target_directory = "station_#1"
-        station_config.metadata_storage_config.bucket_name = bucket_name
+        target_directory = tmp_path / "metadata"
+        target_directory.mkdir()
         station_config.metadata_storage_config.target_directory = target_directory
-        metadata_storage = FileSystemMetadataStorage(station_config)
+        metadata_storage = FileSystemMetadataStorage(
+            station_config, StoringPathManager(station_config.metadata_storage_config, station_config.station_name)
+        )
         item_id = UUID("00000000-0000-0000-0000-000000000001")
 
         item = Item(
@@ -162,7 +167,7 @@ class TestFileSystemMetadataStorage:
         metadata_storage.save_item_metadata(item)
 
         # Then
-        path_to_metadata = bucket_name / target_directory / station_config.station_name / f"{str(item.id)}.json"
+        path_to_metadata = target_directory / station_config.station_name / str(item.id) / "metadata.json"
         assert path_to_metadata.is_file()
         actual_metadata = json.load(path_to_metadata.open("r"))
         assert actual_metadata
@@ -174,7 +179,9 @@ class TestFileSystemMetadataStorage:
         target_directory = tmp_path / "metadata"
         target_directory.mkdir()
         station_config.metadata_storage_config.target_directory = target_directory
-        metadata_storage = FileSystemMetadataStorage(station_config)
+        metadata_storage = FileSystemMetadataStorage(
+            station_config, StoringPathManager(station_config.metadata_storage_config, station_config.station_name)
+        )
         item_id = UUID("00000000-0000-0000-0000-000000000003")
 
         expected_metadata = {
@@ -207,8 +214,9 @@ class TestFileSystemMetadataStorage:
             "state": "DONE",
         }
 
-        (target_directory / station_config.station_name).mkdir(parents=True)
-        with (target_directory / station_config.station_name / f"{item_id}.json").open("w") as f:
+        storing_path = target_directory / station_config.station_name / str(item_id)
+        storing_path.mkdir(parents=True)
+        with (storing_path / "metadata.json").open("w") as f:
             json.dump(expected_metadata, f)
 
         # When
@@ -224,7 +232,9 @@ class TestFileSystemMetadataStorage:
         target_directory = tmp_path / "metadata"
         target_directory.mkdir()
         station_config.metadata_storage_config.target_directory = target_directory
-        metadata_storage = FileSystemMetadataStorage(station_config)
+        metadata_storage = FileSystemMetadataStorage(
+            station_config, StoringPathManager(station_config.metadata_storage_config, station_config.station_name)
+        )
 
         for i in range(5):
             uid = f"00000000-0000-0000-0000-00000000000{i+1}"

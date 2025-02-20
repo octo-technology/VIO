@@ -50,8 +50,11 @@ class TestBinaryStorageFactory:
         mock_client_instance.get_bucket.return_value = mock_bucket
         mock_storage_client.return_value = mock_client_instance
 
-        binary_storage_config = StorageConfig(storage_type=storage_type)
-        station_config.binary_storage_config = binary_storage_config
+        if storage_type in [StorageType.AWS, StorageType.AZURE, StorageType.GCP]:
+            station_config.binary_storage_config = StorageConfig(storage_type=storage_type, bucket_name="test_bucket")
+        else:
+            station_config.binary_storage_config = StorageConfig(storage_type=storage_type)
+
         binary_storage_factory = BinaryStorageFactory()
 
         # When
@@ -64,6 +67,4 @@ class TestBinaryStorageFactory:
 
         if storage_type == StorageType.GCP:
             mock_storage_client.assert_called_once()
-            mock_client_instance.get_bucket.assert_called_once_with(
-                station_config.binary_storage_config.bucket_name.as_posix()
-            )
+            mock_client_instance.get_bucket.assert_called_once_with(station_config.binary_storage_config.bucket_name)

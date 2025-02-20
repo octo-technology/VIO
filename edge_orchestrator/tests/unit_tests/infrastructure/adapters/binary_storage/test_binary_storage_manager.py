@@ -45,7 +45,13 @@ class TestBinaryStorageManager:
 
         # When
         for storage_type, binary_storage_class in storage_type_binary_storage_classes:
-            station_config.binary_storage_config = StorageConfig(storage_type=storage_type)
+            if storage_type in [StorageType.AWS, StorageType.AZURE, StorageType.GCP]:
+                station_config.binary_storage_config = StorageConfig(
+                    storage_type=storage_type, bucket_name="test_bucket"
+                )
+            else:
+                station_config.binary_storage_config = StorageConfig(storage_type=storage_type)
+
             binary_storage = binary_storage_manager.get_binary_storage(station_config)
             assert isinstance(binary_storage, binary_storage_class)
 
@@ -57,6 +63,4 @@ class TestBinaryStorageManager:
 
         if storage_type == StorageType.GCP:
             mock_storage_client.assert_called_once()
-            mock_client_instance.get_bucket.assert_called_once_with(
-                station_config.binary_storage_config.bucket_name.as_posix()
-            )
+            mock_client_instance.get_bucket.assert_called_once_with(station_config.binary_storage_config.bucket_name)

@@ -1,5 +1,4 @@
 import logging
-from pathlib import Path
 from typing import List
 from uuid import UUID
 
@@ -24,7 +23,4 @@ class AzureMetadataStorage(IMetadataStorage):
         raise NotImplementedError("Not implemented yet")
 
     def get_all_items_metadata(self) -> List[Item]:
-        raise NotImplementedError("Not implemented yet")
-
-    def _get_storing_path(self, item_id: UUID) -> Path:
         raise NotImplementedError("Not implemented yet")
