@@ -4,7 +4,6 @@ from pathlib import Path
 from typing import List
 
 from edge_orchestrator.domain.models.camera.camera_config import CameraConfig
-from edge_orchestrator.domain.models.camera.image_extension import ImageExtension
 from edge_orchestrator.domain.models.item import Image
 from edge_orchestrator.domain.ports.camera.i_camera import ICamera
 

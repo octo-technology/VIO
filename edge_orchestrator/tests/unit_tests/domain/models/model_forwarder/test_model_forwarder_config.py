@@ -1,10 +1,17 @@
 from pathlib import Path
 
-from edge_orchestrator.domain.models.model_forwarder.model_forwarder_config import ModelForwarderConfig
-from edge_orchestrator.domain.models.model_forwarder.model_type import ModelType
-from edge_orchestrator.domain.models.model_forwarder.image_resolution import ImageResolution
+import pytest
+from pydantic import ValidationError
+
+from edge_orchestrator.domain.models.model_forwarder.image_resolution import (
+    ImageResolution,
+)
+from edge_orchestrator.domain.models.model_forwarder.model_forwarder_config import (
+    ModelForwarderConfig,
+)
 from edge_orchestrator.domain.models.model_forwarder.model_name import ModelName
-from edge_orchestrator.domain.models.model_forwarder.image_resolution import ImageResolution
+from edge_orchestrator.domain.models.model_forwarder.model_type import ModelType
+from tests.fixtures.containers import setup_test_tflite_serving
 
 
 class TestModelForwarderConfig:
@@ -20,11 +27,8 @@ class TestModelForwarderConfig:
                 model_type=ModelType.classification,
                 class_names_path=class_names_filepath,
                 model_serving_url=setup_test_tflite_serving,
-                expected_image_resolution=ImageResolution(224, 224),
-        )
+                expected_image_resolution=ImageResolution(width=224, height=224),
+            )
 
         # Then
-        assert (
-            f"Class names file {self.class_names_filepath} does not exist"
-            in str(e.value)
-        )
+        assert f"Class names file {class_names_filepath} does not exist" in str(e.value)
