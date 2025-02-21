@@ -17,10 +17,10 @@ def create_model_interpreters() -> Dict[str, Interpreter]:
     models_path = (
         Path(os.getenv("MODELS_PATH"))
         if os.getenv("MODELS_PATH")
-        else Path.cwd().parent
+        else Path.cwd().parent / "models"
     )
-    tflite_model_path = models_path / "models/tflite"
-    logging.debug(f"tflite_model_path: {tflite_model_path.resolve()}")
+    tflite_model_path = models_path / "tflite"
+    logging.info(f"tflite_model_path: {tflite_model_path.resolve()}")
     for model_path in tflite_model_path.glob("**/*.tflite"):
         model_interpreters[model_path.parent.name] = create_interpreter(
             model_path.as_posix()

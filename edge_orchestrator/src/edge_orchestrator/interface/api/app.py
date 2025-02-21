@@ -7,7 +7,7 @@ from edge_orchestrator.interface.api.routers.v1.router import router
 
 
 def create_app() -> FastAPI:
-    logging.getLogger().setLevel(logging.INFO)
+    logging.basicConfig(level=logging.INFO, format="%(levelname)s - %(asctime)s - %(name)s - %(message)s")
     app = FastAPI(title="edge_orchestrator")
     app.include_router(router)
     app.add_middleware(

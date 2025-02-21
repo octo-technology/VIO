@@ -14,7 +14,7 @@ from edge_orchestrator.utils.singleton import SingletonMeta
 class ConfigManager(metaclass=SingletonMeta):
     def __init__(self):
         self._station_configs: Dict[str, StationConfig] = {}
-        self._active_station_name: Optional[str] = os.getenv("ACTIVE_CONFIG_NAME", "config_1")
+        self._active_station_name: Optional[str] = os.getenv("ACTIVE_CONFIG_NAME", "marker_classif_with_2_fake_cam")
         self._logger = logging.getLogger(__name__)
         self._config_dir = Path(os.getenv("CONFIG_DIR", "config")).resolve()
         self._load_all_configs()
