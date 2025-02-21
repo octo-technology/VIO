@@ -12,6 +12,7 @@ SHELL := /bin/bash
 
 REPO_DIRECTORY:=$(shell pwd)
 PYTHONPATH:=${PYTHONPATH}:${REPO_DIRECTORY}
+BUILDOS=$(shell uname -s | tr '[:upper:]' '[:lower:]')
 
 .PHONY: help
 help:
@@ -82,7 +83,7 @@ pyramid_and_badges:
 
 .PHONY: start_edge_orchestrator ## 🕵 Start edge_orchestrator service (Docker container)
 start_edge_orchestrator:
-	docker compose --file edge_orchestrator.yml --build up edge_orchestrator -d
+	BUILDOS=${BUILDOS} docker compose --file edge_orchestrator.yml --build up edge_orchestrator -d
 
 
 .PHONY: stop_edge_orchestrator ## 🕵 Stop edge_orchestrator service (Docker container)
