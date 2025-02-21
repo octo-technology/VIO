@@ -9,7 +9,7 @@
             "model_forwarder_config": {
                 "model_name": "marker_quality_control",
                 "model_type": "classification",
-                "model_serving_url": "http://localhost:8501/",
+                "model_serving_url": "http://edge_model_serving:8501/",
                 "expected_image_resolution": {
                     "width": 224,
                     "height": 224
@@ -36,7 +36,7 @@
             "model_forwarder_config": {
                 "model_name": "marker_quality_control",
                 "model_type": "classification",
-                "model_serving_url": "http://localhost:8501/",
+                "model_serving_url": "http://edge_model_serving:8501/",
                 "expected_image_resolution": {
                     "width": 224,
                     "height": 224
