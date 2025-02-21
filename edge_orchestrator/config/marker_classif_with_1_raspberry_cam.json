@@ -4,7 +4,6 @@
         "camera_1": {
             "camera_id": "camera_1",
             "camera_type": "raspberry",
-            "source_directory": "/dev/video0",
             "position": "front",
             "model_forwarder_config": {
                 "model_name": "marker_quality_control",

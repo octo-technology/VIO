@@ -3,8 +3,8 @@
     "camera_configs": {
         "camera_1": {
             "camera_id": "camera_1",
-            "camera_type": "fake",
-            "source_directory": "fake_images",
+            "camera_type": "usb",
+            "source_directory": "/dev/video0",
             "position": "front",
             "model_forwarder_config": {
                 "model_name": "yolo_coco_nano",
@@ -28,9 +28,9 @@
         },
         "camera_2": {
             "camera_id": "camera_2",
-            "camera_type": "fake",
-            "source_directory": "fake_images",
-            "position": "front",
+            "camera_type": "usb",
+            "source_directory": "/dev/video4",
+            "position": "back",
             "model_forwarder_config": {
                 "model_name": "yolo_coco_nano",
                 "model_type": "object_detection",
