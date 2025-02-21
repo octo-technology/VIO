@@ -1,5 +1,5 @@
 {
-    "station_name": "pin_detection_with_1_usb_cam",
+    "station_name": "pin_detection_with_2_usb_cam",
     "camera_configs": {
         "camera_1": {
             "camera_id": "camera_1",

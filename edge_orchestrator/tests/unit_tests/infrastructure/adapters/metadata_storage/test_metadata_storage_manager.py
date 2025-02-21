@@ -41,11 +41,9 @@ class TestMetadataStorageManager:
             (StorageType.AZURE, AzureMetadataStorage),
             (StorageType.GCP, GCPMetadataStorage),
         ]
-        metadata_storage_manager = MetadataStorageManager(
-            MetadataStorageFactory(
-                StoringPathManager(station_config.binary_storage_config, station_config.station_name)
-            )
-        )
+        storing_path_manager = StoringPathManager()
+        storing_path_manager.set(station_config.binary_storage_config, station_config.station_name)
+        metadata_storage_manager = MetadataStorageManager(MetadataStorageFactory(storing_path_manager))
         # When
         for storage_type, metadata_storage_class in storage_type_metadata_storage_classes:
             station_config.metadata_storage_config.storage_type = storage_type

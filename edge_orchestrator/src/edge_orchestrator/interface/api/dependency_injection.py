@@ -114,14 +114,18 @@ def get_binary_storing_path_manager(
     storage_config: StorageConfig = Depends(get_binary_storage_config),
     station_config: StationConfig = Depends(get_config),
 ) -> StoringPathManager:
-    return StoringPathManager(storage_config, station_config.station_name)
+    storing_path_manager = StoringPathManager()
+    storing_path_manager.set(storage_config, station_config.station_name)
+    return storing_path_manager
 
 
 def get_metadata_storing_path_manager(
     storage_config: StorageConfig = Depends(get_metadata_storage_config),
     station_config: StationConfig = Depends(get_config),
 ) -> StoringPathManager:
-    return StoringPathManager(storage_config, station_config.station_name)
+    storing_path_manager = StoringPathManager()
+    storing_path_manager.set(storage_config, station_config.station_name)
+    return storing_path_manager
 
 
 def get_binary_storage_factory(

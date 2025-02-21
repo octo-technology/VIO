@@ -50,9 +50,9 @@ class TestBinaryStorageFactory:
         mock_client_instance.get_bucket.return_value = mock_bucket
         mock_storage_client.return_value = mock_client_instance
 
-        binary_storage_factory = BinaryStorageFactory(
-            storing_path_manager=StoringPathManager(station_config.binary_storage_config, station_config.station_name)
-        )
+        storing_path_manager = StoringPathManager()
+        storing_path_manager.set(station_config.binary_storage_config, station_config.station_name)
+        binary_storage_factory = BinaryStorageFactory(storing_path_manager)
         station_config.binary_storage_config.storage_type = storage_type
 
         # When

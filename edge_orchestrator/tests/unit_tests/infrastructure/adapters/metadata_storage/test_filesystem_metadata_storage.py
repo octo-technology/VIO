@@ -29,9 +29,9 @@ class TestFileSystemMetadataStorage:
         target_directory = tmp_path / "metadata"
         target_directory.mkdir()
         station_config.metadata_storage_config.target_directory = target_directory
-        metadata_storage = FileSystemMetadataStorage(
-            station_config, StoringPathManager(station_config.metadata_storage_config, station_config.station_name)
-        )
+        storing_path_manager = StoringPathManager()
+        storing_path_manager.set(station_config.binary_storage_config, station_config.station_name)
+        metadata_storage = FileSystemMetadataStorage(station_config, storing_path_manager)
         item_id = UUID("00000000-0000-0000-0000-000000000001")
 
         item = Item(
@@ -61,9 +61,9 @@ class TestFileSystemMetadataStorage:
         target_directory = tmp_path / "metadata"
         target_directory.mkdir()
         station_config.metadata_storage_config.target_directory = target_directory
-        metadata_storage = FileSystemMetadataStorage(
-            station_config, StoringPathManager(station_config.metadata_storage_config, station_config.station_name)
-        )
+        storing_path_manager = StoringPathManager()
+        storing_path_manager.set(station_config.metadata_storage_config, station_config.station_name)
+        metadata_storage = FileSystemMetadataStorage(station_config, storing_path_manager)
         item_id = UUID("00000000-0000-0000-0000-000000000002")
 
         item = Item(
@@ -146,9 +146,9 @@ class TestFileSystemMetadataStorage:
         target_directory = tmp_path / "metadata"
         target_directory.mkdir()
         station_config.metadata_storage_config.target_directory = target_directory
-        metadata_storage = FileSystemMetadataStorage(
-            station_config, StoringPathManager(station_config.metadata_storage_config, station_config.station_name)
-        )
+        storing_path_manager = StoringPathManager()
+        storing_path_manager.set(station_config.binary_storage_config, station_config.station_name)
+        metadata_storage = FileSystemMetadataStorage(station_config, storing_path_manager)
         item_id = UUID("00000000-0000-0000-0000-000000000001")
 
         item = Item(
@@ -179,9 +179,9 @@ class TestFileSystemMetadataStorage:
         target_directory = tmp_path / "metadata"
         target_directory.mkdir()
         station_config.metadata_storage_config.target_directory = target_directory
-        metadata_storage = FileSystemMetadataStorage(
-            station_config, StoringPathManager(station_config.metadata_storage_config, station_config.station_name)
-        )
+        storing_path_manager = StoringPathManager()
+        storing_path_manager.set(station_config.binary_storage_config, station_config.station_name)
+        metadata_storage = FileSystemMetadataStorage(station_config, storing_path_manager)
         item_id = UUID("00000000-0000-0000-0000-000000000003")
 
         expected_metadata = {
@@ -232,9 +232,9 @@ class TestFileSystemMetadataStorage:
         target_directory = tmp_path / "metadata"
         target_directory.mkdir()
         station_config.metadata_storage_config.target_directory = target_directory
-        metadata_storage = FileSystemMetadataStorage(
-            station_config, StoringPathManager(station_config.metadata_storage_config, station_config.station_name)
-        )
+        storing_path_manager = StoringPathManager()
+        storing_path_manager.set(station_config.binary_storage_config, station_config.station_name)
+        metadata_storage = FileSystemMetadataStorage(station_config, storing_path_manager)
 
         for i in range(5):
             uid = f"00000000-0000-0000-0000-00000000000{i+1}"

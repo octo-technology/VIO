@@ -41,9 +41,9 @@ class TestBinaryStorageManager:
             (StorageType.AZURE, AzureBinaryStorage),
             (StorageType.GCP, GCPBinaryStorage),
         ]
-        binary_storage_manager = BinaryStorageManager(
-            BinaryStorageFactory(StoringPathManager(station_config.binary_storage_config, station_config.station_name))
-        )
+        storing_path_manager = StoringPathManager()
+        storing_path_manager.set(station_config.metadata_storage_config, station_config.station_name)
+        binary_storage_manager = BinaryStorageManager(BinaryStorageFactory(storing_path_manager))
 
         # When
         for storage_type, binary_storage_class in storage_type_binary_storage_classes:

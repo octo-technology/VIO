@@ -45,7 +45,7 @@ class ConfigManager(metaclass=SingletonMeta):
                 f"No active json station config found at {(self._config_dir/self._active_station_name).with_suffix('.json').as_posix()}"
             )
         else:
-            self._logger.info(f"Active station config found and set: {station_config.station_name}")
+            self._logger.info(f"Active station config found and set: {self._active_station_name}")
 
     def _save_config_as_json(self, station_config: StationConfig):
         with (self._config_dir / f"{station_config.station_name}.json").open("w") as f:
