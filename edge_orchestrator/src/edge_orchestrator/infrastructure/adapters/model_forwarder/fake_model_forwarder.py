@@ -36,8 +36,7 @@ class FakeModelForwarder(IModelForwarder):
 
     async def _predict(self, preprocessed_binary: np.ndarray) -> Dict[str, Any]:
         model_type = self._model_forwarder_config.model_type
-        # TODO: remove ModelType.FAKE
-        if model_type == ModelType.classification or model_type == ModelType.FAKE:
+        if model_type == ModelType.classification:
             return {"label": random.choice(["OK", "KO"]), "probability": random.uniform(0, 1)}
         elif model_type == ModelType.object_detection:
             return {
@@ -57,13 +56,13 @@ class FakeModelForwarder(IModelForwarder):
 
     def _post_process_prediction(self, prediction_response: Dict[str, Any]) -> Prediction:
         model_type = self._model_forwarder_config.model_type
-        if model_type == ModelType.classification.value or model_type == ModelType.FAKE.value:
+        if model_type == ModelType.classification:
             return ClassifPrediction(
                 prediction_type=PredictionType.class_,
                 label=prediction_response["label"],
                 probability=prediction_response["probability"],
             )
-        elif model_type == ModelType.object_detection.value:
+        elif model_type == ModelType.object_detection:
             detected_objects = prediction_response["detected_objects"]
             return DetectionPrediction(
                 prediction_type=PredictionType.objects,

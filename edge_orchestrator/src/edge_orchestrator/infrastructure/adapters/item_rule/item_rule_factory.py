@@ -13,14 +13,14 @@ class ItemRuleFactory(IItemRuleFactory):
         self._logger = logging.getLogger(__name__)
 
     def create_item_rule(self, item_rule_config: ItemRuleConfig) -> IItemRule:
-        if item_rule_config.item_rule_type == ItemRuleType.MIN_THRESHOLD_RULE.value:
+        if item_rule_config.item_rule_type == ItemRuleType.MIN_THRESHOLD_RULE:
             from edge_orchestrator.infrastructure.adapters.item_rule.min_threshold_rule import (
                 MinThresholdRule,
             )
 
             return MinThresholdRule(item_rule_config)
 
-        elif item_rule_config.item_rule_type == ItemRuleType.MIN_THRESHOLD_RATIO_RULE.value:
+        elif item_rule_config.item_rule_type == ItemRuleType.MIN_THRESHOLD_RATIO_RULE:
             from edge_orchestrator.infrastructure.adapters.item_rule.min_threshold_ratio_rule import (
                 MinThresholdRatioRule,
             )

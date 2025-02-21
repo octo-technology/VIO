@@ -17,25 +17,25 @@ class MetadataStorageFactory(IMetadataStorageFactory):
         self._storing_path_manager = storing_path_manager
 
     def create_metadata_storage(self, station_config: StationConfig) -> IMetadataStorage:
-        if station_config.metadata_storage_config.storage_type == StorageType.FILESYSTEM.value:
+        if station_config.metadata_storage_config.storage_type == StorageType.FILESYSTEM:
             from edge_orchestrator.infrastructure.adapters.metadata_storage.filesystem_metadata_storage import (
                 FileSystemMetadataStorage,
             )
 
             return FileSystemMetadataStorage(station_config, self._storing_path_manager)
-        elif station_config.metadata_storage_config.storage_type == StorageType.AWS.value:
+        elif station_config.metadata_storage_config.storage_type == StorageType.AWS:
             from edge_orchestrator.infrastructure.adapters.metadata_storage.aws_metadata_storage import (
                 AWSMetadataStorage,
             )
 
             return AWSMetadataStorage(station_config, self._storing_path_manager)
-        elif station_config.metadata_storage_config.storage_type == StorageType.GCP.value:
+        elif station_config.metadata_storage_config.storage_type == StorageType.GCP:
             from edge_orchestrator.infrastructure.adapters.metadata_storage.gcp_metadata_storage import (
                 GCPMetadataStorage,
             )
 
             return GCPMetadataStorage(station_config, self._storing_path_manager)
-        elif station_config.metadata_storage_config.storage_type == StorageType.AZURE.value:
+        elif station_config.metadata_storage_config.storage_type == StorageType.AZURE:
             from edge_orchestrator.infrastructure.adapters.metadata_storage.azure_metadata_storage import (
                 AzureMetadataStorage,
             )

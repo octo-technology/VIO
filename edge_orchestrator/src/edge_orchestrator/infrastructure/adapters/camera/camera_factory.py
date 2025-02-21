@@ -11,19 +11,19 @@ class CameraFactory(ICameraFactory):
         self._logger = logging.getLogger(__name__)
 
     def create_camera(self, camera_config: CameraConfig) -> ICamera:
-        if camera_config.camera_type == CameraType.FAKE.value:
+        if camera_config.camera_type == CameraType.FAKE:
             from edge_orchestrator.infrastructure.adapters.camera.fake_camera import (
                 FakeCamera,
             )
 
             return FakeCamera(camera_config)
-        elif camera_config.camera_type == CameraType.RASPBERRY.value:
+        elif camera_config.camera_type == CameraType.RASPBERRY:
             from edge_orchestrator.infrastructure.adapters.camera.raspberry_pi_camera import (
                 RaspberryPiCamera,
             )
 
             return RaspberryPiCamera(camera_config)
-        elif camera_config.camera_type in [CameraType.WEBCAM.value, CameraType.USB.value]:
+        elif camera_config.camera_type in [CameraType.WEBCAM, CameraType.USB]:
             from edge_orchestrator.infrastructure.adapters.camera.webcam_camera import (
                 WebcamCamera,
             )

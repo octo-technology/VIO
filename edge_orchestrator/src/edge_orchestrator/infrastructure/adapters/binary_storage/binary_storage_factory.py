@@ -17,25 +17,25 @@ class BinaryStorageFactory(IBinaryStorageFactory):
         self._storing_path_manager = storing_path_manager
 
     def create_binary_storage(self, station_config: StationConfig) -> IBinaryStorage:
-        if station_config.binary_storage_config.storage_type == StorageType.FILESYSTEM.value:
+        if station_config.binary_storage_config.storage_type == StorageType.FILESYSTEM:
             from edge_orchestrator.infrastructure.adapters.binary_storage.filesystem_binary_storage import (
                 FileSystemBinaryStorage,
             )
 
             return FileSystemBinaryStorage(station_config, self._storing_path_manager)
-        elif station_config.binary_storage_config.storage_type == StorageType.AWS.value:
+        elif station_config.binary_storage_config.storage_type == StorageType.AWS:
             from edge_orchestrator.infrastructure.adapters.binary_storage.aws_binary_storage import (
                 AWSBinaryStorage,
             )
 
             return AWSBinaryStorage(station_config, self._storing_path_manager)
-        elif station_config.binary_storage_config.storage_type == StorageType.GCP.value:
+        elif station_config.binary_storage_config.storage_type == StorageType.GCP:
             from edge_orchestrator.infrastructure.adapters.binary_storage.gcp_binary_storage import (
                 GCPBinaryStorage,
             )
 
             return GCPBinaryStorage(station_config, self._storing_path_manager)
-        elif station_config.binary_storage_config.storage_type == StorageType.AZURE.value:
+        elif station_config.binary_storage_config.storage_type == StorageType.AZURE:
             from edge_orchestrator.infrastructure.adapters.binary_storage.azure_binary_storage import (
                 AzureBinaryStorage,
             )

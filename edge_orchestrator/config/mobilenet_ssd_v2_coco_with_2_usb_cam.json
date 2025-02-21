@@ -1,5 +1,5 @@
 {
-    "station_name": "config_1",
+    "station_name": "mobilenet_ssd_v2_coco_with_2_usb_cam",
     "camera_configs": {
         "camera_1": {
             "camera_id": "camera_1",
@@ -7,23 +7,20 @@
             "source_directory": "fake_images",
             "position": "front",
             "model_forwarder_config": {
-                "model_name": "fake_model",
-                "model_type": "classification",
+                "model_name": "yolo_coco_nano",
+                "model_type": "object_detection",
                 "expected_image_resolution": {
-                    "width": 224,
-                    "height": 224
+                    "width": 320,
+                    "height": 320
                 },
                 "model_version": "1",
-                "class_names": [
-                    "OK",
-                    "KO"
-                ],
-                "recreate_me": false,
-                "model_id": "fake_model_classification_1"
+                "class_names_filepath": "model_labels/coco_labels.txt",
+                "recreate_me": false
             },
             "camera_rule_config": {
-                "camera_rule_type": "expected_label_rule",
-                "expected_class": "OK",
+                "camera_rule_type": "min_nb_objects_rule",
+                "class_to_detect": "people",
+                "threshold": 1,
                 "recreate_me": false
             },
             "recreate_me": false
@@ -34,23 +31,19 @@
             "source_directory": "fake_images",
             "position": "front",
             "model_forwarder_config": {
-                "model_name": "fake_model",
+                "model_name": "yolo_coco_nano",
                 "model_type": "object_detection",
                 "expected_image_resolution": {
-                    "width": 224,
-                    "height": 224
+                    "width": 320,
+                    "height": 320
                 },
                 "model_version": "1",
-                "class_names": [
-                    "OK",
-                    "KO"
-                ],
-                "recreate_me": false,
-                "model_id": "fake_model_object_detection_1"
+                "class_names_filepath": "model_labels/coco_labels.txt",
+                "recreate_me": false
             },
             "camera_rule_config": {
                 "camera_rule_type": "min_nb_objects_rule",
-                "class_to_detect": "OK",
+                "class_to_detect": "people",
                 "threshold": 1,
                 "recreate_me": false
             },

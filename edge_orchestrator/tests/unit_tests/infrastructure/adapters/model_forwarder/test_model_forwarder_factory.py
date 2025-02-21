@@ -11,6 +11,7 @@ from edge_orchestrator.domain.ports.model_forwarder.i_model_forwarder import (
 from edge_orchestrator.infrastructure.adapters.model_forwarder.classif_model_forwarder import (
     ClassifModelForwarder,
 )
+from edge_orchestrator.infrastructure.adapters.model_forwarder.fake_model_forwarder import FakeModelForwarder
 from edge_orchestrator.infrastructure.adapters.model_forwarder.model_forwarder_factory import (
     ModelForwarderFactory,
 )
@@ -24,7 +25,7 @@ class TestModelForwarderFactory:
     @pytest.mark.parametrize(
         "model_name,model_type,model_class",
         [
-            (ModelName.fake_model, ModelType.classification, ClassifModelForwarder),
+            (ModelName.fake_model, ModelType.classification, FakeModelForwarder),
             (ModelName.pin_detection, ModelType.classification, ClassifModelForwarder),
             (
                 ModelName.mobilenet_ssd_v2_coco,
