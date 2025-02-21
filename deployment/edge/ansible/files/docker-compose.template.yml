@@ -7,7 +7,7 @@ services:
       args:
         BUILDOS: ${BUILDOS:-linux}
     environment:
-      TF_CPP_MIN_VLOG_LEVEL: 0
+      TF_CPP_MIN_VLOG_LEVEL: 0   # TensorFlow logging level
     ports:
       - 8501:8501
     volumes:

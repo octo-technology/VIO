@@ -40,10 +40,6 @@ linux = [
 where = ["src/"]
 exclude = ["tests*", "data"]
 
-#[tool.setuptools_scm]
-#root = "../.."
-#write_to = "edge_model_serving/tflite_serving/src/tflite_serving/_version.py"
-
 [tool.pytest.ini_options]
 min_version = "6.0"
 testpaths = "tests/"
