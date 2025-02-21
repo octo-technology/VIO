@@ -2,12 +2,14 @@ FROM --platform=$TARGETPLATFORM python:3.10-slim AS builder
 ARG TARGETPLATFORM
 ARG BUILDOS
 
+ENV MODELS_PATH=/models
+
 WORKDIR /tflite_serving
 
 RUN apt-get update && apt-get upgrade -y && \
     apt-get install -y --no-install-recommends \
-        build-essential \
-        gcc \
+    build-essential \
+    gcc \
     && apt clean \
     && apt autoremove \
     && rm -rf /var/cache/apt/archives/* \
@@ -25,9 +27,7 @@ COPY tflite_serving/src/ ./src
 COPY tflite_serving/pip.conf /opt/venv/pip.conf
 COPY models/tflite/ $MODELS_PATH/tflite/
 
-RUN pip install --no-cache-dir ".[linux]"
-
-ENV MODELS_PATH=/models
+RUN pip install --no-cache-dir .
 
 EXPOSE 8501
 ENTRYPOINT ["uvicorn", "tflite_serving.tflite_server:app"]

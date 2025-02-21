@@ -30,13 +30,8 @@ check:
 tflite_serving:
 	conda create --name tflite_serving python=3.10 -y
 
-.PHONY: install_tflite_linux  ## ⏬ Install tflite development dependencies on linux
-install_tflite_linux:
-	python -m pip install --upgrade pip setuptools
-	pip install -e .[dev,linux] && pip list --outdated
-
-.PHONY: install_tflite_mac  ## ⏬ Install tflite development dependencies on mac
-install_tflite_mac:
+.PHONY: install  ## ⏬ Install development dependencies
+install:
 	python -m pip install --upgrade pip setuptools
 	pip install -e .[dev] && pip list --outdated
 
