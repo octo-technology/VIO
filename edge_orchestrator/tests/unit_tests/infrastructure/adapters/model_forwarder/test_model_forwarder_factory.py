@@ -11,7 +11,9 @@ from edge_orchestrator.domain.ports.model_forwarder.i_model_forwarder import (
 from edge_orchestrator.infrastructure.adapters.model_forwarder.classif_model_forwarder import (
     ClassifModelForwarder,
 )
-from edge_orchestrator.infrastructure.adapters.model_forwarder.fake_model_forwarder import FakeModelForwarder
+from edge_orchestrator.infrastructure.adapters.model_forwarder.fake_model_forwarder import (
+    FakeModelForwarder,
+)
 from edge_orchestrator.infrastructure.adapters.model_forwarder.model_forwarder_factory import (
     ModelForwarderFactory,
 )
