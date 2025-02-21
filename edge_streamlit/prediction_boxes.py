@@ -4,21 +4,23 @@ from PIL import Image, ImageDraw, ImageFont
 def filtering_items_that_have_predictions(metadata: dict, camera_id: str):
     if metadata == {} or metadata is None:
         return False
-    elif metadata["inferences"] == {}:
+    predictions = metadata.get("predictions")
+    if predictions is None or predictions == {}:
         return False
-    for model_results in metadata["inferences"][camera_id].values():
-        if model_results == "NO_DECISION" or model_results == {}:
+    camera_decision = metadata.get("camera_decisions")[camera_id]
+    if camera_decision == "NO_DECISION":
+        return False
+    for prediction in predictions[camera_id].values():
+        if "location" not in prediction:
             return False
-        for prediction in model_results.values():
-            if "location" not in prediction:
-                return False
     return True
 
 
 def plot_predictions(img: Image, camera_id: str, metadata: dict):
-    if metadata["inferences"] == {}:
+    predictions = metadata.get("predictions")
+    if predictions is None or predictions == {}:
         return img
-    camera_prediction_metadata = metadata["inferences"][camera_id]
+    camera_prediction_metadata = predictions[camera_id]
     models = camera_prediction_metadata.keys()
     for model in models:
         detected_objects = camera_prediction_metadata[model].values()

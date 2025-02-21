@@ -6,9 +6,10 @@ from PIL import Image, ImageDraw, ImageFont
 def filter_inferences_on_camera_id(
     camera_id: str, metadata: dict
 ) -> Optional[List[str]]:
-    if metadata["inferences"] == {}:
+    predictions = metadata.get("predictions")
+    if predictions is None or predictions == {}:
         return None
-    return metadata["inferences"][camera_id]
+    return predictions[camera_id]
 
 
 def plot_predictions(img: Image, camera_inferences_metadata: Dict[str, Dict]) -> Image:
