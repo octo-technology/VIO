@@ -4,7 +4,6 @@ from io import BytesIO
 from edge_orchestrator.domain.models.camera.camera_config import CameraConfig
 from edge_orchestrator.domain.models.item import Image
 from edge_orchestrator.domain.ports.camera.i_camera import ICamera
-from edge_orchestrator.infrastructure.adapters.camera.fake_camera import FakeCamera
 
 
 class RaspberryPiCamera(ICamera):
@@ -20,7 +19,6 @@ class RaspberryPiCamera(ICamera):
             self._picam2.start()
         except ModuleNotFoundError:
             self._logger.error("PiCamera module not found. Please make sure it is installed. Defaulting to FakeCamera.")
-            self.capture = FakeCamera(camera_config).capture
 
     def capture(self) -> Image:
         stream = BytesIO()
