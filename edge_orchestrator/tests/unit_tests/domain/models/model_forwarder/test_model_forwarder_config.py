@@ -1,7 +1,7 @@
 from pathlib import Path
 
-from pydantic import ValidationError
 import pytest
+from pydantic import ValidationError
 
 from edge_orchestrator.domain.models.model_forwarder.image_resolution import (
     ImageResolution,

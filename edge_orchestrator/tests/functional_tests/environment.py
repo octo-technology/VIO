@@ -31,17 +31,6 @@ def before_all(context: Context):
 
     os.environ["CONFIG_DIR"] = tmp_config_dir.as_posix()
     os.environ["ACTIVE_CONFIG_NAME"] = "unknown_config"
-    # TODO: take a decision on the model serving to use, what should be the right abstraction
-    # (
-    #     model_serving_url,
-    #     context.tensorflow_serving_container,
-    # ) = start_test_tf_serving(
-    #     image_name=EDGE_MODEL_SERVING["image_name"],
-    #     starting_log=r"Entering the event loop ...",
-    #     env_vars={},
-    #     host_volume_path=((ROOT_REPOSITORY_PATH / EDGE_MODEL_SERVING["host_volume_path_suffix"]).as_posix()),
-    #     container_volume_path=EDGE_MODEL_SERVING["container_volume_path"],
-    # )
     (
         model_serving_url,
         context.tensorflow_serving_container,
@@ -56,11 +45,9 @@ def before_all(context: Context):
 
     context.test_client = TestClient(app)
 
-    from edge_orchestrator.domain.ports.metadata_storage.i_metadata_storage import (
-        IMetadataStorage,
-    )
+    from edge_orchestrator.domain.ports.storing_path_manager import StoringPathManager
 
-    IMetadataStorage._get_storing_directory_path = lambda x: test_directory / "data_storage"
+    StoringPathManager.get_storing_prefix_path = lambda x: test_directory / "data_storage"
 
     from edge_orchestrator.domain.ports.model_forwarder.i_model_forwarder import (
         IModelForwarder,

@@ -4,6 +4,7 @@ from uuid import UUID
 
 from fastapi import HTTPException
 
+from edge_orchestrator.domain.models.image_extension import ImageExtension
 from edge_orchestrator.domain.models.item import Item
 from edge_orchestrator.domain.models.station_config import StationConfig
 from edge_orchestrator.domain.ports.binary_storage.i_binary_storage import (
@@ -32,16 +33,18 @@ class FileSystemBinaryStorage(IBinaryStorage):
     def get_item_binaries(self, item_id: UUID) -> Dict[str, bytes]:
         path = self._storing_path_manager.get_storing_path(item_id)
         item_binaries = {}
-        for binary_path in path.glob("*"):
-            with binary_path.open("rb") as f:
-                item_binaries[binary_path.stem] = f.read()
+        for extension in ImageExtension:
+            for binary_path in path.glob(f"*.{extension.value}"):
+                with binary_path.open("rb") as f:
+                    item_binaries[binary_path.stem] = f.read()
         return item_binaries
 
     def get_item_binary_names(self, item_id: UUID) -> List[str]:
         path = self._storing_path_manager.get_storing_path(item_id)
         item_binaries = []
-        for binary_path in path.glob("*"):
-            item_binaries.append(binary_path.name)
+        for extension in ImageExtension:
+            for binary_path in path.glob(f"*.{extension.value}"):
+                item_binaries.append(binary_path.name)
         return item_binaries
 
     def get_item_binary(self, item_id: UUID, camera_id: str) -> bytes:

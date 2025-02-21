@@ -3,6 +3,7 @@ from fastapi import Depends, HTTPException
 from edge_orchestrator.application.config.config_manager import ConfigManager
 from edge_orchestrator.application.use_cases.supervisor import Supervisor
 from edge_orchestrator.domain.models.station_config import StationConfig
+from edge_orchestrator.domain.models.storage.storage_config import StorageConfig
 from edge_orchestrator.domain.ports.binary_storage.i_binary_storage_factory import (
     IBinaryStorageFactory,
 )
@@ -28,6 +29,7 @@ from edge_orchestrator.domain.ports.model_forwarder.i_model_forwarder_factory im
 from edge_orchestrator.domain.ports.model_forwarder.i_model_forwarder_manager import (
     IModelForwarderManager,
 )
+from edge_orchestrator.domain.ports.storing_path_manager import StoringPathManager
 from edge_orchestrator.infrastructure.adapters.binary_storage.binary_storage_factory import (
     BinaryStorageFactory,
 )
@@ -66,32 +68,12 @@ from edge_orchestrator.infrastructure.adapters.model_forwarder.model_forwarder_m
 )
 
 
-def get_metadata_storage_factory() -> IMetadataStorageFactory:
-    return MetadataStorageFactory()
-
-
-def get_binary_storage_factory() -> IBinaryStorageFactory:
-    return BinaryStorageFactory()
-
-
 def get_model_forwarder_factory() -> IModelForwarderFactory:
     return ModelForwarderFactory()
 
 
 def get_camera_rule_factory() -> ICameraRuleFactory:
     return CameraRuleFactory()
-
-
-def get_metadata_storage_manager(
-    metadata_storage_factory=Depends(get_metadata_storage_factory),
-) -> IMetadataStorageManager:
-    return MetadataStorageManager(metadata_storage_factory)
-
-
-def get_binary_storage_manager(
-    binary_storage_factory=Depends(get_binary_storage_factory),
-) -> IBinaryStorageManager:
-    return BinaryStorageManager(binary_storage_factory)
 
 
 def get_model_forwarder_manager(
@@ -118,6 +100,52 @@ def get_config() -> StationConfig:
     if not config:
         raise HTTPException(status_code=400, detail="No active configuration set")
     return config
+
+
+def get_binary_storage_config(station_config: StationConfig = Depends(get_config)) -> StorageConfig:
+    return station_config.binary_storage_config
+
+
+def get_metadata_storage_config(station_config: StationConfig = Depends(get_config)) -> StorageConfig:
+    return station_config.metadata_storage_config
+
+
+def get_binary_storing_path_manager(
+    storage_config: StorageConfig = Depends(get_binary_storage_config),
+    station_config: StationConfig = Depends(get_config),
+) -> StoringPathManager:
+    return StoringPathManager(storage_config, station_config.station_name)
+
+
+def get_metadata_storing_path_manager(
+    storage_config: StorageConfig = Depends(get_metadata_storage_config),
+    station_config: StationConfig = Depends(get_config),
+) -> StoringPathManager:
+    return StoringPathManager(storage_config, station_config.station_name)
+
+
+def get_binary_storage_factory(
+    storing_path_manager: StoringPathManager = Depends(get_binary_storing_path_manager),
+) -> IBinaryStorageFactory:
+    return BinaryStorageFactory(storing_path_manager)
+
+
+def get_binary_storage_manager(
+    binary_storage_factory=Depends(get_binary_storage_factory),
+) -> IBinaryStorageManager:
+    return BinaryStorageManager(binary_storage_factory)
+
+
+def get_metadata_storage_factory(
+    storing_path_manager: StoringPathManager = Depends(get_metadata_storing_path_manager),
+) -> IMetadataStorageFactory:
+    return MetadataStorageFactory(storing_path_manager)
+
+
+def get_metadata_storage_manager(
+    metadata_storage_factory=Depends(get_metadata_storage_factory),
+) -> IMetadataStorageManager:
+    return MetadataStorageManager(metadata_storage_factory)
 
 
 def get_supervisor(

@@ -1,8 +1,8 @@
 from unittest.mock import MagicMock, patch
 
 from edge_orchestrator.domain.models.station_config import StationConfig
-from edge_orchestrator.domain.models.storage.storage_config import StorageConfig
 from edge_orchestrator.domain.models.storage.storage_type import StorageType
+from edge_orchestrator.domain.ports.storing_path_manager import StoringPathManager
 from edge_orchestrator.infrastructure.adapters.metadata_storage.aws_metadata_storage import (
     AWSMetadataStorage,
 )
@@ -41,16 +41,14 @@ class TestMetadataStorageManager:
             (StorageType.AZURE, AzureMetadataStorage),
             (StorageType.GCP, GCPMetadataStorage),
         ]
-        metadata_storage_manager = MetadataStorageManager(MetadataStorageFactory())
+        metadata_storage_manager = MetadataStorageManager(
+            MetadataStorageFactory(
+                StoringPathManager(station_config.binary_storage_config, station_config.station_name)
+            )
+        )
         # When
         for storage_type, metadata_storage_class in storage_type_metadata_storage_classes:
-            if storage_type in [StorageType.AWS, StorageType.AZURE, StorageType.GCP]:
-                station_config.metadata_storage_config = StorageConfig(
-                    storage_type=storage_type, bucket_name="test_bucket"
-                )
-            else:
-                station_config.metadata_storage_config = StorageConfig(storage_type=storage_type)
-
+            station_config.metadata_storage_config.storage_type = storage_type
             metadata_storage = metadata_storage_manager.get_metadata_storage(station_config)
             assert isinstance(metadata_storage, metadata_storage_class)
 

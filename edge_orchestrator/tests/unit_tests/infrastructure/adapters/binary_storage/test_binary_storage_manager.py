@@ -1,8 +1,8 @@
 from unittest.mock import MagicMock, patch
 
 from edge_orchestrator.domain.models.station_config import StationConfig
-from edge_orchestrator.domain.models.storage.storage_config import StorageConfig
 from edge_orchestrator.domain.models.storage.storage_type import StorageType
+from edge_orchestrator.domain.ports.storing_path_manager import StoringPathManager
 from edge_orchestrator.infrastructure.adapters.binary_storage.aws_binary_storage import (
     AWSBinaryStorage,
 )
@@ -41,17 +41,13 @@ class TestBinaryStorageManager:
             (StorageType.AZURE, AzureBinaryStorage),
             (StorageType.GCP, GCPBinaryStorage),
         ]
-        binary_storage_manager = BinaryStorageManager(BinaryStorageFactory())
+        binary_storage_manager = BinaryStorageManager(
+            BinaryStorageFactory(StoringPathManager(station_config.binary_storage_config, station_config.station_name))
+        )
 
         # When
         for storage_type, binary_storage_class in storage_type_binary_storage_classes:
-            if storage_type in [StorageType.AWS, StorageType.AZURE, StorageType.GCP]:
-                station_config.binary_storage_config = StorageConfig(
-                    storage_type=storage_type, bucket_name="test_bucket"
-                )
-            else:
-                station_config.binary_storage_config = StorageConfig(storage_type=storage_type)
-
+            station_config.binary_storage_config.storage_type = storage_type
             binary_storage = binary_storage_manager.get_binary_storage(station_config)
             assert isinstance(binary_storage, binary_storage_class)
 

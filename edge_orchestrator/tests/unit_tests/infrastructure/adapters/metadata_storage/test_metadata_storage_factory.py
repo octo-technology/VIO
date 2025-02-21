@@ -3,11 +3,11 @@ from unittest.mock import MagicMock, patch
 import pytest
 
 from edge_orchestrator.domain.models.station_config import StationConfig
-from edge_orchestrator.domain.models.storage.storage_config import StorageConfig
 from edge_orchestrator.domain.models.storage.storage_type import StorageType
 from edge_orchestrator.domain.ports.metadata_storage.i_metadata_storage import (
     IMetadataStorage,
 )
+from edge_orchestrator.domain.ports.storing_path_manager import StoringPathManager
 from edge_orchestrator.infrastructure.adapters.metadata_storage.aws_metadata_storage import (
     AWSMetadataStorage,
 )
@@ -50,15 +50,10 @@ class TestMetadataStorageFactory:
         mock_client_instance.get_bucket.return_value = mock_bucket
         mock_storage_client.return_value = mock_client_instance
 
-        metadata_storage_factory = MetadataStorageFactory()
-        if storage_type in [StorageType.AWS, StorageType.AZURE, StorageType.GCP]:
-            storage_config = StorageConfig(
-                storage_type=storage_type,
-                bucket_name="test_bucket",
-                target_directory="test_edge",
-            )
-            station_config.metadata_storage_config = storage_config
-            station_config.binary_storage_config = storage_config
+        metadata_storage_factory = MetadataStorageFactory(
+            StoringPathManager(station_config.binary_storage_config, station_config.station_name)
+        )
+        station_config.binary_storage_config.storage_type = storage_type
 
         # When
         metadata_storage = metadata_storage_factory.create_metadata_storage(station_config)

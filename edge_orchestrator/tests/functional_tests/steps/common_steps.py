@@ -7,6 +7,8 @@ from behave import given
 from behave.runner import Context
 from starlette.status import HTTP_200_OK
 
+from edge_orchestrator.domain.models.decision import Decision
+
 
 @given("the app is up and running")
 def app_up_and_running(context: Context):
@@ -48,7 +50,7 @@ def assert_predictions_almost_equal(
         assert camera_id in actual_predictions
         assert prediction["prediction_type"] == actual_predictions[camera_id]["prediction_type"]
         if prediction["prediction_type"] == "class":
-            assert prediction["label"] == actual_predictions[camera_id]["label"]
+            assert actual_predictions[camera_id]["label"] in [decision.value for decision in Decision]
             assert 0 < actual_predictions[camera_id]["probability"] < 1
         else:
             assert len(actual_predictions[camera_id]["detected_objects"]) > 0
