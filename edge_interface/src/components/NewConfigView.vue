@@ -14,12 +14,7 @@
               <v-text-field v-model="cameraConfig.camera_id" label="Camera ID" required></v-text-field>
             </v-col>
             <v-col cols="12" md="6">
-              <v-select
-                v-model="cameraConfig.camera_type"
-                :items="cameraTypes"
-                label="Camera Type"
-                required
-              ></v-select>
+              <v-select v-model="cameraConfig.camera_type" :items="cameraTypes" label="Camera Type" required></v-select>
             </v-col>
             <v-col cols="12" md="6" v-if="cameraConfig.camera_type === 'fake'">
               <v-text-field v-model="cameraConfig.source_directory" label="Source Directory" required></v-text-field>
@@ -31,33 +26,29 @@
               <h5>Model Forwarder Config</h5>
             </v-col>
             <v-col cols="12" md="6">
-              <v-select
-                v-model="cameraConfig.model_forwarder_config.model_name"
-                :items="modelNames"
-                label="Model Name"
-                required
-              ></v-select>
+              <v-select v-model="cameraConfig.model_forwarder_config.model_name" :items="modelNames" label="Model Name"
+                required></v-select>
             </v-col>
             <v-col cols="12" md="6">
-              <v-select
-                v-model="cameraConfig.model_forwarder_config.model_type"
-                :items="modelTypes"
-                label="Model Type"
-                required
-              ></v-select>
+              <v-select v-model="cameraConfig.model_forwarder_config.model_type" :items="modelTypes" label="Model Type"
+                required></v-select>
             </v-col>
             <v-col cols="12" md="6">
-              <v-text-field v-model="cameraConfig.model_forwarder_config.expected_image_resolution.width" label="Image Resolution Width" required></v-text-field>
+              <v-text-field v-model="cameraConfig.model_forwarder_config.expected_image_resolution.width"
+                label="Image Resolution Width" required></v-text-field>
             </v-col>
             <v-col cols="12" md="6">
-              <v-text-field v-model="cameraConfig.model_forwarder_config.expected_image_resolution.height" label="Image Resolution Height" required></v-text-field>
+              <v-text-field v-model="cameraConfig.model_forwarder_config.expected_image_resolution.height"
+                label="Image Resolution Height" required></v-text-field>
             </v-col>
             <v-col cols="12" md="6">
-              <v-text-field v-model="cameraConfig.model_forwarder_config.model_version" label="Model Version" required></v-text-field>
+              <v-text-field v-model="cameraConfig.model_forwarder_config.model_version" label="Model Version"
+                required></v-text-field>
             </v-col>
             <v-col cols="12" md="6">
               <div v-for="(className, index) in cameraConfig.model_forwarder_config.class_names" :key="index">
-                <v-text-field v-model="cameraConfig.model_forwarder_config.class_names[index]" label="Class Name" required></v-text-field>
+                <v-text-field v-model="cameraConfig.model_forwarder_config.class_names[index]" label="Class Name"
+                  required></v-text-field>
                 <v-btn @click="removeClassName(cameraId, index)" color="error" small>x</v-btn>
               </div>
               <v-btn @click="addClassName(cameraId)" color="primary" small>+</v-btn>
@@ -67,11 +58,13 @@
                 {{ cameraConfig.showClassNamesFilepath ? 'Remove' : 'Add' }} Class Names Filepath
               </v-btn>
               <div v-if="cameraConfig.showClassNamesFilepath">
-                <v-text-field v-model="cameraConfig.model_forwarder_config.class_names_filepath" label="Class Names Filepath"></v-text-field>
+                <v-text-field v-model="cameraConfig.model_forwarder_config.class_names_filepath"
+                  label="Class Names Filepath"></v-text-field>
               </div>
             </v-col>
             <v-col cols="12" md="6">
-              <v-text-field v-model="cameraConfig.model_forwarder_config.model_serving_url" label="Model Serving URL" required></v-text-field>
+              <v-text-field v-model="cameraConfig.model_forwarder_config.model_serving_url" label="Model Serving URL"
+                required></v-text-field>
             </v-col>
             <v-col cols="12">
               <v-switch v-model="cameraConfig.model_forwarder_config.recreate_me" label="Recreate Me"></v-switch>
@@ -80,24 +73,26 @@
               <h5>Camera Rule Config</h5>
             </v-col>
             <v-col cols="12" md="6">
-              <v-select
-                v-model="cameraConfig.camera_rule_config.camera_rule_type"
-                :items="cameraRuleTypes"
-                label="Camera Rule Type"
-                required
-              ></v-select>
+              <v-select v-model="cameraConfig.camera_rule_config.camera_rule_type" :items="cameraRuleTypes"
+                label="Camera Rule Type" required></v-select>
             </v-col>
             <v-col cols="12" md="6" v-if="cameraConfig.camera_rule_config.camera_rule_type === 'expected_label_rule'">
-              <v-text-field v-model="cameraConfig.camera_rule_config.expected_class" label="Expected Class"></v-text-field>
+              <v-text-field v-model="cameraConfig.camera_rule_config.expected_class"
+                label="Expected Class"></v-text-field>
             </v-col>
             <v-col cols="12" md="6" v-if="cameraConfig.camera_rule_config.camera_rule_type === 'unexpected_label_rule'">
-              <v-text-field v-model="cameraConfig.camera_rule_config.unexpected_class" label="Unexpected Class"></v-text-field>
+              <v-text-field v-model="cameraConfig.camera_rule_config.unexpected_class"
+                label="Unexpected Class"></v-text-field>
             </v-col>
-            <v-col cols="12" md="6" v-if="cameraConfig.camera_rule_config.camera_rule_type === 'min_nb_objects_rule' || cameraConfig.camera_rule_config.camera_rule_type === 'max_nb_objects_rule'">
-              <v-text-field v-model="cameraConfig.camera_rule_config.class_to_detect" label="Class to Detect"></v-text-field>
+            <v-col cols="12" md="6"
+              v-if="cameraConfig.camera_rule_config.camera_rule_type === 'min_nb_objects_rule' || cameraConfig.camera_rule_config.camera_rule_type === 'max_nb_objects_rule'">
+              <v-text-field v-model="cameraConfig.camera_rule_config.class_to_detect"
+                label="Class to Detect"></v-text-field>
             </v-col>
-            <v-col cols="12" md="6" v-if="cameraConfig.camera_rule_config.camera_rule_type === 'min_nb_objects_rule' || cameraConfig.camera_rule_config.camera_rule_type === 'max_nb_objects_rule'">
-              <v-text-field v-model="cameraConfig.camera_rule_config.threshold" label="Threshold" required></v-text-field>
+            <v-col cols="12" md="6"
+              v-if="cameraConfig.camera_rule_config.camera_rule_type === 'min_nb_objects_rule' || cameraConfig.camera_rule_config.camera_rule_type === 'max_nb_objects_rule'">
+              <v-text-field v-model="cameraConfig.camera_rule_config.threshold" label="Threshold"
+                required></v-text-field>
             </v-col>
             <v-col cols="12">
               <v-switch v-model="cameraConfig.camera_rule_config.recreate_me" label="Recreate Me"></v-switch>
@@ -110,39 +105,30 @@
         </div>
         <v-btn @click="showAddCameraDialog = true" color="primary" small>+ Add Camera</v-btn>
         <h4>Binary Storage Config</h4>
-        <v-select
-          v-model="NewConfig.binary_storage_config.storage_type"
-          :items="storageTypes"
-          label="Storage Type"
-          required
-        ></v-select>
-        <v-text-field v-model="NewConfig.binary_storage_config.target_directory" label="Target Directory" required></v-text-field>
+        <v-select v-model="NewConfig.binary_storage_config.storage_type" :items="storageTypes" label="Storage Type"
+          required></v-select>
+        <v-text-field v-model="NewConfig.binary_storage_config.target_directory" label="Target Directory"
+          required></v-text-field>
         <v-switch v-model="NewConfig.binary_storage_config.recreate_me" label="Recreate Me"></v-switch>
         <v-btn @click="toggleBinaryCloudStorage" color="primary" small>
           {{ showBinaryCloudStorage ? 'Remove' : 'Add' }} Cloud Storage Credentials
         </v-btn>
         <v-divider></v-divider>
         <h4>Metadata Storage Config</h4>
-        <v-select
-          v-model="NewConfig.metadata_storage_config.storage_type"
-          :items="storageTypes"
-          label="Storage Type"
-          required
-        ></v-select>
-        <v-text-field v-model="NewConfig.metadata_storage_config.target_directory" label="Target Directory" required></v-text-field>
+        <v-select v-model="NewConfig.metadata_storage_config.storage_type" :items="storageTypes" label="Storage Type"
+          required></v-select>
+        <v-text-field v-model="NewConfig.metadata_storage_config.target_directory" label="Target Directory"
+          required></v-text-field>
         <v-switch v-model="NewConfig.metadata_storage_config.recreate_me" label="Recreate Me"></v-switch>
         <v-btn @click="toggleMetadataCloudStorage" color="primary" small>
           {{ showMetadataCloudStorage ? 'Remove' : 'Add' }} Cloud Storage Credentials
         </v-btn>
         <v-divider></v-divider>
         <h4>Item Rule Config</h4>
-        <v-select
-          v-model="NewConfig.item_rule_config.item_rule_type"
-          :items="itemRuleTypes"
-          label="Item Rule Type"
-          required
-        ></v-select>
-        <v-text-field v-model="NewConfig.item_rule_config.expected_decision" label="Expected Decision" required></v-text-field>
+        <v-select v-model="NewConfig.item_rule_config.item_rule_type" :items="itemRuleTypes" label="Item Rule Type"
+          required></v-select>
+        <v-text-field v-model="NewConfig.item_rule_config.expected_decision" label="Expected Decision"
+          required></v-text-field>
         <v-text-field v-model="NewConfig.item_rule_config.threshold" label="Threshold" required></v-text-field>
         <v-switch v-model="NewConfig.item_rule_config.recreate_me" label="Recreate Me"></v-switch>
         <v-btn type="submit" color="primary">Submit</v-btn>
@@ -165,6 +151,9 @@
         </v-dialog>
       </v-form>
     </v-card-text>
+    <v-snackbar v-model="snackbar" :color="snackbarColor" :timeout="snackbarTimeout" class="snackbar-alert">
+      {{ snackbarMessage }}
+    </v-snackbar>
   </v-card>
 </template>
 
@@ -291,5 +280,9 @@ export default {
 </script>
 
 <style scoped>
-/* Add any necessary styles here */
+.snackbar-alert {
+  max-width: 600px;
+  /* Adjust the width as needed */
+  width: 100%;
+}
 </style>

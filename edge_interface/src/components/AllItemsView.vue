@@ -1,22 +1,22 @@
 <template>
   <v-container>
     <v-row>
-      <v-col cols="12">
-        <v-alert v-if="error" type="error" dismissible @input="error = false">
+      <v-col cols="12" class="d-flex justify-center">
+        <v-alert v-if="error" type="error" dismissible @input="error = false" class="alert-box">
           {{ errorMessage }}
         </v-alert>
       </v-col>
     </v-row>
     <v-row v-if="items.length === 0">
-      <v-col cols="12">
-        <v-alert type="info">
+      <v-col cols="12" class="d-flex justify-center">
+        <v-alert type="info" class="alert-box">
           No data available
         </v-alert>
       </v-col>
     </v-row>
     <v-row v-else>
       <v-col v-for="item in items" :key="item.id" cols="12" md="3">
-        <v-card @click="goToItemDetail(item.id)" class="cursor-pointer">
+        <v-card @click="goToItemDetail(item.id)" class="cursor-pointer item-card">
           <v-card-title>
             <v-icon class="mr-2">mdi-package-variant</v-icon>
             {{ item.id.substring(0, 18) }}
@@ -32,7 +32,8 @@
               <v-list-item>
                 <v-list-item-content>
                   <v-list-item-title>Overall Decision</v-list-item-title>
-                  <v-list-item-subtitle><span :class="getDecisionClass(item.decision)">{{ item.decision }}</span></v-list-item-subtitle>
+                  <v-list-item-subtitle><span :class="getDecisionClass(item.decision)">{{ item.decision
+                      }}</span></v-list-item-subtitle>
                 </v-list-item-content>
               </v-list-item>
               <v-list-item>
@@ -143,13 +144,31 @@ export default {
 .cursor-pointer {
   cursor: pointer;
 }
+
 .decision-ok {
   color: green;
 }
+
 .decision-ko {
   color: red;
 }
+
 .decision-no-decision {
   color: lightgray;
+}
+
+.alert-box {
+  max-width: 600px;
+  /* Adjust the width as needed */
+  width: 100%;
+}
+
+.item-card {
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.item-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 </style>

@@ -2,40 +2,31 @@
 
 <template>
   <v-container>
-    <v-row justify="center">
-      <v-col cols="12" class="d-flex justify-center">
-        <v-select
-          v-model="selectedConfigs"
-          :items="configOptions"
-          label="Select Configs"
-          multiple
-          item-text="station_name"
-          item-value="station_name"
-          class="max-width-500"
-        ></v-select>
-      </v-col>
-    </v-row>
     <v-row v-if="error">
-      <v-col cols="12">
-        <v-alert type="error" dismissible @input="error = false">
+      <v-col cols="12" class="d-flex justify-center">
+        <v-alert type="error" dismissible @input="error = false" class="alert-box">
           {{ errorMessage }}
         </v-alert>
       </v-col>
     </v-row>
     <v-row v-else>
-      <v-col v-for="config in filteredConfigs" :key="config.station_name" cols="12" md="6">
-        <v-card>
-          <v-card-title class="d-flex justify-space-between align-center">
-            <span>Config: {{ config.station_name }}</span>
-            <v-btn @click="setActiveConfig(config.station_name)" small color="primary">Activate</v-btn>
-          </v-card-title>
-          <v-card-text>
-            <config-details :config="config"></config-details>
-          </v-card-text>
-        </v-card>
+      <v-col cols="12">
+        <v-expansion-panels popout>
+          <v-expansion-panel v-for="config in configs" :key="config.station_name">
+            <v-expansion-panel-header>
+              <div class="d-flex justify-space-between align-center w-100">
+                <span>Config: {{ config.station_name }}</span>
+                <v-icon @click.stop="setActiveConfig(config.station_name)" small color="primary">mdi-check</v-icon>
+              </div>
+            </v-expansion-panel-header>
+            <v-expansion-panel-content>
+              <config-details :config="config"></config-details>
+            </v-expansion-panel-content>
+          </v-expansion-panel>
+        </v-expansion-panels>
       </v-col>
     </v-row>
-    <v-snackbar v-model="snackbar" :color="snackbarColor" :timeout="snackbarTimeout">
+    <v-snackbar v-model="snackbar" :color="snackbarColor" :timeout="snackbarTimeout" class="snackbar-alert">
       {{ snackbarMessage }}
     </v-snackbar>
   </v-container>
@@ -77,7 +68,6 @@ export default {
     fetchConfigs() {
       ApiService.getConfigs()
         .then(response => {
-          // Transform the response data to an array of configs and sort by name
           this.configs = Object.values(response.data).sort((a, b) => a.station_name.localeCompare(b.station_name));
         })
         .catch(error => {
@@ -95,7 +85,6 @@ export default {
           this.snackbarMessage = 'Config activated successfully';
           this.snackbarColor = 'success';
           this.snackbar = true;
-          this.$emit('active-config-updated'); // Emit an event to notify parent component
         })
         .catch(error => {
           console.error('Error setting active config:', error);
@@ -111,5 +100,15 @@ export default {
 <style scoped>
 .max-width-500 {
   max-width: 500px;
+}
+
+.alert-box {
+  max-width: 600px;
+  width: 100%;
+}
+
+.snackbar-alert {
+  max-width: 600px;
+  width: 100%;
 }
 </style>

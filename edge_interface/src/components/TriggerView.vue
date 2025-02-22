@@ -4,16 +4,11 @@
       <v-col cols="12">
         <v-card>
           <v-card-title class="d-flex justify-center align-center">
-            <span>Trigger Inspection</span>
-            <v-btn @click="triggerApi" class="ml-4" icon>
+            <v-btn @click="triggerApi" class="ml-4 trigger-button">
+              <span>Trigger Inspection</span>
               <v-icon>mdi-play-circle</v-icon>
             </v-btn>
-            <v-progress-circular
-              v-if="loading"
-              indeterminate
-              color="primary"
-              class="ml-4"
-            ></v-progress-circular>
+            <v-progress-circular v-if="loading" indeterminate color="primary" class="ml-4"></v-progress-circular>
           </v-card-title>
           <v-card-text>
             <v-row>
@@ -26,8 +21,8 @@
       </v-col>
     </v-row>
     <v-row v-if="snackbar">
-      <v-col cols="12">
-        <v-alert :type="snackbarColor" :value="snackbar" dismissible @input="snackbar = false">
+      <v-col cols="12" class="d-flex justify-center">
+        <v-alert :type="snackbarColor" :value="snackbar" dismissible @input="snackbar = false" class="snackbar-alert">
           {{ snackbarMessage }}
           <v-progress-linear v-if="snackbarColor === 'success'" :value="progress" height="4"></v-progress-linear>
         </v-alert>
@@ -67,7 +62,7 @@ export default {
         .catch(error => {
           console.error('Error triggering API:', error);
           if (!error.response) {
-            this.snackbarMessage = 'Backend is not available. Please start or check the backend.';
+            this.snackbarMessage = 'Error triggering API: Backend is not available. Please start or check the backend.';
           } else {
             this.snackbarMessage = error.response.data && error.response.data.detail || 'Error triggering API';
           }
@@ -98,5 +93,19 @@ export default {
 </script>
 
 <style scoped>
-/* Add any necessary styles here */
+.trigger-button {
+  border: 2px solid transparent;
+  transition: border-color 0.3s;
+}
+
+.trigger-button:hover {
+  border-color: #1976d2;
+  /* Primary color */
+}
+
+.snackbar-alert {
+  max-width: 600px;
+  /* Adjust the width as needed */
+  width: 100%;
+}
 </style>

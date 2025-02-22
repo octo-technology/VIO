@@ -1,15 +1,15 @@
 <template>
   <v-container>
     <v-row>
-      <v-col cols="12">
-        <v-alert v-if="error" type="error" dismissible @input="error = false">
+      <v-col cols="12" class="d-flex justify-center">
+        <v-alert v-if="error" type="error" dismissible @input="error = false" class="alert-box">
           {{ errorMessage }}
         </v-alert>
-        <v-alert v-else-if="!activeConfig.station_name" type="info">
+        <v-alert v-else-if="!activeConfig.station_name" type="info" class="alert-box">
           No active config available
         </v-alert>
         <v-card v-else>
-          <v-card-title>Active Config: {{activeConfig.station_name}}</v-card-title>
+          <v-card-title>Active Config: {{ activeConfig.station_name }}</v-card-title>
           <v-card-text>
             <config-details :config="activeConfig"></config-details>
           </v-card-text>
@@ -64,5 +64,9 @@ export default {
 </script>
 
 <style scoped>
-/* Add any necessary styles here */
+.alert-box {
+  max-width: 600px;
+  /* Adjust the width as needed */
+  width: 100%;
+}
 </style>
