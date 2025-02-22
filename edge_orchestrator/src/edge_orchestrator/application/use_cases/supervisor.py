@@ -25,7 +25,6 @@ from edge_orchestrator.utils.singleton import SingletonMeta
 class Supervisor(metaclass=SingletonMeta):
     def __init__(
         self,
-        station_config: StationConfig,
         metadata_storage_manager: IMetadataStorageManager,
         binary_storage_manager: IBinaryStorageManager,
         model_forwarder_manager: IModelForwarderManager,
@@ -34,21 +33,20 @@ class Supervisor(metaclass=SingletonMeta):
         camera_manager: ICameraManager,
     ):
         self._logger = logging.getLogger(__name__)
-        self._station_config = station_config
-        self._metadata_storage = metadata_storage_manager.get_metadata_storage(station_config)
-        self._binary_storage = binary_storage_manager.get_binary_storage(station_config)
+        self._metadata_storage_manager = metadata_storage_manager
+        self._binary_storage_manager = binary_storage_manager
         self._model_forwarder_manager = model_forwarder_manager
         self._camera_rule_manager = camera_rule_manager
-        self._item_rule = item_rule_manager.get_item_rule(station_config.item_rule_config)
+        self._item_rule_manager = item_rule_manager
         self._camera_manager = camera_manager
 
-    async def inspect(self, item: Item):
+    async def inspect(self, item: Item, station_config: StationConfig):
         self._logger.info("Taking pictures...")
         self._camera_manager.take_pictures(item)
         item.state = ItemState.CAPTURE
 
         self._logger.info("Saving pictures...")
-        self._binary_storage.save_item_binaries(item)
+        self._binary_storage_manager.get_binary_storage(station_config).save_item_binaries(item)
         item.state = ItemState.SAVE_BINARIES
 
         self._logger.info("Predicting on pictures...")
@@ -60,11 +58,11 @@ class Supervisor(metaclass=SingletonMeta):
         item.state = ItemState.CAMERA_RULE
 
         self._logger.info("Applying rule on item...")
-        self._item_rule.apply_item_rules(item)
+        self._item_rule_manager.get_item_rule(station_config.item_rule_config).apply_item_rules(item)
         item.state = ItemState.ITEM_RULE
 
         self._logger.info("Saving item metadata...")
         item.state = ItemState.DONE
-        self._metadata_storage.save_item_metadata(item)
+        self._metadata_storage_manager.get_metadata_storage(station_config).save_item_metadata(item)
 
         self._logger.info("Inspection done!")

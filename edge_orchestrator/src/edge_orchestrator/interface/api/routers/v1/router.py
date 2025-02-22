@@ -111,6 +111,7 @@ async def trigger_job(
     binaries: List[UploadFile] = [],
     cameras_metadata: Dict[str, CameraConfig] = {},
     supervisor: Supervisor = Depends(get_supervisor),
+    station_config: StationConfig = Depends(get_config),
     background_tasks: BackgroundTasks = None,
 ):
     input_binaries = {}
@@ -120,7 +121,7 @@ async def trigger_job(
         cameras_metadata=cameras_metadata,
         binaries=input_binaries,
     )
-    background_tasks.add_task(supervisor.inspect, item)
+    background_tasks.add_task(supervisor.inspect, item, station_config)
     return {"item_id": item.id}
 
 

@@ -162,7 +162,6 @@ def get_supervisor(
     station_config: StationConfig = Depends(get_config),
 ) -> Supervisor:
     supervisor = Supervisor(
-        station_config,
         metadata_storage_manager,
         binary_storage_manager,
         model_forwarder_manager,
