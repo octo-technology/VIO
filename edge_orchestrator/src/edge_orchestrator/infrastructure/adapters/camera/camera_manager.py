@@ -10,10 +10,6 @@ from edge_orchestrator.domain.ports.camera.i_camera_factory import ICameraFactor
 from edge_orchestrator.domain.ports.camera.i_camera_manager import ICameraManager
 
 
-class NoCameraAvailableError(Exception):
-    pass
-
-
 class CameraManager(ICameraManager):
     def __init__(self, camera_factory: ICameraFactory):
         self._camera_factory = camera_factory
