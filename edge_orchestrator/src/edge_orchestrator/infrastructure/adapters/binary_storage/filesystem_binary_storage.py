@@ -6,6 +6,7 @@ from fastapi import HTTPException
 
 from edge_orchestrator.domain.models.image_extension import ImageExtension
 from edge_orchestrator.domain.models.item import Item
+from edge_orchestrator.domain.models.item_state import ItemState
 from edge_orchestrator.domain.models.station_config import StationConfig
 from edge_orchestrator.domain.ports.binary_storage.i_binary_storage import (
     IBinaryStorage,
@@ -20,6 +21,7 @@ class FileSystemBinaryStorage(IBinaryStorage):
         self._storing_path_manager: StoringPathManager = storing_path_manager
 
     def save_item_binaries(self, item: Item):
+        self._logger.info(f"Saving item binaries for item {item.id}")
         path = self._storing_path_manager.get_storing_path(item.id)
         path.mkdir(parents=True, exist_ok=True)
         for camera_id, image in item.binaries.items():
@@ -29,6 +31,7 @@ class FileSystemBinaryStorage(IBinaryStorage):
             item.binaries[camera_id].storing_path = filepath
             with filepath.open("wb") as f:
                 f.write(image.image_bytes)
+        item.state = ItemState.SAVE_BINARIES
 
     def get_item_binaries(self, item_id: UUID) -> Dict[str, bytes]:
         path = self._storing_path_manager.get_storing_path(item_id)

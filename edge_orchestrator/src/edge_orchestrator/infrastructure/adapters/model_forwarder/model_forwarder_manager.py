@@ -2,6 +2,7 @@ import logging
 from typing import Dict
 
 from edge_orchestrator.domain.models.item import Item
+from edge_orchestrator.domain.models.item_state import ItemState
 from edge_orchestrator.domain.models.model_forwarder.model_forwarder_config import (
     ModelForwarderConfig,
 )
@@ -31,6 +32,7 @@ class ModelForwarderManager(IModelForwarderManager):
         return self._model_forwarders[model_id]
 
     async def predict_on_binaries(self, item: Item):
+        self._logger.info("Predicting on pictures...")
         if len(self._model_forwarders) == 0:
             self._logger.warning(
                 "No model forwarder available to predict on item pictures! May take some extra time to instantiate."
@@ -45,3 +47,4 @@ class ModelForwarderManager(IModelForwarderManager):
                 item.predictions[camera_id] = await model_forwarder.predict_on_binary(
                     item.binaries[camera_id].image_bytes
                 )
+        item.state = ItemState.INFERENCE

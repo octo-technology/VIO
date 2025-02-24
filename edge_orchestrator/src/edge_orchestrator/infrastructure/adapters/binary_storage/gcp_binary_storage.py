@@ -7,6 +7,7 @@ from uuid import UUID
 from google.cloud import storage
 
 from edge_orchestrator.domain.models.item import Item
+from edge_orchestrator.domain.models.item_state import ItemState
 from edge_orchestrator.domain.models.station_config import StationConfig
 from edge_orchestrator.domain.ports.binary_storage.i_binary_storage import (
     IBinaryStorage,
@@ -23,6 +24,7 @@ class GCPBinaryStorage(IBinaryStorage):
         self._storing_path_manager: StoringPathManager = storing_path_manager
 
     def save_item_binaries(self, item: Item):
+        self._logger.info(f"Saving item binaries for item {item.id}")
         for camera_id, image in item.binaries.items():
             blob = self._bucket.blob(
                 (self._storing_path_manager.get_storing_path(item.id) / f"{camera_id}.jpg").as_posix()
@@ -30,6 +32,7 @@ class GCPBinaryStorage(IBinaryStorage):
             if blob is None:
                 raise Exception("An image should be upload")
             blob.upload_from_string(image.image_bytes, content_type="image/jpg")
+        item.state = ItemState.SAVE_BINARIES
 
     def get_item_binary_names(self, item_id: UUID) -> List[str]:
         binaries = []

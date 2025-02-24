@@ -7,6 +7,7 @@ from fastapi import HTTPException
 from pydantic import ValidationError
 
 from edge_orchestrator.domain.models.item import Item
+from edge_orchestrator.domain.models.item_state import ItemState
 from edge_orchestrator.domain.models.station_config import StationConfig
 from edge_orchestrator.domain.ports.metadata_storage.i_metadata_storage import (
     IMetadataStorage,
@@ -23,10 +24,12 @@ class FileSystemMetadataStorage(IMetadataStorage):
         self._storing_path_manager: StoringPathManager = storing_path_manager
 
     def save_item_metadata(self, item: Item):
+        self._logger.info(f"Saving item metadata for item {item.id}")
         filepath = self._storing_path_manager.get_storing_path(item.id) / "metadata.json"
         filepath.parent.mkdir(parents=True, exist_ok=True)
         with filepath.open("w") as f:
             f.write(item.model_dump_json(exclude_none=True))
+        item.state = ItemState.DONE
 
     def get_item_metadata(self, item_id: UUID) -> Item:
         filepath = self._storing_path_manager.get_storing_path(item_id) / "metadata.json"

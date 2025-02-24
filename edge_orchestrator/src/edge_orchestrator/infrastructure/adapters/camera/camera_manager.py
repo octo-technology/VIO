@@ -3,6 +3,7 @@ from typing import Dict
 
 from edge_orchestrator.domain.models.camera.camera_config import CameraConfig
 from edge_orchestrator.domain.models.item import Item
+from edge_orchestrator.domain.models.item_state import ItemState
 from edge_orchestrator.domain.models.station_config import StationConfig
 from edge_orchestrator.domain.ports.camera.i_camera import ICamera
 from edge_orchestrator.domain.ports.camera.i_camera_factory import ICameraFactory
@@ -36,6 +37,8 @@ class CameraManager(ICameraManager):
                 self._cameras[camera_id] = camera
 
     def take_pictures(self, item: Item):
+        self._logger.info("Taking pictures...")
+
         if self._cameras is None or len(self._cameras) == 0:
             self._logger.error("No camera available to take picture!")
             return
@@ -51,3 +54,4 @@ class CameraManager(ICameraManager):
                 continue
         item.binaries = binaries
         item.cameras_metadata = cameras_metadata
+        item.state = ItemState.CAPTURE

@@ -4,6 +4,7 @@ from edge_orchestrator.domain.models.camera_rule.camera_rule_config import (
     CameraRuleConfig,
 )
 from edge_orchestrator.domain.models.item import Item
+from edge_orchestrator.domain.models.item_state import ItemState
 from edge_orchestrator.domain.ports.camera_rule.i_camera_rule import ICameraRule
 from edge_orchestrator.domain.ports.camera_rule.i_camera_rule_factory import (
     ICameraRuleFactory,
@@ -27,6 +28,7 @@ class CameraRuleManager(ICameraRuleManager):
         return self._camera_rules[camera_rule_type]
 
     def apply_camera_rules(self, item: Item):
+        self._logger.info("Applying rule on each picture...")
         for camera_id, camera_config in item.cameras_metadata.items():
             camera_rule_config: CameraRuleConfig = camera_config.camera_rule_config
             camera_rule = self._get_camera_rule(camera_rule_config)
@@ -34,3 +36,4 @@ class CameraRuleManager(ICameraRuleManager):
                 self._logger.warning(f"Camera {camera_id} has no prediction to apply camera rule.")
             else:
                 item.camera_decisions[camera_id] = camera_rule.apply_camera_rule(item.predictions[camera_id])
+        item.state = ItemState.CAMERA_RULE

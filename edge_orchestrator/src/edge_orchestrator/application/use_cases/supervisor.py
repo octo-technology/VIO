@@ -41,27 +41,16 @@ class Supervisor(metaclass=SingletonMeta):
         self._camera_manager = camera_manager
 
     async def inspect(self, item: Item, station_config: StationConfig):
-        self._logger.info("Taking pictures...")
         self._camera_manager.take_pictures(item)
-        item.state = ItemState.CAPTURE
 
-        self._logger.info("Saving pictures...")
         self._binary_storage_manager.get_binary_storage(station_config).save_item_binaries(item)
-        item.state = ItemState.SAVE_BINARIES
 
-        self._logger.info("Predicting on pictures...")
         await self._model_forwarder_manager.predict_on_binaries(item)
-        item.state = ItemState.INFERENCE
 
-        self._logger.info("Applying rule on each picture...")
         self._camera_rule_manager.apply_camera_rules(item)
-        item.state = ItemState.CAMERA_RULE
 
-        self._logger.info("Applying rule on item...")
         self._item_rule_manager.get_item_rule(station_config.item_rule_config).apply_item_rules(item)
-        item.state = ItemState.ITEM_RULE
 
-        self._logger.info("Saving item metadata...")
         item.state = ItemState.DONE
         self._metadata_storage_manager.get_metadata_storage(station_config).save_item_metadata(item)
 
