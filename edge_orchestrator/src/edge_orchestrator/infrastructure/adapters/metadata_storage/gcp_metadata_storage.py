@@ -25,10 +25,10 @@ class GCPMetadataStorage(IMetadataStorage):
 
     def save_item_metadata(self, item: Item):
         self._logger.info(f"Saving item metadata for item {item.id}")
+        item.state = ItemState.DONE
         item_metadata = item.model_dump_json(exclude_none=True)
         blob = self._bucket.blob(self._storing_path_manager.get_storing_path(item.id).as_posix())
         blob.upload_from_string(item_metadata, content_type="application/json")
-        item.state = ItemState.DONE
 
     def get_item_metadata(self, item_id: UUID) -> Item:
         filename = (self._storing_path_manager.get_storing_path(item_id) / "metadata.json").as_posix()
