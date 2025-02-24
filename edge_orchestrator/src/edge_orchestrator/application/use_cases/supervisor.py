@@ -1,7 +1,6 @@
 import logging
 
 from edge_orchestrator.domain.models.item import Item
-from edge_orchestrator.domain.models.item_state import ItemState
 from edge_orchestrator.domain.models.station_config import StationConfig
 from edge_orchestrator.domain.ports.binary_storage.i_binary_storage_manager import (
     IBinaryStorageManager,
@@ -51,7 +50,4 @@ class Supervisor(metaclass=SingletonMeta):
 
         self._item_rule_manager.get_item_rule(station_config.item_rule_config).apply_item_rules(item)
 
-        item.state = ItemState.DONE
         self._metadata_storage_manager.get_metadata_storage(station_config).save_item_metadata(item)
-
-        self._logger.info("Inspection done!")
