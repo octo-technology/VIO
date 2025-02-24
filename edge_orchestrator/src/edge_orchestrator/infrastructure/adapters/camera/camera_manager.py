@@ -25,11 +25,13 @@ class CameraManager(ICameraManager):
         for camera_id, camera_config in station_config.camera_configs.items():
             if camera_config.recreate_me and camera_id in self._cameras:
                 try:
+                    self._logger.info(f"Releasing camera {camera_id} to recreate it")
                     self._cameras[camera_id].release()
                 except Exception:
                     pass
                 self._cameras[camera_id] = self._camera_factory.create_camera(camera_config)
             elif camera_id not in self._cameras or camera_config.recreate_me:
+                self._logger.info(f"Creating camera {camera_id}")
                 camera = self._camera_factory.create_camera(camera_config)
                 self._cameras[camera_id] = camera
 
