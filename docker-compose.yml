@@ -1,42 +1,23 @@
 services:
-  edge_db:
-    image: mongo:5.0.2
-    container_name: edge_db
-    ports:
-      - 27017:27017
-    profiles: [edge]
-
   edge_model_serving:
     container_name: edge_model_serving
     build:
       context: edge_model_serving
       dockerfile: tflite_serving/Dockerfile
+      args:
+        BUILDOS: ${BUILDOS:-linux}
     environment:
-      - TF_CPP_MIN_VLOG_LEVEL=0
+      TF_CPP_MIN_VLOG_LEVEL: 0
     ports:
       - 8501:8501
     profiles: [edge]
-#    volumes:
-#      - ./edge_model_serving/models:/models
+    volumes:
+      - ./edge_model_serving/models:/models
 
   edge_orchestrator:
-    container_name: edge_orchestrator
-    build:
-      context: edge_orchestrator
-      dockerfile: Dockerfile
-    volumes:
-      - ./edge_orchestrator/data:/edge_orchestrator/data
-      - ./edge_orchestrator/config:/edge_orchestrator/config
-      - ./edge_orchestrator/emissions:/edge_orchestrator/emissions
-    ports:
-      - 8000:8000
-    environment:
-      EDGE_NAME: vio-edge-1
-      API_CONFIG: docker
-      SERVING_MODEL_URL: http://edge_model_serving:8501
-      MONGO_DB_URI: mongodb://edge_db:27017/
-      POSTGRES_DB_URI: postgresql://vio:vio@hub_monitoring_db:5432/vio
-    profiles: [edge]
+    extends:
+      file: edge_orchestrator/edge_orchestrator.yml
+      service: edge_orchestrator
 
   hub_labelizer:
     container_name: hub_labelizer
@@ -61,18 +42,6 @@ services:
       - 8080:80
     profiles: [edge]
 
-  hub_monitoring:
-    container_name: hub_monitoring
-    image: grafana/grafana:latest
-    ports:
-      - 4000:3000
-    environment:
-      - GF_INSTALL_PLUGINS=yesoreyeram-infinity-datasource
-    volumes:
-      - ./hub_monitoring/grafana/dashboards:/var/lib/grafana/dashboards
-      - ./hub_monitoring/grafana/provisioning:/etc/grafana/provisioning
-    profiles: [hub]
-
   hub_streamlit:
     container_name: hub_streamlit
     build:
@@ -81,26 +50,8 @@ services:
     ports:
       - 8500:8500
     environment:
-      GCP_BUCKET_NAME: tf-vio-bucket
+      BUCKET_NAME: tf-vio-bucket
       GOOGLE_APPLICATION_CREDENTIALS: /hub_streamlit/config/secrets/credentials.json
     volumes:
       - ./hub_streamlit/config:/hub_streamlit/config
     profiles: [hub]
-
-  hub_monitoring_db:
-    container_name: hub_monitoring_db
-    image: postgres:15.1
-    restart: always
-    environment:
-      POSTGRES_DB: vio
-      POSTGRES_USER: vio
-      POSTGRES_PASSWORD: vio
-    ports:
-      - 5432:5432
-    volumes:
-      - vio-postgresql-data:/var/lib/postgresql/data
-      - ./hub_monitoring/docker/init-db.sh:/docker-entrypoint-initdb.d/init-db.sh
-    profiles: [hub]
-
-volumes:
-  vio-postgresql-data:

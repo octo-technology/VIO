@@ -1,0 +1,71 @@
+{
+    "station_name": "mobilenet_ssd_v2_coco_with_2_usb_cam",
+    "camera_configs": {
+        "camera_1": {
+            "camera_id": "camera_1",
+            "camera_type": "usb",
+            "source_directory": "/dev/video0",
+            "position": "front",
+            "model_forwarder_config": {
+                "model_name": "yolo_coco_nano",
+                "model_type": "object_detection",
+                "model_serving_url": "http://edge_model_serving:8501/",
+                "expected_image_resolution": {
+                    "width": 320,
+                    "height": 320
+                },
+                "model_version": "1",
+                "class_names_filepath": "model_labels/coco_labels.txt",
+                "recreate_me": false
+            },
+            "camera_rule_config": {
+                "camera_rule_type": "min_nb_objects_rule",
+                "class_to_detect": "people",
+                "threshold": 1,
+                "recreate_me": false
+            },
+            "recreate_me": false
+        },
+        "camera_2": {
+            "camera_id": "camera_2",
+            "camera_type": "usb",
+            "source_directory": "/dev/video4",
+            "position": "back",
+            "model_forwarder_config": {
+                "model_name": "yolo_coco_nano",
+                "model_type": "object_detection",
+                "model_serving_url": "http://edge_model_serving:8501/",
+                "expected_image_resolution": {
+                    "width": 320,
+                    "height": 320
+                },
+                "model_version": "1",
+                "class_names_filepath": "model_labels/coco_labels.txt",
+                "recreate_me": false
+            },
+            "camera_rule_config": {
+                "camera_rule_type": "min_nb_objects_rule",
+                "class_to_detect": "people",
+                "threshold": 1,
+                "recreate_me": false
+            },
+            "recreate_me": false
+        }
+    },
+    "binary_storage_config": {
+        "storage_type": "filesystem",
+        "target_directory": "data_storage",
+        "recreate_me": false
+    },
+    "metadata_storage_config": {
+        "storage_type": "filesystem",
+        "target_directory": "data_storage",
+        "recreate_me": false
+    },
+    "item_rule_config": {
+        "item_rule_type": "min_threshold_ratio_rule",
+        "expected_decision": "OK",
+        "threshold": 1,
+        "recreate_me": false
+    }
+}

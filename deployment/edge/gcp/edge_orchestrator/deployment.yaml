@@ -32,7 +32,7 @@ spec:
           value: https://vio.octo.tools
         - name: GOOGLE_APPLICATION_CREDENTIALS
           value: /etc/gcp/sa_credentials.json
-        - name: GCP_BUCKET_NAME
+        - name: BUCKET_NAME
           value: tf-vio-bucket
         - name: ACTIVE_CONFIG_NAME
           value: yolo_with_upload_camera

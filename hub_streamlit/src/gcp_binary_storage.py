@@ -8,7 +8,7 @@ from google.cloud.storage import Client
 
 load_dotenv()
 
-BUCKET_NAME = os.getenv("GCP_BUCKET_NAME")
+BUCKET_NAME = os.getenv("BUCKET_NAME")
 
 
 class GCPBinaryStorage:

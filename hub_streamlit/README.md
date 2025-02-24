@@ -9,7 +9,7 @@ Currently running with GoogleCloudPlatform only.
 
 ### 🛠️ Configuring .env file 
 Copy the .env.template file with the necessary information.
-- `GCP_BUCKET_NAME` is the name of the bucket where the data is stored.
+- `BUCKET_NAME` is the name of the bucket where the data is stored.
 - `GOOGLE_APPLICATION_CREDENTIALS` is the path to the json file with the credentials to access the bucket. **Default path** is `config/secrets/credentials.json`
 
 ### 🏃 Starting the hub 

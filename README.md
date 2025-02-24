@@ -48,6 +48,11 @@ git clone git@github.com:octo-technology/VIO.git
 To launch the stack you can use the [Makefile](../Makefile) on the root of the repository which define the different
 target based on the [docker-compose.yml](../docker-compose.yml) as described below, or [run the modules locally]().
 
+#### OS specific setup
+
+- **Linux**: You can run the stack directly with docker-compose
+- **MacOS**: You can run the stack with docker compose but you need to run : `export BUILDOS=mac` before running the commands.
+
 #### Start vio
 
 To start all edge services (orchestrator, model-serving, interface, db) with local hub monitoring (grafana):

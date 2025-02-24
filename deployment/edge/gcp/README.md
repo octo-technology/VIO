@@ -9,7 +9,7 @@
 
     API_CONFIG: upload-gcp
     GOOGLE_APPLICATION_CREDENTIALS: /edge_orchestrator/config/secrets/credentials.json
-    GCP_BUCKET_NAME: <bucket-name>
+    BUCKET_NAME: <bucket-name>
 
 ### Launch VIO
 ```shell

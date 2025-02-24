@@ -35,16 +35,16 @@ def main():
 
     active_config_index = 0
     if st.session_state.active_config:
-        active_config_name = st.session_state.active_config.get("name")
+        active_station_name = st.session_state.active_config.get("station_name")
         active_config_index = next(
             (
                 index
                 for (index, config) in enumerate(configs.values())
-                if config["name"] == active_config_name
+                if config["station_name"] == active_station_name
             ),
             0,
         )
-    option = col1.selectbox(
+    selected_station_name = col1.selectbox(
         "Select an option",
         tuple(configs),
         index=active_config_index,
@@ -53,15 +53,14 @@ def main():
 
     if col2.button("Active", use_container_width=True):
         st.session_state.item_id = None
-        body = {"config_name": option}
-        requests.post(url=url_active_config, json=body)
+        requests.post(url=f"{url_active_config}?station_name={selected_station_name}")
         st.session_state.active_config = json.loads(
             requests.get(url_active_config).text
         )
 
     if st.session_state.active_config:
-        active_config_name = st.session_state.active_config.get("name")
-        col2.write(f"active config: {active_config_name}")
+        active_station_name = st.session_state.active_config.get("station_name")
+        col2.write(f"active config name: {active_station_name}")
 
     if st.session_state.active_config:
         if col3.button("Trigger", use_container_width=True):
@@ -79,13 +78,18 @@ def main():
         url_metadata = URL_ORCH + f"items/{st.session_state.item_id}"
         response = requests.get(url_metadata)
         metadata = response.json()
-        decision = metadata["decision"]
-        inferences = metadata["inferences"]
+        decision = metadata.get("decision")
+        inferences = metadata.get("predictions")
 
         print("decision", decision)
         print("inferences", inferences)
 
-        cameras = st.session_state.active_config["cameras"]
+        camera_configs = st.session_state.active_config.get("camera_configs")
+        if not camera_configs:
+            st.write("No camera configurations found")
+            return
+        
+        cameras = list(camera_configs.keys())
         for i, camera in enumerate(cameras):
             url_binaries = (
                 URL_ORCH + f"items/{st.session_state.item_id}/binaries/{camera}"

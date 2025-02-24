@@ -12,6 +12,7 @@ SHELL := /bin/bash
 
 REPO_DIRECTORY:=$(shell pwd)
 PYTHONPATH:=${PYTHONPATH}:${REPO_DIRECTORY}
+BUILDOS=$(shell uname -s | tr '[:upper:]' '[:lower:]')
 
 .PHONY: help
 help:
@@ -21,16 +22,16 @@ help:
 
 .PHONY: lint  ## 🐍 Lint Python files to conform to the PEP 8 style guide
 lint:
-	autoflake --in-place --remove-all-unused-imports --recursive --ignore-init-module-imports . --exclude .venv
-	isort . --skip-gitignore
-	black .
+	autoflake --in-place --remove-all-unused-imports --recursive --ignore-init-module-imports src tests --exclude .venv
+	isort src tests --skip-gitignore
+	black src tests
 
 .PHONY: check  ## 🐍 Check lint Python files to conform to the PEP 8 style guide
 check:
-	autoflake --in-place --remove-all-unused-imports --recursive --ignore-init-module-imports . --exclude .venv --check
-	isort . --skip-gitignore --check
-	black . --check
-	flake8 --count --show-source --statistics
+	autoflake --in-place --remove-all-unused-imports --recursive --ignore-init-module-imports src tests --exclude .venv --check
+	isort src tests --skip-gitignore --check
+	black src tests --check
+	flake8 --count --show-source --statistics src tests
 
 .PHONY: conda_env  ## 🐍 Create a Python conda environment
 conda_env:
@@ -49,7 +50,7 @@ tests: unit_tests integration_tests functional_tests
 unit_tests: REPORTS_PATH:=reports/pytest
 unit_tests:
 	echo "[*] Running unit tests and computing code coverage..."
-	pytest -v --cov=edge_orchestrator --cov-report=html:${REPORTS_PATH}/unit-tests-coverage \
+	pytest -v --cov=src --cov-report=html:${REPORTS_PATH}/unit-tests-coverage \
 		--junitxml=${REPORTS_PATH}/unit-tests-report.xml \
 		tests/unit_tests
 	echo "[*] Reports available in:"
@@ -60,7 +61,7 @@ unit_tests:
 integration_tests: REPORTS_PATH:=reports/pytest
 integration_tests:
 	echo "[*] Running integration tests and computing code coverage..."
-	pytest -v --cov=edge_orchestrator --cov-report=html:${REPORTS_PATH}/integration-tests-coverage \
+	pytest -v --cov=src --cov-report=html:${REPORTS_PATH}/integration-tests-coverage \
 		--junitxml=${REPORTS_PATH}/integration-tests-report.xml \
 		tests/integration_tests
 	echo "[*] Reports available in:"
@@ -79,3 +80,12 @@ pyramid:
 .PHONY: pyramid_and_badges  ## 📛 Generate Gitlab badges
 pyramid_and_badges:
 	python tests/tests_pyramid.py --badges-generation
+
+.PHONY: start_edge_orchestrator ## 🕵 Start edge_orchestrator service (Docker container)
+start_edge_orchestrator:
+	BUILDOS=${BUILDOS} docker compose --file edge_orchestrator.yml --build up edge_orchestrator -d
+
+
+.PHONY: stop_edge_orchestrator ## 🕵 Stop edge_orchestrator service (Docker container)
+stop_edge_orchestrator:
+	docker compose --file edge_orchestrator.yml down edge_orchestrator

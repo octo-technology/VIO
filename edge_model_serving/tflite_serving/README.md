@@ -8,7 +8,6 @@ All instructions for mac using venv :
 ```
 python3 -m venv venv
 source venv/bin/activate
-pip3 install https://dl.google.com/coral/python/tflite_runtime-2.1.0.post1-cp37-cp37m-macosx_10_14_x86_64.whl
 pip3 install -r requirements.txt
 ```
 
@@ -19,8 +18,7 @@ cd edge_model_serving/tflite_serving
 
 make tflite_serving
 conda activate tflite_serving
-make install_tflite_mac
-pip3 install --extra-index-url https://google-coral.github.io/py-repo/ tflite_runtime
+make install
 ```
 
 ## Models
