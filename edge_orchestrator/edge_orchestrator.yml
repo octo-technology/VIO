@@ -8,10 +8,7 @@ services:
         BUILDOS: ${BUILDOS:-linux}
     volumes:
       - ./data_storage:/edge_orchestrator/data_storage
-      - /run/udev:/run/udev:ro  # Corresponds to mounting point of Raspberry Pi camera device
-    devices:
-      - /dev/video0:/dev/video0  # Corresponds to mounting point of integrated webcam device
-      - /dev/video4:/dev/video4  # Corresponds to mounting point of USB camera device
+      - /run/udev:/run/udev:ro  # udev is the device manager for the Linux kernel, responsible for managing device nodes in the /dev directory dynamically
     ports:
       - 8000:8000
     environment:
