@@ -102,5 +102,5 @@ class TestObjectDetectionModelForwarder:
             await model_fowarder.predict_on_binary(marker_image)
 
         # Then
-        assert "nodename nor servname provided, or not known" in str(e.value)
+        assert "Cannot connect to host" in str(e.value)
         assert e.type == aiohttp.ClientConnectorDNSError
