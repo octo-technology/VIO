@@ -115,7 +115,7 @@ class TestFileSystemBinaryStorage:
 
         # Then
         assert len(actual_binaries) == 2
-        for i, (actual_camera_id, actual_binary) in enumerate(actual_binaries.items()):
+        for i, (actual_camera_id, actual_binary) in enumerate(sorted(actual_binaries.items())):
             assert actual_camera_id == expected_camera_ids[i]
             assert actual_binary == expected_picture
 
@@ -145,7 +145,7 @@ class TestFileSystemBinaryStorage:
 
         # Then
         assert len(actual_binary_names) == 2
-        for i, actual_binary in enumerate(actual_binary_names):
+        for i, actual_binary in enumerate(sorted(actual_binary_names)):
             assert actual_binary == expected_binary_names[i]
 
     def test_get_item_binary_should_return_requested_binary(self, tmp_path: Path, station_config: StationConfig):
