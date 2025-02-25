@@ -1,5 +1,7 @@
 import logging
 import os
+import platform
+from pathlib import Path
 from typing import Dict, Tuple, Union
 
 import docker
@@ -12,6 +14,9 @@ EDGE_MODEL_SERVING = {
     "host_volume_path_suffix": "edge_model_serving",
 }
 EDGE_TFLITE_SERVING_IMG = "ghcr.io/octo-technology/vio/edge_tflite_serving:main"
+
+if platform.uname().system == "Darwin":
+    os.environ["DOCKER_HOST"] = f"unix://{(Path.home() / '.colima/docker.sock').as_posix()}"
 
 
 def check_image_presence_or_pull_it_from_registry(image_name: str):

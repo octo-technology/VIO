@@ -28,7 +28,7 @@ class TestClassifModelForwarder:
             (ModelName.pin_detection, 0.9996249675750732),
         ],
     )
-    async def test_classif_model_forwarder_should_return_classif_pre(
+    async def test_classif_model_forwarder_should_return_classif_prediction(
         self,
         model_name: ModelName,
         probability: float,
