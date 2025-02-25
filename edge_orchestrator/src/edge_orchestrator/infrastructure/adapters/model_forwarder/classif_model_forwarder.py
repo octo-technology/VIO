@@ -35,18 +35,13 @@ class ClassifModelForwarder(IModelForwarder):
         return np.ndarray(shape=(1, width, height, 3), dtype=np.float32, buffer=normalized_image_array)
 
     async def _predict(self, preprocessed_binary: np.ndarray) -> Dict[str, Any]:
-        try:
-            async with aiohttp.ClientSession() as session:
-                async with session.post(
-                    self._get_model_url(), json={"inputs": preprocessed_binary.tolist()}
-                ) as response:
-                    return await response.json()
-        except (aiohttp.ClientConnectionError, aiohttp.ContentTypeError, Exception):
-            self._logger.exception("Error while trying to get prediction from model, returning no decision prediction")
-            return {"outputs": []}
+        async with aiohttp.ClientSession() as session:
+            async with session.post(self._get_model_url(), json={"inputs": preprocessed_binary.tolist()}) as response:
+                return await response.json()
 
     def _post_process_prediction(self, prediction_response: Dict[str, Any]) -> Prediction:
         if len(prediction_response["outputs"]) == 0:
+            self._logger.warning("No predictions found")
             return ClassifPrediction(prediction_type=PredictionType.class_)
 
         predictions = prediction_response["outputs"][0]

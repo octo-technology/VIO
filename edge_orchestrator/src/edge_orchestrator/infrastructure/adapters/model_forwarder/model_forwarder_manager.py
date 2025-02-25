@@ -44,7 +44,10 @@ class ModelForwarderManager(IModelForwarderManager):
             if camera_id not in item.binaries or item.binaries[camera_id].image_bytes is None:
                 self._logger.warning(f"Camera {camera_id} has no image bytes to predict on.")
             else:
-                item.predictions[camera_id] = await model_forwarder.predict_on_binary(
-                    item.binaries[camera_id].image_bytes
-                )
+                try:
+                    item.predictions[camera_id] = await model_forwarder.predict_on_binary(
+                        item.binaries[camera_id].image_bytes
+                    )
+                except Exception:
+                    self._logger.exception(f"Error while trying to get prediction for camera {camera_id}")
         item.state = ItemState.INFERENCE

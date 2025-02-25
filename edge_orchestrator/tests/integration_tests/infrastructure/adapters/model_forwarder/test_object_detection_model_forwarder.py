@@ -79,11 +79,10 @@ class TestObjectDetectionModelForwarder:
             )
 
     @pytest.mark.integration
-    async def test_object_detection_model_forwarder_should_return_no_decision_with_bad_model_serving_url(
+    async def test_object_detection_model_forwarder_should_raise_exception_with_bad_url_provided(
         self,
         setup_test_tflite_serving: str,
         marker_image: bytes,
-        caplog,
     ):
         # Given
         image_resolution = ImageResolution(width=224, height=224)
@@ -99,13 +98,9 @@ class TestObjectDetectionModelForwarder:
         model_fowarder._get_model_url = lambda: "http://bad_url"
 
         # When
-        with caplog.at_level("ERROR"):
-            actual_prediction = await model_fowarder.predict_on_binary(marker_image)
+        with pytest.raises(aiohttp.ClientError) as e:
+            await model_fowarder.predict_on_binary(marker_image)
 
         # Then
-        records = [(record.message, record.exc_info) for record in caplog.records]
-        assert len(records) == 1
-        actual_record = records[0]
-        assert actual_record[0] == "Error while trying to get prediction from model, returning no decision prediction"
-        assert issubclass(actual_record[1][0], aiohttp.ClientError)
-        assert actual_prediction.label is None
+        assert "nodename nor servname provided, or not known" in str(e.value)
+        assert e.type == aiohttp.ClientConnectorDNSError

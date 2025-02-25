@@ -40,19 +40,15 @@ class ObjectDetectionModelForwarder(IModelForwarder):
         model_type = None
         if self._model_forwarder_config.model_name == ModelName.yolo_coco_nano:
             model_type = "yolo"
-        try:
-            async with aiohttp.ClientSession() as session:
-                async with session.post(
-                    self._get_model_url(),
-                    json={
-                        "inputs": preprocessed_binary.tolist(),
-                        "model_type": model_type,
-                    },
-                ) as response:
-                    return await response.json()
-        except (aiohttp.ClientConnectionError, aiohttp.ContentTypeError, Exception):
-            self._logger.exception("Error while trying to get prediction from model, returning no decision prediction")
-            return {"outputs": {}}
+        async with aiohttp.ClientSession() as session:
+            async with session.post(
+                self._get_model_url(),
+                json={
+                    "inputs": preprocessed_binary.tolist(),
+                    "model_type": model_type,
+                },
+            ) as response:
+                return await response.json()
 
     def _post_process_prediction(self, prediction_response: Dict[str, Any]) -> Prediction:
         predictions = prediction_response["outputs"]
@@ -64,6 +60,7 @@ class ObjectDetectionModelForwarder(IModelForwarder):
             or len(predictions["detection_scores"]) == 0
             or len(predictions["detection_classes"]) == 0
         ):
+            self._logger.warning("No detected objects found!")
             return DetectionPrediction(prediction_type=PredictionType.objects, detected_objects={})
 
         detected_objects = {}
