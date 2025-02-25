@@ -3,7 +3,7 @@ import os
 import time
 import requests
 import streamlit as st
-from prediction_boxes import filtering_items_that_have_predictions, plot_predictions
+from prediction_boxes import camera_id_been_pinged
 from PIL import Image
 from io import BytesIO
 
@@ -90,19 +90,22 @@ def main():
             return
         
         cameras = list(camera_configs.keys())
-        for i, camera in enumerate(cameras):
+        for i, camera_id in enumerate(cameras):
             url_binaries = (
-                URL_ORCH + f"items/{st.session_state.item_id}/binaries/{camera}"
+                URL_ORCH + f"items/{st.session_state.item_id}/binaries/{camera_id}"
             )
             response = requests.get(url_binaries)
             image = response.content
             # If metadata is not empty, we plot the predictions
-            if filtering_items_that_have_predictions(metadata, camera):
-                image = Image.open(BytesIO(image))
-                image = plot_predictions(image, camera, metadata)
-            columns[i].image(image, channels="BGR", width=450)
-            if inferences.get(camera):
-                columns[i].markdown(inferences[camera])
+            camera_id_has_been_pinged = camera_id_been_pinged(metadata, camera_id)
+            if not camera_id_has_been_pinged:
+                columns[i].info(f"No ping found for camera {camera_id}")
+            else:
+                if camera_id_has_been_pinged:
+                    image = Image.open(BytesIO(image))
+                columns[i].image(image, channels="BGR", width=450)
+                if inferences.get(camera_id):
+                    columns[i].markdown(inferences[camera_id])
 
         st.markdown(
             f"<h1 style='text-align: center; color: #e67e22;'>{decision}</h1>",
