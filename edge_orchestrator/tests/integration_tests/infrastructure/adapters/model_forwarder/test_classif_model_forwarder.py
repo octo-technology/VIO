@@ -24,8 +24,8 @@ class TestClassifModelForwarder:
     @pytest.mark.parametrize(
         "model_name,probability",
         [
-            (ModelName.marker_quality_control, 0.83054119348526),
-            (ModelName.pin_detection, 0.9996249675750732),
+            (ModelName.marker_quality_control, 0.83054),
+            (ModelName.pin_detection, 0.99962),
         ],
     )
     async def test_classif_model_forwarder_should_return_classif_prediction(

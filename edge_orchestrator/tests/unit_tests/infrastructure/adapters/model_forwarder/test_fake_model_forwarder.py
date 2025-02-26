@@ -49,7 +49,7 @@ class TestFakeModelForwarder:
         # Then
         if model_type == ModelType.classification:
             assert isinstance(prediction, ClassifPrediction)
-            assert prediction.label == Decision.OK and prediction.probability == 0.025010755222666936
+            assert prediction.label == Decision.OK and prediction.probability == 0.02501
         elif model_type == ModelType.object_detection:
             assert isinstance(prediction, DetectionPrediction)
             assert hasattr(prediction, "detected_objects")
