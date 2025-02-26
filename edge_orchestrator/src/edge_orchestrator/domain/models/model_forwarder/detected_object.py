@@ -2,13 +2,7 @@ from typing import Annotated, List, Optional
 
 from pydantic import AfterValidator, BaseModel, Field
 
-
-def round_float(value: float) -> float:
-    return round(value, 5)
-
-
-def round_float_list(values: List[float]) -> List[float]:
-    return [round(value, 5) for value in values]
+from edge_orchestrator.domain.models.validators import round_float, round_float_list
 
 
 class DetectedObject(BaseModel):
