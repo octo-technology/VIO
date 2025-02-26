@@ -84,7 +84,7 @@ Feature: The client trigger a visual inspection and request the resulting metada
 		"camera_1": {
 		"prediction_type": "class",
 		"label": "KO",
-		"probability": 0.9464232325553894
+		"probability": 0.94642
 		},
 		"camera_2": {
 		"prediction_type": "objects",
@@ -96,7 +96,7 @@ Feature: The client trigger a visual inspection and request the resulting metada
 		0.6545,
 		0.817
 		],
-		"objectness": 0.58203125,
+		"objectness": 0.58203,
 		"label": "motorcycle"
 		},
 		"...": {}

@@ -5,7 +5,6 @@ from pydantic import BaseModel, PositiveInt, model_validator
 from edge_orchestrator.domain.models.camera_rule.camera_rule_type import CameraRuleType
 
 
-# TODO: add more validation, ie: if camera_rule_type == MIN_NB_OBJECTS_RULE and expected_class provided
 class CameraRuleConfig(BaseModel):
     camera_rule_type: CameraRuleType
     expected_class: Optional[str] = None
