@@ -1,8 +1,0 @@
-FROM --platform=linux/arm/v7 emacski/tensorflow-serving
-
-WORKDIR /models
-
-COPY models/tf/ /models/tf/
-COPY tf_serving/models.config /models/models.config
-
-ENTRYPOINT ["tensorflow_model_server", "--port=8500", "--rest_api_port=8501", "--model_config_file=/models/models.config"]

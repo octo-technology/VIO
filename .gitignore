@@ -198,7 +198,7 @@ grafvio_id_rsa
 *.tfstate.*
 
 edge_model_serving/models/*
-edge_orchestrator/data/*
+edge_orchestrator/data_storage/*
 edge_orchestrator/config/secrets
 /deployment/edge/images/
 *package-lock.json

@@ -1,17 +1,34 @@
-FROM python:3.8-slim
+FROM --platform=$TARGETPLATFORM python:3.10-slim AS builder
+ARG TARGETPLATFORM
+ARG BUILDOS
+
+ENV MODELS_PATH=/models
 
 WORKDIR /tflite_serving
 
-RUN apt-get update && apt-get upgrade -y && apt-get install gcc -y
+RUN apt-get update && apt-get upgrade -y && \
+    apt-get install -y --no-install-recommends \
+    build-essential \
+    gcc \
+    && apt clean \
+    && apt autoremove \
+    && rm -rf /var/cache/apt/archives/* \
+    && rm -rf /var/lib/apt/lists/*
 
-COPY tflite_serving/src/ src/
-COPY tflite_serving/pyproject.toml .
+RUN python -m venv /opt/venv
 
-RUN pip install --upgrade pip
-RUN pip install -e ".[linux]"
+ENV PATH="/opt/venv/bin:$PATH"
 
-ENV MODELS_PATH=/models
+RUN pip install --no-cache-dir --upgrade pip setuptools
+
+
+COPY tflite_serving/pyproject.toml ./
+COPY tflite_serving/src/ ./src
+COPY tflite_serving/pip.conf /opt/venv/pip.conf
 COPY models/tflite/ $MODELS_PATH/tflite/
 
+RUN pip install --no-cache-dir .
+
 EXPOSE 8501
-CMD [ "uvicorn", "tflite_serving.tflite_server:app", "--reload", "--port", "8501", "--host", "0.0.0.0" ]
+ENTRYPOINT ["uvicorn", "tflite_serving.tflite_server:app"]
+CMD ["--reload", "--port", "8501", "--host", "0.0.0.0" ]

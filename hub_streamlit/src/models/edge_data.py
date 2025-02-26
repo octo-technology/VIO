@@ -13,7 +13,7 @@ from utils.prediction_boxes import filter_inferences_on_camera_id, plot_predicti
 
 load_dotenv()
 
-BUCKET_NAME = os.getenv("GCP_BUCKET_NAME")
+BUCKET_NAME = os.getenv("BUCKET_NAME")
 IMG_EXTENSIONS = [".jpg", ".jpeg", ".png"]
 NUMBER_CAMERAS = os.getenv("NUMBER_CAMERAS", 2)
 

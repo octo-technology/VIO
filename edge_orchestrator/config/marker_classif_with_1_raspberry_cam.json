@@ -1,0 +1,47 @@
+{
+    "station_name": "marker_classif_with_1_raspberry_cam",
+    "camera_configs": {
+        "camera_1": {
+            "camera_id": "camera_1",
+            "camera_type": "raspberry",
+            "position": "front",
+            "model_forwarder_config": {
+                "model_name": "marker_quality_control",
+                "model_type": "classification",
+                "model_serving_url": "http://edge_model_serving:8501/",
+                "expected_image_resolution": {
+                    "width": 224,
+                    "height": 224
+                },
+                "model_version": "1",
+                "class_names": [
+                    "OK",
+                    "KO"
+                ],
+                "recreate_me": false
+            },
+            "camera_rule_config": {
+                "camera_rule_type": "expected_label_rule",
+                "expected_class": "OK",
+                "recreate_me": false
+            },
+            "recreate_me": false
+        }
+    },
+    "binary_storage_config": {
+        "storage_type": "filesystem",
+        "target_directory": "data_storage",
+        "recreate_me": false
+    },
+    "metadata_storage_config": {
+        "storage_type": "filesystem",
+        "target_directory": "data_storage",
+        "recreate_me": false
+    },
+    "item_rule_config": {
+        "item_rule_type": "min_threshold_ratio_rule",
+        "expected_decision": "OK",
+        "threshold": 1,
+        "recreate_me": false
+    }
+}

@@ -1,0 +1,17 @@
+services:
+  edge_orchestrator:
+    container_name: edge_orchestrator
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        BUILDOS: ${BUILDOS:-linux}
+    volumes:
+      - ./data_storage:/edge_orchestrator/data_storage
+      - /run/udev:/run/udev:ro  # udev is the device manager for the Linux kernel, responsible for managing device nodes in the /dev directory dynamically
+    ports:
+      - 8000:8000
+    environment:
+      SERVING_MODEL_URL: http://edge_model_serving:8501
+    privileged: true
+    profiles: [edge]

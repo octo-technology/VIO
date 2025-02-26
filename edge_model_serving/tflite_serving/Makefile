@@ -15,28 +15,23 @@ help:
 
 .PHONY: lint  ## 🐍 Lint Python files to conform to the PEP 8 style guide
 lint:
-	autoflake --in-place --remove-all-unused-imports --recursive --ignore-init-module-imports . --exclude .venv
-	isort . --skip-gitignore
-	black .
+	autoflake --in-place --remove-all-unused-imports --recursive --ignore-init-module-imports src tests convert_pb_to_tflite.py --exclude .venv
+	isort src tests convert_pb_to_tflite.py --skip-gitignore
+	black src tests convert_pb_to_tflite.py
 
 .PHONY: check  ## 🐍 Check lint Python files to conform to the PEP 8 style guide
 check:
-	autoflake --in-place --remove-all-unused-imports --recursive --ignore-init-module-imports . --exclude .venv --check
-	isort . --skip-gitignore --check
-	black . --check
+	autoflake --in-place --remove-all-unused-imports --recursive --ignore-init-module-imports src tests convert_pb_to_tflite.py --exclude .venv --check
+	isort src tests convert_pb_to_tflite.py --skip-gitignore --check
+	black src tests convert_pb_to_tflite.py --check
 	flake8 --count --show-source --statistics
 
 .PHONY: tflite_serving  ## 🐍 Create a tflite conda environment
 tflite_serving:
-	conda create --name tflite_serving python=3.8 -y
+	conda create --name tflite_serving python=3.10 -y
 
-.PHONY: install_tflite_linux  ## ⏬ Install tflite development dependencies on linux
-install_tflite_linux:
-	python -m pip install --upgrade pip setuptools
-	pip install -e .[dev,linux] && pip list --outdated
-
-.PHONY: install_tflite_mac  ## ⏬ Install tflite development dependencies on mac
-install_tflite_mac:
+.PHONY: install  ## ⏬ Install development dependencies
+install:
 	python -m pip install --upgrade pip setuptools
 	pip install -e .[dev] && pip list --outdated
 

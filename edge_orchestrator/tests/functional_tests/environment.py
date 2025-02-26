@@ -1,60 +1,64 @@
 import os
+import sys
+import tempfile
 from pathlib import Path
-from shutil import rmtree
+from shutil import copytree
 
 from behave.runner import Context
 from fastapi.testclient import TestClient
 
-from tests.conftest import (
-    EDGE_DB_IMG,
-    EDGE_MODEL_SERVING,
-    HUB_MONITORING_DB_IMG,
-    ROOT_REPOSITORY_PATH,
-    TEST_DATA_FOLDER_PATH,
-)
-from tests.fixtures.containers import (
-    apply_db_migrations,
-    start_test_db,
+sys.path.append((Path(__file__).parents[1]).resolve().as_posix())
+os.environ["TESTCONTAINERS_RYUK_DISABLED"] = "true"
+
+from helpers.container_utils import (  # EDGE_MODEL_SERVING,
+    EDGE_TFLITE_SERVING_IMG,
     start_test_tf_serving,
     stop_test_container,
 )
 
+ROOT_REPOSITORY_PATH = Path(__file__).parents[3]
+
 
 def before_all(context: Context):
-    context.test_directory = Path(__file__).parent.parent
-    context.mongo_db_uri, context.mongo_db_container = start_test_db(
-        image_name=EDGE_DB_IMG, connection_url=os.environ.get("MONGO_DB_URI")
-    )
-    context.postgres_db_uri, context.postgres_db_container = start_test_db(
-        image_name=HUB_MONITORING_DB_IMG,
-        connection_url=os.environ.get("POSTGRES_DB_URI"),
-    )
-    apply_db_migrations(context.postgres_db_uri)
+    config_directory = Path(__file__).parents[1] / "config"
 
+    context.tmp_dir = tempfile.TemporaryDirectory()
+    test_directory = Path(context.tmp_dir.name)
+    context.test_directory = test_directory
+    tmp_config_dir = test_directory / "config"
+
+    copytree(config_directory.as_posix(), tmp_config_dir.as_posix())
+
+    os.environ["CONFIG_DIR"] = tmp_config_dir.as_posix()
+    os.environ["ACTIVE_CONFIG_NAME"] = "unknown_config"
     (
-        context.tensorflow_serving_url,
+        model_serving_url,
         context.tensorflow_serving_container,
     ) = start_test_tf_serving(
-        image_name=EDGE_MODEL_SERVING["image_name"],
-        starting_log=r"Entering the event loop ...",
-        exposed_model_name="marker_quality_control",
-        host_volume_path=((ROOT_REPOSITORY_PATH / EDGE_MODEL_SERVING["host_volume_path_suffix"]).as_posix()),
-        container_volume_path=EDGE_MODEL_SERVING["container_volume_path"],
+        image_name=EDGE_TFLITE_SERVING_IMG,
+        starting_log=r"Application startup complete.",
+        env_vars={},
+        tf_serving_host=os.getenv("TFLITE_SERVING_HOST"),
+        tf_serving_port=os.getenv("TFLITE_SERVING_PORT"),
     )
-    os.environ["API_CONFIG"] = "test"
-    os.environ["MONGO_DB_URI"] = context.mongo_db_uri
-    os.environ["POSTGRES_DB_URI"] = context.postgres_db_uri
-    os.environ["SERVING_MODEL_URL"] = context.tensorflow_serving_url
-    from edge_orchestrator.application.server import server
+    from edge_orchestrator.interface.api.main import app
 
-    context.test_client = TestClient(server())
+    context.test_client = TestClient(app)
+
+    from edge_orchestrator.domain.ports.storing_path_manager import StoringPathManager
+
+    StoringPathManager.get_storing_prefix_path = lambda x: test_directory / "data_storage"
+
+    from edge_orchestrator.domain.ports.model_forwarder.i_model_forwarder import (
+        IModelForwarder,
+    )
+
+    IModelForwarder._build_model_url = (
+        lambda self, base_url, model_name, model_version: f"{model_serving_url}v1/models/{model_name}/versions/{model_version}:predict"
+    )
 
 
 def after_all(context: Context):
-    rmtree(TEST_DATA_FOLDER_PATH / "storage")
-    if context.mongo_db_container:
-        stop_test_container(context.mongo_db_container)
-    if context.postgres_db_container:
-        stop_test_container(context.postgres_db_container)
+    context.tmp_dir.cleanup()
     if context.tensorflow_serving_container:
         stop_test_container(context.tensorflow_serving_container)

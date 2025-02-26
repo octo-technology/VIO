@@ -9,19 +9,17 @@ The edge_orchestrator orchestrates the following steps as soon as it is triggere
 5. saving results
 
 
-## Common errors
+## Building the Docker image
 
-# Error: pg_config executable not found.
+Depending on the target platform that will run the Docker container, we need to condition the Dockerfile accordingly.
 
-Check if pg_config is installed on your system.
-
+Therefor, we use the `TARGETPLATFORM` variable that is the value set with `--platform` flag on build:
 ```bash
-pg_config --version
+docker build --platform linux/arm64 .
 ```
 
-If not, install it using the following command:
+Do not get confused with the `BUILDPLATFORM` variable, that matches the current machine. (e.g. linux/amd64 or MacOs).
 
-MacOS:
-```bash
-brew install postgresql
-```
+Visit:
+- [Multi-platform build arguments](https://docs.docker.com/build/building/variables/#multi-platform-build-arguments) for more details on Build variables
+- [Multi-platform builds](https://docs.docker.com/build/building/multi-platform/) for more details on the Multi-platform build with Docker

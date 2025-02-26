@@ -1,56 +1,46 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-import VUploadView from '../views/VUploadView/VUploadView.vue'
-import VConfig from '../views/VConfig/VConfig.vue'
+import Vue from 'vue';
+import Router from 'vue-router';
+import AllItemsView from '@/components/AllItemsView.vue';
+import AllConfigsView from '@/components/AllConfigsView.vue';
+import ItemDetailView from '@/components/ItemDetailView.vue';
+import TriggerView from '@/components/TriggerView.vue';
+import ActiveConfigView from '@/components/ActiveConfigView.vue';
+import NewConfigView from '@/components/NewConfigView.vue';
 
-Vue.use(VueRouter)
+Vue.use(Router);
 
-const routes = [
-  {
-    path: '/',
-    redirect: '/item-list'
-  },
-  {
-    path: '/item-show/:id',
-    props: true,
-    name: 'item-show',
-    component: () => import(/* webpackChunkName: "about" */ '../views/ItemShow.vue')
-  },
-  {
-    path: '/test',
-    props: true,
-    name: 'VUploadView',
-    component: VUploadView
-  },
-  {
-    path: '/item-list',
-    name: 'Item-list',
-    component: () => import(/* webpackChunkName: "about" */ '../views/ItemList.vue')
-  },
-  {
-    path: '/upload-camera',
-    name: 'Upload Camera',
-    component: () => import('../views/UploadView.vue')
-  },
-  {
-    path: '/trigger',
-    name: 'Trigger Capture',
-    component: () => import('../views/TriggerView.vue')
-  },
-  {
-    path: '/config',
-    name: 'Config',
-    component: () => import('../views/Config.vue')
-  },
-  {
-    path: '/test_config',
-    name: 'VConfig',
-    component: VConfig
-  }
-]
-
-const router = new VueRouter({
-  routes
-})
-
-export default router
+export default new Router({
+  mode: 'history',
+  routes: [
+    {
+      path: '/',
+      name: 'AllItemsView',
+      component: AllItemsView
+    },
+    {
+      path: '/item/:id',
+      name: 'ItemDetailView',
+      component: ItemDetailView
+    },
+    {
+      path: '/trigger',
+      name: 'TriggerView',
+      component: TriggerView
+    },
+    {
+      path: '/configs',
+      name: 'AllConfigsView',
+      component: AllConfigsView
+    },
+    {
+      path: '/configs/active',
+      name: 'ActiveConfigView',
+      component: ActiveConfigView
+    },
+    {
+      path: '/configs/new',
+      name: 'NewConfigView',
+      component: NewConfigView
+    }
+  ]
+});

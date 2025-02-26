@@ -2,6 +2,7 @@ name: CI edge_interface
 run-name: edge_interface CI on branch >> ${{ github.ref_name }} <<
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
@@ -45,25 +46,6 @@ jobs:
       context: ${{ matrix.context }}
       dockerfile: ${{ matrix.dockerfile }}
       image: ${{ matrix.image }}
-    secrets:
-      username: ${{ github.actor }}
-      password: ${{ secrets.GITHUB_TOKEN }}
-
-  build_and_push_arm_images:
-    needs: lint_and_test_on_edge_interface
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - context: ./edge_interface
-            dockerfile: ./edge_interface/Dockerfile.raspberrypi
-            image: ghcr.io/${{ github.repository }}/edge_interface.raspberrypi
-    uses: ./.github/workflows/template_build_and_push_docker_images.yml
-    with:
-      context: ${{ matrix.context }}
-      dockerfile: ${{ matrix.dockerfile }}
-      image: ${{ matrix.image }}
-      arm_build: true
     secrets:
       username: ${{ github.actor }}
       password: ${{ secrets.GITHUB_TOKEN }}
