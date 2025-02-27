@@ -59,13 +59,11 @@
     },
     "binary_storage_config": {
         "storage_type": "filesystem",
-        "bucket_name": "",
         "target_directory": "data_storage",
         "recreate_me": false
     },
     "metadata_storage_config": {
         "storage_type": "filesystem",
-        "bucket_name": "",
         "target_directory": "data_storage",
         "recreate_me": false
     },
