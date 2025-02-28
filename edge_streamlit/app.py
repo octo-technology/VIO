@@ -7,8 +7,7 @@ import requests
 import streamlit as st
 from PIL import Image
 
-from prediction_boxes import (filtering_items_that_have_predictions,
-                              plot_predictions)
+from prediction_boxes import camera_id_been_pinged
 
 # Page configuration
 st.set_page_config(page_title="VIO-edge", page_icon="🔦", layout="wide")
