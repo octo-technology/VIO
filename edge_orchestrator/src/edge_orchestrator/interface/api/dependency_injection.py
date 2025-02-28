@@ -138,7 +138,7 @@ def get_supervisor(
     binary_storage_factory: IBinaryStorageFactory = Depends(get_binary_storage_factory),
     metadata_storage_factory: IMetadataStorageFactory = Depends(get_metadata_storage_factory),
 ) -> Supervisor:
-    supervisor = Supervisor(
+    return Supervisor(
         metadata_storage_manager,
         binary_storage_manager,
         model_forwarder_manager,
