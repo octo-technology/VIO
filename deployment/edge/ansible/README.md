@@ -25,7 +25,7 @@ ip a | grep -A 2 'wlx' | grep 'inet ' | awk '{print $2}' | cut -d/ -f1
 
 Then change the IP addresses on the inventory file
 
-## docker-compose devices
+## docker compose devices
 
 We are adding those devices to be able to trigger capture from 2 cameras connected on the usb port of your edge.
 
