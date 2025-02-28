@@ -10,6 +10,8 @@ load_dotenv()
 
 BUCKET_NAME = os.getenv("BUCKET_NAME")
 
+if BUCKET_NAME is None:
+    raise ValueError("BUCKET_NAME environment variable is not set")
 
 class GCPBinaryStorage:
     def __init__(self, prefix: str = ""):
