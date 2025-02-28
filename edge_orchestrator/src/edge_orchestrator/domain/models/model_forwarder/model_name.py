@@ -8,3 +8,4 @@ class ModelName(str, Enum):
     mobilenet_ssd_v2_coco = "mobilenet_ssd_v2_coco"
     mobilenet_ssd_v2_face = "mobilenet_ssd_v2_face"
     yolo_coco_nano = "yolo_coco_nano"
+    duck_detection = "duck_detection"
