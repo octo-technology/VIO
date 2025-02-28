@@ -24,3 +24,7 @@ class ICameraRuleManager(ABC):
     @abstractmethod
     def apply_camera_rules(self, item: Item):
         pass
+
+    @abstractmethod
+    def reset(self):
+        pass

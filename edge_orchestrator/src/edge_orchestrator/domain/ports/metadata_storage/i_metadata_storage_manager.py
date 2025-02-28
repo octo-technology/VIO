@@ -19,3 +19,7 @@ class IMetadataStorageManager(ABC):
     @abstractmethod
     def get_metadata_storage(self, station_config: StationConfig) -> IMetadataStorage:
         pass
+
+    @abstractmethod
+    def reset(self, metadata_storage_factory: IMetadataStorageFactory):
+        pass

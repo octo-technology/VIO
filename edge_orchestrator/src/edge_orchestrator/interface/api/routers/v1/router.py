@@ -24,8 +24,10 @@ from edge_orchestrator.domain.ports.metadata_storage.i_metadata_storage_manager 
     IMetadataStorageManager,
 )
 from edge_orchestrator.interface.api.dependency_injection import (
+    get_binary_storage_factory,
     get_binary_storage_manager,
     get_config,
+    get_metadata_storage_factory,
     get_metadata_storage_manager,
     get_supervisor,
 )
@@ -39,17 +41,23 @@ def get_health():
     return {"status": "ok"}
 
 
-def set_config(station_name: Optional[str] = None, station_config: Optional[StationConfig] = None) -> StationConfig:
+def set_config(
+    station_name: Optional[str] = None,
+    station_config: Optional[StationConfig] = None,
+    binary_storage_factory: IBinaryStorageManager = Depends(get_binary_storage_factory),
+    metadata_storage_factory: IMetadataStorageManager = Depends(get_metadata_storage_factory),
+    supervisor: Supervisor = Depends(get_supervisor),
+) -> StationConfig:
     if (station_name and station_config) or (station_name is None and station_config is None):
         raise HTTPException(status_code=422, detail="Either provide a station_name or a StationConfig (exclusive)")
 
     manager = ConfigManager()
     if station_name:
         manager.set_config_by_name(station_name)
-        return manager.get_config()
     if station_config:
         manager.set_config(station_config)
-        return manager.get_config()
+    supervisor.reset_managers(binary_storage_factory, metadata_storage_factory)
+    return manager.get_config()
 
 
 def get_all_configs(reload: Optional[bool] = False) -> Dict[str, StationConfig]:

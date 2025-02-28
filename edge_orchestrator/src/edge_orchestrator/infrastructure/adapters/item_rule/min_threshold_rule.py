@@ -2,9 +2,7 @@ import logging
 from typing import Dict
 
 from edge_orchestrator.domain.models.decision import Decision
-from edge_orchestrator.domain.models.item import Item
 from edge_orchestrator.domain.models.item_rule.item_rule_config import ItemRuleConfig
-from edge_orchestrator.domain.models.item_state import ItemState
 from edge_orchestrator.domain.ports.item_rule.i_item_rule import IItemRule
 
 
@@ -24,12 +22,3 @@ class MinThresholdRule(IItemRule):
             return Decision.OK
         else:
             return Decision.KO
-
-    def apply_item_rules(self, item: Item):
-        self._logger.info("Applying rule on item...")
-
-        if len(item.camera_decisions) == 0:
-            item.decision = Decision.NO_DECISION
-        else:
-            item.decision = self._get_item_decision(item.camera_decisions)
-        item.state = ItemState.ITEM_RULE

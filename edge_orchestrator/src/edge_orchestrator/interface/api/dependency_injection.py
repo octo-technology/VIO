@@ -159,9 +159,8 @@ def get_supervisor(
     camera_rule_manager: ICameraRuleManager = Depends(get_camera_rule_manager),
     item_rule_manager: ItemRuleManager = Depends(get_item_rule_manager),
     camera_manager: ICameraManager = Depends(get_camera_manager),
-    station_config: StationConfig = Depends(get_config),
 ) -> Supervisor:
-    supervisor = Supervisor(
+    return Supervisor(
         metadata_storage_manager,
         binary_storage_manager,
         model_forwarder_manager,
@@ -169,5 +168,3 @@ def get_supervisor(
         item_rule_manager,
         camera_manager,
     )
-    supervisor._camera_manager.create_cameras(station_config)
-    return supervisor

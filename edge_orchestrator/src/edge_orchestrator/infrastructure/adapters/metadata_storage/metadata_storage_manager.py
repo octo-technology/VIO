@@ -20,7 +20,11 @@ class MetadataStorageManager(IMetadataStorageManager):
 
     def get_metadata_storage(self, station_config: StationConfig) -> IMetadataStorage:
         metadata_storage_type = station_config.metadata_storage_config.storage_type
-        if metadata_storage_type not in self._metadata_storages or station_config.metadata_storage_config.recreate_me:
+        if metadata_storage_type not in self._metadata_storages:
             metadata_storage = self._metadata_storage_factory.create_metadata_storage(station_config)
             self._metadata_storages[metadata_storage_type] = metadata_storage
         return self._metadata_storages[metadata_storage_type]
+
+    def reset(self, metadata_storage_factory: IMetadataStorageFactory):
+        self._metadata_storage_factory = metadata_storage_factory
+        self._metadata_storages = {}

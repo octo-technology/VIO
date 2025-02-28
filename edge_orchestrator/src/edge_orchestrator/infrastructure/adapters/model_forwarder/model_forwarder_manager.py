@@ -25,7 +25,7 @@ class ModelForwarderManager(IModelForwarderManager):
 
     def _get_model_forwarder(self, model_forwarder_config: ModelForwarderConfig) -> IModelForwarder:
         model_id = model_forwarder_config.model_id
-        if model_id not in self._model_forwarders or model_forwarder_config.recreate_me:
+        if model_id not in self._model_forwarders:
             self._logger.info(f"Creating model forwarder for model_id: {model_id}")
             model_forwarder = self._model_forwarder_factory.create_model_forwarder(model_forwarder_config)
             self._model_forwarders[model_id] = model_forwarder
@@ -48,6 +48,10 @@ class ModelForwarderManager(IModelForwarderManager):
                     item.predictions[camera_id] = await model_forwarder.predict_on_binary(
                         item.binaries[camera_id].image_bytes
                     )
+                    self._logger.info(f"Prediction for camera {camera_id} done!")
                 except Exception:
                     self._logger.exception(f"Error while trying to get prediction for camera {camera_id}")
         item.state = ItemState.INFERENCE
+
+    def reset(self):
+        self._model_forwarders = {}

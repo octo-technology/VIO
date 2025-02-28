@@ -19,3 +19,7 @@ class StoringPathManager(metaclass=SingletonMeta):
     def set(self, storage_config: StorageConfig, station_name: str):
         self._storage_config = storage_config
         self.station_name = station_name
+
+    def reset(self):
+        self._storage_config = None
+        self.station_name = None

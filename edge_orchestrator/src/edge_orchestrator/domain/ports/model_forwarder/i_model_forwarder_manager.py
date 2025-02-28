@@ -25,3 +25,7 @@ class IModelForwarderManager(ABC):
     @abstractmethod
     def predict_on_binaries(self, item: Item):
         pass
+
+    @abstractmethod
+    def reset(self):
+        pass

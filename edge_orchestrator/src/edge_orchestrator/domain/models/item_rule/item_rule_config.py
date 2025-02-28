@@ -1,4 +1,4 @@
-from typing import Optional, Union
+from typing import Union
 
 from pydantic import BaseModel
 
@@ -10,4 +10,3 @@ class ItemRuleConfig(BaseModel):
     item_rule_type: ItemRuleType
     expected_decision: Decision
     threshold: Union[int, float]
-    recreate_me: Optional[bool] = False

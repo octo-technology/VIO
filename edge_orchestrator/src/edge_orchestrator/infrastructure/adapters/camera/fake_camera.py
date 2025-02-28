@@ -17,6 +17,7 @@ class FakeCamera(ICamera):
 
     def capture(self) -> Image:
         random_image_path = self._select_random_image()
+        self._logger.debug(f"Capturing image from {random_image_path}")
         return Image(image_bytes=random_image_path.open("rb").read())
 
     def release(self):
@@ -28,5 +29,4 @@ class FakeCamera(ICamera):
         for extension in self._supported_image_extensions:
             selected_images += list(source.rglob(extension))
         random_image_path = Path(random.choice(selected_images))
-        self._logger.info(str(random_image_path))
         return random_image_path
