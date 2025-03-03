@@ -25,7 +25,6 @@ from edge_orchestrator.domain.ports.metadata_storage.i_metadata_storage_manager 
     IMetadataStorageManager,
 )
 from edge_orchestrator.interface.api.dependency_injection import (
-    get_binary_storage_factory,
     get_binary_storage_manager,
     get_config,
     get_metadata_storage_factory,

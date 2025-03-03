@@ -24,12 +24,6 @@ from edge_orchestrator.domain.ports.metadata_storage.i_metadata_storage_manager 
 from edge_orchestrator.domain.ports.model_forwarder.i_model_forwarder_manager import (
     IModelForwarderManager,
 )
-from edge_orchestrator.infrastructure.adapters.binary_storage.binary_storage_factory import (
-    BinaryStorageFactory,
-)
-from edge_orchestrator.infrastructure.adapters.metadata_storage.metadata_storage_factory import (
-    MetadataStorageFactory,
-)
 from edge_orchestrator.utils.singleton import SingletonMeta
 
 
@@ -66,7 +60,7 @@ class Supervisor(metaclass=SingletonMeta):
         self._metadata_storage_manager.get_metadata_storage(station_config).save_item_metadata(item)
 
     def reset_managers(
-        self, binary_storage_factory: BinaryStorageFactory, metadata_storage_factory: MetadataStorageFactory
+        self, binary_storage_factory: IBinaryStorageFactory, metadata_storage_factory: IMetadataStorageFactory
     ):
         self._logger.info("Resetting all managers after configuration update...")
         self._metadata_storage_manager.reset(metadata_storage_factory)
