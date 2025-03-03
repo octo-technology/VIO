@@ -59,7 +59,7 @@ class ConfigManager(metaclass=SingletonMeta):
         self._active_station_name = new_active_station_name
         self._station_configs[new_active_station_name] = new_station_config
         self._save_config_as_json(new_station_config)
-        self.config_updated = True
+        self._config_updated = True
 
     def get_config(self) -> Optional[StationConfig]:
         return self._station_configs.get(self._active_station_name)
@@ -91,4 +91,4 @@ class ConfigManager(metaclass=SingletonMeta):
                 detail=f"{station_name} is not one of existing station names: {self.get_all_config_names()}",
             )
         self._active_station_name = station_name
-        self.config_updated = True
+        self._config_updated = True
