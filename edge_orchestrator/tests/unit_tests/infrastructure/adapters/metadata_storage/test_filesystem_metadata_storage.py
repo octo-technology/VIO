@@ -29,8 +29,7 @@ class TestFileSystemMetadataStorage:
         target_directory = tmp_path / "metadata"
         target_directory.mkdir()
         station_config.metadata_storage_config.target_directory = target_directory
-        storing_path_manager = StoringPathManager()
-        storing_path_manager.set(station_config.binary_storage_config, station_config.station_name)
+        storing_path_manager = StoringPathManager(station_config.binary_storage_config, station_config.station_name)
         metadata_storage = FileSystemMetadataStorage(station_config, storing_path_manager)
         item_id = UUID("00000000-0000-0000-0000-000000000001")
 
@@ -61,8 +60,7 @@ class TestFileSystemMetadataStorage:
         target_directory = tmp_path / "metadata"
         target_directory.mkdir()
         station_config.metadata_storage_config.target_directory = target_directory
-        storing_path_manager = StoringPathManager()
-        storing_path_manager.set(station_config.metadata_storage_config, station_config.station_name)
+        storing_path_manager = StoringPathManager(station_config.metadata_storage_config, station_config.station_name)
         metadata_storage = FileSystemMetadataStorage(station_config, storing_path_manager)
         item_id = UUID("00000000-0000-0000-0000-000000000002")
 
@@ -107,14 +105,12 @@ class TestFileSystemMetadataStorage:
                     "camera_type": "fake",
                     "position": "front",
                     "source_directory": "fake",
-                    "recreate_me": False,
                 },
                 "camera_#2": {
                     "camera_id": "camera_#2",
                     "camera_type": "usb",
                     "position": "front",
                     "source_directory": "fake",
-                    "recreate_me": False,
                 },
             },
             "binaries": {
@@ -146,8 +142,7 @@ class TestFileSystemMetadataStorage:
         target_directory = tmp_path / "metadata"
         target_directory.mkdir()
         station_config.metadata_storage_config.target_directory = target_directory
-        storing_path_manager = StoringPathManager()
-        storing_path_manager.set(station_config.binary_storage_config, station_config.station_name)
+        storing_path_manager = StoringPathManager(station_config.binary_storage_config, station_config.station_name)
         metadata_storage = FileSystemMetadataStorage(station_config, storing_path_manager)
         item_id = UUID("00000000-0000-0000-0000-000000000001")
 
@@ -179,8 +174,7 @@ class TestFileSystemMetadataStorage:
         target_directory = tmp_path / "metadata"
         target_directory.mkdir()
         station_config.metadata_storage_config.target_directory = target_directory
-        storing_path_manager = StoringPathManager()
-        storing_path_manager.set(station_config.binary_storage_config, station_config.station_name)
+        storing_path_manager = StoringPathManager(station_config.binary_storage_config, station_config.station_name)
         metadata_storage = FileSystemMetadataStorage(station_config, storing_path_manager)
         item_id = UUID("00000000-0000-0000-0000-000000000003")
 
@@ -232,8 +226,7 @@ class TestFileSystemMetadataStorage:
         target_directory = tmp_path / "metadata"
         target_directory.mkdir()
         station_config.metadata_storage_config.target_directory = target_directory
-        storing_path_manager = StoringPathManager()
-        storing_path_manager.set(station_config.binary_storage_config, station_config.station_name)
+        storing_path_manager = StoringPathManager(station_config.binary_storage_config, station_config.station_name)
         metadata_storage = FileSystemMetadataStorage(station_config, storing_path_manager)
 
         for i in range(5):

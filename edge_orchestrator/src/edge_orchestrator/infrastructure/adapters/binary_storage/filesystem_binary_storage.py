@@ -31,6 +31,8 @@ class FileSystemBinaryStorage(IBinaryStorage):
             item.binaries[camera_id].storing_path = filepath
             with filepath.open("wb") as f:
                 f.write(image.image_bytes)
+            self._logger.info(f"Image for camera {camera_id} saved as {filepath.as_posix()}")
+        self._logger.info(f"Item binaries saved for item {item.id}!")
         item.state = ItemState.SAVE_BINARIES
 
     def get_item_binaries(self, item_id: UUID) -> Dict[str, bytes]:

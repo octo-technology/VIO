@@ -18,31 +18,25 @@
                 "class_names": [
                     "OK",
                     "KO"
-                ],
-                "recreate_me": false
+                ]
             },
             "camera_rule_config": {
                 "camera_rule_type": "expected_label_rule",
-                "expected_class": "OK",
-                "recreate_me": false
-            },
-            "recreate_me": false
+                "expected_class": "OK"
+            }
         }
     },
     "binary_storage_config": {
         "storage_type": "filesystem",
-        "target_directory": "data_storage",
-        "recreate_me": false
+        "target_directory": "data_storage"
     },
     "metadata_storage_config": {
         "storage_type": "filesystem",
-        "target_directory": "data_storage",
-        "recreate_me": false
+        "target_directory": "data_storage"
     },
     "item_rule_config": {
         "item_rule_type": "min_threshold_ratio_rule",
         "expected_decision": "OK",
-        "threshold": 1,
-        "recreate_me": false
+        "threshold": 1
     }
 }

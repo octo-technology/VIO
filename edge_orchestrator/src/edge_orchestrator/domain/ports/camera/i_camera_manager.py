@@ -23,3 +23,7 @@ class ICameraManager(ABC):
     @abstractmethod
     def take_pictures(self, item: Item):
         pass
+
+    @abstractmethod
+    def reset(self):
+        pass

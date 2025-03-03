@@ -15,16 +15,13 @@
                     "height": 320
                 },
                 "model_version": "1",
-                "class_names_filepath": "model_labels/coco_labels.txt",
-                "recreate_me": false
+                "class_names_filepath": "model_labels/coco_labels.txt"
             },
             "camera_rule_config": {
                 "camera_rule_type": "min_nb_objects_rule",
                 "class_to_detect": "people",
-                "threshold": 1,
-                "recreate_me": false
-            },
-            "recreate_me": false
+                "threshold": 1
+            }
         },
         "camera_2": {
             "camera_id": "camera_2",
@@ -40,32 +37,26 @@
                     "height": 320
                 },
                 "model_version": "1",
-                "class_names_filepath": "model_labels/coco_labels.txt",
-                "recreate_me": false
+                "class_names_filepath": "model_labels/coco_labels.txt"
             },
             "camera_rule_config": {
                 "camera_rule_type": "min_nb_objects_rule",
                 "class_to_detect": "people",
-                "threshold": 1,
-                "recreate_me": false
-            },
-            "recreate_me": false
+                "threshold": 1
+            }
         }
     },
     "binary_storage_config": {
         "storage_type": "filesystem",
-        "target_directory": "data_storage",
-        "recreate_me": false
+        "target_directory": "data_storage"
     },
     "metadata_storage_config": {
         "storage_type": "filesystem",
-        "target_directory": "data_storage",
-        "recreate_me": false
+        "target_directory": "data_storage"
     },
     "item_rule_config": {
         "item_rule_type": "min_threshold_ratio_rule",
         "expected_decision": "OK",
-        "threshold": 1,
-        "recreate_me": false
+        "threshold": 1
     }
 }

@@ -19,3 +19,7 @@ class IBinaryStorageManager(ABC):
     @abstractmethod
     def get_binary_storage(self, station_config: StationConfig) -> IBinaryStorage:
         pass
+
+    @abstractmethod
+    def reset(self, binary_storage_factory: IBinaryStorageFactory):
+        pass
