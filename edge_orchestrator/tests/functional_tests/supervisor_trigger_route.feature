@@ -32,15 +32,12 @@ Feature: The client trigger a visual inspection and request the resulting metada
 		"KO"
 		],
 		"model_serving_url": "http://0.0.0.0:8501/",
-		"recreate_me": false,
 		"model_id": "pin_detection_classification_1"
 		},
 		"camera_rule_config": {
 		"camera_rule_type": "expected_label_rule",
-		"expected_class": "OK",
-		"recreate_me": false
-		},
-		"recreate_me": false
+		"expected_class": "OK"
+		}
 		},
 		"camera_2": {
 		"camera_id": "camera_2",
@@ -58,16 +55,13 @@ Feature: The client trigger a visual inspection and request the resulting metada
 		"class_names": [],
 		"class_names_filepath": "model_labels/imagenet_labels.txt",
 		"model_serving_url": "http://0.0.0.0:8501/",
-		"recreate_me": false,
 		"model_id": "mobilenet_ssd_v2_coco_object_detection_1"
 		},
 		"camera_rule_config": {
 		"camera_rule_type": "min_nb_objects_rule",
 		"class_to_detect": "OK",
-		"threshold": 1,
-		"recreate_me": false
-		},
-		"recreate_me": false
+		"threshold": 1
+		}
 		}
 		},
 		"binaries": {

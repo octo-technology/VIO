@@ -42,15 +42,12 @@ Feature: The client set an active configuration
 		"OK",
 		"KO"
 		],
-		"recreate_me": false,
 		"model_id": "fake_model_classification_1"
 		},
 		"camera_rule_config": {
 		"camera_rule_type": "expected_label_rule",
-		"expected_class": "OK",
-		"recreate_me": false
-		},
-		"recreate_me": false
+		"expected_class": "OK"
+		}
 		},
 		"camera_2": {
 		"camera_id": "camera_2",
@@ -69,33 +66,27 @@ Feature: The client set an active configuration
 		"OK",
 		"KO"
 		],
-		"recreate_me": false,
 		"model_id": "fake_model_object_detection_1"
 		},
 		"camera_rule_config": {
 		"camera_rule_type": "min_nb_objects_rule",
 		"class_to_detect": "OK",
-		"threshold": 1,
-		"recreate_me": false
-		},
-		"recreate_me": false
+		"threshold": 1
+		}
 		}
 		},
 		"binary_storage_config": {
 		"storage_type": "filesystem",
-		"target_directory": "data_storage",
-		"recreate_me": false
+		"target_directory": "data_storage"
 		},
 		"metadata_storage_config": {
 		"storage_type": "filesystem",
-		"target_directory": "data_storage",
-		"recreate_me": false
+		"target_directory": "data_storage"
 		},
 		"item_rule_config": {
 		"item_rule_type": "min_threshold_ratio_rule",
 		"expected_decision": "OK",
-		"threshold": 1,
-		"recreate_me": false
+		"threshold": 1
 		}
 		}
 		"""
