@@ -6,17 +6,8 @@ from edge_orchestrator.domain.ports.binary_storage.i_binary_storage_manager impo
     IBinaryStorageManager,
 )
 from edge_orchestrator.domain.ports.camera.i_camera_manager import ICameraManager
-from edge_orchestrator.domain.ports.camera_rule.i_camera_rule_manager import (
-    ICameraRuleManager,
-)
-from edge_orchestrator.domain.ports.item_rule.i_item_rule_manager import (
-    IItemRuleManager,
-)
 from edge_orchestrator.domain.ports.metadata_storage.i_metadata_storage_manager import (
     IMetadataStorageManager,
-)
-from edge_orchestrator.domain.ports.model_forwarder.i_model_forwarder_manager import (
-    IModelForwarderManager,
 )
 from edge_orchestrator.utils.singleton import SingletonMeta
 

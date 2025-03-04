@@ -1,7 +1,7 @@
-from edge_orchestrator.application.use_cases.data_gathering import DataGathering
 from fastapi import Depends, HTTPException
 
 from edge_orchestrator.application.config.config_manager import ConfigManager
+from edge_orchestrator.application.use_cases.data_gathering import DataGathering
 from edge_orchestrator.application.use_cases.supervisor import Supervisor
 from edge_orchestrator.domain.models.station_config import StationConfig
 from edge_orchestrator.domain.ports.binary_storage.i_binary_storage_factory import (
@@ -158,6 +158,7 @@ def get_supervisor(
         )
         manager.config_updated = False
     return supervisor
+
 
 def get_data_gathering(
     metadata_storage_manager: IMetadataStorageManager = Depends(get_metadata_storage_manager),

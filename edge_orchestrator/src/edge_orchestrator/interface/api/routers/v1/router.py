@@ -1,7 +1,6 @@
 from typing import Dict, List, Optional
 from uuid import UUID
 
-from edge_orchestrator.application.use_cases.data_gathering import DataGathering
 from fastapi import (
     APIRouter,
     BackgroundTasks,
@@ -12,6 +11,7 @@ from fastapi import (
 )
 
 from edge_orchestrator.application.config.config_manager import ConfigManager
+from edge_orchestrator.application.use_cases.data_gathering import DataGathering
 from edge_orchestrator.application.use_cases.supervisor import Supervisor
 from edge_orchestrator.domain.models.camera.camera_config import CameraConfig
 from edge_orchestrator.domain.models.image import Image
@@ -27,9 +27,9 @@ from edge_orchestrator.domain.ports.metadata_storage.i_metadata_storage_manager 
 from edge_orchestrator.interface.api.dependency_injection import (
     get_binary_storage_manager,
     get_config,
+    get_data_gathering,
     get_metadata_storage_manager,
     get_supervisor,
-    get_data_gathering
 )
 
 

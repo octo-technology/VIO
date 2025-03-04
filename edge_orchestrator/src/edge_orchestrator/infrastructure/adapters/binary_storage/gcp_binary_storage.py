@@ -26,9 +26,7 @@ class GCPBinaryStorage(IBinaryStorage):
     def save_item_binaries(self, item: Item):
         self._logger.info(f"Saving item binaries for item {item.id}")
         for camera_id, image in item.binaries.items():
-            blob = self._bucket.blob(
-                self._storing_path_manager.get_file_path(item.id, "jpg", camera_id).as_posix()
-            )
+            blob = self._bucket.blob(self._storing_path_manager.get_file_path(item.id, "jpg", camera_id).as_posix())
             if blob is None:
                 raise Exception("An image should be upload")
             blob.upload_from_string(image.image_bytes, content_type="image/jpg")
