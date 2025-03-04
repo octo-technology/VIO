@@ -1,7 +1,0 @@
-plugin: azure_rm
-include_vm_resource_groups:
-  - "{{ resource_group_name }}"
-auth_source: auto
-conditional_groups:
-  grafana: "'grafana' in computer_name"
-

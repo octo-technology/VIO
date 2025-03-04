@@ -27,21 +27,26 @@ from edge_orchestrator.domain.ports.metadata_storage.i_metadata_storage_manager 
 from edge_orchestrator.interface.api.dependency_injection import (
     get_binary_storage_manager,
     get_config,
-    get_metadata_storage_factory,
     get_data_gathering,
     get_metadata_storage_manager,
     get_supervisor,
 )
 
+router = APIRouter(prefix="/api/v1")
+router.add_api_route("/configs/active", get_config, methods=["GET"], response_model_exclude_none=True)
 
+
+@router.get("/")
 def home():
     return "the edge orchestrator is up and running"
 
 
+@router.get("/health/live")
 def get_health():
     return {"status": "ok"}
 
 
+@router.post("/configs/active", response_model=StationConfig, response_model_exclude_none=True)
 def set_config(
     station_name: Optional[str] = None,
     station_config: Optional[StationConfig] = None,
@@ -57,6 +62,7 @@ def set_config(
     return manager.get_config()
 
 
+@router.get("/configs", response_model=Dict[str, StationConfig], response_model_exclude_none=True)
 def get_all_configs(reload: Optional[bool] = False) -> Dict[str, StationConfig]:
     manager = ConfigManager()
     if reload:
@@ -67,6 +73,7 @@ def get_all_configs(reload: Optional[bool] = False) -> Dict[str, StationConfig]:
     return configs
 
 
+@router.get("/items", response_model=List[Item], response_model_exclude_none=True)
 def get_all_items_metadata(
     metadata_storage_manager: IMetadataStorageManager = Depends(get_metadata_storage_manager),
     station_config: StationConfig = Depends(get_config),
@@ -75,6 +82,7 @@ def get_all_items_metadata(
     return metadata_storage.get_all_items_metadata()
 
 
+@router.get("/items/{item_id}", response_model=Item, response_model_exclude_none=True)
 def get_item_metadata(
     item_id: UUID,
     metadata_storage_manager: IMetadataStorageManager = Depends(get_metadata_storage_manager),
@@ -84,6 +92,7 @@ def get_item_metadata(
     return metadata_storage.get_item_metadata(item_id)
 
 
+@router.get("/items/{item_id}/binaries", response_model=List[str])
 def get_item_binaries(
     item_id: UUID,
     binary_storage_manager: IBinaryStorageManager = Depends(get_binary_storage_manager),
@@ -93,6 +102,7 @@ def get_item_binaries(
     return binary_storage.get_item_binary_names(item_id)
 
 
+@router.get("/items/{item_id}/binaries/{camera_id}", response_model=bytes)
 def get_item_binary(
     item_id: UUID,
     camera_id: str,
@@ -103,6 +113,7 @@ def get_item_binary(
     return Response(content=binary_storage.get_item_binary(item_id, camera_id), media_type="image/jpeg")
 
 
+@router.get("/items/{item_id}/state", response_model=ItemState, response_model_exclude_none=True)
 def get_item_state(
     item_id: UUID,
     metadata_storage_manager: IMetadataStorageManager = Depends(get_metadata_storage_manager),
@@ -112,6 +123,7 @@ def get_item_state(
     return metadata_storage.get_item_metadata(item_id).state
 
 
+@router.post("/trigger", response_model=Dict[str, UUID])
 async def trigger_job(
     binaries: List[UploadFile] = [],
     cameras_metadata: Dict[str, CameraConfig] = {},
@@ -130,6 +142,7 @@ async def trigger_job(
     return {"item_id": item.id}
 
 
+@router.post("/data_gathering", response_model=Dict[str, UUID])
 async def data_gathering_job(
     class_name: str = None,
     binaries: List[UploadFile] = [],
@@ -151,47 +164,3 @@ async def data_gathering_job(
     )
     background_tasks.add_task(data_gathering.acquire, item, station_config)
     return {"item_id": item.id}
-
-
-async def upload_job(
-    class_name: Optional[str] = None,
-    binaries: List[UploadFile] = [],
-    cameras_metadata: Dict[str, CameraConfig] = {},
-    data_gathering: DataGathering = Depends(get_data_gathering),
-    station_config: StationConfig = Depends(get_config),
-    background_tasks: BackgroundTasks = None,
-):
-    # Set the class name on the config
-    if class_name is None:
-        class_name = "NA"
-    station_config.binary_storage_config.class_directory = class_name
-    station_config.metadata_storage_config.class_directory = class_name
-
-    items = []
-    for binary in binaries:
-        background_tasks.add_task(
-            data_gathering.upload,
-            Item(
-                cameras_metadata=cameras_metadata,
-                binaries={binary.filename: Image(image_bytes=await binary.read())},
-            ),
-            station_config,
-        )
-    return {"items_ids": [item.id for item in items]}
-
-
-router = APIRouter(prefix="/api/v1")
-router.add_api_route("/", home, methods=["GET"])
-router.add_api_route("/health/live", get_health, methods=["GET"])
-router.add_api_route("/items", get_all_items_metadata, methods=["GET"], response_model_exclude_none=True)
-router.add_api_route("/items/{item_id}", get_item_metadata, methods=["GET"], response_model_exclude_none=True)
-router.add_api_route("/items/{item_id}/binaries/{camera_id}", get_item_binary, methods=["GET"])
-router.add_api_route("/items/{item_id}/binaries", get_item_binaries, methods=["GET"])
-router.add_api_route("/items/{item_id}/state", get_item_state, methods=["GET"], response_model_exclude_none=True)
-router.add_api_route("/configs", get_all_configs, methods=["GET"], response_model_exclude_none=True)
-router.add_api_route("/configs/active", get_config, methods=["GET"], response_model_exclude_none=True)
-router.add_api_route("/configs/active", set_config, methods=["POST"], response_model_exclude_none=True)
-
-router.add_api_route("/trigger", trigger_job, methods=["POST"])
-router.add_api_route("/data_gathering", data_gathering_job, methods=["POST"])
-router.add_api_route("/upload", upload_job, methods=["POST"])

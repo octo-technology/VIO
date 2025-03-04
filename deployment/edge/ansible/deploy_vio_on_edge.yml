@@ -1,33 +1,10 @@
 - name: "Deploy vio on edge and launch"
   hosts: all
   tasks:
-    - name: Clone vio git repo
-      ansible.builtin.git:
-        repo: https://github.com/octo-technology/VIO.git
-        dest: "{{ REMOTE_VIO_DIR }}"
-        single_branch: yes
-        version: main
-        force: true
-
-    - name: Remove config folder
-      ansible.builtin.file:
-        path: "{{ REMOTE_VIO_DIR }}/edge_orchestrator/config"
-        state: absent
-
-    - name: Copy config on the remote machine
+    - name: Copy Makefile
       ansible.builtin.copy:
-        src:  "{{ LOCAL_VIO_DIR }}/edge_orchestrator/config"
-        dest: "{{ REMOTE_VIO_DIR }}/edge_orchestrator/"
-
-    - name: Remove model folder
-      ansible.builtin.file:
-        path: "{{ REMOTE_VIO_DIR }}/edge_model_serving/models"
-        state: absent
-
-    - name: Copy model file on the remote machine
-      ansible.builtin.copy:
-        src:  "{{ LOCAL_VIO_DIR }}/edge_model_serving/models/tflite"
-        dest: "{{ REMOTE_VIO_DIR }}/edge_model_serving/models/"
+        src: "{{ LOCAL_VIO_DIR }}/deployment/edge/ansible/files/Makefile"
+        dest: "{{ REMOTE_VIO_DIR }}/Makefile"
 
     - name: Template docker compose
       ansible.builtin.template:

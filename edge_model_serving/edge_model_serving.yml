@@ -1,0 +1,15 @@
+services:
+  edge_model_serving:
+    container_name: edge_model_serving
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        BUILDOS: ${BUILDOS:-linux}
+    volumes:
+      - ./models:/models
+    ports:
+      - 8501:8501
+    environment:
+      TF_CPP_MIN_VLOG_LEVEL: 0
+    profiles: [edge]

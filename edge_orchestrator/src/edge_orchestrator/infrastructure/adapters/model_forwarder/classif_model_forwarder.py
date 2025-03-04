@@ -53,6 +53,7 @@ class ClassifModelForwarder(IModelForwarder):
                 f"Number of classes in the model ({number_model_classes}) is different from"
                 "the number of predictions ({number_predictions_classes})"
             )
+
         return ClassifPrediction(
             prediction_type=PredictionType.class_,
             label=class_names[np.argmax(predictions)],
