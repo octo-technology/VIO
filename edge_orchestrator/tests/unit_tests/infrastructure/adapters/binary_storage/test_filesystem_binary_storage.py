@@ -99,8 +99,8 @@ class TestFileSystemBinaryStorage:
         item_storage_folder = target_directory / station_config.station_name
         item_storage_folder.mkdir(parents=True)
         with (
-            (item_storage_folder /f"{str(item_id)}_camera_#1.jpg").open("wb") as f1,
-            (item_storage_folder /f"{str(item_id)}_camera_#2.jpg").open("wb") as f2,
+            (item_storage_folder / f"{str(item_id)}_camera_#1.jpg").open("wb") as f1,
+            (item_storage_folder / f"{str(item_id)}_camera_#2.jpg").open("wb") as f2,
         ):
             f1.write(expected_picture)
             f2.write(expected_picture)
@@ -128,8 +128,8 @@ class TestFileSystemBinaryStorage:
         item_storage_folder = target_directory / station_config.station_name
         item_storage_folder.mkdir(parents=True)
         with (
-            (item_storage_folder /f"{str(item_id)}_camera_#1.jpg").open("wb") as f1,
-            (item_storage_folder /f"{str(item_id)}_camera_#2.jpg").open("wb") as f2,
+            (item_storage_folder / f"{str(item_id)}_camera_#1.jpg").open("wb") as f1,
+            (item_storage_folder / f"{str(item_id)}_camera_#2.jpg").open("wb") as f2,
         ):
             f1.write(expected_picture)
             f2.write(expected_picture)
@@ -155,7 +155,7 @@ class TestFileSystemBinaryStorage:
         item_id = UUID("00000000-0000-0000-0000-000000000001")
         item_storage_folder = target_directory / station_config.station_name
         item_storage_folder.mkdir(parents=True)
-        with (item_storage_folder /f"{str(item_id)}_camera_#1.jpg").open("wb") as f:
+        with (item_storage_folder / f"{str(item_id)}_camera_#1.jpg").open("wb") as f:
             f.write(expected_picture)
 
         # When
