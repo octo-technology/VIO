@@ -3,6 +3,7 @@ from enum import Enum
 
 class ModelName(str, Enum):
     fake_model = "fake_model"
+    efficientnet = "efficientnet_lite0"
     marker_quality_control = "marker_quality_control"
     pin_detection = "pin_detection"
     mobilenet_ssd_v2_coco = "mobilenet_ssd_v2_coco"

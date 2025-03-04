@@ -1,9 +1,0 @@
----
-
-- name: Configure SSH to ensure security
-  import_tasks: ssh.yml
-  tags: ssh
-
-- name: Install Grafana
-  import_tasks: grafana_install.yml
-  tags: grafana_install
