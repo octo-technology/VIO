@@ -22,12 +22,12 @@ class FileSystemBinaryStorage(IBinaryStorage):
 
     def save_item_binaries(self, item: Item):
         self._logger.info(f"Saving item binaries for item {item.id}")
-        path = self._storing_path_manager.get_storing_path(item.id)
+        path = self._storing_path_manager.get_storing_path()
         path.mkdir(parents=True, exist_ok=True)
         for camera_id, image in item.binaries.items():
             if image.image_bytes is None:
                 continue
-            filepath = path / f"{camera_id}.jpg"
+            filepath = self._storing_path_manager.get_file_path(item.id, "jpg", camera_id)
             item.binaries[camera_id].storing_path = filepath
             with filepath.open("wb") as f:
                 f.write(image.image_bytes)
@@ -36,7 +36,7 @@ class FileSystemBinaryStorage(IBinaryStorage):
         item.state = ItemState.SAVE_BINARIES
 
     def get_item_binaries(self, item_id: UUID) -> Dict[str, bytes]:
-        path = self._storing_path_manager.get_storing_path(item_id)
+        path = self._storing_path_manager.get_storing_path()
         item_binaries = {}
         for extension in ImageExtension:
             for binary_path in path.glob(f"*.{extension.value}"):
@@ -45,7 +45,7 @@ class FileSystemBinaryStorage(IBinaryStorage):
         return item_binaries
 
     def get_item_binary_names(self, item_id: UUID) -> List[str]:
-        path = self._storing_path_manager.get_storing_path(item_id)
+        path = self._storing_path_manager.get_storing_path()
         item_binaries = []
         for extension in ImageExtension:
             for binary_path in path.glob(f"*.{extension.value}"):
@@ -53,7 +53,7 @@ class FileSystemBinaryStorage(IBinaryStorage):
         return item_binaries
 
     def get_item_binary(self, item_id: UUID, camera_id: str) -> bytes:
-        filepath = self._storing_path_manager.get_storing_path(item_id) / f"{camera_id}.jpg"
+        filepath = self._storing_path_manager.get_file_path(item_id, "jpg", camera_id)
         # TODO: test with non existing item binary
         if not filepath.exists():
             raise HTTPException(status_code=400, detail=f"The item {item_id} has no binary for {camera_id}")

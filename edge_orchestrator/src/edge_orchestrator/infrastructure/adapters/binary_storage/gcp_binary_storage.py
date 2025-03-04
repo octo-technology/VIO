@@ -27,7 +27,7 @@ class GCPBinaryStorage(IBinaryStorage):
         self._logger.info(f"Saving item binaries for item {item.id}")
         for camera_id, image in item.binaries.items():
             blob = self._bucket.blob(
-                (self._storing_path_manager.get_storing_path(item.id) / f"{camera_id}.jpg").as_posix()
+                self._storing_path_manager.get_file_path(item.id, "jpg", camera_id).as_posix()
             )
             if blob is None:
                 raise Exception("An image should be upload")
@@ -38,14 +38,14 @@ class GCPBinaryStorage(IBinaryStorage):
 
     def get_item_binary_names(self, item_id: UUID) -> List[str]:
         binaries = []
-        for blob in self._bucket.list_blobs(self._storing_path_manager.get_storing_path(item_id)):
+        for blob in self._bucket.list_blobs(self._storing_path_manager.get_storing_path()):
             if item_id in blob.name:
                 binaries.append(blob.name)
         return binaries
 
     def get_item_binaries(self, item_id: UUID) -> Dict[str, bytes]:
         binaries = {}
-        for blob in self._bucket.list_blobs(prefix=self._storing_path_manager.get_storing_path(item_id).as_posix()):
+        for blob in self._bucket.list_blobs(prefix=self._storing_path_manager.get_storing_path().as_posix()):
             if item_id in blob.name:
                 binary = blob.download_as_bytes()
                 camera_id = Path(blob.name).stem
@@ -53,7 +53,7 @@ class GCPBinaryStorage(IBinaryStorage):
         return binaries
 
     def get_item_binary(self, item_id: UUID, camera_id: str) -> bytes:
-        filename = (self._storing_path_manager.get_storing_path(item_id) / f"{camera_id}.jpg").as_posix()
+        filename = (self._storing_path_manager.get_file_path(item_id, "jpg", camera_id)).as_posix()
         blob = self._bucket.get_blob(filename)
         if blob is None:
             raise HTTPException(status_code=400, detail=f"The item {item_id} has no binary for {camera_id}")

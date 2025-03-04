@@ -27,7 +27,7 @@ class TestFileSystemBinaryStorage:
         binary_storage.save_item_binaries(item)
 
         # Then
-        assert len(list((target_directory / station_config.station_name / str(item.id)).iterdir())) == 0
+        assert len(list((target_directory / station_config.station_name).iterdir())) == 0
 
     def test_save_item_binaries_should_write_images_on_filesystem(self, tmp_path: Path, station_config: StationConfig):
         # Given
@@ -52,8 +52,8 @@ class TestFileSystemBinaryStorage:
 
         # Then
         path_to_pictures = [
-            target_directory / station_config.station_name / str(item.id) / "camera_#1.jpg",
-            target_directory / station_config.station_name / str(item.id) / "camera_#2.jpg",
+            target_directory / station_config.station_name / f"{str(item.id)}_camera_#1.jpg",
+            target_directory / station_config.station_name / f"{str(item.id)}_camera_#2.jpg",
         ]
         for path_to_picture in path_to_pictures:
             assert path_to_picture.is_file()
@@ -81,7 +81,7 @@ class TestFileSystemBinaryStorage:
         binary_storage.save_item_binaries(item)
 
         # Then
-        path_to_picture = target_directory / station_config.station_name / str(item.id) / "camera_#1.jpg"
+        path_to_picture = target_directory / station_config.station_name / f"{str(item.id)}_camera_#1.jpg"
         assert path_to_picture.is_file()
         actual_picture = path_to_picture.open("rb").read()
         assert actual_picture == expected_picture
@@ -96,15 +96,15 @@ class TestFileSystemBinaryStorage:
 
         expected_picture = bytes([0, 1, 2, 3, 4])
         item_id = UUID("00000000-0000-0000-0000-000000000001")
-        item_storage_folder = target_directory / station_config.station_name / str(item_id)
+        item_storage_folder = target_directory / station_config.station_name
         item_storage_folder.mkdir(parents=True)
         with (
-            (item_storage_folder / "camera_#1.jpg").open("wb") as f1,
-            (item_storage_folder / "camera_#2.jpg").open("wb") as f2,
+            (item_storage_folder /f"{str(item_id)}_camera_#1.jpg").open("wb") as f1,
+            (item_storage_folder /f"{str(item_id)}_camera_#2.jpg").open("wb") as f2,
         ):
             f1.write(expected_picture)
             f2.write(expected_picture)
-        expected_camera_ids = ["camera_#1", "camera_#2"]
+        expected_camera_ids = [f"{str(item_id)}_camera_#1", f"{str(item_id)}_camera_#2"]
 
         # When
         actual_binaries = binary_storage.get_item_binaries(item_id)
@@ -125,15 +125,15 @@ class TestFileSystemBinaryStorage:
 
         expected_picture = bytes([0, 1, 2, 3, 4])
         item_id = UUID("00000000-0000-0000-0000-000000000001")
-        item_storage_folder = target_directory / station_config.station_name / str(item_id)
+        item_storage_folder = target_directory / station_config.station_name
         item_storage_folder.mkdir(parents=True)
         with (
-            (item_storage_folder / "camera_#1.jpg").open("wb") as f1,
-            (item_storage_folder / "camera_#2.jpg").open("wb") as f2,
+            (item_storage_folder /f"{str(item_id)}_camera_#1.jpg").open("wb") as f1,
+            (item_storage_folder /f"{str(item_id)}_camera_#2.jpg").open("wb") as f2,
         ):
             f1.write(expected_picture)
             f2.write(expected_picture)
-        expected_binary_names = ["camera_#1.jpg", "camera_#2.jpg"]
+        expected_binary_names = [f"{str(item_id)}_camera_#1.jpg", f"{str(item_id)}_camera_#2.jpg"]
 
         # When
         actual_binary_names = binary_storage.get_item_binary_names(item_id)
@@ -153,9 +153,9 @@ class TestFileSystemBinaryStorage:
 
         expected_picture = bytes([0, 1, 2, 3, 4])
         item_id = UUID("00000000-0000-0000-0000-000000000001")
-        item_storage_folder = target_directory / station_config.station_name / str(item_id)
+        item_storage_folder = target_directory / station_config.station_name
         item_storage_folder.mkdir(parents=True)
-        with (item_storage_folder / "camera_#1.jpg").open("wb") as f:
+        with (item_storage_folder /f"{str(item_id)}_camera_#1.jpg").open("wb") as f:
             f.write(expected_picture)
 
         # When

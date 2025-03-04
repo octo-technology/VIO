@@ -11,6 +11,7 @@ class StorageConfig(BaseModel):
     storage_type: StorageType = StorageType.FILESYSTEM
     bucket_name: Optional[str] = os.getenv("BUCKET_NAME", None)
     target_directory: Path = Path(os.getenv("EDGE_NAME", "data_storage"))
+    class_directory: Optional[str] = None
 
     @model_validator(mode="after")
     def check_params(self):
