@@ -26,7 +26,7 @@
         </v-expansion-panels>
       </v-col>
     </v-row>
-    <v-snackbar v-model="snackbar" :color="snackbarColor" :timeout="snackbarTimeout" class="snackbar-alert">
+    <v-snackbar v-model="snackbar" :color="snackbarColor" :timeout="snackbarTimeout" class="snackbar-alert" top center>
       {{ snackbarMessage }}
     </v-snackbar>
   </v-container>
