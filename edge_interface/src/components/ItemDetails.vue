@@ -60,12 +60,6 @@
                     <v-list-item-subtitle>{{ camera.camera_resolution.width }}x{{ camera.camera_resolution.height }}</v-list-item-subtitle>
                   </v-list-item-content>
                 </v-list-item>
-                <v-list-item v-if="camera.recreate_me">
-                  <v-list-item-content>
-                    <v-list-item-title>Recreate Me</v-list-item-title>
-                    <v-list-item-subtitle>{{ camera.recreate_me }}</v-list-item-subtitle>
-                  </v-list-item-content>
-                </v-list-item>
               </v-list>
               <div>
                 <h4>Model Details</h4>
@@ -100,12 +94,6 @@
                       <v-list-item-subtitle><a :href="camera.model_forwarder_config.model_serving_url" target="_blank">{{ camera.model_forwarder_config.model_serving_url }}</a></v-list-item-subtitle>
                     </v-list-item-content>
                   </v-list-item>
-                  <v-list-item v-if="camera.model_forwarder_config.recreate_me">
-                    <v-list-item-content>
-                      <v-list-item-title>Recreate Me</v-list-item-title>
-                      <v-list-item-subtitle>{{ camera.model_forwarder_config.recreate_me }}</v-list-item-subtitle>
-                    </v-list-item-content>
-                  </v-list-item>
                 </v-list>
               </div>
               <v-list dense>
@@ -113,6 +101,30 @@
                   <v-list-item-content>
                     <v-list-item-title>Rule</v-list-item-title>
                     <v-list-item-subtitle>{{ camera.camera_rule_config.camera_rule_type }}</v-list-item-subtitle>
+                  </v-list-item-content>
+                </v-list-item>
+                <v-list-item v-if="camera.camera_rule_config.expected_class">
+                  <v-list-item-content>
+                    <v-list-item-title>Expected Class</v-list-item-title>
+                    <v-list-item-subtitle>{{ camera.camera_rule_config.expected_class }}</v-list-item-subtitle>
+                  </v-list-item-content>
+                </v-list-item>
+                <v-list-item v-if="camera.camera_rule_config.unexpected_class">
+                  <v-list-item-content>
+                    <v-list-item-title>Unexpected Class</v-list-item-title>
+                    <v-list-item-subtitle>{{ camera.camera_rule_config.unexpected_class }}</v-list-item-subtitle>
+                  </v-list-item-content>
+                </v-list-item>
+                <v-list-item v-if="camera.camera_rule_config.class_to_detect">
+                  <v-list-item-content>
+                    <v-list-item-title>Class to Detect</v-list-item-title>
+                    <v-list-item-subtitle>{{ camera.camera_rule_config.class_to_detect }}</v-list-item-subtitle>
+                  </v-list-item-content>
+                </v-list-item>
+                <v-list-item v-if="camera.camera_rule_config.threshold">
+                  <v-list-item-content>
+                    <v-list-item-title>Threshold</v-list-item-title>
+                    <v-list-item-subtitle>{{ camera.camera_rule_config.threshold }}</v-list-item-subtitle>
                   </v-list-item-content>
                 </v-list-item>
                 <v-list-item v-if="item.camera_decisions && item.camera_decisions[camera.camera_id]">
@@ -127,20 +139,20 @@
                   Predictions
                   <v-icon>{{ showPredictions[cameraId] ? 'mdi-eye-off' : 'mdi-eye' }}</v-icon>
                 </h4>
-                <v-list dense v-if="showPredictions[cameraId] && item.predictions && item.predictions[cameraId]">
-                  <v-list-item v-if="item.predictions[cameraId].prediction_type === 'class'">
+                <v-list dense v-if="showPredictions[cameraId]">
+                  <v-list-item v-if="item.predictions && item.predictions[cameraId]">
                     <v-list-item-content>
                       <v-list-item-title>Label</v-list-item-title>
                       <v-list-item-subtitle>{{ item.predictions[cameraId].label }}</v-list-item-subtitle>
                     </v-list-item-content>
                   </v-list-item>
-                  <v-list-item v-if="item.predictions[cameraId].prediction_type === 'class'">
+                  <v-list-item v-if="item.predictions && item.predictions[cameraId]">
                     <v-list-item-content>
                       <v-list-item-title>Probability</v-list-item-title>
                       <v-list-item-subtitle>{{ item.predictions[cameraId].probability }}</v-list-item-subtitle>
                     </v-list-item-content>
                   </v-list-item>
-                  <v-list-item v-if="item.predictions[cameraId].prediction_type === 'objects'">
+                  <v-list-item v-if="item.predictions && item.predictions[cameraId] && item.predictions[cameraId].prediction_type === 'objects'">
                     <v-list-item-content>
                       <v-list-item-title>Detected Objects</v-list-item-title>
                       <v-list-item-subtitle>
@@ -165,6 +177,11 @@
                           </v-list-item>
                         </v-list>
                       </v-list-item-subtitle>
+                    </v-list-item-content>
+                  </v-list-item>
+                  <v-list-item v-if="!item.predictions || !item.predictions[cameraId]">
+                    <v-list-item-content>
+                      <v-list-item-title>No Predictions Available</v-list-item-title>
                     </v-list-item-content>
                   </v-list-item>
                 </v-list>

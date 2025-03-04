@@ -15,7 +15,7 @@
           <v-expansion-panel v-for="config in configs" :key="config.station_name">
             <v-expansion-panel-header>
               <div class="d-flex justify-space-between align-center w-100">
-                <span>Config: {{ config.station_name }}</span>
+                <span>{{ config.station_name }}</span>
                 <v-icon @click.stop="setActiveConfig(config.station_name)" small color="primary">mdi-check</v-icon>
               </div>
             </v-expansion-panel-header>

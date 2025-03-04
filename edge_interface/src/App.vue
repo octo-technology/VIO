@@ -22,9 +22,6 @@
           <v-list-item @click="$router.push('/configs')">
             <v-list-item-title>View all configs</v-list-item-title>
           </v-list-item>
-          <v-list-item @click="$router.push('/configs/new')">
-            <v-list-item-title>Create New Config</v-list-item-title>
-          </v-list-item>
           <v-list-item @click="$router.push('/configs/active')">
             <v-list-item-title>See active config</v-list-item-title>
           </v-list-item>
