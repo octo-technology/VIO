@@ -1,3 +1,4 @@
+from edge_orchestrator.application.use_cases.data_gathering import DataGathering
 from fastapi import Depends, HTTPException
 
 from edge_orchestrator.application.config.config_manager import ConfigManager
@@ -157,3 +158,13 @@ def get_supervisor(
         )
         manager.config_updated = False
     return supervisor
+
+def get_data_gathering(
+    metadata_storage_manager: IMetadataStorageManager = Depends(get_metadata_storage_manager),
+    binary_storage_manager: IBinaryStorageManager = Depends(get_binary_storage_manager),
+    camera_manager: ICameraManager = Depends(get_camera_manager),
+    station_config: StationConfig = Depends(get_config),
+) -> DataGathering:
+    data_gathering = DataGathering(metadata_storage_manager, binary_storage_manager, camera_manager)
+    data_gathering._camera_manager.create_cameras(station_config)
+    return data_gathering
