@@ -32,6 +32,8 @@ class GCPBinaryStorage(IBinaryStorage):
             if blob is None:
                 raise Exception("An image should be upload")
             blob.upload_from_string(image.image_bytes, content_type="image/jpg")
+            self._logger.info(f"Image for camera {camera_id} saved as {blob.name}")
+        self._logger.info(f"Item binaries saved for item {item.id}!")
         item.state = ItemState.SAVE_BINARIES
 
     def get_item_binary_names(self, item_id: UUID) -> List[str]:

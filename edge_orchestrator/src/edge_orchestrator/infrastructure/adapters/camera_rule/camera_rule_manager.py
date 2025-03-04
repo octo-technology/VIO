@@ -22,7 +22,7 @@ class CameraRuleManager(ICameraRuleManager):
 
     def _get_camera_rule(self, camera_rule_config: CameraRuleConfig) -> ICameraRule:
         camera_rule_type = camera_rule_config.camera_rule_type
-        if camera_rule_type not in self._camera_rules or camera_rule_config.recreate_me:
+        if camera_rule_type not in self._camera_rules:
             camera_rule = self._camera_rule_factory.create_camera_rule(camera_rule_config)
             self._camera_rules[camera_rule_type] = camera_rule
         return self._camera_rules[camera_rule_type]
@@ -36,4 +36,8 @@ class CameraRuleManager(ICameraRuleManager):
                 self._logger.warning(f"Camera {camera_id} has no prediction to apply camera rule.")
             else:
                 item.camera_decisions[camera_id] = camera_rule.apply_camera_rule(item.predictions[camera_id])
+                self._logger.info(f"Camera rule applied for camera {camera_id}!")
         item.state = ItemState.CAMERA_RULE
+
+    def reset(self):
+        self._camera_rules = {}

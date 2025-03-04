@@ -39,17 +39,19 @@ def get_health():
     return {"status": "ok"}
 
 
-def set_config(station_name: Optional[str] = None, station_config: Optional[StationConfig] = None) -> StationConfig:
+def set_config(
+    station_name: Optional[str] = None,
+    station_config: Optional[StationConfig] = None,
+) -> StationConfig:
     if (station_name and station_config) or (station_name is None and station_config is None):
         raise HTTPException(status_code=422, detail="Either provide a station_name or a StationConfig (exclusive)")
 
     manager = ConfigManager()
     if station_name:
         manager.set_config_by_name(station_name)
-        return manager.get_config()
     if station_config:
         manager.set_config(station_config)
-        return manager.get_config()
+    return manager.get_config()
 
 
 def get_all_configs(reload: Optional[bool] = False) -> Dict[str, StationConfig]:

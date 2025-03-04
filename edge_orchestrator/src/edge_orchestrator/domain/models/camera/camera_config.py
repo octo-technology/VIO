@@ -23,7 +23,6 @@ class CameraConfig(BaseModel):
     camera_resolution: Optional[ImageResolution] = None
     model_forwarder_config: Optional[ModelForwarderConfig] = None
     camera_rule_config: Optional[CameraRuleConfig] = None
-    recreate_me: Optional[bool] = False
 
     @model_validator(mode="after")
     def check_params(self):

@@ -17,3 +17,7 @@ class IItemRuleManager(ABC):
     @abstractmethod
     def get_item_rule(self, item_rule_config: ItemRuleConfig) -> IItemRule:
         pass
+
+    @abstractmethod
+    def reset(self):
+        pass
