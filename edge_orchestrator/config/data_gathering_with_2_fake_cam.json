@@ -5,23 +5,19 @@
             "camera_id": "camera_1",
             "camera_type": "fake",
             "source_directory": "fake_images/marker_images",
-            "position": "front",
-            "recreate_me": true
+            "position": "front"
         },
         "camera_2": {
             "camera_id": "camera_2",
             "camera_type": "fake",
             "source_directory": "fake_images/marker_images",
-            "position": "front",
-            "recreate_me": true
+            "position": "front"
         }
     },
     "binary_storage_config": {
-        "storage_type": "gcp",
-        "recreate_me": false
+        "storage_type": "gcp"
     },
     "metadata_storage_config": {
-        "storage_type": "gcp",
-        "recreate_me": false
+        "storage_type": "gcp"
     }
 }
