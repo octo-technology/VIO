@@ -164,8 +164,15 @@ def get_data_gathering(
     metadata_storage_manager: IMetadataStorageManager = Depends(get_metadata_storage_manager),
     binary_storage_manager: IBinaryStorageManager = Depends(get_binary_storage_manager),
     camera_manager: ICameraManager = Depends(get_camera_manager),
-    station_config: StationConfig = Depends(get_config),
+    binary_storage_factory: IBinaryStorageFactory = Depends(get_binary_storage_factory),
+    metadata_storage_factory: IMetadataStorageFactory = Depends(get_metadata_storage_factory),
 ) -> DataGathering:
     data_gathering = DataGathering(metadata_storage_manager, binary_storage_manager, camera_manager)
-    data_gathering._camera_manager.create_cameras(station_config)
+    manager = ConfigManager()
+    if manager.config_updated:
+        data_gathering.reset_managers(
+            binary_storage_factory,
+            metadata_storage_factory,
+        )
+        manager.config_updated = False
     return data_gathering

@@ -120,7 +120,7 @@ async def trigger_job(
 ):
     input_binaries = {}
     for binary in binaries:
-        input_binaries[binary.filename] = Image(image_bytes=binary.read())
+        input_binaries[binary.filename] = Image(image_bytes=await binary.read())
     item = Item(
         cameras_metadata=cameras_metadata,
         binaries=input_binaries,
@@ -137,14 +137,13 @@ async def data_gathering_job(
     station_config: StationConfig = Depends(get_config),
     background_tasks: BackgroundTasks = None,
 ):
-    print("class_name", class_name)
     # Set the class name on the config
     station_config.binary_storage_config.class_directory = class_name
     station_config.metadata_storage_config.class_directory = class_name
 
     input_binaries = {}
     for binary in binaries:
-        input_binaries[binary.filename] = Image(image_bytes=binary.read())
+        input_binaries[binary.filename] = Image(image_bytes=await binary.read())
     item = Item(
         cameras_metadata=cameras_metadata,
         binaries=input_binaries,

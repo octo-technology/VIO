@@ -28,4 +28,3 @@ class StoringPathManager:
 
     def set(self, storage_config: StorageConfig, station_name: str):
         self._storage_config = storage_config
-        self.station_name = station_name
