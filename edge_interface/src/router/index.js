@@ -5,7 +5,6 @@ import AllConfigsView from '@/components/AllConfigsView.vue';
 import ItemDetailView from '@/components/ItemDetailView.vue';
 import TriggerView from '@/components/TriggerView.vue';
 import ActiveConfigView from '@/components/ActiveConfigView.vue';
-import NewConfigView from '@/components/NewConfigView.vue';
 
 Vue.use(Router);
 
@@ -36,11 +35,6 @@ export default new Router({
       path: '/configs/active',
       name: 'ActiveConfigView',
       component: ActiveConfigView
-    },
-    {
-      path: '/configs/new',
-      name: 'NewConfigView',
-      component: NewConfigView
     }
   ]
 });

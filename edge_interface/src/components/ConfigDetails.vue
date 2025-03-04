@@ -36,12 +36,6 @@
                   <v-list-item-subtitle>{{ cameraConfig.position }}</v-list-item-subtitle>
                 </v-list-item-content>
               </v-list-item>
-              <v-list-item v-if="cameraConfig.recreate_me">
-                <v-list-item-content>
-                  <v-list-item-title>Recreate Camera</v-list-item-title>
-                  <v-list-item-subtitle>{{ cameraConfig.recreate_me }}</v-list-item-subtitle>
-                </v-list-item-content>
-              </v-list-item>
             </v-list>
             <h3>Model Forwarder Config</h3>
             <v-list dense>
@@ -87,12 +81,6 @@
                   <v-list-item-subtitle>{{ cameraConfig.model_forwarder_config.model_id }}</v-list-item-subtitle>
                 </v-list-item-content>
               </v-list-item>
-              <v-list-item v-if="cameraConfig.model_forwarder_config.recreate_me">
-                <v-list-item-content>
-                  <v-list-item-title>Recreate Model</v-list-item-title>
-                  <v-list-item-subtitle>{{ cameraConfig.model_forwarder_config.recreate_me }}</v-list-item-subtitle>
-                </v-list-item-content>
-              </v-list-item>
             </v-list>
             <h3>Camera Rule Config</h3>
             <v-list dense v-if="cameraConfig.camera_rule_config">
@@ -126,12 +114,6 @@
                   <v-list-item-subtitle>{{ cameraConfig.camera_rule_config.threshold }}</v-list-item-subtitle>
                 </v-list-item-content>
               </v-list-item>
-              <v-list-item v-if="cameraConfig.camera_rule_config.recreate_me">
-                <v-list-item-content>
-                  <v-list-item-title>Recreate Rule</v-list-item-title>
-                  <v-list-item-subtitle>{{ cameraConfig.camera_rule_config.recreate_me }}</v-list-item-subtitle>
-                </v-list-item-content>
-              </v-list-item>
             </v-list>
           </v-col>
         </v-row>
@@ -153,12 +135,6 @@
                   <v-list-item-subtitle>{{ config.binary_storage_config.target_directory }}</v-list-item-subtitle>
                 </v-list-item-content>
               </v-list-item>
-              <v-list-item v-if="config.binary_storage_config.recreate_me">
-                <v-list-item-content>
-                  <v-list-item-title>Recreate Binary Storage</v-list-item-title>
-                  <v-list-item-subtitle>{{ config.binary_storage_config.recreate_me }}</v-list-item-subtitle>
-                </v-list-item-content>
-              </v-list-item>
             </v-list>
           </v-col>
           <v-col cols="12" md="6">
@@ -174,12 +150,6 @@
                 <v-list-item-content>
                   <v-list-item-title>Target Directory</v-list-item-title>
                   <v-list-item-subtitle>{{ config.metadata_storage_config.target_directory }}</v-list-item-subtitle>
-                </v-list-item-content>
-              </v-list-item>
-              <v-list-item v-if="config.metadata_storage_config.recreate_me">
-                <v-list-item-content>
-                  <v-list-item-title>Recreate Metadata Storage</v-list-item-title>
-                  <v-list-item-subtitle>{{ config.metadata_storage_config.recreate_me }}</v-list-item-subtitle>
                 </v-list-item-content>
               </v-list-item>
             </v-list>
@@ -205,12 +175,6 @@
             <v-list-item-content>
               <v-list-item-title>Threshold</v-list-item-title>
               <v-list-item-subtitle>{{ config.item_rule_config.threshold }}</v-list-item-subtitle>
-            </v-list-item-content>
-          </v-list-item>
-          <v-list-item v-if="config.item_rule_config.recreate_me">
-            <v-list-item-content>
-              <v-list-item-title>Recreate Item Rule</v-list-item-title>
-              <v-list-item-subtitle>{{ config.item_rule_config.recreate_me }}</v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
         </v-list>
