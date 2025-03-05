@@ -189,7 +189,11 @@
             </v-card-subtitle>
             <v-card-text>
               <div class="image-container">
-                <v-img :src="getImageUrl(item.id, camera.camera_id)" class="image"></v-img>
+                <v-img :src="getImageUrl(item.id, camera.camera_id)" class="image" @error="handleImageError(camera.camera_id)">
+                  <div v-if="imageErrors[camera.camera_id]" class="no-image-placeholder">
+                  No image found
+                </div>
+                </v-img>
                 <div v-if="camera.model_forwarder_config.model_type === 'classification'" class="overlay">
                   <p class="classification-label" v-if="item.predictions && item.predictions[cameraId] && item.predictions[cameraId].label">{{ item.predictions[cameraId].label }}</p>
                 </div>
@@ -220,12 +224,16 @@ export default {
   },
   data() {
     return {
-      showPredictions: {}
+      showPredictions: {},
+      imageErrors: {}
     };
   },
   methods: {
     getImageUrl(itemId, cameraId) {
       return ApiService.getItemImage(itemId, cameraId);
+    },
+    handleImageError(cameraId) {
+      this.$set(this.imageErrors, cameraId, true);
     },
     getBoundingBoxStyle(location) {
       const [x1, y1, x2, y2] = location;
@@ -317,5 +325,14 @@ export default {
 
 .reduced-spacing .v-row {
   margin-bottom: 8px; /* Adjust this value to reduce the space between rows */
+}
+
+.no-image-placeholder {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  color: red;
+  font-weight: bold;
 }
 </style>
