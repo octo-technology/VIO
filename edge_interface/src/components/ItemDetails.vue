@@ -261,10 +261,6 @@ export default {
   justify-content: center;
 }
 
-.max-width-500 {
-  max-width: 500px;
-}
-
 .image-container {
   position: relative;
 }

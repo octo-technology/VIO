@@ -2,14 +2,14 @@
 
 <template>
   <v-container>
-    <v-row v-if="error">
+    <v-row>
       <v-col cols="12" class="d-flex justify-center">
-        <v-alert type="error" dismissible @input="error = false" class="alert-box">
-          {{ errorMessage }}
+        <v-alert v-model="snackbar" :type="snackbarColor" dismissible @input="snackbar = false" class="alert-box">
+          {{ snackbarMessage }}
         </v-alert>
       </v-col>
     </v-row>
-    <v-row v-else>
+    <v-row v-if="!error">
       <v-col cols="12">
         <v-expansion-panels popout>
           <v-expansion-panel v-for="config in configs" :key="config.station_name">
@@ -26,9 +26,6 @@
         </v-expansion-panels>
       </v-col>
     </v-row>
-    <v-snackbar v-model="snackbar" :color="snackbarColor" :timeout="snackbarTimeout" class="snackbar-alert" top center>
-      {{ snackbarMessage }}
-    </v-snackbar>
   </v-container>
 </template>
 
@@ -50,11 +47,14 @@ export default {
       snackbar: false,
       snackbarMessage: '',
       snackbarColor: '',
-      snackbarTimeout: 3000
+      alert: true,
     };
   },
   created() {
     this.fetchConfigs();
+    setTimeout(()=>{
+      this.alert=false
+    },5000)
   },
   computed: {
     configOptions() {
@@ -73,8 +73,9 @@ export default {
         .catch(error => {
           console.error('Error fetching configs:', error);
           const detail = error.response && error.response.data && error.response.data.detail;
-          this.errorMessage = 'Error fetching configs: ' + (detail || error.message || 'Unknown error');
-          this.error = true;
+          this.snackbarMessage = 'Error fetching configs: ' + (detail || error.message || 'Unknown error');
+          this.snackbarColor = 'error';
+          this.snackbar = true;
           this.configs = [];
         });
     },
@@ -82,13 +83,14 @@ export default {
       ApiService.setActiveConfigByName(stationName)
         .then(response => {
           console.log('Active config set successfully:', response.data);
-          this.snackbarMessage = 'Config activated successfully';
+          this.snackbarMessage = `Config "${stationName}" activated successfully`;
           this.snackbarColor = 'success';
           this.snackbar = true;
+          setTimeout(()=>{this.snackbar=false}, 3000);
         })
         .catch(error => {
           console.error('Error setting active config:', error);
-          this.snackbarMessage = 'Error setting active config';
+          this.snackbarMessage = `Error setting active config "${stationName}"`;
           this.snackbarColor = 'error';
           this.snackbar = true;
         });
@@ -98,17 +100,9 @@ export default {
 </script>
 
 <style scoped>
-.max-width-500 {
-  max-width: 500px;
-}
-
 .alert-box {
-  max-width: 600px;
+  max-width: 700px;
   width: 100%;
 }
 
-.snackbar-alert {
-  max-width: 600px;
-  width: 100%;
-}
 </style>
