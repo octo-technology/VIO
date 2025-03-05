@@ -58,6 +58,9 @@ jobs:
           - dockerfile: ./edge_model_serving/tf_serving/Dockerfile
             image: ghcr.io/${{ github.repository }}/edge_model_serving
             context: ./edge_model_serving
+          - dockerfile: ./edge_model_serving/torch_serving/Dockerfile
+            image: ghcr.io/${{ github.repository }}/edge_torch_serving
+            context: ./edge_model_serving
     uses: ./.github/workflows/template_build_and_push_docker_images.yml
     with:
       context: ${{ matrix.context }}
