@@ -9,6 +9,7 @@ from ai_edge_litert.interpreter import Interpreter
 def create_interpreter(model_path: str) -> Interpreter:
     interpreter = Interpreter(model_path=model_path)
     interpreter.allocate_tensors()
+    logging.info(f"Loaded model {model_path.parent.name} from {model_path.resolve()}")
     return interpreter
 
 
