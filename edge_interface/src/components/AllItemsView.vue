@@ -2,19 +2,17 @@
   <v-container>
     <v-row>
       <v-col cols="12" class="d-flex justify-center">
+        <v-alert v-if="items.length === 0" type="info" class="alert-box">
+          No data available
+        </v-alert>
+      </v-col>
+      <v-col cols="12" class="d-flex justify-center">
         <v-alert v-if="error" type="error" dismissible @input="error = false" class="alert-box">
           {{ errorMessage }}
         </v-alert>
       </v-col>
     </v-row>
-    <v-row v-if="items.length === 0">
-      <v-col cols="12" class="d-flex justify-center">
-        <v-alert type="info" class="alert-box">
-          No data available
-        </v-alert>
-      </v-col>
-    </v-row>
-    <v-row v-else>
+    <v-row v-if="items.length !== 0">
       <v-col v-for="item in items" :key="item.id" cols="12" md="3">
         <v-card @click="goToItemDetail(item.id)" class="cursor-pointer item-card">
           <v-card-title>
@@ -158,8 +156,7 @@ export default {
 }
 
 .alert-box {
-  max-width: 600px;
-  /* Adjust the width as needed */
+  max-width: 700px;
   width: 100%;
 }
 

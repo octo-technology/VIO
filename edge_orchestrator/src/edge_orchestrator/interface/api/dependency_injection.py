@@ -101,12 +101,6 @@ def get_config() -> StationConfig:
     return config
 
 
-def get_metadata_storing_path_manager(
-    station_config: StationConfig = Depends(get_config),
-) -> StoringPathManager:
-    return StoringPathManager(station_config.metadata_storage_config, station_config.station_name)
-
-
 def get_binary_storage_factory(
     station_config: StationConfig = Depends(get_config),
 ) -> IBinaryStorageFactory:
@@ -120,9 +114,11 @@ def get_binary_storage_manager(
 
 
 def get_metadata_storage_factory(
-    storing_path_manager: StoringPathManager = Depends(get_metadata_storing_path_manager),
+    station_config: StationConfig = Depends(get_config),
 ) -> IMetadataStorageFactory:
-    return MetadataStorageFactory(storing_path_manager)
+    return MetadataStorageFactory(
+        StoringPathManager(station_config.metadata_storage_config, station_config.station_name)
+    )
 
 
 def get_metadata_storage_manager(

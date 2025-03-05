@@ -65,8 +65,7 @@ export default {
 
 <style scoped>
 .alert-box {
-  max-width: 600px;
-  /* Adjust the width as needed */
+  max-width: 700px;
   width: 100%;
 }
 </style>
