@@ -70,7 +70,10 @@ def main():
             st.session_state.item_id = item_id
             col3.write(f"item id: {item_id}")
 
-    columns = st.columns(2)
+    number_cameras = len(active_config["camera_configs"].keys())
+    number_columns = number_cameras * 2 + 1
+    columns = st.columns(number_columns)
+    odd_numbers = [idx for idx in range(1, number_columns, 2)]
 
     if st.session_state.item_id and (st.session_state.active_config is not None):
         time.sleep(5)
@@ -90,7 +93,8 @@ def main():
             return
         
         cameras = list(camera_configs.keys())
-        for i, camera_id in enumerate(cameras):
+        for idx, camera_id in enumerate(cameras):
+            odd_idx = odd_numbers[idx]
             url_binaries = (
                 URL_ORCH + f"items/{st.session_state.item_id}/binaries/{camera_id}"
             )
@@ -99,13 +103,19 @@ def main():
             # If metadata is not empty, we plot the predictions
             camera_id_has_been_pinged = camera_id_been_pinged(metadata, camera_id)
             if not camera_id_has_been_pinged:
-                columns[i].info(f"No ping found for camera {camera_id}")
+                columns[odd_idx].info(f"No ping found for camera with id : {camera_id}")
             else:
                 if camera_id_has_been_pinged:
                     image = Image.open(BytesIO(image))
-                columns[i].image(image, channels="BGR", width=450)
+                columns[odd_idx].image(image, channels="BGR", width=450, use_container_width=True)
                 if inferences.get(camera_id):
-                    columns[i].markdown(inferences[camera_id])
+                    inference = inferences[camera_id]
+                    columns[odd_idx].markdown(
+                        f"<div style='text-align:center; color:grey; font-size:x-large'>"
+                        f"Label: <b>{inference.get('label')}</b><br>"
+                        f"Probability: <b>{inference.get('probability')}</b></div>",
+                        unsafe_allow_html=True,
+                    )
 
         st.markdown(
             f"<h1 style='text-align: center; color: #e67e22;'>{decision}</h1>",
