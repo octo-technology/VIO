@@ -1,4 +1,5 @@
 import os
+import shutil
 import sys
 import tempfile
 from pathlib import Path
@@ -56,6 +57,13 @@ def before_all(context: Context):
     IModelForwarder._build_model_url = (
         lambda self, base_url, model_name, model_version: f"{model_serving_url}v1/models/{model_name}/versions/{model_version}:predict"
     )
+
+
+def after_scenario(context: Context, scenario):
+    storing_path = Path(context.tmp_dir.name) / "data_storage"
+    if storing_path.exists():
+        shutil.rmtree(storing_path)
+        storing_path.mkdir()
 
 
 def after_all(context: Context):
