@@ -4,8 +4,11 @@ SHELL := /bin/bash
 .SILENT:
 
 .EXPORT_ALL_VARIABLES:
+.DEFAULT_GOAL: help
+
 REPO_DIRECTORY:=$(shell pwd)
 PYTHONPATH:=${PYTHONPATH}:${REPO_DIRECTORY}
+BUILDOS=$(shell uname -s | tr '[:upper:]' '[:lower:]')
 
 .PHONY: help
 help:
@@ -42,3 +45,11 @@ tflite_tests:
 .PHONY: run_tflite_serving  ## ✅ Launch the tflite serving app
 run_tflite_serving:
 	uvicorn tflite_serving.tflite_server:app --reload --port 8501 --host 0.0.0.0
+
+.PHONY: start_edge_model_serving ## 🕵 Start edge_model_serving service (Docker container)
+start_edge_model_serving:
+	BUILDOS=${BUILDOS} docker compose --file edge_model_serving.yml up edge_model_serving -d --build
+
+.PHONY: stop_edge_model_serving ## 🕵 Stop edge_model_serving service (Docker container)
+stop_edge_model_serving:
+	docker compose --file edge_model_serving.yml down edge_model_serving

@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import List, Optional
+from typing import List, Optional, Union
 
 from pydantic import BaseModel, Field, computed_field, model_validator
 from pydantic_core import Url
@@ -12,7 +12,7 @@ from edge_orchestrator.domain.models.model_forwarder.model_type import ModelType
 
 
 class ModelForwarderConfig(BaseModel):
-    model_name: ModelName
+    model_name: Union[str, ModelName]
     model_type: ModelType
     expected_image_resolution: ImageResolution
     model_version: Optional[str] = "1"
@@ -23,7 +23,13 @@ class ModelForwarderConfig(BaseModel):
     @computed_field
     @property
     def model_id(self) -> str:
-        return f"{self.model_name.value}_{self.model_type.value}_{self.model_version}"
+        return f"{self.model_name}_{self.model_type.value}_{self.model_version}"
+
+    @model_validator(mode="after")
+    def convert_model_name_to_str(self):
+        if isinstance(self.model_name, ModelName):
+            self.model_name = self.model_name.value
+        return self
 
     @model_validator(mode="after")
     def check_class_names_path(self):

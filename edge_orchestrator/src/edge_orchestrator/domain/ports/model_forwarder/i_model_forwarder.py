@@ -44,7 +44,7 @@ class IModelForwarder(ABC):
     def _get_model_url(self) -> str:
         return self._build_model_url(
             str(self._model_forwarder_config.model_serving_url),
-            self._model_forwarder_config.model_name.value,
+            self._model_forwarder_config.model_name,
             self._model_forwarder_config.model_version,
         )
 

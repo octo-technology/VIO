@@ -37,6 +37,7 @@ class ObjectDetectionModelForwarder(IModelForwarder):
         return np.expand_dims(image_array, axis=0).astype(np.uint8)[:, :, :, :3]
 
     async def _predict(self, preprocessed_binary: np.ndarray) -> Dict[str, Any]:
+        # TODO: refactor edge_model_serving to remove model_type from the request
         model_type = None
         if self._model_forwarder_config.model_name == ModelName.yolo_coco_nano:
             model_type = "yolo"

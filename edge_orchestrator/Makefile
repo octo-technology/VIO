@@ -83,8 +83,7 @@ pyramid_and_badges:
 
 .PHONY: start_edge_orchestrator ## 🕵 Start edge_orchestrator service (Docker container)
 start_edge_orchestrator:
-	BUILDOS=${BUILDOS} docker compose --file edge_orchestrator.yml --build up edge_orchestrator -d
-
+	BUILDOS=${BUILDOS} docker compose --file edge_orchestrator.yml up edge_orchestrator -d --build
 
 .PHONY: stop_edge_orchestrator ## 🕵 Stop edge_orchestrator service (Docker container)
 stop_edge_orchestrator:
