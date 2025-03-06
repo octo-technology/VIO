@@ -27,12 +27,12 @@ class GCPMetadataStorage(IMetadataStorage):
         self._logger.info(f"Saving item metadata for item {item.id}")
         item.state = ItemState.DONE
         item_metadata = item.model_dump_json(exclude_none=True)
-        blob = self._bucket.blob((self._storing_path_manager.get_storing_path(item.id) / "metadata.json").as_posix())
+        blob = self._bucket.blob(self._storing_path_manager.get_file_path(item.id, "json").as_posix())
         blob.upload_from_string(item_metadata, content_type="application/json")
         self._logger.info(f"Item metadata for item {item.id} saved as {blob.name}")
 
     def get_item_metadata(self, item_id: UUID) -> Item:
-        filename = (self._storing_path_manager.get_storing_path(item_id) / "metadata.json").as_posix()
+        filename = self._storing_path_manager.get_file_path(item_id, "json").as_posix()
         blob = self._bucket.get_blob(filename)
         if blob is None:
             raise HTTPException(status_code=400, detail=f"The item {item_id} has no metadata")

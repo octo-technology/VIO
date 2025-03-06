@@ -1,4 +1,4 @@
-from typing import Dict
+from typing import Dict, Optional
 
 from pydantic import BaseModel, ConfigDict
 
@@ -14,4 +14,4 @@ class StationConfig(BaseModel):
     camera_configs: Dict[str, CameraConfig]
     binary_storage_config: StorageConfig
     metadata_storage_config: StorageConfig
-    item_rule_config: ItemRuleConfig
+    item_rule_config: Optional[ItemRuleConfig] = None

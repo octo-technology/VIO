@@ -48,7 +48,7 @@ class TestFileSystemMetadataStorage:
         metadata_storage.save_item_metadata(item)
 
         # Then
-        path_to_metadata = target_directory / station_config.station_name / str(item.id) / "metadata.json"
+        path_to_metadata = target_directory / station_config.station_name / f"{str(item.id)}.json"
         assert path_to_metadata.is_file()
         actual_metadata = json.load(path_to_metadata.open("r"))
         assert actual_metadata
@@ -130,7 +130,7 @@ class TestFileSystemMetadataStorage:
         metadata_storage.save_item_metadata(item)
 
         # Then
-        path_to_metadata = target_directory / station_config.station_name / str(item.id) / "metadata.json"
+        path_to_metadata = target_directory / station_config.station_name / f"{str(item.id)}.json"
         assert path_to_metadata.is_file()
         actual_metadata = json.load(path_to_metadata.open("r"))
         assert actual_metadata == expected_metadata
@@ -162,7 +162,7 @@ class TestFileSystemMetadataStorage:
         metadata_storage.save_item_metadata(item)
 
         # Then
-        path_to_metadata = target_directory / station_config.station_name / str(item.id) / "metadata.json"
+        path_to_metadata = target_directory / station_config.station_name / f"{str(item.id)}.json"
         assert path_to_metadata.is_file()
         actual_metadata = json.load(path_to_metadata.open("r"))
         assert actual_metadata
@@ -208,9 +208,9 @@ class TestFileSystemMetadataStorage:
             "state": "DONE",
         }
 
-        storing_path = target_directory / station_config.station_name / str(item_id)
+        storing_path = target_directory / station_config.station_name
         storing_path.mkdir(parents=True)
-        with (storing_path / "metadata.json").open("w") as f:
+        with (storing_path / f"{str(item_id)}.json").open("w") as f:
             json.dump(expected_metadata, f)
 
         # When

@@ -67,10 +67,10 @@ def check_item_binaries_are_stored(context: Context):
 
     response_1_content = response_1.json()
     for row in context.table:
-        image_name = f'{row["binary_name"]}.{row["binary_extension"]}'
+        image_name = f'{context.item_id}_{row["binary_name"]}.{row["binary_extension"]}'
         assert image_name in response_1_content
 
-        path_to_image = context.test_directory / f"data_storage/{context.item_id}" / image_name
+        path_to_image = context.test_directory / "data_storage" / image_name
         assert path_to_image.exists()
         with path_to_image.open("rb") as f:
             image_binary = f.read()

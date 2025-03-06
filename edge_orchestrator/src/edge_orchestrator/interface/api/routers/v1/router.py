@@ -11,6 +11,7 @@ from fastapi import (
 )
 
 from edge_orchestrator.application.config.config_manager import ConfigManager
+from edge_orchestrator.application.use_cases.data_gathering import DataGathering
 from edge_orchestrator.application.use_cases.supervisor import Supervisor
 from edge_orchestrator.domain.models.camera.camera_config import CameraConfig
 from edge_orchestrator.domain.models.image import Image
@@ -26,6 +27,7 @@ from edge_orchestrator.domain.ports.metadata_storage.i_metadata_storage_manager 
 from edge_orchestrator.interface.api.dependency_injection import (
     get_binary_storage_manager,
     get_config,
+    get_data_gathering,
     get_metadata_storage_manager,
     get_supervisor,
 )
@@ -118,12 +120,35 @@ async def trigger_job(
 ):
     input_binaries = {}
     for binary in binaries:
-        input_binaries[binary.filename] = Image(image_bytes=binary.read())
+        input_binaries[binary.filename] = Image(image_bytes=await binary.read())
     item = Item(
         cameras_metadata=cameras_metadata,
         binaries=input_binaries,
     )
     background_tasks.add_task(supervisor.inspect, item, station_config)
+    return {"item_id": item.id}
+
+
+async def data_gathering_job(
+    class_name: str = None,
+    binaries: List[UploadFile] = [],
+    cameras_metadata: Dict[str, CameraConfig] = {},
+    data_gathering: DataGathering = Depends(get_data_gathering),
+    station_config: StationConfig = Depends(get_config),
+    background_tasks: BackgroundTasks = None,
+):
+    # Set the class name on the config
+    station_config.binary_storage_config.class_directory = class_name
+    station_config.metadata_storage_config.class_directory = class_name
+
+    input_binaries = {}
+    for binary in binaries:
+        input_binaries[binary.filename] = Image(image_bytes=await binary.read())
+    item = Item(
+        cameras_metadata=cameras_metadata,
+        binaries=input_binaries,
+    )
+    background_tasks.add_task(data_gathering.acquire, item, station_config)
     return {"item_id": item.id}
 
 
@@ -140,3 +165,4 @@ router.add_api_route("/configs/active", get_config, methods=["GET"], response_mo
 router.add_api_route("/configs/active", set_config, methods=["POST"], response_model_exclude_none=True)
 
 router.add_api_route("/trigger", trigger_job, methods=["POST"])
+router.add_api_route("/data_gathering", data_gathering_job, methods=["POST"])
