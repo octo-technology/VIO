@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import Optional
+from typing import Optional, Union
 
 from pydantic import BaseModel, computed_field, model_validator
 
@@ -31,17 +31,16 @@ class CameraConfig(BaseModel):
     def check_params(self):
         if self.camera_type == CameraType.FAKE and self.source_directory is None:
             raise ValueError("source_directory is required with camera_type FAKE")
-        if (
-            self.camera_type in [CameraType.USB, CameraType.WEBCAM]
-            and self.camera_vendor is not None
-            and self.camera_serial_number is None
-        ):
-            raise ValueError("camera_vendor and camera_serial_number are required with camera_type USB or WEBCAM")
+        if self.camera_type == CameraType.USB and self.camera_vendor is not None and self.camera_serial_number is None:
+            raise ValueError("camera_vendor and camera_serial_number are required with camera_type USB")
         return self
 
     @computed_field
     @property
-    def device_node(self) -> Optional[str]:
-        if self.camera_type in [CameraType.USB, CameraType.WEBCAM]:
+    def device_node(self) -> Union[str | int | None]:
+        if self.camera_type == CameraType.USB:
             return get_camera_device_node(self.camera_vendor, self.camera_serial_number)
-        return None
+        elif self.camera_type == CameraType.WEBCAM:
+            return 0
+        else:
+            return None
