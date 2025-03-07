@@ -1,7 +1,12 @@
 import streamlit as st
 
 # Page configuration
-st.set_page_config(page_title="VIO-edge", page_icon="🔦", layout="wide")
+st.set_page_config(
+    page_title="VIO-edge",
+    page_icon="🔦",
+    layout="wide",
+    initial_sidebar_state="collapsed",
+)
 
 
 def main():

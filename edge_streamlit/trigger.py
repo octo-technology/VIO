@@ -6,7 +6,7 @@ import requests
 import streamlit as st
 from PIL import Image
 
-from config import URL_ACTIVE_CONFIG, URL_ORCH, URL_CONFIGS
+from config import URL_ACTIVE_CONFIG, URL_CONFIGS, URL_ORCH
 from prediction_boxes import camera_id_been_pinged
 
 URL_TRIGGER = URL_ORCH + "trigger"
