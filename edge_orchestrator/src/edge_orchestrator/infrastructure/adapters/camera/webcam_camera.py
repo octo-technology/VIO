@@ -13,7 +13,7 @@ class WebcamCamera(ICamera):
     def __init__(self, camera_config: CameraConfig):
         self._camera_config = camera_config
         self._logger = logging.getLogger(__name__)
-        self._open_webcam(self._camera_config.source_directory.as_posix())
+        self._open_webcam(self._camera_config.device_node)
         self._start()
 
     def _open_webcam(self, src: str):
