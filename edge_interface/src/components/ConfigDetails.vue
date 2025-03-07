@@ -24,6 +24,24 @@
                   <v-list-item-subtitle>{{ cameraConfig.source_directory }}</v-list-item-subtitle>
                 </v-list-item-content>
               </v-list-item>
+              <v-list-item v-if="cameraConfig.camera_vendor">
+                <v-list-item-content>
+                  <v-list-item-title>Camera Vendor</v-list-item-title>
+                  <v-list-item-subtitle>{{ cameraConfig.camera_vendor }}</v-list-item-subtitle>
+                </v-list-item-content>
+              </v-list-item>
+              <v-list-item v-if="cameraConfig.camera_serial_number">
+                <v-list-item-content>
+                  <v-list-item-title>Camera Serial Number</v-list-item-title>
+                  <v-list-item-subtitle>{{ cameraConfig.camera_serial_number }}</v-list-item-subtitle>
+                </v-list-item-content>
+              </v-list-item>
+              <v-list-item v-if="cameraConfig.device_node">
+                <v-list-item-content>
+                  <v-list-item-title>Device Node</v-list-item-title>
+                  <v-list-item-subtitle>{{ cameraConfig.device_node }}</v-list-item-subtitle>
+                </v-list-item-content>
+              </v-list-item>
               <v-list-item v-if="cameraConfig.camera_resolution">
                 <v-list-item-content>
                   <v-list-item-title>Camera Resolution</v-list-item-title>

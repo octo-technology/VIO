@@ -28,9 +28,16 @@ def list_connected_usb_device() -> Dict[Tuple, str]:
 
 
 def get_camera_device_node(camera_vendor: str, camera_serial_number: str) -> Optional[str]:
-    usb_devices = list_connected_usb_device()
-    if (camera_vendor, camera_serial_number) in usb_devices:
-        return usb_devices[(camera_vendor, camera_serial_number)]["device_path"]
+    try:
+        usb_devices = list_connected_usb_device()
+        if (camera_vendor, camera_serial_number) in usb_devices:
+            return usb_devices[(camera_vendor, camera_serial_number)]["device_path"]
+        else:
+            logging.error(
+                f"Camera with vendor: {camera_vendor} and serial number: {camera_serial_number} not found in connected USB devices:\n{usb_devices}"
+            )
+    except Exception:
+        logging.exception("Error while listing connected USB devices")
     return None
 
 
