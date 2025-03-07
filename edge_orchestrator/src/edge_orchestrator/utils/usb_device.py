@@ -33,11 +33,11 @@ def get_camera_device_node(camera_vendor: str, camera_serial_number: str) -> Opt
         if (camera_vendor, camera_serial_number) in usb_devices:
             return usb_devices[(camera_vendor, camera_serial_number)]["device_path"]
         else:
-            logging.error(
+            logging.warning(
                 f"Camera with vendor: {camera_vendor} and serial number: {camera_serial_number} not found in connected USB devices:\n{usb_devices}"
             )
     except Exception:
-        logging.exception("Error while listing connected USB devices")
+        logging.warning("Error while listing connected USB devices")
     return None
 
 
