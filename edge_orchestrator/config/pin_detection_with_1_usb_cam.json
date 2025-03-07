@@ -3,8 +3,10 @@
     "camera_configs": {
         "camera_1": {
             "camera_id": "camera_1",
-            "camera_type": "usb",
-            "source_directory": "/dev/video0",
+            "camera_type": "webcam",
+            "camera_vendor": "0408",
+            "camera_serial_number": "5411",
+            "camera_name": "HP_HD_Camera",
             "position": "front",
             "model_forwarder_config": {
                 "model_name": "pin_detection",
