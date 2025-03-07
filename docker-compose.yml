@@ -1,18 +1,8 @@
 services:
   edge_model_serving:
-    container_name: edge_model_serving
-    build:
-      context: edge_model_serving
-      dockerfile: tflite_serving/Dockerfile
-      args:
-        BUILDOS: ${BUILDOS:-linux}
-    environment:
-      TF_CPP_MIN_VLOG_LEVEL: 0
-    ports:
-      - 8501:8501
-    profiles: [edge]
-    volumes:
-      - ./edge_model_serving/models:/models
+    extends:
+      file: edge_model_serving/tflite_serving/edge_model_serving.yml
+      service: edge_model_serving
 
   edge_orchestrator:
     extends:
@@ -34,13 +24,9 @@ services:
     profiles: [hub]
 
   edge_interface:
-    container_name: edge_interface
-    build:
-      context: edge_interface
-      dockerfile: Dockerfile
-    ports:
-      - 8080:80
-    profiles: [edge]
+    extends:
+      file: edge_interface/edge_interface.yml
+      service: edge_interface
 
   hub_streamlit:
     container_name: hub_streamlit
