@@ -39,11 +39,12 @@ class TestCameraManager:
             camera_configs={
                 "camera_#1": CameraConfig(camera_id="camera_#1", camera_type=CameraType.FAKE, source_directory="fake"),
                 "camera_#2": CameraConfig(
-                    camera_id="camera_#2", camera_type=CameraType.WEBCAM, source_directory="fake"
+                    camera_id="camera_#2",
+                    camera_type=CameraType.WEBCAM,
+                    camera_vendor="test",
+                    camera_serial_number="test",
                 ),
-                "camera_#3": CameraConfig(
-                    camera_id="camera_#3", camera_type=CameraType.RASPBERRY, source_directory="fake"
-                ),
+                "camera_#3": CameraConfig(camera_id="camera_#3", camera_type=CameraType.RASPBERRY),
             },
             binary_storage_config=StorageConfig(),
             metadata_storage_config=StorageConfig(),
@@ -61,7 +62,7 @@ class TestCameraManager:
         assert hasattr(camera_manager, "take_pictures")
         for camera_id, camera_class in camera_id_camera_classes:
             assert isinstance(camera_manager._cameras[camera_id], camera_class)
-            if isinstance(camera_manager._cameras[camera_id], WebcamCamera):
+            if not isinstance(camera_manager._cameras[camera_id], FakeCamera):
                 camera_manager._cameras[camera_id].release()
 
     def test_should_raise_exception_without_creating_cameras_first(

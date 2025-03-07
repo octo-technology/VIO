@@ -48,6 +48,24 @@
                     <v-list-item-subtitle>{{ camera.source_directory }}</v-list-item-subtitle>
                   </v-list-item-content>
                 </v-list-item>
+                <v-list-item v-if="camera.camera_vendor">
+                  <v-list-item-content>
+                    <v-list-item-title>Camera Vendor</v-list-item-title>
+                    <v-list-item-subtitle>{{ camera.camera_vendor }}</v-list-item-subtitle>
+                  </v-list-item-content>
+                </v-list-item>
+                <v-list-item v-if="camera.camera_serial_number">
+                  <v-list-item-content>
+                    <v-list-item-title>Camera Serial Number</v-list-item-title>
+                    <v-list-item-subtitle>{{ camera.camera_serial_number }}</v-list-item-subtitle>
+                  </v-list-item-content>
+                </v-list-item>
+                <v-list-item v-if="camera.device_node">
+                  <v-list-item-content>
+                    <v-list-item-title>Device Node</v-list-item-title>
+                    <v-list-item-subtitle>{{ camera.device_node }}</v-list-item-subtitle>
+                  </v-list-item-content>
+                </v-list-item>
                 <v-list-item>
                   <v-list-item-content>
                     <v-list-item-title>Position</v-list-item-title>
@@ -135,18 +153,18 @@
                 </v-list-item>
               </v-list>
               <div>
-                <h4 @click="togglePredictions(cameraId)">
+                <h4 @click="togglePredictions(cameraId)" style="cursor: pointer;">
                   Predictions
                   <v-icon>{{ showPredictions[cameraId] ? 'mdi-eye-off' : 'mdi-eye' }}</v-icon>
                 </h4>
                 <v-list dense v-if="showPredictions[cameraId]">
-                  <v-list-item v-if="item.predictions && item.predictions[cameraId]">
+                  <v-list-item v-if="item.predictions && item.predictions[cameraId] && item.predictions[cameraId].prediction_type === 'class'">
                     <v-list-item-content>
                       <v-list-item-title>Label</v-list-item-title>
                       <v-list-item-subtitle>{{ item.predictions[cameraId].label }}</v-list-item-subtitle>
                     </v-list-item-content>
                   </v-list-item>
-                  <v-list-item v-if="item.predictions && item.predictions[cameraId]">
+                  <v-list-item v-if="item.predictions && item.predictions[cameraId] && item.predictions[cameraId].prediction_type === 'class'">
                     <v-list-item-content>
                       <v-list-item-title>Probability</v-list-item-title>
                       <v-list-item-subtitle>{{ item.predictions[cameraId].probability }}</v-list-item-subtitle>
@@ -191,8 +209,8 @@
               <div class="image-container">
                 <v-img :src="getImageUrl(item.id, camera.camera_id)" class="image" @error="handleImageError(camera.camera_id)">
                   <div v-if="imageErrors[camera.camera_id]" class="no-image-placeholder">
-                  No image found
-                </div>
+                    No image found
+                  </div>
                 </v-img>
                 <div v-if="camera.model_forwarder_config.model_type === 'classification'" class="overlay">
                   <p class="classification-label" v-if="item.predictions && item.predictions[cameraId] && item.predictions[cameraId].label">{{ item.predictions[cameraId].label }}</p>
