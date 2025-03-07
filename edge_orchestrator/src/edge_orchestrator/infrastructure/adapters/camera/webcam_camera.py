@@ -17,7 +17,7 @@ class WebcamCamera(ICamera):
         self._open_webcam(self._camera_config.device_node)
         self._start()
 
-    def _open_webcam(self, src_or_index: Union[str | int]):
+    def _open_webcam(self, src_or_index: Union[str, int]):
         self._stream = cv2.VideoCapture(src_or_index)
         (self._grabbed, self._frame) = self._stream.read()
         self._name = __name__

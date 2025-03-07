@@ -37,7 +37,7 @@ class CameraConfig(BaseModel):
 
     @computed_field
     @property
-    def device_node(self) -> Union[str | int | None]:
+    def device_node(self) -> Union[str, int, None]:
         if self.camera_type == CameraType.USB:
             return get_camera_device_node(self.camera_vendor, self.camera_serial_number)
         elif self.camera_type == CameraType.WEBCAM:
