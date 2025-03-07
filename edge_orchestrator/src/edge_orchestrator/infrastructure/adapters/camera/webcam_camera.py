@@ -1,5 +1,6 @@
 import logging
 from threading import Thread
+from typing import Union
 
 import cv2
 import numpy as np
@@ -13,11 +14,11 @@ class WebcamCamera(ICamera):
     def __init__(self, camera_config: CameraConfig):
         self._camera_config = camera_config
         self._logger = logging.getLogger(__name__)
-        self._open_webcam(self._camera_config.source_directory.as_posix())
+        self._open_webcam(self._camera_config.device_node)
         self._start()
 
-    def _open_webcam(self, src: str):
-        self._stream = cv2.VideoCapture(src)
+    def _open_webcam(self, src_or_index: Union[str, int]):
+        self._stream = cv2.VideoCapture(src_or_index)
         (self._grabbed, self._frame) = self._stream.read()
         self._name = __name__
         self._stopped = False
