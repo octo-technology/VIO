@@ -19,11 +19,10 @@ COPY requirements.txt .
 
 RUN pip install -r requirements.txt
 
-COPY app.py .
-COPY prediction_boxes.py .
+COPY . .
 
-EXPOSE 8501
+EXPOSE 8502
 
-HEALTHCHECK CMD curl --fail http://localhost:8501/_stcore/health
+HEALTHCHECK CMD curl --fail http://localhost:8502/_stcore/health
 
-ENTRYPOINT ["streamlit", "run", "app.py"]
+ENTRYPOINT ["streamlit", "run", "app.py", "--server.port", "8502"]
