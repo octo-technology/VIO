@@ -153,7 +153,7 @@ async def data_gathering_job(
 
 
 async def upload_job(
-    class_name: str = None,
+    class_name: Optional[str] = None,
     binaries: List[UploadFile] = [],
     cameras_metadata: Dict[str, CameraConfig] = {},
     data_gathering: DataGathering = Depends(get_data_gathering),

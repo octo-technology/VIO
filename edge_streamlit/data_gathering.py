@@ -1,7 +1,9 @@
+import io
 import json
 
 import requests
 import streamlit as st
+from PIL import Image
 
 from components.image_acquisition import image_acquisition
 from config import URL_ACTIVE_CONFIG, URL_CONFIGS, URL_ORCH
@@ -68,11 +70,17 @@ st.cache_data.images = image_acquisition()
 if st.cache_data.images:
     # only one list of images so we set the camera_id to the first camera
     camera_id = list(st.session_state.active_config.get("camera_configs").keys())[0]
-    st.title(f"{len(st.cache_data.images)} images acquired let's upload them")
+    st.write(f"### {len(st.cache_data.images)} images acquired let's upload them", anchor="center")
     with st.spinner("Uploading images..."):
         # Convert numpy arrays to bytes before sending
-        files = [('binaries', (camera_id, img.tobytes(), 'image/jpeg')) for img in st.cache_data.images]
-        response = requests.post(f"{URL_DATA_UPLOAD}?class_name={st.session_state.class_name}", files=files)
+        files = []
+        for img in st.cache_data.images:
+            buf = io.BytesIO()
+            Image.fromarray(img).save(buf, format="jpeg")
+            files.append(("binaries", (camera_id, buf.getvalue(), "image/jpeg")))
+        response = requests.post(
+            f"{URL_DATA_UPLOAD}?class_name={st.session_state.class_name}", files=files
+        )
         if response.status_code == 200:
             st.success("Images uploaded successfully!")
         else:
