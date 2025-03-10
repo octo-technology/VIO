@@ -1,11 +1,13 @@
 import json
 import os
 import time
+from io import BytesIO
+
 import requests
 import streamlit as st
-from prediction_boxes import camera_id_been_pinged
 from PIL import Image
-from io import BytesIO
+
+from prediction_boxes import camera_id_been_pinged
 
 # Page configuration
 st.set_page_config(page_title="VIO-edge", page_icon="🔦", layout="wide")
