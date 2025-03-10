@@ -12,10 +12,10 @@ st.set_page_config(
 def main():
     pg = st.navigation(
         [
-            st.Page("trigger.py", title="Trigger", icon=":material/visibility:"),
             st.Page(
                 "data_gathering.py", title="Data Gathering", icon=":material/bar_chart:"
             ),
+            st.Page("trigger.py", title="Trigger", icon=":material/visibility:"),
         ]
     )
     pg.run()

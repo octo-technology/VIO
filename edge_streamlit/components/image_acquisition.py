@@ -1,13 +1,15 @@
 import threading
 import time
+from typing import List
 
 import cv2
+import numpy as np
 import streamlit as st
 from matplotlib import pyplot as plt
 from streamlit_webrtc import webrtc_streamer
 
 
-def image_acquisition():
+def image_acquisition() -> List[np.ndarray]:
     # Initialize session state for images if it doesn't exist
     if "acquired_images" not in st.session_state:
         st.session_state.acquired_images = []
@@ -72,4 +74,4 @@ def image_acquisition():
             ax.axis("off")
             latest_image_container.pyplot(fig)
 
-    return st.session_state.acquired_images
+    return [image["img"] for image in st.session_state.acquired_images]

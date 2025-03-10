@@ -62,14 +62,18 @@ if st.session_state.active_config:
         help="Select the class name for the images",
     )
 
-images = image_acquisition()
+st.cache_data.images = image_acquisition()
 
 # Add loading spinner while waiting for response
-if images:
-    st.title(f"{len(images)} images acquired let's upload them")
+if st.cache_data.images:
+    st.title(f"{len(st.cache_data.images)} images acquired let's upload them")
     with st.spinner("Uploading images..."):
-        response = requests.post(URL_DATA_UPLOAD, json={"images": images})
+        # Convert numpy arrays to bytes before sending
+        files = [('binaries', ('cam_1', img.tobytes(), 'image/jpeg')) for img in st.cache_data.images]
+        response = requests.post(f"{URL_DATA_UPLOAD}?class_name={st.session_state.class_name}", files=files)
         if response.status_code == 200:
             st.success("Images uploaded successfully!")
         else:
             st.error(f"Failed to upload images. Status code: {response.status_code}")
+
+        st.cache_data.images = None
