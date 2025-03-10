@@ -168,13 +168,14 @@ async def upload_job(
 
     items = []
     for binary in binaries:
-        background_tasks.add_task(data_gathering.upload, 
-                Item(
-                    cameras_metadata=cameras_metadata,
-                    binaries={binary.filename: Image(image_bytes=await binary.read())},
-                ),
-                station_config,
-            )
+        background_tasks.add_task(
+            data_gathering.upload,
+            Item(
+                cameras_metadata=cameras_metadata,
+                binaries={binary.filename: Image(image_bytes=await binary.read())},
+            ),
+            station_config,
+        )
     return {"items_ids": [item.id for item in items]}
 
 
