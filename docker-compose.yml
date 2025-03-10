@@ -55,3 +55,12 @@ services:
     volumes:
       - ./hub_streamlit/config:/hub_streamlit/config
     profiles: [hub]
+
+  edge_streamlit:
+    container_name: edge_streamlit
+    build:
+      context: edge_streamlit
+      dockerfile: Dockerfile
+    ports:
+      - 8502:8502
+    profiles: [edge]
