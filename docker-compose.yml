@@ -13,26 +13,3 @@ services:
     extends:
       file: edge_interface/edge_interface.yml
       service: edge_interface
-
-  hub_streamlit:
-    container_name: hub_streamlit
-    build:
-      context: hub_streamlit
-      dockerfile: Dockerfile
-    ports:
-      - 8500:8500
-    environment:
-      BUCKET_NAME: tf-vio-bucket
-      GOOGLE_APPLICATION_CREDENTIALS: /hub_streamlit/config/secrets/credentials.json
-    volumes:
-      - ./hub_streamlit/config:/hub_streamlit/config
-    profiles: [hub]
-
-  edge_streamlit:
-    container_name: edge_streamlit
-    build:
-      context: edge_streamlit
-      dockerfile: Dockerfile
-    ports:
-      - 8502:8502
-    profiles: [edge]
