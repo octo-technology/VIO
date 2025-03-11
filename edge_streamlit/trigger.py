@@ -22,44 +22,42 @@ if "trigger" not in st.session_state:
 if "item_id" not in st.session_state:
     st.session_state.item_id = None
 
-    col1, col2, col3 = st.columns(3)
+col1, col2, col3 = st.columns(3)
 
-    active_config_index = 0
-    if st.session_state.active_config:
-        active_station_name = st.session_state.active_config.get("station_name")
-        active_config_index = next(
-            (
-                index
-                for (index, config) in enumerate(st.cache_data.configs.values())
-                if config["station_name"] == active_station_name
-            ),
-            0,
-        )
-    selected_station_name = col1.selectbox(
-        "Select an option",
-        tuple(st.cache_data.configs),
-        index=active_config_index,
-        label_visibility="collapsed",
+active_config_index = 0
+if st.session_state.active_config:
+    active_station_name = st.session_state.active_config.get("station_name")
+    active_config_index = next(
+        (
+            index
+            for (index, config) in enumerate(st.cache_data.configs.values())
+            if config["station_name"] == active_station_name
+        ),
+        0,
     )
+selected_station_name = col1.selectbox(
+    "Select an option",
+    tuple(st.cache_data.configs),
+    index=active_config_index,
+    label_visibility="collapsed",
+)
 
-    if col2.button("Active", use_container_width=True):
-        st.session_state.item_id = None
-        requests.post(url=f"{URL_ACTIVE_CONFIG}?station_name={selected_station_name}")
-        st.session_state.active_config = json.loads(
-            requests.get(URL_ACTIVE_CONFIG).text
-        )
+if col2.button("Active", use_container_width=True):
+    st.session_state.item_id = None
+    requests.post(url=f"{URL_ACTIVE_CONFIG}?station_name={selected_station_name}")
+    st.session_state.active_config = json.loads(requests.get(URL_ACTIVE_CONFIG).text)
 
-    if st.session_state.active_config:
-        active_station_name = st.session_state.active_config.get("station_name")
-        col2.write(f"active config name: {active_station_name}")
+if st.session_state.active_config:
+    active_station_name = st.session_state.active_config.get("station_name")
+    col2.write(f"active config name: {active_station_name}")
 
-    if st.session_state.active_config:
-        if col3.button("Trigger", use_container_width=True):
-            st.session_state.trigger = True
-            response = requests.post(URL_TRIGGER)
-            item_id = response.json().get("item_id")
-            st.session_state.item_id = item_id
-            col3.write(f"item id: {item_id}")
+if st.session_state.active_config:
+    if col3.button("Trigger", use_container_width=True):
+        st.session_state.trigger = True
+        response = requests.post(URL_TRIGGER)
+        item_id = response.json().get("item_id")
+        st.session_state.item_id = item_id
+        col3.write(f"item id: {item_id}")
 
 number_cameras = len(st.session_state.active_config["camera_configs"].keys())
 number_columns = number_cameras * 2 + 1

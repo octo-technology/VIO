@@ -44,11 +44,11 @@ def image_acquisition() -> List[np.ndarray]:
     col1, col2 = st.columns(2)
 
     with col1:
-        st.write("### Live Stream")
+        st.write("## Live Stream")
         ctx = webrtc_streamer(key="example", video_frame_callback=video_frame_callback)
 
     with col2:
-        st.write("### Latest Acquired Image")
+        st.write("## Latest Acquired Image")
         # Create a container for the latest image
         latest_image_container = st.empty()
         fig, ax = plt.subplots(1, 1)
@@ -70,6 +70,13 @@ def image_acquisition() -> List[np.ndarray]:
         print("Image acquisition", len(st.session_state.acquired_images))
         if len(st.session_state.acquired_images) > 0:
             ax.clear()
+            ax.imshow(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
+            ax.axis("off")
+            latest_image_container.pyplot(fig)
+
+    if ctx.state.playing is False:
+        if len(st.session_state.acquired_images) > 0:
+            image = st.session_state.acquired_images[-1]["img"]
             ax.imshow(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
             ax.axis("off")
             latest_image_container.pyplot(fig)
