@@ -1,6 +1,12 @@
 - name: "Deploy vio on edge and launch"
   hosts: all
   tasks:
+    - name: Create directory for vio on edge
+      ansible.builtin.file:
+        path: "{{ REMOTE_VIO_DIR }}"
+        state: directory
+        mode: '0755'
+
     - name: Copy Makefile
       ansible.builtin.copy:
         src: "{{ LOCAL_VIO_DIR }}/deployment/edge/ansible/files/Makefile"

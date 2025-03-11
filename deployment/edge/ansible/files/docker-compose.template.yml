@@ -1,9 +1,9 @@
 services:
   edge_model_serving:
     container_name: edge_model_serving
-    image: ghcr.io/octo-technology/vio/edge_tflite_serving:grosse-conf-start
-    volumes:
-      - ./models:/models
+    image: ghcr.io/octo-technology/vio/edge_model_serving:grosse_conf
+    #volumes:
+    #  - ./models:/models
     ports:
       - 8501:8501
     environment:
@@ -12,7 +12,7 @@ services:
 
   edge_orchestrator:
     container_name: edge_orchestrator
-    image: ghcr.io/octo-technology/vio/edge_orchestrator:grosse-conf-start
+    image: ghcr.io/octo-technology/vio/edge_orchestrator:grosse_conf
     volumes:
       - ./data_storage:/edge_orchestrator/data_storage
       - /run/udev:/run/udev:ro  # udev is the device manager for the Linux kernel, responsible for managing device nodes in the /dev directory dynamically
@@ -20,21 +20,13 @@ services:
       - 8000:8000
     environment:
       SERVING_MODEL_URL: http://edge_model_serving:8501
-      ACTIVE_CONFIG_NAME: duck_classif_with_2_fake_cam_fake_model
+      ACTIVE_CONFIG_NAME: duck_classif_with_1_usb_and_cam_1_raspberry_cam
     privileged: true
     profiles: [edge]
 
   edge_interface:
     container_name: edge_interface
-    image: ghcr.io/octo-technology/vio/edge_interface:grosse-conf-start
+    image: ghcr.io/octo-technology/vio/edge_interface:grosse_conf
     ports:
       - 8080:80
     profiles: [edge]
-
-  edge_streamlit:
-    container_name: edge_streamlit
-    build:
-      context: edge_streamlit
-      dockerfile: Dockerfile
-    ports:
-      - 8502:8502

@@ -43,14 +43,14 @@ async def predict(model_name: str, payload: JSONStructure, request: Request):
     input_details = interpreter.get_input_details()
     output_details = interpreter.get_output_details()
 
-    # input_dtype = input_details[0]["dtype"] # -> quantization (quantification) of the weights
-    # input_shape = input_details[0]["shape"] # -> resize input data
+    input_dtype = input_details[0]["dtype"] # -> quantization (quantification) of the weights
+    input_shape = input_details[0]["shape"] # -> resize input data
 
     input_data = payload["inputs"]
-    # input_array = np.array(input_data, dtype=input_dtype)
+    input_array = np.array(input_data, dtype=input_dtype)
 
-    # interpreter.set_tensor(input_details[0]["index"], input_array)
-    # interpreter.invoke()
+    interpreter.set_tensor(input_details[0]["index"], input_array)
+    interpreter.invoke()
 
     scores = interpreter.get_tensor(output_details[0]["index"])
     logging.info(f"Scores of classification: {scores[0]}")
