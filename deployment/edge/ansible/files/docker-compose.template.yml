@@ -27,7 +27,6 @@ services:
       - 8000:8000
     environment:
       EDGE_NAME: "{{ EDGE_NAME }}"
-      API_CONFIG: upload-gcp
       SERVING_MODEL_URL: http://edge_model_serving:8501
       GOOGLE_APPLICATION_CREDENTIALS: /edge_orchestrator/config/secrets/credentials.json
       BUCKET_NAME: tf-vio-bucket
@@ -47,4 +46,4 @@ services:
       context: edge_streamlit
       dockerfile: Dockerfile
     ports:
-      - 8502:8501
+      - 8502:8502

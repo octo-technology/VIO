@@ -38,6 +38,11 @@ class DataGathering(metaclass=SingletonMeta):
 
         self._metadata_storage_manager.get_metadata_storage(station_config).save_item_metadata(item)
 
+    async def upload(self, item: Item, station_config: StationConfig):
+        self._binary_storage_manager.get_binary_storage(station_config).save_item_binaries(item)
+
+        self._metadata_storage_manager.get_metadata_storage(station_config).save_item_metadata(item)
+
     def reset_managers(
         self, binary_storage_factory: IBinaryStorageFactory, metadata_storage_factory: IMetadataStorageFactory
     ):

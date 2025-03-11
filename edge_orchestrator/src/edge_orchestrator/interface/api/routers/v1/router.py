@@ -152,6 +152,33 @@ async def data_gathering_job(
     return {"item_id": item.id}
 
 
+async def upload_job(
+    class_name: Optional[str] = None,
+    binaries: List[UploadFile] = [],
+    cameras_metadata: Dict[str, CameraConfig] = {},
+    data_gathering: DataGathering = Depends(get_data_gathering),
+    station_config: StationConfig = Depends(get_config),
+    background_tasks: BackgroundTasks = None,
+):
+    # Set the class name on the config
+    if class_name is None:
+        class_name = "NA"
+    station_config.binary_storage_config.class_directory = class_name
+    station_config.metadata_storage_config.class_directory = class_name
+
+    items = []
+    for binary in binaries:
+        background_tasks.add_task(
+            data_gathering.upload,
+            Item(
+                cameras_metadata=cameras_metadata,
+                binaries={binary.filename: Image(image_bytes=await binary.read())},
+            ),
+            station_config,
+        )
+    return {"items_ids": [item.id for item in items]}
+
+
 router = APIRouter(prefix="/api/v1")
 router.add_api_route("/", home, methods=["GET"])
 router.add_api_route("/health/live", get_health, methods=["GET"])
@@ -166,3 +193,4 @@ router.add_api_route("/configs/active", set_config, methods=["POST"], response_m
 
 router.add_api_route("/trigger", trigger_job, methods=["POST"])
 router.add_api_route("/data_gathering", data_gathering_job, methods=["POST"])
+router.add_api_route("/upload", upload_job, methods=["POST"])
