@@ -30,11 +30,3 @@ services:
     ports:
       - 8080:80
     profiles: [edge]
-
-  edge_streamlit:
-    container_name: edge_streamlit
-    build:
-      context: edge_streamlit
-      dockerfile: Dockerfile
-    ports:
-      - 8502:8502
