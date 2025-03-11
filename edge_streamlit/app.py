@@ -1,4 +1,11 @@
+import json
+
+import requests
 import streamlit as st
+
+from config import URL_CONFIGS
+
+st.cache_data.configs = json.loads(requests.get(URL_CONFIGS).text)
 
 # Page configuration
 st.set_page_config(

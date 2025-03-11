@@ -9,9 +9,11 @@
         }
     },
     "binary_storage_config": {
-        "storage_type": "gcp"
+        "storage_type": "gcp",
+        "bucket_name": "tf-vio-bucket"
     },
     "metadata_storage_config": {
-        "storage_type": "gcp"
+        "storage_type": "gcp",
+        "bucket_name": "tf-vio-bucket"
     }
 }

@@ -6,7 +6,7 @@ import requests
 import streamlit as st
 from PIL import Image
 
-from config import URL_ACTIVE_CONFIG, URL_CONFIGS, URL_ORCH
+from config import URL_ACTIVE_CONFIG, URL_ORCH
 from prediction_boxes import camera_id_been_pinged
 
 URL_TRIGGER = URL_ORCH + "trigger"
@@ -24,22 +24,20 @@ if "item_id" not in st.session_state:
 
     col1, col2, col3 = st.columns(3)
 
-    configs = json.loads(requests.get(URL_CONFIGS).text)
-
     active_config_index = 0
     if st.session_state.active_config:
         active_station_name = st.session_state.active_config.get("station_name")
         active_config_index = next(
             (
                 index
-                for (index, config) in enumerate(configs.values())
+                for (index, config) in enumerate(st.cache_data.configs.values())
                 if config["station_name"] == active_station_name
             ),
             0,
         )
     selected_station_name = col1.selectbox(
         "Select an option",
-        tuple(configs),
+        tuple(st.cache_data.configs),
         index=active_config_index,
         label_visibility="collapsed",
     )

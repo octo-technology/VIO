@@ -46,4 +46,4 @@ services:
       context: edge_streamlit
       dockerfile: Dockerfile
     ports:
-      - 8502:8501
+      - 8502:8502
