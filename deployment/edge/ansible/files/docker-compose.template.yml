@@ -1,44 +1,35 @@
 services:
   edge_model_serving:
     container_name: edge_model_serving
-    build:
-      context: edge_model_serving
-      dockerfile: tflite_serving/Dockerfile
-      args:
-        BUILDOS: ${BUILDOS:-linux}
-    environment:
-      TF_CPP_MIN_VLOG_LEVEL: 0   # TensorFlow logging level
+    image: ghcr.io/octo-technology/vio/edge_tflite_serving:grosse-conf-start
+    volumes:
+      - ./models:/models
     ports:
       - 8501:8501
-    volumes:
-      - ./edge_model_serving/models:/models
+    environment:
+      TF_CPP_MIN_VLOG_LEVEL: 0
+    profiles: [edge]
 
   edge_orchestrator:
     container_name: edge_orchestrator
-    build:
-      context: edge_orchestrator
-      dockerfile: Dockerfile
-      args:
-        BUILDOS: ${BUILDOS:-linux}
+    image: ghcr.io/octo-technology/vio/edge_orchestrator:grosse-conf-start
     volumes:
       - ./data_storage:/edge_orchestrator/data_storage
       - /run/udev:/run/udev:ro  # udev is the device manager for the Linux kernel, responsible for managing device nodes in the /dev directory dynamically
     ports:
       - 8000:8000
     environment:
-      EDGE_NAME: "{{ EDGE_NAME }}"
       SERVING_MODEL_URL: http://edge_model_serving:8501
-      GOOGLE_APPLICATION_CREDENTIALS: /edge_orchestrator/config/secrets/credentials.json
-      BUCKET_NAME: tf-vio-bucket
-      ACTIVE_CONFIG_NAME: marker_classification_with_1_fake_camera
+      ACTIVE_CONFIG_NAME: duck_classif_with_2_fake_cam_fake_model
+    privileged: true
+    profiles: [edge]
 
   edge_interface:
     container_name: edge_interface
-    build:
-      context: edge_interface
-      dockerfile: Dockerfile
+    image: ghcr.io/octo-technology/vio/edge_interface:grosse-conf-start
     ports:
       - 8080:80
+    profiles: [edge]
 
   edge_streamlit:
     container_name: edge_streamlit

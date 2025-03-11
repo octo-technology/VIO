@@ -43,23 +43,11 @@ async def predict(model_name: str, payload: JSONStructure, request: Request):
     input_details = interpreter.get_input_details()
     output_details = interpreter.get_output_details()
 
-    input_dtype = input_details[0]["dtype"] # -> quantization (quantification) of the weights
-    input_shape = input_details[0]["shape"] # -> resize input data
+    # input_dtype = input_details[0]["dtype"] # -> quantization (quantification) of the weights
+    # input_shape = input_details[0]["shape"] # -> resize input data
 
     input_data = payload["inputs"]
-    input_array = np.array(input_data, dtype=input_dtype)
-
-    if input_array.shape != tuple(input_shape):
-        logging.warning(
-            f"Input data shape {input_array.shape} does not match model input shape {input_shape}, resising input data..."
-        )
-        try:
-            input_array = input_array.reshape(input_shape)
-        except Exception:
-            raise HTTPException(
-                status_code=400,
-                detail=f"Input data shape {input_array.shape} does not match model input shape {input_shape}",
-            )
+    # input_array = np.array(input_data, dtype=input_dtype)
 
     # interpreter.set_tensor(input_details[0]["index"], input_array)
     # interpreter.invoke()
