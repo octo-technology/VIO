@@ -199,7 +199,9 @@ grafvio_id_rsa
 
 edge_model_serving/models/*
 edge_orchestrator/data_storage/*
+edge_orchestrator/data/storage/*
 edge_orchestrator/config/secrets
+edge_orchestrator/fake_images/*
 /deployment/edge/images/
 *package-lock.json
 

@@ -1,10 +1,10 @@
 {
-    "station_name": "duck_detection_with_2_usbcamera",
+    "station_name": "duck_detection_with_2_fakecamera",
     "camera_configs": {
         "camera_1": {
             "camera_id": "camera_1",
-            "camera_type": "usb",
-            "source_directory": "/dev/video0",
+            "camera_type": "fake",
+            "source_directory": "fake_images/ducks",
             "position": "front",
             "model_forwarder_config": {
                 "model_name": "duck_detection",
@@ -15,8 +15,9 @@
                 },
                 "model_version": "1",
                 "class_names": [
-                    "NOK_COLORED",
-                    "OK"
+                    "OK",
+                    "KO",
+                    "KO"
                 ],
                 "model_serving_url": "http://edge_model_serving:8501/",
                 "recreate_me": false
@@ -29,9 +30,9 @@
             "recreate_me": false
         },
         "camera_2": {
-            "camera_id": "camera_2",
-            "camera_type": "usb",
-            "source_directory": "/dev/video3",
+            "camera_id": "camera_1",
+            "camera_type": "fake",
+            "source_directory": "fake_images/ducks",
             "position": "front",
             "camera_resolution": {
                 "width": 1366,
@@ -46,7 +47,8 @@
                 },
                 "model_version": "1",
                 "class_names": [
-                    "NOK_COLORED",
+                    "OK",
+                    "KO",
                     "KO"
                 ],
                 "model_serving_url": "http://edge_model_serving:8501/",
@@ -61,12 +63,12 @@
         }
     },
     "binary_storage_config": {
-        "storage_type": "gcp",
-        "bucket_name": "tf-vio-bucket"
+        "storage_type": "filesystem",
+        "target_directory": "data_storage"
     },
     "metadata_storage_config": {
-        "storage_type": "gcp",
-        "bucket_name": "tf-vio-bucket"
+        "storage_type": "filesystem",
+        "target_directory": "data_storage"
     },
     "item_rule_config": {
         "item_rule_type": "min_threshold_ratio_rule",
