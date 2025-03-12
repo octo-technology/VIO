@@ -1,5 +1,6 @@
 import os
 from io import BytesIO
+from pathlib import Path
 from typing import List, Optional
 
 from dotenv import load_dotenv
@@ -63,7 +64,7 @@ class EdgeData(BaseModel):
     def extract_item_ids(self, blobs: List[Blob]):
         item_ids = []
         for blob in blobs:
-            item_id = blob.name.split("/")[2]
+            item_id = Path(blob.name).stem.split("_")[0]
             item_ids.append(item_id)
         return item_ids
 
@@ -75,9 +76,11 @@ class EdgeData(BaseModel):
             blob_name_split = blob_name.split("/")
             edge_name = blob_name_split[0]
             use_case_name = blob_name_split[1]
-            item_id = blob_name_split[2]
+            prefix = blob_name_split[2] if blob_name_split[2].find(".") == -1 else None
             file_name = blob_name_split[-1]
-            camera_id = file_name.split(".")[0]
+            file_name_split = file_name.split("_", 1)
+            item_id = file_name_split[0]
+            camera_id = file_name_split[1].split(".")[0] if len(file_name_split) > 1 else None
 
             if use_case_name not in self.get_use_case_names():
                 self.add_usecase(use_case_name, self.edge_ip)
@@ -92,7 +95,7 @@ class EdgeData(BaseModel):
                 continue
             if item_id not in use_case_item_ids:
                 metadata = gcp_client.extract_metadata(
-                    edge_name, use_case_name, item_id
+                    edge_name, use_case_name, prefix, item_id
                 )
                 use_case.add_item(item_id, blob.time_created, metadata)
 
