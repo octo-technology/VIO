@@ -9,6 +9,8 @@ from matplotlib import pyplot as plt
 from streamlit_webrtc import webrtc_streamer
 
 
+NUMBER_SECONDS = 5
+
 def image_acquisition() -> List[np.ndarray]:
     # Initialize session state for images if it doesn't exist
     if "acquired_images" not in st.session_state:
@@ -20,7 +22,6 @@ def image_acquisition() -> List[np.ndarray]:
     callback_images = []
 
     def video_frame_callback(frame):
-        number_seconds = 5
         img = frame.to_ndarray(format="bgr24")
         with lock:
             image_obj = {}
@@ -31,9 +32,9 @@ def image_acquisition() -> List[np.ndarray]:
             current_time = time.time()
             if (
                 len(callback_images) == 0
-                or current_time - last_timestamp["seconds"] >= number_seconds
+                or current_time - last_timestamp["seconds"] >= NUMBER_SECONDS
             ):
-                print(f"Acquisition every {number_seconds} seconds")
+                print(f"Acquisition every {NUMBER_SECONDS} seconds")
                 last_timestamp["seconds"] = current_time
                 image_obj["img"] = img
                 callback_images.append(image_obj)
@@ -46,6 +47,10 @@ def image_acquisition() -> List[np.ndarray]:
     with col1:
         st.write("## Live Stream")
         ctx = webrtc_streamer(key="example", video_frame_callback=video_frame_callback)
+        # define a timer to display seconds before next acquisition
+        timer = st.empty()
+        timer.write(f"An acquisition is done every {NUMBER_SECONDS} seconds")
+        
 
     with col2:
         st.write("## Latest Acquired Image")

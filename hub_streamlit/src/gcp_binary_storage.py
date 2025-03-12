@@ -35,8 +35,11 @@ class GCPBinaryStorage:
         return text_blob
 
     def extract_metadata(
-        self, edge_name: str, use_case: str, item_id: str
+        self, edge_name: str, use_case: str, prefix: Optional[str], item_id: str
     ) -> Optional[dict]:
-        metadata_blobname = f"{edge_name}/{use_case}/{item_id}/metadata.json"
+        if prefix is None:
+            metadata_blobname = f"{edge_name}/{use_case}/{item_id}.json"
+        else:
+            metadata_blobname = f"{edge_name}/{use_case}/{prefix}/{item_id}.json"
 
         return json.loads(self.get_text_blob(metadata_blobname))
