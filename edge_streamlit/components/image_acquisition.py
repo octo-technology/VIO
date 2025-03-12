@@ -8,8 +8,8 @@ import streamlit as st
 from matplotlib import pyplot as plt
 from streamlit_webrtc import webrtc_streamer
 
-
 NUMBER_SECONDS = 5
+
 
 def image_acquisition() -> List[np.ndarray]:
     # Initialize session state for images if it doesn't exist
@@ -20,6 +20,7 @@ def image_acquisition() -> List[np.ndarray]:
     last_timestamp = {"seconds": None}
     # Use a regular list for the callback
     callback_images = []
+    acquisition_display = {"last_zero": None}
 
     def video_frame_callback(frame):
         img = frame.to_ndarray(format="bgr24")
@@ -49,8 +50,6 @@ def image_acquisition() -> List[np.ndarray]:
         ctx = webrtc_streamer(key="example", video_frame_callback=video_frame_callback)
         # define a timer to display seconds before next acquisition
         timer = st.empty()
-        timer.write(f"An acquisition is done every {NUMBER_SECONDS} seconds")
-        
 
     with col2:
         st.write("## Latest Acquired Image")
@@ -70,6 +69,29 @@ def image_acquisition() -> List[np.ndarray]:
                 else None
             )
 
+            # Update timer display
+            current_time = time.time()
+            if last_timestamp["seconds"] is not None:
+                time_elapsed = current_time - last_timestamp["seconds"]
+                time_remaining = max(0.0, round(NUMBER_SECONDS - time_elapsed, 1))
+                print(time_remaining)
+                if time_remaining <= 0.5:
+                    # Only update the last_zero timestamp if we just hit zero
+                    if acquisition_display["last_zero"] is None:
+                        acquisition_display["last_zero"] = current_time
+
+                    # Show the acquisition message for 3 seconds
+                    if current_time - acquisition_display["last_zero"] <= 3.0:
+                        timer.markdown(
+                            f"<p style='color: green;'>Acquiring an image...</p>",
+                            unsafe_allow_html=True,
+                        )
+                    else:
+                        acquisition_display["last_zero"] = None
+                else:
+                    acquisition_display["last_zero"] = None
+                    timer.write(f"Next acquisition in: {time_remaining:.1f} seconds")
+
         if image is None:
             continue
         print("Image acquisition", len(st.session_state.acquired_images))
@@ -85,5 +107,6 @@ def image_acquisition() -> List[np.ndarray]:
             ax.imshow(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
             ax.axis("off")
             latest_image_container.pyplot(fig)
+            timer.write("Stream stopped. Acquisition paused.")
 
     return [image["img"] for image in st.session_state.acquired_images]
