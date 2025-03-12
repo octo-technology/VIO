@@ -27,7 +27,7 @@ class TestTfliteServing:
         assert actual_response.status_code == 200
         assert actual_response.json() == expected_message
 
-    def test_get_models_should_return_4_models(self):
+    def test_get_models_should_return_6_models(self):
         # Given
         model_url = f"{self.base_url}/models"
         expected_models = [
@@ -36,6 +36,7 @@ class TestTfliteServing:
             "mobilenet_ssd_v2_face",
             "pin_detection",
             "yolo_coco_nano",
+            "duck_detection",
         ]
 
         # When
