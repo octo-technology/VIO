@@ -1,7 +1,7 @@
 services:
   edge_model_serving:
     container_name: edge_model_serving
-    image: ghcr.io/octo-technology/vio/edge_tflite_serving:grosse-conf-start
+    image: ghcr.io/octo-technology/vio/edge_model_serving:grosse_conf
     volumes:
       - ./models:/models
     ports:
@@ -12,7 +12,7 @@ services:
 
   edge_orchestrator:
     container_name: edge_orchestrator
-    image: ghcr.io/octo-technology/vio/edge_orchestrator:grosse-conf-start
+    image: ghcr.io/octo-technology/vio/edge_orchestrator:grosse_conf
     volumes:
       - ./data_storage:/edge_orchestrator/data_storage
       - /run/udev:/run/udev:ro  # udev is the device manager for the Linux kernel, responsible for managing device nodes in the /dev directory dynamically
@@ -26,7 +26,7 @@ services:
 
   edge_interface:
     container_name: edge_interface
-    image: ghcr.io/octo-technology/vio/edge_interface:grosse-conf-start
+    image: ghcr.io/octo-technology/vio/edge_interface:grosse_conf
     ports:
       - 8080:80
     profiles: [edge]
