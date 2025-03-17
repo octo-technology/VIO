@@ -74,7 +74,6 @@ def image_acquisition() -> List[np.ndarray]:
             if last_timestamp["seconds"] is not None:
                 time_elapsed = current_time - last_timestamp["seconds"]
                 time_remaining = max(0.0, round(NUMBER_SECONDS - time_elapsed, 1))
-                print(time_remaining)
                 if time_remaining <= 0.5:
                     # Only update the last_zero timestamp if we just hit zero
                     if acquisition_display["last_zero"] is None:
