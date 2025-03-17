@@ -96,9 +96,7 @@ if st.session_state.item_id and (st.session_state.active_config is not None):
         else:
             if camera_id_has_been_pinged:
                 image = Image.open(BytesIO(image))
-            columns[odd_idx].image(
-                image, channels="BGR", width=450, use_container_width=True
-            )
+            columns[odd_idx].image(image, channels="BGR")
             if inferences.get(camera_id):
                 inference = inferences[camera_id]
                 columns[odd_idx].markdown(
@@ -107,3 +105,10 @@ if st.session_state.item_id and (st.session_state.active_config is not None):
                     f"Probability: <b>{inference.get('probability')}</b></div>",
                     unsafe_allow_html=True,
                 )
+
+    color = "green" if decision == "OK" else "red"
+    st.markdown(
+        f"<div style='text-align:center; color:{color}; font-size:x-large'>"
+        f"Decision: <b>{decision}</b><br>",
+        unsafe_allow_html=True,
+    )
