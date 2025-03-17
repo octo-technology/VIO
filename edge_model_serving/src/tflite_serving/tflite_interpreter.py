@@ -3,12 +3,16 @@ import os
 from pathlib import Path
 from typing import Dict
 
-from ai_edge_litert.interpreter import Interpreter
+
+
+# JE SUIS DANS LE SERVICE EDGE_MODEL_SERVING POUR SERVIR LES MODELS
 
 
 def create_interpreter(model_path: Path) -> Interpreter:
-    interpreter = Interpreter(model_path=model_path.as_posix())
-    interpreter.allocate_tensors()
+    # Je charge le modèle
+    
+
+
     logging.info(f"Loaded model {model_path.parent.name} from {model_path.resolve()}")
     return interpreter
 

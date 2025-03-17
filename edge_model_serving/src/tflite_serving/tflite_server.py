@@ -33,26 +33,36 @@ def home():
     return {"Hello": "From edge_model_server"}
 
 
+# JE SUIS DANS LE SERVICE EDGE_MODEL_SERVING POUR SERVIR LES MODELS
+
 @app.post("/v1/models/{model_name}/versions/{model_version}:predict")
 async def predict(model_name: str, payload: JSONStructure, request: Request):
     interpreters = request.app.state.model_interpreters
     if model_name not in interpreters:
         raise HTTPException(status_code=404, detail=f"Model {model_name} not found")
 
-    interpreter = request.app.state.model_interpreters[model_name]
-    input_details = interpreter.get_input_details()
-    output_details = interpreter.get_output_details()
+    # Je récupère l'interpreter de mon modèle
+    
 
-    input_dtype = input_details[0]["dtype"] # -> quantization (quantification) of the weights
-    input_shape = input_details[0]["shape"] # -> resize input data
+    # je récupère les détails de l'input et de l'output
+    
+
+
+    # je récupère le type et la taille de l'input attendu
+    
+    
 
     input_data = payload["inputs"]
-    input_array = np.array(input_data, dtype=input_dtype)
+    # input_array = np.array(input_data, dtype=input_dtype)
 
-    interpreter.set_tensor(input_details[0]["index"], input_array)
-    interpreter.invoke()
+    # je mets mon image dans la zone mémoire allouée pour prédire
+    
 
-    scores = interpreter.get_tensor(output_details[0]["index"])
+    # je prédis
+    
+
+    # je récupère les scores de classification
+    # scores = 
     logging.info(f"Scores of classification: {scores[0]}")
 
     return {"outputs": scores.tolist()}
