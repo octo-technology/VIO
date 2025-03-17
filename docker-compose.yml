@@ -23,10 +23,10 @@ services:
       EDGE_ORCHESTRATOR_URL: http://edge_orchestrator:8000
     profiles: [hub]
 
-  edge_interface:
-    extends:
-      file: edge_interface/edge_interface.yml
-      service: edge_interface
+  # edge_interface:
+  #   extends:
+  #     file: edge_interface/edge_interface.yml
+  #     service: edge_interface
 
   hub_streamlit:
     container_name: hub_streamlit
