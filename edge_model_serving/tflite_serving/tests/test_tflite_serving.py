@@ -31,7 +31,7 @@ class TestTfliteServing:
         # Given
         model_url = f"{self.base_url}/models"
         expected_models = [
-            'duck_detection',
+            "duck_detection",
             "marker_quality_control",
             "mobilenet_ssd_v2_coco",
             "mobilenet_ssd_v2_face",

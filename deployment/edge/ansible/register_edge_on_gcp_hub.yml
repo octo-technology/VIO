@@ -1,4 +1,4 @@
-- name: "Register inventory on GCP hub"
+- name: "Register edge on GCP hub"
   hosts: all
   tasks:
     - name: Create edge_ip file

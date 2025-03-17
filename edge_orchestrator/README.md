@@ -23,12 +23,3 @@ Do not get confused with the `BUILDPLATFORM` variable, that matches the current 
 Visit:
 - [Multi-platform build arguments](https://docs.docker.com/build/building/variables/#multi-platform-build-arguments) for more details on Build variables
 - [Multi-platform builds](https://docs.docker.com/build/building/multi-platform/) for more details on the Multi-platform build with Docker
-pg_config --version
-```
-
-If not, install it using the following command:
-
-MacOS:
-```bash
-brew install postgresql
-```
