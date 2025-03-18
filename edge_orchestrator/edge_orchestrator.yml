@@ -14,5 +14,8 @@ services:
       - 8000:8000
     environment:
       SERVING_MODEL_URL: http://edge_model_serving:8501
+      GOOGLE_APPLICATION_CREDENTIALS: /edge_orchestrator/config/secrets/credentials.json
+      BUCKET_NAME: tf-vio-bucket
+      ACTIVE_CONFIG_NAME: duck_detection_gcp_with_2_usbcamera
     privileged: true
     profiles: [edge]
