@@ -32,7 +32,7 @@
         "camera_2": {
             "camera_id": "camera_2",
             "camera_type": "usb",
-            "source_directory": "/dev/video3",
+            "source_directory": "/dev/video2",
             "position": "front",
             "camera_resolution": {
                 "width": 1366,
