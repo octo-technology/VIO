@@ -12,7 +12,7 @@ URL_DATA_UPLOAD = URL_ORCH + "upload"
 
 # active_config = json.loads(requests.get(URL_ACTIVE_CONFIG).text)
 
-data_gathering_active_config = "data_gathering_with_1_usb_cam"
+data_gathering_active_config = "data_gathering"
 requests.post(url=f"{URL_ACTIVE_CONFIG}?station_name={data_gathering_active_config}")
 st.session_state.active_config = json.loads(requests.get(URL_ACTIVE_CONFIG).text)
 
