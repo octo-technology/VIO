@@ -15,9 +15,9 @@
                 },
                 "model_version": "1",
                 "class_names": [
-                    "OK",
                     "KO",
-                    "KO"
+                    "KO",
+                    "OK"
                 ],
                 "model_serving_url": "http://edge_model_serving:8501/",
                 "recreate_me": false
@@ -47,9 +47,9 @@
                 },
                 "model_version": "1",
                 "class_names": [
-                    "OK",
                     "KO",
-                    "KO"
+                    "KO",
+                    "OK"
                 ],
                 "model_serving_url": "http://edge_model_serving:8501/",
                 "recreate_me": false
