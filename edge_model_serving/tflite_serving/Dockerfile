@@ -25,7 +25,7 @@ RUN pip install --no-cache-dir --upgrade pip setuptools
 COPY tflite_serving/pyproject.toml ./
 COPY tflite_serving/src/ ./src
 COPY tflite_serving/pip.conf /opt/venv/pip.conf
-COPY models/tflite/ $MODELS_PATH/tflite/
+# COPY models/tflite/ $MODELS_PATH/tflite/
 
 RUN pip install --no-cache-dir .
 
