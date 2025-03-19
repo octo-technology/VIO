@@ -105,12 +105,14 @@ class TestFileSystemMetadataStorage:
                 "camera_#1": {
                     "camera_id": "camera_#1",
                     "camera_type": "fake",
+                    "same_camera_index": 0,
                     "position": "front",
                     "source_directory": "fake",
                 },
                 "camera_#2": {
                     "camera_id": "camera_#2",
                     "camera_type": "usb",
+                    "same_camera_index": 0,
                     "position": "front",
                     "camera_vendor": "test",
                     "camera_serial_number": "test",

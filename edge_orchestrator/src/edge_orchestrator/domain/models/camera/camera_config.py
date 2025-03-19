@@ -22,6 +22,7 @@ class CameraConfig(BaseModel):
     source_directory: Optional[Path] = None
     camera_vendor: Optional[str] = None
     camera_serial_number: Optional[str] = None
+    same_camera_index: Optional[int] = 0
     position: Optional[str] = "front"
     camera_resolution: Optional[ImageResolution] = None
     model_forwarder_config: Optional[ModelForwarderConfig] = None
@@ -39,7 +40,7 @@ class CameraConfig(BaseModel):
     @property
     def device_node(self) -> Union[str, int, None]:
         if self.camera_type == CameraType.USB:
-            return get_camera_device_node(self.camera_vendor, self.camera_serial_number)
+            return get_camera_device_node(self.camera_vendor, self.camera_serial_number, self.same_camera_index)
         elif self.camera_type == CameraType.WEBCAM:
             return 0
         else:

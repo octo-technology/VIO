@@ -18,7 +18,9 @@ class RaspberryPiCamera(ICamera):
             self.capture_config = self._picam2.create_still_configuration(buffer_count=1)
             self._picam2.start()
         except ModuleNotFoundError:
-            self._logger.error("PiCamera module not found, please make sure it is installed. Capture method will not work.")
+            self._logger.error(
+                "PiCamera module not found, please make sure it is installed. Capture method will not work."
+            )
 
     def capture(self) -> Image:
         stream = BytesIO()
