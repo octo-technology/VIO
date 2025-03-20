@@ -7,7 +7,7 @@
             "camera_vendor": "1bcf",
             "camera_serial_number": "2286",
             "camera_name": "FHD_Camera",
-            "same_camera_index": 0,
+            "camera_instance_index": 0,
             "position": "front",
             "model_forwarder_config": {
                 "model_name": "pin_detection",
@@ -34,7 +34,7 @@
             "camera_vendor": "1bcf",
             "camera_serial_number": "2286",
             "camera_name": "FHD_Camera",
-            "same_camera_index": 1,
+            "camera_instance_index": 1,
             "position": "back",
             "model_forwarder_config": {
                 "model_name": "pin_detection",

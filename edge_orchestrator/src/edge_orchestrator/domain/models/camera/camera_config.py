@@ -21,7 +21,7 @@ class CameraConfig(BaseModel):
     source_directory: Optional[Path] = None
     camera_vendor: Optional[str] = None
     camera_serial_number: Optional[str] = None
-    same_camera_index: Optional[int] = 0
+    camera_instance_index: Optional[int] = 0
     position: Optional[str] = "front"
     camera_resolution: Optional[ImageResolution] = None
     model_forwarder_config: Optional[ModelForwarderConfig] = None

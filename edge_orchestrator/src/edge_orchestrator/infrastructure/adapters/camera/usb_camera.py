@@ -23,16 +23,16 @@ class UsbCamera(ICamera):
                 usb_devices,
                 camera_config.camera_vendor,
                 camera_config.camera_serial_number,
-                camera_config.same_camera_index,
+                camera_config.camera_instance_index,
             )
-            self._open_webcam(device_node)
+            self._open_camera(device_node)
             self._start()
         except Exception:
             self._logger.exception(f"Error while opening USB camera: {self._camera_config.camera_id}")
 
     @staticmethod
     def _get_camera_device_node(
-        usb_devices: Dict[Tuple, str], camera_vendor: str, camera_serial_number: str, same_camera_index: int
+        usb_devices: Dict[Tuple, str], camera_vendor: str, camera_serial_number: str, camera_instance_index: int
     ) -> Optional[str]:
         corresponding_devices = []
         for cam_vendor, cam_serial_number, id_path in usb_devices.keys():
@@ -45,10 +45,10 @@ class UsbCamera(ICamera):
             return None
         else:
             logging.warning(f"Found several devices with the same vendor and serial number: {corresponding_devices}")
-            logging.warning(f"Returning the device at index: {same_camera_index}")
-            return corresponding_devices[same_camera_index]
+            logging.warning(f"Returning the device at index: {camera_instance_index}")
+            return corresponding_devices[camera_instance_index]
 
-    def _open_webcam(self, src_or_index: Union[str, int]):
+    def _open_camera(self, src_or_index: Union[str, int]):
         self._stream = cv2.VideoCapture(src_or_index)
         (self._grabbed, self._frame) = self._stream.read()
         self._name = __name__
