@@ -24,10 +24,10 @@ class CameraFactory(ICameraFactory):
 
             return RaspberryPiCamera(camera_config)
         elif camera_config.camera_type in [CameraType.WEBCAM, CameraType.USB]:
-            from edge_orchestrator.infrastructure.adapters.camera.webcam_camera import (
-                WebcamCamera,
+            from edge_orchestrator.infrastructure.adapters.camera.usb_camera import (
+                UsbCamera,
             )
 
-            return WebcamCamera(camera_config)
+            return UsbCamera(camera_config)
         else:
             raise ValueError(f"Camera type ({camera_config.camera_type}) is not supported.")

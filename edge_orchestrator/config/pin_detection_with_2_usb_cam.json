@@ -31,9 +31,9 @@
         "camera_2": {
             "camera_id": "camera_2",
             "camera_type": "usb",
-            "camera_vendor": "038f",
-            "camera_serial_number": "6001",
-            "camera_name": "USB_2.0_Camera",
+            "camera_vendor": "1bcf",
+            "camera_serial_number": "2286",
+            "camera_name": "FHD_Camera",
             "same_camera_index": 1,
             "position": "back",
             "model_forwarder_config": {

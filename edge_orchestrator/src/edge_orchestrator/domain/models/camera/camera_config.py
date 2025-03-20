@@ -1,7 +1,7 @@
 from pathlib import Path
-from typing import Optional, Union
+from typing import Optional
 
-from pydantic import BaseModel, computed_field, model_validator
+from pydantic import BaseModel, model_validator
 
 from edge_orchestrator.domain.models.camera.camera_type import CameraType
 from edge_orchestrator.domain.models.camera_rule.camera_rule_config import (
@@ -13,7 +13,6 @@ from edge_orchestrator.domain.models.model_forwarder.image_resolution import (
 from edge_orchestrator.domain.models.model_forwarder.model_forwarder_config import (
     ModelForwarderConfig,
 )
-from edge_orchestrator.utils.usb_device import get_camera_device_node
 
 
 class CameraConfig(BaseModel):
@@ -35,13 +34,3 @@ class CameraConfig(BaseModel):
         if self.camera_type == CameraType.USB and self.camera_vendor is not None and self.camera_serial_number is None:
             raise ValueError("camera_vendor and camera_serial_number are required with camera_type USB")
         return self
-
-    @computed_field
-    @property
-    def device_node(self) -> Union[str, int, None]:
-        if self.camera_type == CameraType.USB:
-            return get_camera_device_node(self.camera_vendor, self.camera_serial_number, self.same_camera_index)
-        elif self.camera_type == CameraType.WEBCAM:
-            return 0
-        else:
-            return None

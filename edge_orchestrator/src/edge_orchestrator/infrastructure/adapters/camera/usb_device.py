@@ -1,5 +1,5 @@
 import logging
-from typing import Dict, Optional, Tuple
+from typing import Dict, Tuple
 
 from pyudev import Context
 
@@ -32,24 +32,6 @@ def list_connected_usb_device() -> Dict[Tuple, str]:
                     f"Vendor id: {vendor_id.strip()}, Product id: {product_id.strip()}, Id Path: {id_path}, Device Path: {device_path}, Camera Name: {model_name}, Vendor Name: {vendor_name}"
                 )
     return usb_devices
-
-
-def get_camera_device_node(camera_vendor: str, camera_serial_number: str, same_camera_index: int) -> Optional[str]:
-    try:
-        usb_devices = list_connected_usb_device()
-        corresponding_devices = []
-        for cam_vendor, cam_serial_number, id_path in usb_devices.keys():
-            if camera_vendor == cam_vendor and camera_serial_number == cam_serial_number:
-                corresponding_devices.append(usb_devices[(cam_vendor, cam_serial_number, id_path)]["device_path"])
-        if len(corresponding_devices) == 0:
-            logging.warning(
-                f"Camera with vendor: {camera_vendor} and serial number: {camera_serial_number} not found in connected USB devices:\n{usb_devices}"
-            )
-        else:
-            return corresponding_devices[same_camera_index]
-    except Exception:
-        logging.warning("Error while listing connected USB devices")
-    return None
 
 
 if __name__ == "__main__":
