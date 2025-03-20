@@ -20,6 +20,7 @@ Feature: The client request metadata and binaries
 	"camera_1": {
 	"camera_id": "camera_1",
 	"camera_type": "fake",
+	"same_camera_index": 0,
 	"source_directory": "fake_images",
 	"position": "front",
 	"model_forwarder_config": {
@@ -45,6 +46,7 @@ Feature: The client request metadata and binaries
 	"camera_2": {
 	"camera_id": "camera_2",
 	"camera_type": "fake",
+	"same_camera_index": 0,
 	"source_directory": "fake_images",
 	"position": "front",
 	"model_forwarder_config": {
