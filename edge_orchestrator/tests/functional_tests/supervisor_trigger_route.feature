@@ -17,7 +17,7 @@ Feature: The client trigger a visual inspection and request the resulting metada
 		"camera_1": {
 		"camera_id": "camera_1",
 		"camera_type": "fake",
-		"same_camera_index": 0,
+		"camera_instance_index": 0,
 		"source_directory": "fake_images",
 		"position": "front",
 		"model_forwarder_config": {
@@ -43,7 +43,7 @@ Feature: The client trigger a visual inspection and request the resulting metada
 		"camera_2": {
 		"camera_id": "camera_2",
 		"camera_type": "fake",
-		"same_camera_index": 0,
+		"camera_instance_index": 0,
 		"source_directory": "fake_images",
 		"position": "front",
 		"model_forwarder_config": {

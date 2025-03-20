@@ -38,12 +38,18 @@ class TestCameraFactory:
             ("camera_3", CameraType.USB, UsbCamera),
         ],
     )
-    @patch("edge_orchestrator.domain.models.camera.camera_config.get_camera_device_node")
+    @patch("edge_orchestrator.infrastructure.adapters.camera.usb_camera.list_connected_usb_device")
     def test_should_return_webcam_and_usb_camera(
-        self, mock_get_camera_device_node, camera_id: str, camera_type: CameraType, camera_class: ICamera
+        self, mock_list_connected_usb_device, camera_id: str, camera_type: CameraType, camera_class: ICamera
     ):
-        # Mock the get_camera_device_node function
-        mock_get_camera_device_node.return_value = "/dev/video0"
+        # Mock the list_connected_usb_device function
+        mock_list_connected_usb_device.return_value = {
+            ("1bcf", "2286", "pci-0000:00:14.0-usb-0:1:1.0"): {
+                "vendor_name": "Sunplus_IT_Co",
+                "model_name": "FHD_Camera",
+                "device_path": "/dev/video0",
+            }
+        }
 
         # Given
         camera_factory = CameraFactory()

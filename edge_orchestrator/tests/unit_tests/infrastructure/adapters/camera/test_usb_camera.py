@@ -18,11 +18,11 @@ class TestUsbCamera:
         }
         camera_vendor = "1bcf"
         camera_serial_number = "2286"
-        same_camera_index = 0
+        camera_instance_index = 0
 
         # When
         device_node = UsbCamera._get_camera_device_node(
-            usb_devices, camera_vendor, camera_serial_number, same_camera_index
+            usb_devices, camera_vendor, camera_serial_number, camera_instance_index
         )
 
         # Then
