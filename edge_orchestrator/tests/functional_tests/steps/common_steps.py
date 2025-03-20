@@ -32,6 +32,12 @@ def assert_metadata_almost_equal(
             assert_binaries_almost_equal(actual_item_metadata[expected_item_key])
         elif expected_item_key == "predictions":
             assert_predictions_almost_equal(actual_item_metadata[expected_item_key], expected_item_value_or_pattern)
+        elif expected_item_key == "camera_decisions":
+            assert len(actual_item_metadata[expected_item_key]) == len(expected_item_value_or_pattern)
+            for decision in actual_item_metadata[expected_item_key].values():
+                assert Decision(decision)
+        elif expected_item_key == "decision":
+            assert Decision(actual_item_metadata[expected_item_key])
         else:
             assert expected_item_value_or_pattern == actual_item_metadata[expected_item_key]
 
