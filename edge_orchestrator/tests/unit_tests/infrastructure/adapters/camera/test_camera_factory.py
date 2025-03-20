@@ -12,7 +12,7 @@ from edge_orchestrator.infrastructure.adapters.camera.fake_camera import FakeCam
 from edge_orchestrator.infrastructure.adapters.camera.raspberry_pi_camera import (
     RaspberryPiCamera,
 )
-from edge_orchestrator.infrastructure.adapters.camera.webcam_camera import WebcamCamera
+from edge_orchestrator.infrastructure.adapters.camera.usb_camera import UsbCamera
 
 
 class TestCameraFactory:
@@ -34,8 +34,8 @@ class TestCameraFactory:
     @pytest.mark.parametrize(
         "camera_id,camera_type,camera_class",
         [
-            ("camera_2", CameraType.WEBCAM, WebcamCamera),
-            ("camera_3", CameraType.USB, WebcamCamera),
+            ("camera_2", CameraType.WEBCAM, UsbCamera),
+            ("camera_3", CameraType.USB, UsbCamera),
         ],
     )
     @patch("edge_orchestrator.domain.models.camera.camera_config.get_camera_device_node")

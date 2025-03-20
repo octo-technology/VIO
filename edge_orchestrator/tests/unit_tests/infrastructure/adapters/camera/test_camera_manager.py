@@ -18,7 +18,7 @@ from edge_orchestrator.infrastructure.adapters.camera.fake_camera import FakeCam
 from edge_orchestrator.infrastructure.adapters.camera.raspberry_pi_camera import (
     RaspberryPiCamera,
 )
-from edge_orchestrator.infrastructure.adapters.camera.webcam_camera import WebcamCamera
+from edge_orchestrator.infrastructure.adapters.camera.usb_camera import UsbCamera
 
 
 class TestCameraManager:
@@ -29,7 +29,7 @@ class TestCameraManager:
         # Given
         camera_id_camera_classes = [
             ("camera_#1", FakeCamera),
-            ("camera_#2", WebcamCamera),
+            ("camera_#2", UsbCamera),
             ("camera_#3", RaspberryPiCamera),
         ]
 
