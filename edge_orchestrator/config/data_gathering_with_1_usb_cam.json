@@ -3,8 +3,10 @@
     "camera_configs": {
         "camera_1": {
             "camera_id": "camera_1",
-            "source_directory": "/dev/video0",
             "camera_type": "usb",
+            "camera_vendor": "1bcf",
+            "camera_serial_number": "2286",
+            "camera_name": "FHD_Camera",
             "position": "front"
         }
     },

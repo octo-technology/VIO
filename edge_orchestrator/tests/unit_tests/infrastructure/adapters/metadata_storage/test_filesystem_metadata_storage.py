@@ -69,7 +69,9 @@ class TestFileSystemMetadataStorage:
             creation_date="2025-02-04T09:23:10.437614",
             cameras_metadata={
                 "camera_#1": CameraConfig(camera_id="camera_#1", camera_type=CameraType.FAKE, source_directory="fake"),
-                "camera_#2": CameraConfig(camera_id="camera_#2", camera_type=CameraType.USB, source_directory="fake"),
+                "camera_#2": CameraConfig(
+                    camera_id="camera_#2", camera_type=CameraType.USB, camera_vendor="test", camera_serial_number="test"
+                ),
             },
             binaries={
                 "camera_#1": Image(
@@ -103,14 +105,17 @@ class TestFileSystemMetadataStorage:
                 "camera_#1": {
                     "camera_id": "camera_#1",
                     "camera_type": "fake",
+                    "camera_instance_index": 0,
                     "position": "front",
                     "source_directory": "fake",
                 },
                 "camera_#2": {
                     "camera_id": "camera_#2",
                     "camera_type": "usb",
+                    "camera_instance_index": 0,
                     "position": "front",
-                    "source_directory": "fake",
+                    "camera_vendor": "test",
+                    "camera_serial_number": "test",
                 },
             },
             "binaries": {

@@ -25,8 +25,11 @@ class CameraManager(ICameraManager):
                 continue
             else:
                 self._logger.info(f"Creating camera {camera_id}")
-                camera = self._camera_factory.create_camera(camera_config)
-                self._cameras[camera_id] = camera
+                try:
+                    camera = self._camera_factory.create_camera(camera_config)
+                    self._cameras[camera_id] = camera
+                except Exception:
+                    pass
                 self._logger.info(f"Camera {camera_id} created!")
 
     def take_pictures(self, item: Item):
