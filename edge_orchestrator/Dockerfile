@@ -48,7 +48,7 @@ RUN pip install --no-cache-dir --upgrade pip setuptools
 
 COPY pip.conf /opt/venv/pip.conf
 COPY pyproject.toml ./
-COPY config ./config
+# COPY config ./config
 COPY fake_images ./fake_images
 COPY model_labels ./model_labels
 COPY src/ ./src

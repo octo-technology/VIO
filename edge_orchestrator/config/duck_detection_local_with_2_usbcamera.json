@@ -1,0 +1,77 @@
+{
+    "station_name": "duck_detection_local_with_2_usbcamera",
+    "camera_configs": {
+        "camera_1": {
+            "camera_id": "camera_1",
+            "camera_type": "usb",
+            "source_directory": "/dev/video0",
+            "position": "front",
+            "model_forwarder_config": {
+                "model_name": "duck_detection",
+                "model_type": "classification",
+                "expected_image_resolution": {
+                    "width": 224,
+                    "height": 224
+                },
+                "model_version": "1",
+                "class_names": [
+                    "KO",
+                    "OK"
+                ],
+                "model_serving_url": "http://edge_model_serving:8501/",
+                "recreate_me": false
+            },
+            "camera_rule_config": {
+                "camera_rule_type": "expected_label_rule",
+                "expected_class": "OK",
+                "recreate_me": false
+            },
+            "recreate_me": false
+        },
+        "camera_2": {
+            "camera_id": "camera_2",
+            "camera_type": "usb",
+            "source_directory": "/dev/video2",
+            "position": "front",
+            "camera_resolution": {
+                "width": 1366,
+                "height": 768
+            },
+            "model_forwarder_config": {
+                "model_name": "duck_detection",
+                "model_type": "classification",
+                "expected_image_resolution": {
+                    "width": 224,
+                    "height": 224
+                },
+                "model_version": "1",
+                "class_names": [
+                    "KO",
+                    "OK"
+                ],
+                "model_serving_url": "http://edge_model_serving:8501/",
+                "recreate_me": false
+            },
+            "camera_rule_config": {
+                "camera_rule_type": "expected_label_rule",
+                "expected_class": "OK",
+                "recreate_me": false
+            },
+            "recreate_me": false
+        }
+    },
+    "binary_storage_config": {
+        "storage_type": "filesystem",
+        "target_directory": "data_storage"
+    },
+    "metadata_storage_config": {
+        "storage_type": "filesystem",
+        "target_directory": "data_storage"
+    },
+    "item_rule_config": {
+        "item_rule_type": "min_threshold_ratio_rule",
+        "expected_decision": "OK",
+        "threshold": 1,
+        "recreate_me": false
+    }
+}

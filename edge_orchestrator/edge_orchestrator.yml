@@ -8,10 +8,14 @@ services:
         BUILDOS: ${BUILDOS:-linux}
     volumes:
       - ./data_storage:/edge_orchestrator/data_storage
+      - ./config:/edge_orchestrator/config
       - /run/udev:/run/udev:ro  # udev is the device manager for the Linux kernel, responsible for managing device nodes in the /dev directory dynamically
     ports:
       - 8000:8000
     environment:
       SERVING_MODEL_URL: http://edge_model_serving:8501
+      GOOGLE_APPLICATION_CREDENTIALS: /edge_orchestrator/config/secrets/credentials.json
+      BUCKET_NAME: tf-vio-bucket
+      ACTIVE_CONFIG_NAME: duck_detection_gcp_with_2_usbcamera
     privileged: true
     profiles: [edge]
