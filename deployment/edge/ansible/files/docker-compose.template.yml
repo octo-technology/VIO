@@ -26,9 +26,7 @@ services:
 
   edge_interface:
     container_name: edge_interface
-    build:
-      context: edge_interface
-      dockerfile: Dockerfile
+    image: ghcr.io/octo-technology/vio/edge_interface:latest
     ports:
       - 8080:80
 
