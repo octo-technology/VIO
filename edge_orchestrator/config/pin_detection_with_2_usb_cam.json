@@ -4,7 +4,10 @@
         "camera_1": {
             "camera_id": "camera_1",
             "camera_type": "usb",
-            "source_directory": "/dev/video0",
+            "camera_vendor": "1bcf",
+            "camera_serial_number": "2286",
+            "camera_name": "FHD_Camera",
+            "camera_instance_index": 0,
             "position": "front",
             "model_forwarder_config": {
                 "model_name": "pin_detection",
@@ -28,7 +31,10 @@
         "camera_2": {
             "camera_id": "camera_2",
             "camera_type": "usb",
-            "source_directory": "/dev/video4",
+            "camera_vendor": "1bcf",
+            "camera_serial_number": "2286",
+            "camera_name": "FHD_Camera",
+            "camera_instance_index": 1,
             "position": "back",
             "model_forwarder_config": {
                 "model_name": "pin_detection",

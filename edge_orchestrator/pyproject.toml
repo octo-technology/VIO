@@ -26,6 +26,7 @@ dependencies = [
     "numpy==1.24.2",
     "opencv_python==4.11.0.86",
     "Pillow==9.4.0",
+    "pyudev==0.24.3",
     "smart-open[all]==7.1.0",
     "tenacity==9.0.0",
 ]
