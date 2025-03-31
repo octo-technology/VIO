@@ -21,10 +21,15 @@
         src:  "{{ LOCAL_VIO_DIR }}/edge_model_serving/models/tflite"
         dest: "{{ REMOTE_VIO_DIR }}/edge_model_serving/models/"
 
-    - name: Template docker compose
+    - name: Copy docker compose
       ansible.builtin.template:
         src: "{{ LOCAL_VIO_DIR }}/deployment/edge/ansible/files/docker-compose.template.yml"
         dest: "{{ REMOTE_VIO_DIR }}/docker-compose.yml"
+    
+    - name: Copy Makefile
+      ansible.builtin.template:
+        src: "{{ LOCAL_VIO_DIR }}/deployment/edge/ansible/files/Makefile.template"
+        dest: "{{ REMOTE_VIO_DIR }}/Makefile"
 
     - name: Start all edge services on intel (model_serving, orchestrator, interface)
       make:

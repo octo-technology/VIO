@@ -1,7 +1,7 @@
 services:
   edge_model_serving:
     container_name: edge_model_serving
-    image: ghcr.io/octo-technology/vio/edge_model_serving:latest
+    image: ghcr.io/octo-technology/vio/edge_tflite_serving:latest
     environment:
       TF_CPP_MIN_VLOG_LEVEL: 0   # TensorFlow logging level
     ports:
@@ -23,6 +23,7 @@ services:
       GOOGLE_APPLICATION_CREDENTIALS: /edge_orchestrator/config/secrets/credentials.json
       BUCKET_NAME: tf-vio-bucket
       ACTIVE_CONFIG_NAME: marker_classification_with_1_fake_camera
+    privileged: true
 
   edge_interface:
     container_name: edge_interface
