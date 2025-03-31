@@ -7,8 +7,9 @@ services:
       args:
         BUILDOS: ${BUILDOS:-linux}
     volumes:
+      - ./config:/edge_orchestrator/config
       - ./data_storage:/edge_orchestrator/data_storage
-      - /run/udev:/run/udev:ro  # udev is the device manager for the Linux kernel, responsible for managing device nodes in the /dev directory dynamically
+      - /run/udev:/run/udev:ro # udev is the device manager for the Linux kernel, responsible for managing device nodes in the /dev directory dynamically
     ports:
       - 8000:8000
     environment:
