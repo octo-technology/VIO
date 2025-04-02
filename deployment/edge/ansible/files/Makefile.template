@@ -1,0 +1,20 @@
+SHELL := /bin/bash
+.SHELLFLAGS = -ec
+.ONESHELL:
+.SILENT:
+BUILDOS=$(shell uname -s | tr '[:upper:]' '[:lower:]')
+
+
+.PHONY: help
+help:
+	echo "❓ Use \`make <target>'"
+	grep -E '^\.PHONY: [a-zA-Z0-9_-]+ .*?## .*$$' $(MAKEFILE_LIST) | \
+		awk 'BEGIN {FS = "(: |##)"}; {printf "\033[36m%-30s\033[0m %s\n", $$2, $$3}'
+
+.PHONY: vio-edge-up ## 🐳 Start all edge services (db, model_serving, orchestrator, interface)
+vio-edge-up:
+	BUILDOS=${BUILDOS} docker compose --profile edge up -d
+
+.PHONY: vio-down ## ❌ Stop all services (model_serving, edge_orchestrator, ui)
+vio-down:
+	docker compose --profile hub --profile edge down

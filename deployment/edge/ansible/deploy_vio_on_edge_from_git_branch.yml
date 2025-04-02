@@ -1,6 +1,14 @@
 - name: "Deploy vio on edge and launch"
   hosts: all
   tasks:
+    - name: Clone vio git repo
+      ansible.builtin.git:
+        repo: https://github.com/octo-technology/VIO.git
+        dest: "{{ REMOTE_VIO_DIR }}"
+        single_branch: yes
+        version: main
+        force: true
+
     - name: Remove config folder
       ansible.builtin.file:
         path: "{{ REMOTE_VIO_DIR }}/edge_orchestrator/config"
@@ -21,15 +29,14 @@
         src:  "{{ LOCAL_VIO_DIR }}/edge_model_serving/models/tflite"
         dest: "{{ REMOTE_VIO_DIR }}/edge_model_serving/models/"
 
-    - name: Copy docker compose
-      ansible.builtin.template:
-        src: "{{ LOCAL_VIO_DIR }}/deployment/edge/ansible/files/docker-compose.template.yml"
-        dest: "{{ REMOTE_VIO_DIR }}/docker-compose.yml"
-    
-    - name: Copy Makefile
-      ansible.builtin.template:
-        src: "{{ LOCAL_VIO_DIR }}/deployment/edge/ansible/files/Makefile.template"
-        dest: "{{ REMOTE_VIO_DIR }}/Makefile"
+    - name: Set environment variables for edge-orchestrator
+      ansible.builtin.set_fact:
+        edge_orchestrator_env:
+          - EDGE_NAME={{ EDGE_NAME }}
+          - SERVING_MODEL_URL=http://edge_model_serving:8501
+          - GOOGLE_APPLICATION_CREDENTIALS=/edge_orchestrator/config/secrets/credentials.json
+          - BUCKET_NAME=tf-vio-bucket
+          - ACTIVE_CONFIG_NAME=marker_classification_with_1_fake_camera
 
     - name: Start all edge services on intel (model_serving, orchestrator, interface)
       make:
