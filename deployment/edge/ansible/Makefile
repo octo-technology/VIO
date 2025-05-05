@@ -18,7 +18,7 @@ ping-inventory:
 deploy-vio-on-inventory:
 	LOCAL_VIO_DIR=${LOCAL_VIO_DIR} ansible-playbook -v -i inventory.ini deploy_vio_on_edge.yml
 
-.PHONY: deploy-vio-on-inventory-from-git-branch ## 🚀 Deploy VIO on the edge devicess describe in the inventory from a branch to debug
+.PHONY: deploy-vio-on-inventory-from-git-branch ## 🚀 Deploy VIO on the edge devices described in the inventory from a branch to debug
 deploy-vio-on-inventory-from-git-branch:
 	LOCAL_VIO_DIR=${LOCAL_VIO_DIR} ansible-playbook -v -i inventory.ini deploy_vio_on_edge_from_git_branch.yml
 
