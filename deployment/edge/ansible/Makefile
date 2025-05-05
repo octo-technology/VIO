@@ -18,6 +18,10 @@ ping-inventory:
 deploy-vio-on-inventory:
 	LOCAL_VIO_DIR=${LOCAL_VIO_DIR} ansible-playbook -v -i inventory.ini deploy_vio_on_edge.yml
 
+.PHONY: deploy-vio-on-inventory-from-git-branch ## 🚀 Deploy VIO on the edge devices described in the inventory from a branch to debug
+deploy-vio-on-inventory-from-git-branch:
+	LOCAL_VIO_DIR=${LOCAL_VIO_DIR} ansible-playbook -v -i inventory.ini deploy_vio_on_edge_from_git_branch.yml
+
 .PHONY: register-inventory-on-gcp-hub ## 🚀 Register the inventory on the GCP hub
 register-inventory-on-gcp-hub:
 	LOCAL_VIO_DIR=${LOCAL_VIO_DIR} ansible-playbook -v -i inventory.ini register_edge_on_gcp_hub.yml -e ansible_python_interpreter=.venv/bin/python
