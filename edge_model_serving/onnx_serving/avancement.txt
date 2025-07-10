@@ -1,0 +1,23 @@
+Resolu !!
+
+Etapes : 
+1 - docker stop id-container
+2 - docker build -t onnx_serving .
+3 - docker run -p 8000:8000 onnx_serving
+
+A faire : 
+
+Tester les Apis : curl .....
+Ecrire les test de chaque API endpoint
+Call avec Baptiste
+Passer au edge_orchestrator : exploration du code 
+
+
+
+- Tester les APIs POST avec curl en envoyant les params en body 
+- Interface API sur : http://localhost:8000/docs
+
+
+- curl -X POST "http://localhost:8000/models/yolo11n/versions/1:predict" \
+     -H "Accept: application/json"
+
