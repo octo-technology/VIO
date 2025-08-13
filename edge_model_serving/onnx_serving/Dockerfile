@@ -18,4 +18,6 @@ RUN pip install -e "/app[linux]"
 
 EXPOSE 8000
 
-CMD ["sh", "-c", "PYTHONPATH=/app/src uvicorn onnx_server:app --reload --host 0.0.0.0 --port 8000"]
+ENV PYTHONPATH=/app/src
+ENTRYPOINT ["uvicorn"]
+CMD ["onnx_server:app", "--reload", "--host", "0.0.0.0", "--port", "8000"]
