@@ -70,17 +70,17 @@ class TestCameraRuleManager:
                 ),
             },
             predictions={
-                "camera_#1": ClassifPrediction(prediction_type=PredictionType.class_, label="OK", probability=0.41),
-                "camera_#2": ClassifPrediction(prediction_type=PredictionType.class_, label="KO", probability=0.96),
+                "camera_#1": ClassifPrediction(prediction_type=PredictionType.CLASS_, label="OK", probability=0.41),
+                "camera_#2": ClassifPrediction(prediction_type=PredictionType.CLASS_, label="KO", probability=0.96),
                 "camera_#3": DetectionPrediction(
-                    prediction_type=PredictionType.objects,
+                    prediction_type=PredictionType.OBJECTS,
                     detected_objects={
                         "object_#1": DetectedObject(location=[1, 2, 3, 4], objectness=0.6578, label="bike"),
                         "object_#2": DetectedObject(location=[1, 2, 3, 4], objectness=0.6578, label="moto"),
                     },
                 ),
                 "camera_#4": DetectionPrediction(
-                    prediction_type=PredictionType.objects,
+                    prediction_type=PredictionType.OBJECTS,
                     detected_objects={
                         "object_#1": DetectedObject(location=[1, 2, 3, 4], objectness=0.6578, label="bike"),
                         "object_#2": DetectedObject(location=[1, 2, 3, 4], objectness=0.6578, label="moto"),

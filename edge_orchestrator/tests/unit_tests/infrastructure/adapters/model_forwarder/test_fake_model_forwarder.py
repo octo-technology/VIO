@@ -25,16 +25,16 @@ class TestFakeModelForwarder:
     @pytest.mark.parametrize(
         "model_type,class_names",
         [
-            (ModelType.classification, ["OK", "KO"]),
-            (ModelType.object_detection, ["OK", "KO"]),
-            # (ModelType.segmentation, None),
+            (ModelType.CLASSIFICATION, ["OK", "KO"]),
+            (ModelType.OBJECT_DETECTION, ["OK", "KO"]),
+            # (ModelType.SEGMENTATION, None),
         ],
     )
     async def test_fake_model_forwarder(self, model_type: ModelType, class_names: List[str]):
         # Given
         random.seed(42)
         model_forwarder_config = ModelForwarderConfig(
-            model_name=ModelName.fake_model,
+            model_name=ModelName.FAKE_MODEL,
             model_version="1",
             model_type=model_type,
             class_names=class_names,
@@ -47,10 +47,10 @@ class TestFakeModelForwarder:
         prediction = await fake_model_forwarder.predict_on_binary(fake_binary)
 
         # Then
-        if model_type == ModelType.classification:
+        if model_type == ModelType.CLASSIFICATION:
             assert isinstance(prediction, ClassifPrediction)
             assert prediction.label == Decision.OK and prediction.probability == 0.02501
-        elif model_type == ModelType.object_detection:
+        elif model_type == ModelType.OBJECT_DETECTION:
             assert isinstance(prediction, DetectionPrediction)
             assert hasattr(prediction, "detected_objects")
             assert all(

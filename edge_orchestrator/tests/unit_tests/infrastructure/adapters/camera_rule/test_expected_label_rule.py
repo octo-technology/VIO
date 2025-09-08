@@ -23,7 +23,7 @@ class TestExpectedLabelRule:
                 camera_rule_type=CameraRuleType.EXPECTED_LABEL_RULE, expected_class="people"
             )
         )
-        prediction = ClassifPrediction(prediction_type=PredictionType.class_, label="people", probability=0.2354)
+        prediction = ClassifPrediction(prediction_type=PredictionType.CLASS_, label="people", probability=0.2354)
 
         # When
         actual_decision = expected_label_rule.apply_camera_rule(prediction)

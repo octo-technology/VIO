@@ -18,27 +18,27 @@ class ModelForwarderFactory(IModelForwarderFactory):
         self._logger = logging.getLogger(__name__)
 
     def create_model_forwarder(self, model_forwarder_config: ModelForwarderConfig) -> IModelForwarder:
-        if model_forwarder_config.model_name == ModelName.fake_model:
+        if model_forwarder_config.model_name == ModelName.FAKE_MODEL:
             from edge_orchestrator.infrastructure.adapters.model_forwarder.fake_model_forwarder import (
                 FakeModelForwarder,
             )
 
             return FakeModelForwarder(model_forwarder_config)
-        elif model_forwarder_config.model_type == ModelType.classification:
+        elif model_forwarder_config.model_type == ModelType.CLASSIFICATION:
             from edge_orchestrator.infrastructure.adapters.model_forwarder.classif_model_forwarder import (
                 ClassifModelForwarder,
             )
 
             return ClassifModelForwarder(model_forwarder_config)
 
-        elif model_forwarder_config.model_type == ModelType.object_detection:
+        elif model_forwarder_config.model_type == ModelType.OBJECT_DETECTION:
             from edge_orchestrator.infrastructure.adapters.model_forwarder.object_detection_model_forwarder import (
                 ObjectDetectionModelForwarder,
             )
 
             return ObjectDetectionModelForwarder(model_forwarder_config)
 
-        elif model_forwarder_config.model_type == ModelType.segmentation:
+        elif model_forwarder_config.model_type == ModelType.SEGMENTATION:
             from edge_orchestrator.infrastructure.adapters.model_forwarder.segmentation_model_forwarder import (
                 SegmentationModelForwarder,
             )

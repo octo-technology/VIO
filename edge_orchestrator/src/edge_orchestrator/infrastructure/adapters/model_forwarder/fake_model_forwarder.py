@@ -36,9 +36,9 @@ class FakeModelForwarder(IModelForwarder):
 
     async def _predict(self, preprocessed_binary: np.ndarray) -> Dict[str, Any]:
         model_type = self._model_forwarder_config.model_type
-        if model_type == ModelType.classification:
+        if model_type == ModelType.CLASSIFICATION:
             return {"label": random.choice(["OK", "KO"]), "probability": random.uniform(0, 1)}
-        elif model_type == ModelType.object_detection:
+        elif model_type == ModelType.OBJECT_DETECTION:
             return {
                 "detected_objects": {
                     "object_1": {
@@ -56,25 +56,25 @@ class FakeModelForwarder(IModelForwarder):
 
     def _post_process_prediction(self, prediction_response: Dict[str, Any]) -> Prediction:
         model_type = self._model_forwarder_config.model_type
-        if model_type == ModelType.classification:
+        if model_type == ModelType.CLASSIFICATION:
             return ClassifPrediction(
-                prediction_type=PredictionType.class_,
+                prediction_type=PredictionType.CLASS_,
                 label=prediction_response["label"],
                 probability=prediction_response["probability"],
             )
-        elif model_type == ModelType.object_detection:
+        elif model_type == ModelType.OBJECT_DETECTION:
             detected_objects = prediction_response["detected_objects"]
             return DetectionPrediction(
-                prediction_type=PredictionType.objects,
+                prediction_type=PredictionType.OBJECTS,
                 detected_objects={
                     "object_1": DetectedObject(
-                        prediction_type=ModelType.classification,
+                        prediction_type=ModelType.CLASSIFICATION,
                         label=detected_objects["object_1"]["label"],
                         location=detected_objects["object_1"]["location"],
                         objectness=detected_objects["object_1"]["objectness"],
                     ),
                     "object_2": DetectedObject(
-                        prediction_type=ModelType.classification,
+                        prediction_type=ModelType.CLASSIFICATION,
                         label=detected_objects["object_2"]["label"],
                         location=detected_objects["object_2"]["location"],
                         objectness=detected_objects["object_2"]["objectness"],

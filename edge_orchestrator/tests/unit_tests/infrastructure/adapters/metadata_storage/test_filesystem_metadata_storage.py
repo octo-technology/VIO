@@ -88,8 +88,8 @@ class TestFileSystemMetadataStorage:
                 ),
             },
             predictions={
-                "camera_#1": ClassifPrediction(prediction_type=PredictionType.class_, label="OK", probability=0.41),
-                "camera_#2": ClassifPrediction(prediction_type=PredictionType.class_, label="OK", probability=0.96),
+                "camera_#1": ClassifPrediction(prediction_type=PredictionType.CLASS_, label="OK", probability=0.41),
+                "camera_#2": ClassifPrediction(prediction_type=PredictionType.CLASS_, label="OK", probability=0.96),
             },
             camera_decisions={"camera_#1": Decision.OK, "camera_#2": Decision.OK},
             decision=Decision.OK,

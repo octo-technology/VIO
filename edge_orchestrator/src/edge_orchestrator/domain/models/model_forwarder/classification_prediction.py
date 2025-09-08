@@ -9,6 +9,6 @@ from edge_orchestrator.domain.models.validators import round_float
 
 
 class ClassifPrediction(BaseModel):
-    prediction_type: Literal[PredictionType.class_]
+    prediction_type: Literal[PredictionType.CLASS_]
     label: Optional[str] = None
     probability: Annotated[Optional[float], AfterValidator(round_float)] = None

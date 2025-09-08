@@ -23,7 +23,7 @@ class TestUnexpectedLabelRule:
                 camera_rule_type=CameraRuleType.UNEXPECTED_LABEL_RULE, unexpected_class="bike"
             )
         )
-        prediction = ClassifPrediction(prediction_type=PredictionType.class_, label="people", probability=0.2354)
+        prediction = ClassifPrediction(prediction_type=PredictionType.CLASS_, label="people", probability=0.2354)
 
         # When
         actual_decision = unexpected_label_rule.apply_camera_rule(prediction)

@@ -27,11 +27,11 @@ class TestModelForwarderFactory:
     @pytest.mark.parametrize(
         "model_name,model_type,model_class",
         [
-            (ModelName.fake_model, ModelType.classification, FakeModelForwarder),
-            (ModelName.pin_detection, ModelType.classification, ClassifModelForwarder),
+            (ModelName.FAKE_MODEL, ModelType.CLASSIFICATION, FakeModelForwarder),
+            (ModelName.PIN_DETECTION, ModelType.CLASSIFICATION, ClassifModelForwarder),
             (
-                ModelName.mobilenet_ssd_v2_coco,
-                ModelType.object_detection,
+                ModelName.MOBILENET_SSD_V2_COCO,
+                ModelType.OBJECT_DETECTION,
                 ObjectDetectionModelForwarder,
             ),
         ],

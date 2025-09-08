@@ -24,19 +24,19 @@ class TestObjectDetectionModelForwarder:
         "model_name,image_resolution,class_names,expected_number_of_objects",
         [
             (
-                ModelName.mobilenet_ssd_v2_coco,
+                ModelName.MOBILENET_SSD_V2_COCO,
                 {"width": 300, "height": 300},
                 ["person", "bicycle"] * 50,
                 20,
             ),
             (
-                ModelName.mobilenet_ssd_v2_face,
+                ModelName.MOBILENET_SSD_V2_FACE,
                 {"width": 320, "height": 320},
                 ["person", "bicycle"] * 50,
                 50,
             ),
             (
-                ModelName.yolo_coco_nano,
+                ModelName.YOLO_COCO_NANO,
                 {"width": 320, "height": 320},
                 ["person", "bicycle"] * 50,
                 5,
@@ -56,7 +56,7 @@ class TestObjectDetectionModelForwarder:
         image_resolution = ImageResolution(**image_resolution)
         model_forward_config = ModelForwarderConfig(
             model_name=model_name,
-            model_type=ModelType.object_detection,
+            model_type=ModelType.OBJECT_DETECTION,
             model_version="1",
             class_names=class_names,
             model_serving_url=setup_test_tflite_serving,
@@ -87,8 +87,8 @@ class TestObjectDetectionModelForwarder:
         # Given
         image_resolution = ImageResolution(width=224, height=224)
         model_forward_config = ModelForwarderConfig(
-            model_name=ModelName.mobilenet_ssd_v2_coco,
-            model_type=ModelType.object_detection,
+            model_name=ModelName.MOBILENET_SSD_V2_COCO,
+            model_type=ModelType.OBJECT_DETECTION,
             model_version="1",
             class_names=["person", "bicycle"],
             model_serving_url=setup_test_tflite_serving,

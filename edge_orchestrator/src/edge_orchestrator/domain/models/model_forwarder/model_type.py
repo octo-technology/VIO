@@ -2,6 +2,6 @@ from enum import Enum
 
 
 class ModelType(str, Enum):
-    classification = "classification"
-    object_detection = "object_detection"
-    segmentation = "segmentation"
+    CLASSIFICATION = "classification"
+    OBJECT_DETECTION = "object_detection"
+    SEGMENTATION = "segmentation"
