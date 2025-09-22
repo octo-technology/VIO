@@ -1,3 +1,4 @@
+import time
 from typing import Dict
 
 from testcontainers.core.container import DockerContainer
@@ -28,4 +29,5 @@ class TfServingContainer(DockerContainer):
     def start(self, starting_log: str = r"Uvicorn running on"):
         super().start()
         self._connect(starting_log)
+        time.sleep(2)  # wait for the container to be fully started
         return self
