@@ -24,8 +24,8 @@ class TestClassifModelForwarder:
     @pytest.mark.parametrize(
         "model_name,probability",
         [
-            (ModelName.marker_quality_control, 0.83054),
-            (ModelName.pin_detection, 0.99962),
+            (ModelName.MARKER_QUALITY_CONTROL, 0.83054),
+            (ModelName.PIN_DETECTION, 0.99962),
         ],
     )
     async def test_classif_model_forwarder_should_return_classif_prediction(
@@ -39,7 +39,7 @@ class TestClassifModelForwarder:
         image_resolution = ImageResolution(width=224, height=224)
         model_forward_config = ModelForwarderConfig(
             model_name=model_name,
-            model_type=ModelType.classification,
+            model_type=ModelType.CLASSIFICATION,
             model_version="1",
             class_names=["OK", "KO"],
             model_serving_url=setup_test_tflite_serving,
@@ -48,7 +48,7 @@ class TestClassifModelForwarder:
         model_fowarder = ClassifModelForwarder(model_forward_config)
 
         expected_prediction = ClassifPrediction(
-            prediction_type=PredictionType.class_, label="KO", probability=probability
+            prediction_type=PredictionType.CLASS_, label="KO", probability=probability
         )
 
         # When
@@ -67,8 +67,8 @@ class TestClassifModelForwarder:
         # Given
         image_resolution = ImageResolution(width=224, height=224)
         model_forward_config = ModelForwarderConfig(
-            model_name=ModelName.marker_quality_control,
-            model_type=ModelType.classification,
+            model_name=ModelName.MARKER_QUALITY_CONTROL,
+            model_type=ModelType.CLASSIFICATION,
             model_version="1",
             class_names=["OK", "KO"],
             model_serving_url=setup_test_tflite_serving,

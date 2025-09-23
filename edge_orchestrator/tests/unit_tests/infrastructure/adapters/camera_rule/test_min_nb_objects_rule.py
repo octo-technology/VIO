@@ -25,7 +25,7 @@ class TestMinNbObjectsRule:
             )
         )
         prediction = DetectionPrediction(
-            prediction_type=PredictionType.objects,
+            prediction_type=PredictionType.OBJECTS,
             detected_objects={
                 "object_#1": DetectedObject(location=[1, 2, 3, 4], objectness=0.6578, label="bike"),
                 "object_#2": DetectedObject(location=[1, 2, 3, 4], objectness=0.6578, label="moto"),

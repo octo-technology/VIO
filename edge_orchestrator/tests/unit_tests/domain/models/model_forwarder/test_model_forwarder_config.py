@@ -22,8 +22,8 @@ class TestModelForwarderConfig:
         # When
         with pytest.raises(ValidationError) as e:
             ModelForwarderConfig(
-                model_name=ModelName.marker_quality_control,
-                model_type=ModelType.classification,
+                model_name=ModelName.MARKER_QUALITY_CONTROL,
+                model_type=ModelType.CLASSIFICATION,
                 class_names_filepath=unexisting_path,
                 expected_image_resolution=ImageResolution(width=224, height=224),
             )

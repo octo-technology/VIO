@@ -42,7 +42,7 @@ class ClassifModelForwarder(IModelForwarder):
     def _post_process_prediction(self, prediction_response: Dict[str, Any]) -> Prediction:
         if len(prediction_response["outputs"]) == 0:
             self._logger.warning("No predictions found")
-            return ClassifPrediction(prediction_type=PredictionType.class_)
+            return ClassifPrediction(prediction_type=PredictionType.CLASS_)
 
         predictions = prediction_response["outputs"][0]
         number_predictions_classes = len(predictions)
@@ -54,7 +54,7 @@ class ClassifModelForwarder(IModelForwarder):
                 "the number of predictions ({number_predictions_classes})"
             )
         return ClassifPrediction(
-            prediction_type=PredictionType.class_,
+            prediction_type=PredictionType.CLASS_,
             label=class_names[np.argmax(predictions)],
             probability=float(np.max(predictions)),
         )

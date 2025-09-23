@@ -40,8 +40,8 @@ class TestModelForwarderManager:
                     camera_type=CameraType.FAKE,
                     source_directory="fake",
                     model_forwarder_config=ModelForwarderConfig(
-                        model_name=ModelName.marker_quality_control,
-                        model_type=ModelType.classification,
+                        model_name=ModelName.MARKER_QUALITY_CONTROL,
+                        model_type=ModelType.CLASSIFICATION,
                         model_serving_url="http://bad_url",
                         model_version="1",
                         class_names=["OK", "KO"],

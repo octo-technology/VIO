@@ -2,7 +2,7 @@ from enum import Enum
 
 
 class PredictionType(str, Enum):
-    class_ = "class"
-    objects = "objects"
-    probability = "probability"
-    mask = "mask"
+    CLASS_ = "class"
+    OBJECTS = "objects"
+    PROBABILITY = "probability"
+    MASK = "mask"

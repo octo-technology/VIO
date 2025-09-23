@@ -18,10 +18,10 @@ class MinNbObjectsRule(ICameraRule):
 
     def _get_camera_decision(self, prediction: Prediction) -> Decision:
         detec_predict_with_classif = prediction
-        if detec_predict_with_classif.prediction_type != PredictionType.objects:
+        if detec_predict_with_classif.prediction_type != PredictionType.OBJECTS:
             self._logger.warning(
-                "You can not use an MinNbObjectsRule on something other than "
-                f"{PredictionType.objects.value}, no decision returned."
+                f"You can not use a MinNbObjectsRule on something other than "
+                f"{PredictionType.OBJECTS.value}, no decision returned."
             )
             return Decision.NO_DECISION
 

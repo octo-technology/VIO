@@ -12,6 +12,6 @@ from edge_orchestrator.domain.models.model_forwarder.prediction_type import (
 
 
 class DetectionPrediction(BaseModel):
-    prediction_type: Literal[PredictionType.objects]
+    prediction_type: Literal[PredictionType.OBJECTS]
     detected_objects: Dict[str, DetectedObject] = Field(default=dict())
     label: Optional[Decision] = None

@@ -39,7 +39,7 @@ class ObjectDetectionModelForwarder(IModelForwarder):
     async def _predict(self, preprocessed_binary: np.ndarray) -> Dict[str, Any]:
         # TODO: refactor edge_model_serving to remove model_type from the request
         model_type = None
-        if self._model_forwarder_config.model_name == ModelName.yolo_coco_nano:
+        if self._model_forwarder_config.model_name == ModelName.YOLO_COCO_NANO:
             model_type = "yolo"
         async with aiohttp.ClientSession() as session:
             async with session.post(
@@ -62,7 +62,7 @@ class ObjectDetectionModelForwarder(IModelForwarder):
             or len(predictions["detection_classes"]) == 0
         ):
             self._logger.warning("No detected objects found!")
-            return DetectionPrediction(prediction_type=PredictionType.objects, detected_objects={})
+            return DetectionPrediction(prediction_type=PredictionType.OBJECTS, detected_objects={})
 
         detected_objects = {}
         boxes_coordinates, objectness_scores, detection_classes = (
@@ -80,4 +80,4 @@ class ObjectDetectionModelForwarder(IModelForwarder):
                 objectness=box_objectness,
                 label=class_names[int(detection_classes[box_index])],
             )
-        return DetectionPrediction(prediction_type=PredictionType.objects, detected_objects=detected_objects)
+        return DetectionPrediction(prediction_type=PredictionType.OBJECTS, detected_objects=detected_objects)

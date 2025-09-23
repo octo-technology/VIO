@@ -35,8 +35,8 @@ class TestModelForwarderManager:
                     camera_type=CameraType.FAKE,
                     source_directory="fake",
                     model_forwarder_config=ModelForwarderConfig(
-                        model_name=ModelName.fake_model,
-                        model_type=ModelType.classification,
+                        model_name=ModelName.FAKE_MODEL,
+                        model_type=ModelType.CLASSIFICATION,
                         model_version="1",
                         class_names=["OK", "KO"],
                         expected_image_resolution={"width": 224, "height": 224},
@@ -47,8 +47,8 @@ class TestModelForwarderManager:
                     camera_type=CameraType.RASPBERRY,
                     source_directory="fake",
                     model_forwarder_config=ModelForwarderConfig(
-                        model_name=ModelName.fake_model,
-                        model_type=ModelType.object_detection,
+                        model_name=ModelName.FAKE_MODEL,
+                        model_type=ModelType.OBJECT_DETECTION,
                         model_version="1",
                         class_names=["OK", "KO"],
                         expected_image_resolution={"width": 224, "height": 224},

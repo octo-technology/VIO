@@ -18,10 +18,10 @@ class UnexpectedLabelRule(ICameraRule):
 
     def _get_camera_decision(self, prediction: Prediction) -> Decision:
         classif = prediction
-        if classif.prediction_type != PredictionType.class_:
+        if classif.prediction_type != PredictionType.CLASS_:
             self._logger.warning(
                 "You can not use an ExpectedLabelRule on something other than "
-                f"{PredictionType.class_.value}, no decision returned."
+                f"{PredictionType.CLASS_.value}, no decision returned."
             )
             return Decision.NO_DECISION
         if classif.label is None:

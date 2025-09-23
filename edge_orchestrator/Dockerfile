@@ -7,7 +7,8 @@ ARG BUILDOS
 RUN if [ "$TARGETPLATFORM" = "linux/arm64" ] && [ "$BUILDOS" = "linux" ]; then \
         apt update && apt install -y --no-install-recommends gnupg; \
         echo "deb http://archive.raspberrypi.org/debian/ bookworm main" > /etc/apt/sources.list.d/raspi.list \
-        && apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 82B129927FA3303E; \
+        && gpg --keyserver keyserver.ubuntu.com --recv-keys 82B129927FA3303E \
+        && gpg --export 82B129927FA3303E | tee /etc/apt/trusted.gpg.d/raspberry.gpg > /dev/null; \
     fi
 
 RUN if [ "$TARGETPLATFORM" = "linux/arm64" ] && [ "$BUILDOS" = "linux" ]; then \
