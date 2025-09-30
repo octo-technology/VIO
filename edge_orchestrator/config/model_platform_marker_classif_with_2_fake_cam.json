@@ -9,8 +9,7 @@
             "model_forwarder_config": {
                 "model_name": "marker_quality_control",
                 "model_type": "classification",
-                # TODO: adapt the URL to use model exposed by the Model platform
-                "model_serving_url": "http://host.docker.internal/???",
+                "model_serving_url": "http://host.docker.internal/deploy/vio-model/vio-model-marker-quality-control-1-deployment-e09da7/predict",
                 "domain_name": "model-platform.com",
                 "expected_image_resolution": {
                     "width": 224,
@@ -35,8 +34,7 @@
             "model_forwarder_config": {
                 "model_name": "marker_quality_control",
                 "model_type": "classification",
-                # TODO: adapt the URL to use model exposed by the Model platform
-                "model_serving_url": "http://host.docker.internal/???",
+                "model_serving_url": "http://host.docker.internal/deploy/vio-model/vio-model-marker-quality-control-1-deployment-e09da7/predict",
                 "domain_name": "model-platform.com",
                 "expected_image_resolution": {
                     "width": 224,
