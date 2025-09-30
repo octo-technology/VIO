@@ -36,6 +36,7 @@ class IModelForwarder(ABC):
 
     @staticmethod
     def _build_model_url(base_url: str, model_name: str, model_version: str) -> str:
+        return base_url
         if base_url.endswith("/"):
             return f"{base_url}v1/models/{model_name}/versions/{model_version}:predict"
         else:

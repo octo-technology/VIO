@@ -1,10 +1,8 @@
-import io
 import logging
 from typing import Any, Dict
 
-import aiohttp
 import numpy as np
-from PIL import Image, ImageOps
+from aiohttp import ClientSession, FormData
 
 from edge_orchestrator.domain.models.model_forwarder.classification_prediction import (
     ClassifPrediction,
@@ -26,17 +24,25 @@ class ClassifModelForwarder(IModelForwarder):
         self._logger = logging.getLogger(__name__)
         self._model_forwarder_config = model_forwarder_config
 
-    def _pre_process_binary(self, binary: bytes) -> np.ndarray:
-        width = self._model_forwarder_config.expected_image_resolution.width
-        height = self._model_forwarder_config.expected_image_resolution.height
-        resized_image = ImageOps.fit(Image.open(io.BytesIO(binary)), (width, height), Image.Resampling.LANCZOS)
-        image_array = np.asarray(resized_image)
-        normalized_image_array = (image_array.astype(np.float32) / 127.0) - 1
-        return np.ndarray(shape=(1, width, height, 3), dtype=np.float32, buffer=normalized_image_array)
+    def _pre_process_binary(self, binary: bytes) -> bytes:
+        # Return the original binary data for form upload
+        return binary
 
-    async def _predict(self, preprocessed_binary: np.ndarray) -> Dict[str, Any]:
-        async with aiohttp.ClientSession() as session:
-            async with session.post(self._get_model_url(), json={"inputs": preprocessed_binary.tolist()}) as response:
+    async def _predict(self, preprocessed_binary: bytes) -> Dict[str, Any]:
+        headers = {}
+        if self._model_forwarder_config.domain_name:
+            headers["Host"] = self._model_forwarder_config.domain_name
+
+        data = FormData()
+        data.add_field("file", preprocessed_binary, filename="image.jpg", content_type="image/jpeg")
+
+        async with ClientSession() as session:
+            async with session.post(self._get_model_url(), data=data, headers=headers) as response:
+                self._logger.info(f"Response status: {response.status}")
+                if response.status != 200:
+                    response_text = await response.text()
+                    self._logger.error(f"Error response: {response_text}")
+                    raise Exception(f"HTTP {response.status}: {response_text}")
                 return await response.json()
 
     def _post_process_prediction(self, prediction_response: Dict[str, Any]) -> Prediction:
@@ -44,7 +50,9 @@ class ClassifModelForwarder(IModelForwarder):
             self._logger.warning("No predictions found")
             return ClassifPrediction(prediction_type=PredictionType.class_)
 
-        predictions = prediction_response["outputs"][0]
+        self._logger.info(f"Prediction response: {prediction_response}")
+        self._logger.info(f"Prediction response outputs: {prediction_response['outputs']}")
+        predictions = prediction_response["outputs"]
         number_predictions_classes = len(predictions)
         class_names = self._get_class_names()
         number_model_classes = len(class_names)

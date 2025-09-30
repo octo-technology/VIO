@@ -2,8 +2,8 @@ import io
 import logging
 from typing import Any, Dict
 
-import aiohttp
 import numpy as np
+from aiohttp import ClientSession
 from PIL import Image
 
 from edge_orchestrator.domain.models.model_forwarder.detection_prediction import (
@@ -38,10 +38,13 @@ class ObjectDetectionModelForwarder(IModelForwarder):
 
     async def _predict(self, preprocessed_binary: np.ndarray) -> Dict[str, Any]:
         # TODO: refactor edge_model_serving to remove model_type from the request
+        headers = {}
+        if self._model_forwarder_config.domain_name:
+            headers["Host"] = self._model_forwarder_config.domain_name
         model_type = None
         if self._model_forwarder_config.model_name == ModelName.yolo_coco_nano:
             model_type = "yolo"
-        async with aiohttp.ClientSession() as session:
+        async with ClientSession() as session:
             async with session.post(
                 self._get_model_url(),
                 json={
