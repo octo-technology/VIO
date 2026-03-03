@@ -9,16 +9,8 @@
             "model_forwarder_config": {
                 "model_name": "fake_model",
                 "model_type": "classification",
-                "expected_image_resolution": {
-                    "width": 224,
-                    "height": 224
-                },
                 "model_version": "1",
-                "class_names": [
-                    "OK",
-                    "KO"
-                ],
-                "model_id": "fake_model_classification_1"
+                "model_id": "fake_model_1"
             },
             "camera_rule_config": {
                 "camera_rule_type": "expected_label_rule",
@@ -33,16 +25,8 @@
             "model_forwarder_config": {
                 "model_name": "fake_model",
                 "model_type": "object_detection",
-                "expected_image_resolution": {
-                    "width": 224,
-                    "height": 224
-                },
                 "model_version": "1",
-                "class_names": [
-                    "OK",
-                    "KO"
-                ],
-                "model_id": "fake_model_object_detection_1"
+                "model_id": "fake_model_1"
             },
             "camera_rule_config": {
                 "camera_rule_type": "min_nb_objects_rule",
@@ -58,16 +42,8 @@
             "model_forwarder_config": {
                 "model_name": "fake_model",
                 "model_type": "object_detection",
-                "expected_image_resolution": {
-                    "width": 224,
-                    "height": 224
-                },
                 "model_version": "1",
-                "class_names": [
-                    "OK",
-                    "KO"
-                ],
-                "model_id": "fake_model_object_detection_1"
+                "model_id": "fake_model_1"
             },
             "camera_rule_config": {
                 "camera_rule_type": "max_nb_objects_rule",

@@ -7,7 +7,7 @@ from edge_orchestrator.domain.models.station_config import StationConfig
 from edge_orchestrator.domain.ports.binary_storage.i_binary_storage import (
     IBinaryStorage,
 )
-from src.edge_orchestrator.domain.ports.storing_path_manager import StoringPathManager
+from edge_orchestrator.domain.ports.storing_path_manager import StoringPathManager
 
 
 class AzureBinaryStorage(IBinaryStorage):

@@ -10,6 +10,7 @@ RUN apt-get update && apt-get upgrade -y && \
     apt-get install -y --no-install-recommends \
     build-essential \
     gcc \
+    patchelf \
     && apt clean \
     && apt autoremove \
     && rm -rf /var/cache/apt/archives/* \
@@ -27,7 +28,8 @@ COPY tflite_serving/src/ ./src
 COPY tflite_serving/pip.conf /opt/venv/pip.conf
 COPY models/tflite/ $MODELS_PATH/tflite/
 
-RUN pip install --no-cache-dir .
+RUN pip install --no-cache-dir . && \
+    find /opt/venv -name "*.so" -exec patchelf --clear-execstack {} \; 2>/dev/null || true
 
 EXPOSE 8501
 ENTRYPOINT ["uvicorn", "tflite_serving.tflite_server:app"]

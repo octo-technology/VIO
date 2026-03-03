@@ -8,7 +8,7 @@ on:
       - main
   pull_request:
     paths:
-      - 'edge_orchestrator/**'
+      - "edge_orchestrator/**"
 
 jobs:
   lint_and_test_on_edge_orchestrator:
@@ -16,21 +16,16 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [ "3.9", "3.10", "3.11" ]
+        python-version: ["3.9", "3.10", "3.11"]
     services:
-      edge_model_serving:
-        image: ghcr.io/octo-technology/vio/edge_model_serving:main
-        ports:
-          - 8501:8501
       edge_tflite_serving:
         image: ghcr.io/octo-technology/vio/edge_tflite_serving:main
         ports:
-          - 8502:8501
+          - 8501:8501
+        options: --platform linux/amd64
     env:
-      TENSORFLOW_SERVING_HOST: localhost
-      TENSORFLOW_SERVING_PORT: 8501
       TFLITE_SERVING_HOST: localhost
-      TFLITE_SERVING_PORT: 8502
+      TFLITE_SERVING_PORT: 8501
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -45,7 +40,7 @@ jobs:
         working-directory: ./edge_orchestrator
 
       - name: Lint with flake8 and black
-        run: make lint
+        run: make check
         working-directory: ./edge_orchestrator
       - name: Run unit tests
         run: make unit_tests
@@ -58,6 +53,23 @@ jobs:
           name: Unit tests report in Python ${{ matrix.python-version }}
           path: edge_orchestrator/reports/pytest/unit-tests-report.xml
           reporter: java-junit
+
+      - name: Wait for edge_tflite_serving to be ready
+        run: |
+          for i in {1..30}; do
+            if curl -sf --max-time 2 http://localhost:8501/v1/; then
+              echo "Service is up!"
+              exit 0
+            fi
+            echo "Waiting... ($i/30)"
+            sleep 2
+          done
+          echo "=== Container status ==="
+          docker ps -a
+          echo "=== edge_tflite_serving logs ==="
+          docker logs $(docker ps -aq --filter "ancestor=ghcr.io/octo-technology/vio/edge_tflite_serving:main") 2>&1 || echo "Could not get container logs"
+          echo "Service did not start in time" >&2
+          exit 1
 
       - name: Run integration tests
         run: make integration_tests
@@ -100,4 +112,3 @@ jobs:
     secrets:
       username: ${{ github.actor }}
       password: ${{ secrets.GITHUB_TOKEN }}
-

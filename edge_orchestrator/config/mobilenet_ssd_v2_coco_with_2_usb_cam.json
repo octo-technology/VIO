@@ -8,14 +8,8 @@
             "position": "front",
             "model_forwarder_config": {
                 "model_name": "yolo_coco_nano",
-                "model_type": "object_detection",
                 "model_serving_url": "http://edge_model_serving:8501/",
-                "expected_image_resolution": {
-                    "width": 320,
-                    "height": 320
-                },
-                "model_version": "1",
-                "class_names_filepath": "model_labels/coco_labels.txt"
+                "model_version": "1"
             },
             "camera_rule_config": {
                 "camera_rule_type": "min_nb_objects_rule",
@@ -30,14 +24,8 @@
             "position": "back",
             "model_forwarder_config": {
                 "model_name": "yolo_coco_nano",
-                "model_type": "object_detection",
                 "model_serving_url": "http://edge_model_serving:8501/",
-                "expected_image_resolution": {
-                    "width": 320,
-                    "height": 320
-                },
-                "model_version": "1",
-                "class_names_filepath": "model_labels/coco_labels.txt"
+                "model_version": "1"
             },
             "camera_rule_config": {
                 "camera_rule_type": "min_nb_objects_rule",

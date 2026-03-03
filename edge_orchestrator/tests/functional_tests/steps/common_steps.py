@@ -32,6 +32,12 @@ def assert_metadata_almost_equal(
             assert_binaries_almost_equal(actual_item_metadata[expected_item_key])
         elif expected_item_key == "predictions":
             assert_predictions_almost_equal(actual_item_metadata[expected_item_key], expected_item_value_or_pattern)
+        elif expected_item_key == "camera_decisions":
+            assert_camera_decisions_almost_equal(
+                actual_item_metadata[expected_item_key], expected_item_value_or_pattern
+            )
+        elif expected_item_key == "decision":
+            assert actual_item_metadata[expected_item_key] in [d.value for d in Decision]
         else:
             assert expected_item_value_or_pattern == actual_item_metadata[expected_item_key]
 
@@ -41,6 +47,15 @@ def assert_binaries_almost_equal(actual_binaries: Dict[str, Dict]):
         assert camera_id in actual_binaries
         assert dateutil.parser.isoparse(binary["creation_date"])
         assert Path(binary["storing_path"]).exists()
+
+
+def assert_camera_decisions_almost_equal(
+    actual_camera_decisions: Dict[str, str], expected_camera_decisions: Dict[str, str]
+):
+    valid_decisions = [d.value for d in Decision]
+    assert set(actual_camera_decisions.keys()) == set(expected_camera_decisions.keys())
+    for camera_id in expected_camera_decisions:
+        assert actual_camera_decisions[camera_id] in valid_decisions
 
 
 def assert_predictions_almost_equal(

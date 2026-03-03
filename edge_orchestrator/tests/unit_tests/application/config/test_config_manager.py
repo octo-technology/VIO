@@ -63,7 +63,7 @@ class TestConfigManager:
         active_station_config = config_manager.get_config()
         assert active_station_config is None
         assert (
-            f"No config directory found, creating it.",
+            "No config directory found, creating it.",
             "WARNING",
         ) in log_messages
 

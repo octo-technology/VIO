@@ -21,18 +21,9 @@ Feature: The client trigger a visual inspection and request the resulting metada
 		"position": "front",
 		"model_forwarder_config": {
 		"model_name": "pin_detection",
-		"model_type": "classification",
-		"expected_image_resolution": {
-		"width": 224,
-		"height": 224
-		},
 		"model_version": "1",
-		"class_names": [
-		"OK",
-		"KO"
-		],
 		"model_serving_url": "http://0.0.0.0:8501/",
-		"model_id": "pin_detection_classification_1"
+		"model_id": "pin_detection_1"
 		},
 		"camera_rule_config": {
 		"camera_rule_type": "expected_label_rule",
@@ -46,16 +37,9 @@ Feature: The client trigger a visual inspection and request the resulting metada
 		"position": "front",
 		"model_forwarder_config": {
 		"model_name": "mobilenet_ssd_v2_coco",
-		"model_type": "object_detection",
-		"expected_image_resolution": {
-		"width": 300,
-		"height": 300
-		},
 		"model_version": "1",
-		"class_names": [],
-		"class_names_filepath": "model_labels/imagenet_labels.txt",
 		"model_serving_url": "http://0.0.0.0:8501/",
-		"model_id": "mobilenet_ssd_v2_coco_object_detection_1"
+		"model_id": "mobilenet_ssd_v2_coco_1"
 		},
 		"camera_rule_config": {
 		"camera_rule_type": "min_nb_objects_rule",

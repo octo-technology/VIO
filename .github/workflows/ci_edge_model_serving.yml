@@ -8,7 +8,7 @@ on:
       - main
   pull_request:
     paths:
-      - 'edge_model_serving/**'
+      - "edge_model_serving/**"
 
 jobs:
   lint_and_test_on_edge_model_serving:
@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [ "3.10", "3.11" ]
+        python-version: ["3.10", "3.11"]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -31,7 +31,7 @@ jobs:
         working-directory: ./edge_model_serving/tflite_serving
 
       - name: Lint with flake8 and black
-        run: make lint
+        run: make check
         working-directory: ./edge_model_serving/tflite_serving
 
       - name: Run unit tests

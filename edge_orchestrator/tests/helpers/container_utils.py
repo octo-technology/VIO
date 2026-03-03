@@ -2,7 +2,7 @@ import logging
 import os
 import platform
 from pathlib import Path
-from typing import Dict, Tuple, Union
+from typing import Dict, Optional, Tuple, Union
 
 import docker
 from helpers.tf_serving_container import TfServingContainer
@@ -15,7 +15,7 @@ EDGE_MODEL_SERVING = {
 }
 EDGE_TFLITE_SERVING_IMG = "ghcr.io/octo-technology/vio/edge_tflite_serving:main"
 
-if platform.uname().system == "Darwin":
+if platform.uname().system == "Darwin" and not os.getenv("DOCKER_HOST"):
     os.environ["DOCKER_HOST"] = f"unix://{(Path.home() / '.colima/docker.sock').as_posix()}"
 
 
@@ -43,11 +43,11 @@ def start_test_tf_serving(
     image_name: str,
     starting_log: str,
     env_vars: Dict[str, str],
-    tf_serving_host: Union[str, None] = os.getenv("TENSORFLOW_SERVING_HOST"),
-    tf_serving_port: Union[int, None] = os.getenv("TENSORFLOW_SERVING_PORT"),
+    tf_serving_host: Union[str, None],
+    tf_serving_port: Union[int, None],
     host_volume_path: str = None,
     container_volume_path: str = None,
-) -> Tuple[str, TfServingContainer]:
+) -> Tuple[str, Optional[TfServingContainer]]:
     container = None
     if tf_serving_host is None or tf_serving_port is None:
         port_to_expose = 8501

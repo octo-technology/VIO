@@ -11,7 +11,7 @@ from fastapi.testclient import TestClient
 sys.path.append((Path(__file__).parents[1]).resolve().as_posix())
 os.environ["TESTCONTAINERS_RYUK_DISABLED"] = "true"
 
-from helpers.container_utils import (  # EDGE_MODEL_SERVING,
+from helpers.container_utils import (  # EDGE_MODEL_SERVING,  # noqa: E402
     EDGE_TFLITE_SERVING_IMG,
     start_test_tf_serving,
     stop_test_container,
@@ -54,8 +54,8 @@ def before_all(context: Context):
         IModelForwarder,
     )
 
-    IModelForwarder._build_model_url = (
-        lambda self, base_url, model_name, model_version: f"{model_serving_url}v1/models/{model_name}/versions/{model_version}:predict"
+    IModelForwarder._build_model_url = lambda self, base_url, model_name, model_version: (
+        f"{model_serving_url}v1/models/{model_name}/versions/{model_version}:predict"
     )
 
 
