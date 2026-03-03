@@ -1,0 +1,5 @@
+{
+  "output_type": "classification",
+  "class_names": ["OK", "KO"],
+  "normalization": "mobilenet"
+}

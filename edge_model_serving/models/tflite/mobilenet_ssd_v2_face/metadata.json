@@ -1,0 +1,5 @@
+{
+  "output_type": "object_detection",
+  "class_names": ["background", "face"],
+  "normalization": "uint8"
+}
