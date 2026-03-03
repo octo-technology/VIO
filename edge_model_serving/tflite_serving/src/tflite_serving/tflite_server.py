@@ -4,7 +4,10 @@ from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
 
 from tflite_serving.api_routes import api_router
-from tflite_serving.tflite_interpreter import create_model_interpreters
+from tflite_serving.tflite_interpreter import (
+    create_model_interpreters,
+    create_model_metadata_registry,
+)
 
 
 def server() -> FastAPI:
@@ -20,6 +23,7 @@ def server() -> FastAPI:
         allow_headers=["*"],
     )
     app.state.model_interpreters = create_model_interpreters()
+    app.state.model_metadata = create_model_metadata_registry()
     return app
 
 
