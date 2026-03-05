@@ -17,7 +17,6 @@ class ConfigManager(metaclass=SingletonMeta):
         self._active_station_name: Optional[str] = os.getenv("ACTIVE_CONFIG_NAME", "marker_classif_with_2_fake_cam")
         self._logger = logging.getLogger(__name__)
         self._config_dir = Path(os.getenv("CONFIG_DIR", "config")).resolve()
-        self._config_updated = False
         self._load_all_configs()
 
     def _load_all_configs(self) -> StationConfig:
@@ -58,7 +57,6 @@ class ConfigManager(metaclass=SingletonMeta):
         self._active_station_name = new_active_station_name
         self._station_configs[new_active_station_name] = new_station_config
         self._save_config_as_json(new_station_config)
-        self._config_updated = True
 
     def get_config(self) -> Optional[StationConfig]:
         return self._station_configs.get(self._active_station_name)
@@ -69,14 +67,6 @@ class ConfigManager(metaclass=SingletonMeta):
     @property
     def all_configs(self) -> Dict[str, StationConfig]:
         return self._station_configs
-
-    @property
-    def config_updated(self) -> bool:
-        return self._config_updated
-
-    @config_updated.setter
-    def config_updated(self, value: bool):
-        self._config_updated = value
 
     def _is_an_existing_config_name(self, station_name: str) -> bool:
         if station_name not in self.all_configs:
@@ -90,4 +80,6 @@ class ConfigManager(metaclass=SingletonMeta):
                 detail=f"{station_name} is not one of existing station names: {self.get_all_config_names()}",
             )
         self._active_station_name = station_name
-        self._config_updated = True
+
+    def get_all_config_names(self):
+        return list(self._station_configs.keys())

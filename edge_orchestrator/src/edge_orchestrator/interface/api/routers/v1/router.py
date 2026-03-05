@@ -6,6 +6,7 @@ from fastapi import (
     BackgroundTasks,
     Depends,
     HTTPException,
+    Request,
     Response,
     UploadFile,
 )
@@ -42,6 +43,7 @@ def get_health():
 
 
 def set_config(
+    request: Request,
     station_name: Optional[str] = None,
     station_config: Optional[StationConfig] = None,
 ) -> StationConfig:
@@ -53,6 +55,10 @@ def set_config(
         manager.set_config_by_name(station_name)
     if station_config:
         manager.set_config(station_config)
+
+    request.app.state.supervisor.reset_managers()
+    request.app.state.data_gathering.reset_managers()
+
     return manager.get_config()
 
 

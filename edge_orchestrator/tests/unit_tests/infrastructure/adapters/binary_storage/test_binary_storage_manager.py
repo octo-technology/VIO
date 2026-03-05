@@ -2,7 +2,6 @@ from unittest.mock import MagicMock, patch
 
 from edge_orchestrator.domain.models.station_config import StationConfig
 from edge_orchestrator.domain.models.storage.storage_type import StorageType
-from edge_orchestrator.domain.ports.storing_path_manager import StoringPathManager
 from edge_orchestrator.infrastructure.adapters.binary_storage.aws_binary_storage import (
     AWSBinaryStorage,
 )
@@ -41,8 +40,7 @@ class TestBinaryStorageManager:
             (StorageType.AZURE, AzureBinaryStorage),
             (StorageType.GCP, GCPBinaryStorage),
         ]
-        storing_path_manager = StoringPathManager(station_config.metadata_storage_config, station_config.station_name)
-        binary_storage_manager = BinaryStorageManager(BinaryStorageFactory(storing_path_manager))
+        binary_storage_manager = BinaryStorageManager(BinaryStorageFactory())
 
         # When
         for storage_type, binary_storage_class in storage_type_binary_storage_classes:

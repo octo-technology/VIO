@@ -2,9 +2,6 @@ import logging
 
 from edge_orchestrator.domain.models.item import Item
 from edge_orchestrator.domain.models.station_config import StationConfig
-from edge_orchestrator.domain.ports.binary_storage.i_binary_storage_factory import (
-    IBinaryStorageFactory,
-)
 from edge_orchestrator.domain.ports.binary_storage.i_binary_storage_manager import (
     IBinaryStorageManager,
 )
@@ -15,19 +12,15 @@ from edge_orchestrator.domain.ports.camera_rule.i_camera_rule_manager import (
 from edge_orchestrator.domain.ports.item_rule.i_item_rule_manager import (
     IItemRuleManager,
 )
-from edge_orchestrator.domain.ports.metadata_storage.i_metadata_storage_factory import (
-    IMetadataStorageFactory,
-)
 from edge_orchestrator.domain.ports.metadata_storage.i_metadata_storage_manager import (
     IMetadataStorageManager,
 )
 from edge_orchestrator.domain.ports.model_forwarder.i_model_forwarder_manager import (
     IModelForwarderManager,
 )
-from edge_orchestrator.utils.singleton import SingletonMeta
 
 
-class Supervisor(metaclass=SingletonMeta):
+class Supervisor:
     def __init__(
         self,
         metadata_storage_manager: IMetadataStorageManager,
@@ -59,12 +52,10 @@ class Supervisor(metaclass=SingletonMeta):
 
         self._metadata_storage_manager.get_metadata_storage(station_config).save_item_metadata(item)
 
-    def reset_managers(
-        self, binary_storage_factory: IBinaryStorageFactory, metadata_storage_factory: IMetadataStorageFactory
-    ):
+    def reset_managers(self):
         self._logger.info("Resetting all managers after configuration update...")
-        self._metadata_storage_manager.reset(metadata_storage_factory)
-        self._binary_storage_manager.reset(binary_storage_factory)
+        self._metadata_storage_manager.reset()
+        self._binary_storage_manager.reset()
         self._model_forwarder_manager.reset()
         self._camera_rule_manager.reset()
         self._item_rule_manager.reset()
