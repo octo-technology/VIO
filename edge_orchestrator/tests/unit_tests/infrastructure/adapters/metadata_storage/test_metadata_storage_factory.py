@@ -7,7 +7,6 @@ from edge_orchestrator.domain.models.storage.storage_type import StorageType
 from edge_orchestrator.domain.ports.metadata_storage.i_metadata_storage import (
     IMetadataStorage,
 )
-from edge_orchestrator.domain.ports.storing_path_manager import StoringPathManager
 from edge_orchestrator.infrastructure.adapters.metadata_storage.aws_metadata_storage import (
     AWSMetadataStorage,
 )
@@ -50,9 +49,8 @@ class TestMetadataStorageFactory:
         mock_client_instance.get_bucket.return_value = mock_bucket
         mock_storage_client.return_value = mock_client_instance
 
-        storing_path_manager = StoringPathManager(station_config.binary_storage_config, station_config.station_name)
-        metadata_storage_factory = MetadataStorageFactory(storing_path_manager)
-        station_config.binary_storage_config.storage_type = storage_type
+        metadata_storage_factory = MetadataStorageFactory()
+        station_config.metadata_storage_config.storage_type = storage_type
 
         # When
         metadata_storage = metadata_storage_factory.create_metadata_storage(station_config)

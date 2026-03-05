@@ -21,5 +21,5 @@ class IBinaryStorageManager(ABC):
         pass
 
     @abstractmethod
-    def reset(self, binary_storage_factory: IBinaryStorageFactory):
+    def reset(self):
         pass

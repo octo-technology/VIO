@@ -25,6 +25,5 @@ class BinaryStorageManager(IBinaryStorageManager):
             self._binary_storages[binary_storage_type] = binary_storage
         return self._binary_storages[binary_storage_type]
 
-    def reset(self, binary_storage_factory: IBinaryStorageFactory):
-        self._binary_storage_factory = binary_storage_factory
+    def reset(self):
         self._binary_storages = {}

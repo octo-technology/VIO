@@ -21,5 +21,5 @@ class IMetadataStorageManager(ABC):
         pass
 
     @abstractmethod
-    def reset(self, metadata_storage_factory: IMetadataStorageFactory):
+    def reset(self):
         pass

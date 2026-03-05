@@ -7,7 +7,6 @@ from edge_orchestrator.domain.models.storage.storage_type import StorageType
 from edge_orchestrator.domain.ports.binary_storage.i_binary_storage import (
     IBinaryStorage,
 )
-from edge_orchestrator.domain.ports.storing_path_manager import StoringPathManager
 from edge_orchestrator.infrastructure.adapters.binary_storage.aws_binary_storage import (
     AWSBinaryStorage,
 )
@@ -50,8 +49,7 @@ class TestBinaryStorageFactory:
         mock_client_instance.get_bucket.return_value = mock_bucket
         mock_storage_client.return_value = mock_client_instance
 
-        storing_path_manager = StoringPathManager(station_config.binary_storage_config, station_config.station_name)
-        binary_storage_factory = BinaryStorageFactory(storing_path_manager)
+        binary_storage_factory = BinaryStorageFactory()
         station_config.binary_storage_config.storage_type = storage_type
 
         # When

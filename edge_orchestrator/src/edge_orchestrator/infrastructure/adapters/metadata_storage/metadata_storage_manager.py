@@ -25,6 +25,5 @@ class MetadataStorageManager(IMetadataStorageManager):
             self._metadata_storages[metadata_storage_type] = metadata_storage
         return self._metadata_storages[metadata_storage_type]
 
-    def reset(self, metadata_storage_factory: IMetadataStorageFactory):
-        self._metadata_storage_factory = metadata_storage_factory
+    def reset(self):
         self._metadata_storages = {}
