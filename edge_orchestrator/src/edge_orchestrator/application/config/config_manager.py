@@ -42,9 +42,8 @@ class ConfigManager(metaclass=SingletonMeta):
                     f"The json station config file is invalid. Fix it or delete it: {json_config_path.as_posix()}"
                 )
         if not found_active_station_config:
-            self._logger.warning(
-                f"No active json station config found at {(self._config_dir/self._active_station_name).with_suffix('.json').as_posix()}"
-            )
+            config_path = (self._config_dir / self._active_station_name).with_suffix(".json")
+            self._logger.warning(f"No active json station config found at {config_path.as_posix()}")
         else:
             self._logger.info(f"Active station config found and set: {self._active_station_name}")
 

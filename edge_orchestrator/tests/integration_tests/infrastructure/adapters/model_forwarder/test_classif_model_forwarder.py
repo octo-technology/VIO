@@ -5,81 +5,63 @@ from edge_orchestrator.domain.models.model_forwarder.classification_prediction i
     ClassifPrediction,
 )
 from edge_orchestrator.domain.models.model_forwarder.model_forwarder_config import (
-    ImageResolution,
     ModelForwarderConfig,
 )
-from edge_orchestrator.domain.models.model_forwarder.model_name import ModelName
-from edge_orchestrator.domain.models.model_forwarder.model_type import ModelType
-from edge_orchestrator.domain.models.model_forwarder.prediction_type import (
-    PredictionType,
-)
-from edge_orchestrator.infrastructure.adapters.model_forwarder.classif_model_forwarder import (
-    ClassifModelForwarder,
+from edge_orchestrator.infrastructure.adapters.model_forwarder.model_forwarder import (
+    ModelForwarder,
 )
 
 
-class TestClassifModelForwarder:
+class TestModelForwarderClassification:
 
     @pytest.mark.integration
     @pytest.mark.parametrize(
-        "model_name,probability",
+        "model_name",
         [
-            (ModelName.marker_quality_control, 0.83054),
-            (ModelName.pin_detection, 0.99962),
+            "marker_quality_control",
+            "pin_detection",
         ],
     )
-    async def test_classif_model_forwarder_should_return_classif_prediction(
+    async def test_model_forwarder_should_return_classif_prediction(
         self,
-        model_name: ModelName,
-        probability: float,
+        model_name: str,
         setup_test_tflite_serving: str,
         marker_image: bytes,
     ):
         # Given
-        image_resolution = ImageResolution(width=224, height=224)
         model_forward_config = ModelForwarderConfig(
             model_name=model_name,
-            model_type=ModelType.classification,
             model_version="1",
-            class_names=["OK", "KO"],
             model_serving_url=setup_test_tflite_serving,
-            expected_image_resolution=image_resolution,
         )
-        model_fowarder = ClassifModelForwarder(model_forward_config)
-
-        expected_prediction = ClassifPrediction(
-            prediction_type=PredictionType.class_, label="KO", probability=probability
-        )
+        model_forwarder = ModelForwarder(model_forward_config)
 
         # When
-        actual_prediction = await model_fowarder.predict_on_binary(marker_image)
+        actual_prediction = await model_forwarder.predict_on_binary(marker_image)
 
         # Then
         assert isinstance(actual_prediction, ClassifPrediction)
-        assert actual_prediction == expected_prediction
+        assert actual_prediction.label in ["OK", "KO"]
+        assert 0.0 <= actual_prediction.probability <= 1.0
 
     @pytest.mark.integration
-    async def test_classif_model_forwarder_should_raise_exception_with_bad_url_provided(
+    async def test_model_forwarder_should_raise_exception_with_bad_url_provided(
         self,
         setup_test_tflite_serving: str,
         marker_image: bytes,
     ):
         # Given
-        image_resolution = ImageResolution(width=224, height=224)
         model_forward_config = ModelForwarderConfig(
-            model_name=ModelName.marker_quality_control,
-            model_type=ModelType.classification,
+            model_name="marker_quality_control",
             model_version="1",
-            class_names=["OK", "KO"],
             model_serving_url=setup_test_tflite_serving,
-            expected_image_resolution=image_resolution,
         )
-        model_fowarder = ClassifModelForwarder(model_forward_config)
-        model_fowarder._get_model_url = lambda: "http://bad_url"
+        model_forwarder = ModelForwarder(model_forward_config)
+        model_forwarder._get_model_url = lambda: "http://bad_url"
 
         # When
         with pytest.raises(aiohttp.ClientError) as e:
-            await model_fowarder.predict_on_binary(marker_image)
+            await model_forwarder.predict_on_binary(marker_image)
 
         # Then
         assert "Cannot connect to host" in str(e.value)

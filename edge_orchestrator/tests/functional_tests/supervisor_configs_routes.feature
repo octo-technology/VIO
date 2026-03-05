@@ -17,7 +17,7 @@ Feature: The client set an active configuration
 			| config/config_2.json |
 			| config/config_3.json |
 
-	Scenario: The client set a configuration as active
+	Scenario: The Client set a configuration as active
 		Given the app is up and running
 		When the client activates configuration 'config_1'
 		Then the active configuration is
@@ -33,16 +33,8 @@ Feature: The client set an active configuration
 		"model_forwarder_config": {
 		"model_name": "fake_model",
 		"model_type": "classification",
-		"expected_image_resolution": {
-		"width": 224,
-		"height": 224
-		},
 		"model_version": "1",
-		"class_names": [
-		"OK",
-		"KO"
-		],
-		"model_id": "fake_model_classification_1"
+		"model_id": "fake_model_1"
 		},
 		"camera_rule_config": {
 		"camera_rule_type": "expected_label_rule",
@@ -57,16 +49,8 @@ Feature: The client set an active configuration
 		"model_forwarder_config": {
 		"model_name": "fake_model",
 		"model_type": "object_detection",
-		"expected_image_resolution": {
-		"width": 224,
-		"height": 224
-		},
 		"model_version": "1",
-		"class_names": [
-		"OK",
-		"KO"
-		],
-		"model_id": "fake_model_object_detection_1"
+		"model_id": "fake_model_1"
 		},
 		"camera_rule_config": {
 		"camera_rule_type": "min_nb_objects_rule",

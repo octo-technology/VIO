@@ -10,8 +10,6 @@ from edge_orchestrator.domain.models.item import Item
 from edge_orchestrator.domain.models.model_forwarder.model_forwarder_config import (
     ModelForwarderConfig,
 )
-from edge_orchestrator.domain.models.model_forwarder.model_name import ModelName
-from edge_orchestrator.domain.models.model_forwarder.model_type import ModelType
 from edge_orchestrator.infrastructure.adapters.model_forwarder.model_forwarder_factory import (
     ModelForwarderFactory,
 )
@@ -40,12 +38,9 @@ class TestModelForwarderManager:
                     camera_type=CameraType.FAKE,
                     source_directory="fake",
                     model_forwarder_config=ModelForwarderConfig(
-                        model_name=ModelName.marker_quality_control,
-                        model_type=ModelType.classification,
+                        model_name="marker_quality_control",
                         model_serving_url="http://bad_url",
                         model_version="1",
-                        class_names=["OK", "KO"],
-                        expected_image_resolution={"width": 224, "height": 224},
                     ),
                 ),
             },

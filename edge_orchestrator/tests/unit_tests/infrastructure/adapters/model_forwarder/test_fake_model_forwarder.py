@@ -1,5 +1,4 @@
 import random
-from typing import List
 
 import pytest
 
@@ -13,7 +12,6 @@ from edge_orchestrator.domain.models.model_forwarder.detection_prediction import
 from edge_orchestrator.domain.models.model_forwarder.model_forwarder_config import (
     ModelForwarderConfig,
 )
-from edge_orchestrator.domain.models.model_forwarder.model_name import ModelName
 from edge_orchestrator.domain.models.model_forwarder.model_type import ModelType
 from edge_orchestrator.infrastructure.adapters.model_forwarder.fake_model_forwarder import (
     FakeModelForwarder,
@@ -23,22 +21,19 @@ from edge_orchestrator.infrastructure.adapters.model_forwarder.fake_model_forwar
 class TestFakeModelForwarder:
 
     @pytest.mark.parametrize(
-        "model_type,class_names",
+        "model_type",
         [
-            (ModelType.classification, ["OK", "KO"]),
-            (ModelType.object_detection, ["OK", "KO"]),
-            # (ModelType.segmentation, None),
+            ModelType.classification,
+            ModelType.object_detection,
         ],
     )
-    async def test_fake_model_forwarder(self, model_type: ModelType, class_names: List[str]):
+    async def test_fake_model_forwarder(self, model_type: ModelType):
         # Given
         random.seed(42)
         model_forwarder_config = ModelForwarderConfig(
-            model_name=ModelName.fake_model,
+            model_name="fake_model",
             model_version="1",
             model_type=model_type,
-            class_names=class_names,
-            expected_image_resolution={"width": 224, "height": 224},
         )
         fake_model_forwarder = FakeModelForwarder(model_forwarder_config)
         fake_binary = b"fake_binary"

@@ -1,5 +1,4 @@
 import io
-import io
 import logging
 from typing import Any, Dict, List, Optional, cast
 
@@ -233,6 +232,5 @@ async def predict(
     except HTTPException:
         raise
     except Exception as e:
-        logging.exception(f"Prediction error for model '{model_name}'")
         logging.exception(f"Prediction error for model '{model_name}'")
         raise HTTPException(status_code=500, detail=str(e))

@@ -1,13 +1,12 @@
 ARG PYTHON_VERSION="3.11"
 
-FROM --platform=$TARGETPLATFORM python:${PYTHON_VERSION}-slim
+FROM --platform=$TARGETPLATFORM python:${PYTHON_VERSION}-slim-bookworm
 ARG TARGETPLATFORM
 ARG BUILDOS
 
 RUN if [ "$TARGETPLATFORM" = "linux/arm64" ] && [ "$BUILDOS" = "linux" ]; then \
-        apt update && apt install -y --no-install-recommends gnupg; \
-        echo "deb http://archive.raspberrypi.org/debian/ bookworm main" > /etc/apt/sources.list.d/raspi.list \
-        && apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 82B129927FA3303E; \
+        echo "deb [trusted=yes] http://archive.raspberrypi.org/debian/ bookworm main" \
+            > /etc/apt/sources.list.d/raspi.list; \
     fi
 
 RUN if [ "$TARGETPLATFORM" = "linux/arm64" ] && [ "$BUILDOS" = "linux" ]; then \
