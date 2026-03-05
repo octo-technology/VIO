@@ -1,3 +1,4 @@
+import contextlib
 import os
 import shutil
 import sys
@@ -44,7 +45,8 @@ def before_all(context: Context):
     )
     from edge_orchestrator.interface.api.main import app
 
-    context.test_client = TestClient(app)
+    context._exit_stack = contextlib.ExitStack()
+    context.test_client = context._exit_stack.enter_context(TestClient(app))
 
     from edge_orchestrator.domain.ports.storing_path_manager import StoringPathManager
 
@@ -67,6 +69,7 @@ def after_scenario(context: Context, scenario):
 
 
 def after_all(context: Context):
+    context._exit_stack.close()
     context.tmp_dir.cleanup()
     if context.tensorflow_serving_container:
         stop_test_container(context.tensorflow_serving_container)
