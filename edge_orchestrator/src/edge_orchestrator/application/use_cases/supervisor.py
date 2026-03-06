@@ -44,9 +44,9 @@ class Supervisor:
 
         self._binary_storage_manager.get_binary_storage(station_config).save_item_binaries(item)
 
-        await self._model_forwarder_manager.predict_on_binaries(item)
+        await self._model_forwarder_manager.predict_on_binaries(item, station_config.pipeline_steps)
 
-        self._camera_rule_manager.apply_camera_rules(item)
+        self._camera_rule_manager.apply_camera_rules(item, station_config.pipeline_steps)
 
         self._item_rule_manager.get_item_rule(station_config.item_rule_config).apply_item_rules(item)
 

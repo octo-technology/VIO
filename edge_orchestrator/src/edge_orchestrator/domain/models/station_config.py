@@ -4,6 +4,7 @@ from pydantic import BaseModel, ConfigDict
 
 from edge_orchestrator.domain.models.camera.camera_config import CameraConfig
 from edge_orchestrator.domain.models.item_rule.item_rule_config import ItemRuleConfig
+from edge_orchestrator.domain.models.pipeline_step import PipelineStep
 from edge_orchestrator.domain.models.storage.storage_config import StorageConfig
 
 
@@ -12,6 +13,7 @@ class StationConfig(BaseModel):
 
     station_name: str
     camera_configs: Dict[str, CameraConfig]
+    pipeline_steps: Dict[str, PipelineStep] = {}
     binary_storage_config: StorageConfig
     metadata_storage_config: StorageConfig
     item_rule_config: Optional[ItemRuleConfig] = None

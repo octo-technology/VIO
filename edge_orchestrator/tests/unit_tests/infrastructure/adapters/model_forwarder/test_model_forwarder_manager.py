@@ -14,6 +14,7 @@ from edge_orchestrator.domain.models.model_forwarder.model_forwarder_config impo
     ModelForwarderConfig,
 )
 from edge_orchestrator.domain.models.model_forwarder.model_type import ModelType
+from edge_orchestrator.domain.models.pipeline_step import PipelineStep
 from edge_orchestrator.infrastructure.adapters.model_forwarder.model_forwarder_manager import (
     ModelForwarderManager,
 )
@@ -28,39 +29,41 @@ class TestModelForwarderManager:
         item = Item(
             binaries={"camera_#1": Image(image_bytes=b"fake_binary"), "camera_#2": Image(image_bytes=b"fake_binary")},
             cameras_metadata={
-                "camera_#1": CameraConfig(
-                    camera_id="camera_#1",
-                    camera_type=CameraType.FAKE,
-                    source_directory="fake",
-                    model_forwarder_config=ModelForwarderConfig(
-                        model_name="fake_model",
-                        model_type=ModelType.classification,
-                        model_version="1",
-                    ),
-                ),
+                "camera_#1": CameraConfig(camera_id="camera_#1", camera_type=CameraType.FAKE, source_directory="fake"),
                 "camera_#2": CameraConfig(
-                    camera_id="camera_#2",
-                    camera_type=CameraType.RASPBERRY,
-                    source_directory="fake",
-                    model_forwarder_config=ModelForwarderConfig(
-                        model_name="fake_model",
-                        model_type=ModelType.object_detection,
-                        model_version="2",
-                    ),
+                    camera_id="camera_#2", camera_type=CameraType.RASPBERRY, source_directory="fake"
                 ),
             },
         )
+        pipeline_steps = {
+            "step_1": PipelineStep(
+                camera_id="camera_#1",
+                model_forwarder_config=ModelForwarderConfig(
+                    model_name="fake_model",
+                    model_type=ModelType.classification,
+                    model_version="1",
+                ),
+            ),
+            "step_2": PipelineStep(
+                camera_id="camera_#2",
+                model_forwarder_config=ModelForwarderConfig(
+                    model_name="fake_model",
+                    model_type=ModelType.object_detection,
+                    model_version="2",
+                ),
+            ),
+        }
 
         # When
         with caplog.at_level(logging.INFO):
-            await model_forwarder_manager.predict_on_binaries(item)
+            await model_forwarder_manager.predict_on_binaries(item, pipeline_steps)
 
         # Then
         log_messages_and_levels = [(record.message, record.levelname) for record in caplog.records]
         assert len(model_forwarder_manager._model_forwarders) == 2
         assert len(item.predictions) == 2
-        assert isinstance(item.predictions["camera_#1"], ClassifPrediction)
-        assert isinstance(item.predictions["camera_#2"], DetectionPrediction)
+        assert isinstance(item.predictions["step_1"], ClassifPrediction)
+        assert isinstance(item.predictions["step_2"], DetectionPrediction)
         assert (
             "No model forwarder available to predict on item pictures! May take some extra time to instantiate.",
             "WARNING",

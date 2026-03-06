@@ -5,7 +5,18 @@
             "camera_id": "camera_1",
             "camera_type": "fake",
             "source_directory": "fake_images",
-            "position": "front",
+            "position": "front"
+        },
+        "camera_2": {
+            "camera_id": "camera_2",
+            "camera_type": "fake",
+            "source_directory": "fake_images",
+            "position": "front"
+        }
+    },
+    "pipeline_steps": {
+        "step_1": {
+            "camera_id": "camera_1",
             "model_forwarder_config": {
                 "model_name": "fake_model",
                 "model_type": "classification",
@@ -17,11 +28,8 @@
                 "expected_class": "OK"
             }
         },
-        "camera_2": {
+        "step_2": {
             "camera_id": "camera_2",
-            "camera_type": "fake",
-            "source_directory": "fake_images",
-            "position": "front",
             "model_forwarder_config": {
                 "model_name": "fake_model",
                 "model_type": "object_detection",
