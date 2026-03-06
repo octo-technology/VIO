@@ -21,34 +21,13 @@ Feature: The client request metadata and binaries
 	"camera_id": "camera_1",
 	"camera_type": "fake",
 	"source_directory": "fake_images",
-	"position": "front",
-	"model_forwarder_config": {
-	"model_name": "pin_detection",
-	"model_version": "1",
-	"model_serving_url": "http://0.0.0.0:8501/",
-	"model_id": "pin_detection_1"
-	},
-	"camera_rule_config": {
-	"camera_rule_type": "expected_label_rule",
-	"expected_class": "OK"
-	}
+	"position": "front"
 	},
 	"camera_2": {
 	"camera_id": "camera_2",
 	"camera_type": "fake",
 	"source_directory": "fake_images",
-	"position": "front",
-	"model_forwarder_config": {
-	"model_name": "mobilenet_ssd_v2_coco",
-	"model_version": "1",
-	"model_serving_url": "http://0.0.0.0:8501/",
-	"model_id": "mobilenet_ssd_v2_coco_1"
-	},
-	"camera_rule_config": {
-	"camera_rule_type": "min_nb_objects_rule",
-	"class_to_detect": "OK",
-	"threshold": 1
-	}
+	"position": "front"
 	}
 	},
 	"binaries": {
@@ -62,12 +41,12 @@ Feature: The client request metadata and binaries
 	}
 	},
 	"predictions": {
-	"camera_1": {
+	"step_1": {
 	"prediction_type": "class",
 	"label": "KO",
 	"probability": 0.94642
 	},
-	"camera_2": {
+	"step_2": {
 	"prediction_type": "objects",
 	"detected_objects": {
 	"object_1": {
@@ -85,8 +64,8 @@ Feature: The client request metadata and binaries
 	}
 	},
 	"camera_decisions": {
-	"camera_1": "KO",
-	"camera_2": "KO"
+	"step_1": "KO",
+	"step_2": "KO"
 	},
 	"decision": "KO",
 	"state": "DONE"

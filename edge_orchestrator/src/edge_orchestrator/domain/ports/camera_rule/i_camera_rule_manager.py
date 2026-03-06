@@ -6,6 +6,7 @@ from edge_orchestrator.domain.models.camera_rule.camera_rule_config import (
     CameraRuleConfig,
 )
 from edge_orchestrator.domain.models.item import Item
+from edge_orchestrator.domain.models.pipeline_step import PipelineStep
 from edge_orchestrator.domain.ports.camera_rule.i_camera_rule import ICameraRule
 from edge_orchestrator.domain.ports.camera_rule.i_camera_rule_factory import (
     ICameraRuleFactory,
@@ -22,7 +23,7 @@ class ICameraRuleManager(ABC):
         pass
 
     @abstractmethod
-    def apply_camera_rules(self, item: Item):
+    def apply_camera_rules(self, item: Item, pipeline_steps: Dict[str, PipelineStep]):
         pass
 
     @abstractmethod

@@ -1,10 +1,12 @@
 from abc import ABC, abstractmethod
 from logging import Logger
+from typing import Dict
 
 from edge_orchestrator.domain.models.item import Item
 from edge_orchestrator.domain.models.model_forwarder.model_forwarder_config import (
     ModelForwarderConfig,
 )
+from edge_orchestrator.domain.models.pipeline_step import PipelineStep
 from edge_orchestrator.domain.ports.model_forwarder.i_model_forwarder import (
     IModelForwarder,
 )
@@ -23,7 +25,7 @@ class IModelForwarderManager(ABC):
         pass
 
     @abstractmethod
-    def predict_on_binaries(self, item: Item):
+    async def predict_on_binaries(self, item: Item, pipeline_steps: Dict[str, PipelineStep]):
         pass
 
     @abstractmethod

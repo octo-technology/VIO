@@ -10,6 +10,7 @@ from edge_orchestrator.domain.models.item import Item
 from edge_orchestrator.domain.models.model_forwarder.model_forwarder_config import (
     ModelForwarderConfig,
 )
+from edge_orchestrator.domain.models.pipeline_step import PipelineStep
 from edge_orchestrator.infrastructure.adapters.model_forwarder.model_forwarder_factory import (
     ModelForwarderFactory,
 )
@@ -29,31 +30,35 @@ class TestModelForwarderManager:
     ):
         # Given
         model_forwarder_manager = ModelForwarderManager(ModelForwarderFactory())
-
         item = Item(
-            binaries={"camera_#1": Image(image_bytes=marker_image), "camera_#2": Image(image_bytes=marker_image)},
+            binaries={"camera_#1": Image(image_bytes=marker_image)},
             cameras_metadata={
                 "camera_#1": CameraConfig(
                     camera_id="camera_#1",
                     camera_type=CameraType.FAKE,
                     source_directory="fake",
-                    model_forwarder_config=ModelForwarderConfig(
-                        model_name="marker_quality_control",
-                        model_serving_url="http://bad_url",
-                        model_version="1",
-                    ),
                 ),
             },
         )
+        pipeline_steps = {
+            "step_1": PipelineStep(
+                camera_id="camera_#1",
+                model_forwarder_config=ModelForwarderConfig(
+                    model_name="marker_quality_control",
+                    model_serving_url="http://bad_url",
+                    model_version="1",
+                ),
+            ),
+        }
 
         # When
         with caplog.at_level(logging.ERROR):
-            await model_forwarder_manager.predict_on_binaries(item)
+            await model_forwarder_manager.predict_on_binaries(item, pipeline_steps)
 
         # Then
         records = [(record.message, record.exc_info) for record in caplog.records]
         assert len(records) == 1
         actual_record = records[0]
-        assert actual_record[0] == "Error while trying to get prediction for camera camera_#1"
+        assert actual_record[0] == "Error while trying to get prediction for step step_1"
         assert issubclass(actual_record[1][0], aiohttp.ClientError)
         assert item.predictions == {}

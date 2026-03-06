@@ -4,7 +4,12 @@
         "camera_1": {
             "camera_id": "camera_1",
             "camera_type": "raspberry",
-            "position": "front",
+            "position": "front"
+        }
+    },
+    "pipeline_steps": {
+        "step_1": {
+            "camera_id": "camera_1",
             "model_forwarder_config": {
                 "model_name": "marker_quality_control",
                 "model_serving_url": "http://edge_model_serving:8501/",
