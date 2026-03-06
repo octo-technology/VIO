@@ -5,7 +5,12 @@
             "camera_id": "camera_1",
             "camera_type": "usb",
             "source_directory": "/dev/video0",
-            "position": "front",
+            "position": "front"
+        }
+    },
+    "pipeline_steps": {
+        "step_1": {
+            "camera_id": "camera_1",
             "model_forwarder_config": {
                 "model_name": "pin_detection",
                 "model_serving_url": "http://edge_model_serving:8501/",

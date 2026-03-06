@@ -5,7 +5,18 @@
             "camera_id": "camera_1",
             "camera_type": "usb",
             "source_directory": "/dev/video0",
-            "position": "front",
+            "position": "front"
+        },
+        "camera_2": {
+            "camera_id": "camera_2",
+            "camera_type": "usb",
+            "source_directory": "/dev/video4",
+            "position": "back"
+        }
+    },
+    "pipeline_steps": {
+        "step_1": {
+            "camera_id": "camera_1",
             "model_forwarder_config": {
                 "model_name": "yolo_coco_nano",
                 "model_serving_url": "http://edge_model_serving:8501/",
@@ -17,11 +28,8 @@
                 "threshold": 1
             }
         },
-        "camera_2": {
+        "step_2": {
             "camera_id": "camera_2",
-            "camera_type": "usb",
-            "source_directory": "/dev/video4",
-            "position": "back",
             "model_forwarder_config": {
                 "model_name": "yolo_coco_nano",
                 "model_serving_url": "http://edge_model_serving:8501/",
