@@ -1,4 +1,4 @@
-from fastapi import HTTPException, Request
+from fastapi import Depends, HTTPException, Request
 
 from edge_orchestrator.application.config.config_manager import ConfigManager
 from edge_orchestrator.application.use_cases.data_gathering import DataGathering
@@ -12,9 +12,12 @@ from edge_orchestrator.domain.ports.metadata_storage.i_metadata_storage_manager 
 )
 
 
-def get_config() -> StationConfig:
-    manager = ConfigManager()
-    config = manager.get_config()
+def get_config_manager(request: Request) -> ConfigManager:
+    return request.app.state.config_manager
+
+
+def get_config(config_manager: ConfigManager = Depends(get_config_manager)) -> StationConfig:
+    config = config_manager.get_config()
     if not config:
         raise HTTPException(status_code=400, detail="No active configuration set")
     return config
