@@ -1,7 +1,11 @@
 import asyncio
 
-from edge_orchestrator.domain.ports.trigger_adapter.i_trigger_adapter import ITriggerAdapter
-from edge_orchestrator.infrastructure.adapters.trigger_adapter.rest_trigger_adapter import RestTriggerAdapter
+from edge_orchestrator.domain.ports.trigger_adapter.i_trigger_adapter import (
+    ITriggerAdapter,
+)
+from edge_orchestrator.infrastructure.adapters.trigger_adapter.rest_trigger_adapter import (
+    RestTriggerAdapter,
+)
 
 
 def test_rest_trigger_adapter_implements_interface():
