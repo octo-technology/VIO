@@ -35,7 +35,9 @@ sys.modules.setdefault("picamera2", _mock_picamera2_module)
 # ── imports (after mock injection) ────────────────────────────────────────────
 
 from edge_camera.domain.ports.i_camera_backend import ICameraBackend  # noqa: E402
-from edge_camera.infrastructure.backends.picamera2_backend import Picamera2Backend  # noqa: E402
+from edge_camera.infrastructure.backends.picamera2_backend import (  # noqa: E402
+    Picamera2Backend,
+)
 
 
 @pytest.fixture(autouse=True)

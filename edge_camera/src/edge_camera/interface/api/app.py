@@ -30,14 +30,24 @@ def _load_backends_from_env() -> Dict[str, ICameraBackend]:
         return OpenCvCameraBackend(device_index=int(arg) if arg else 0)
 
     def _make_picamera2(arg: str) -> "ICameraBackend":
-        from edge_camera.infrastructure.backends.picamera2_backend import Picamera2Backend
+        from edge_camera.infrastructure.backends.picamera2_backend import (
+            Picamera2Backend,
+        )
 
         return Picamera2Backend(camera_num=int(arg) if arg else 0)
+
+    def _make_basler(arg: str) -> "ICameraBackend":
+        from edge_camera.infrastructure.backends.basler_camera_backend import (
+            BaslerCameraBackend,
+        )
+
+        return BaslerCameraBackend(serial_number=arg if arg else None)
 
     backend_factories = {
         "fake": lambda arg: FakeCameraBackend(),
         "opencv": _make_opencv,
         "picamera2": _make_picamera2,
+        "basler": _make_basler,
     }
 
     spec = os.getenv("CAMERA_BACKENDS", "cam_1=fake")

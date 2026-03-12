@@ -34,6 +34,11 @@ install:
 	pip install -e .[dev]
 	pip list --outdated
 
+.PHONY: serve  ## 🚀 Run the camera service locally (CAMERA_BACKENDS=cam_1=fake by default)
+serve:
+	uvicorn edge_camera.interface.api.app:create_app --factory \
+		--host 0.0.0.0 --port 8001 --reload
+
 .PHONY: unit_tests  ## ✅ Launch the unit tests
 unit_tests: REPORTS_PATH:=reports/pytest
 unit_tests:
