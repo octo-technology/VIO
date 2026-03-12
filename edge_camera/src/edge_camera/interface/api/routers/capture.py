@@ -1,23 +1,11 @@
-import os
-from pathlib import Path
 from typing import Optional
 
 from fastapi import APIRouter, HTTPException, Request
 
 from edge_camera.domain.models.image_ref import ImageRef
+from edge_camera.interface.api._paths import output_dir as _output_dir
 
 router = APIRouter(tags=["capture"])
-
-
-def _default_output_dir() -> Path:
-    """Returns /dev/shm/vio on Linux (tmpfs), /tmp/vio on macOS/other."""
-    shm = Path("/dev/shm")
-    return shm / "vio" if shm.is_dir() else Path("/tmp/vio")
-
-
-def _output_dir(camera_id: str) -> Path:
-    base = Path(os.getenv("CAMERA_OUTPUT_DIR", "")) or _default_output_dir()
-    return base / camera_id
 
 
 @router.post("/capture", response_model=ImageRef, summary="Capture a frame from a camera")

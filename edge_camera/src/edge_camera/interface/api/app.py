@@ -1,13 +1,34 @@
+import asyncio
+import contextlib
 import logging
 import os
 from contextlib import asynccontextmanager
-from typing import Dict
+from pathlib import Path
+from typing import Dict, List
 
+import httpx
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
 
+from edge_camera.domain.models.image_ref import ImageRef
 from edge_camera.domain.ports.i_camera_backend import ICameraBackend
+from edge_camera.interface.api._paths import output_dir as _output_dir
 from edge_camera.interface.api.routers.capture import router as capture_router
+
+logger = logging.getLogger(__name__)
+
+
+async def _run_push_task(backend: ICameraBackend, camera_id: str, push_url: str, out_dir: Path) -> None:
+    """Continuously capture frames from a backend and POST each ImageRef to push_url."""
+    async with httpx.AsyncClient() as client:
+
+        async def on_frame(ref: ImageRef) -> None:
+            try:
+                await client.post(push_url, json=ref.model_dump(mode="json"), timeout=5.0)
+            except Exception as exc:
+                logger.warning("Push failed for camera %s: %s", camera_id, exc)
+
+        await backend.start_listening(out_dir, camera_id, on_frame)
 
 
 def _load_backends_from_env() -> Dict[str, ICameraBackend]:
@@ -65,10 +86,23 @@ def _load_backends_from_env() -> Dict[str, ICameraBackend]:
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Allow tests to pre-populate backends before entering the context manager
     if not hasattr(app.state, "backends"):
         app.state.backends = _load_backends_from_env()
+
+    push_url = os.getenv("CAMERA_PUSH_URL", "")
+    push_tasks: List[asyncio.Task] = []
+    if push_url:
+        for camera_id, backend in app.state.backends.items():
+            task = asyncio.create_task(_run_push_task(backend, camera_id, push_url, _output_dir(camera_id)))
+            push_tasks.append(task)
+            logger.info("Push mode: camera %s → %s", camera_id, push_url)
+
     yield
+
+    for task in push_tasks:
+        task.cancel()
+        with contextlib.suppress(asyncio.CancelledError):
+            await task
     app.state.backends = {}
 
 
