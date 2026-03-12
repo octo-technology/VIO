@@ -1,6 +1,8 @@
 from abc import ABC, abstractmethod
 
-from edge_orchestrator.domain.ports.inspection_queue.i_inspection_queue import IInspectionQueue
+from edge_orchestrator.domain.ports.inspection_queue.i_inspection_queue import (
+    IInspectionQueue,
+)
 
 
 class ITriggerAdapter(ABC):
