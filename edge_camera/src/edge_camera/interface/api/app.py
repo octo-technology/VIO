@@ -16,7 +16,9 @@ def _load_backends_from_env() -> Dict[str, ICameraBackend]:
     Format: "cam_1=fake,cam_2=fake"  (camera_id=backend_type pairs)
     Defaults to a single fake camera named 'cam_1'.
     """
-    from edge_camera.infrastructure.backends.fake_camera_backend import FakeCameraBackend
+    from edge_camera.infrastructure.backends.fake_camera_backend import (
+        FakeCameraBackend,
+    )
 
     backend_factories = {
         "fake": FakeCameraBackend,

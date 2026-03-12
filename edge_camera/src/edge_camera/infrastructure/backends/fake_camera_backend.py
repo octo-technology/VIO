@@ -2,7 +2,7 @@ import asyncio
 from datetime import datetime
 from io import BytesIO
 from pathlib import Path
-from typing import Awaitable, Callable, Dict, Optional
+from typing import Awaitable, Callable, Dict
 
 from PIL import Image as PilImage
 
