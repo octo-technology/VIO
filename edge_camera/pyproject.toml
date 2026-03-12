@@ -13,6 +13,7 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
+opencv = ["opencv-python-headless>=4.8.0"]
 raspberry = ["picamera2==0.3.25"]
 basler = ["pypylon==4.0.0"]
 dev = [

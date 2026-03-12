@@ -13,25 +13,36 @@ from edge_camera.interface.api.routers.capture import router as capture_router
 def _load_backends_from_env() -> Dict[str, ICameraBackend]:
     """Load camera backends from CAMERA_BACKENDS env var.
 
-    Format: "cam_1=fake,cam_2=fake"  (camera_id=backend_type pairs)
+    Format: "cam_1=fake,cam_2=opencv:0"
+      - camera_id=backend_type[:arg]
+      - For opencv, the optional arg is the device index (default: 0).
     Defaults to a single fake camera named 'cam_1'.
     """
     from edge_camera.infrastructure.backends.fake_camera_backend import (
         FakeCameraBackend,
     )
 
+    def _make_opencv(arg: str) -> "ICameraBackend":
+        from edge_camera.infrastructure.backends.opencv_camera_backend import (
+            OpenCvCameraBackend,
+        )
+
+        return OpenCvCameraBackend(device_index=int(arg) if arg else 0)
+
     backend_factories = {
-        "fake": FakeCameraBackend,
+        "fake": lambda arg: FakeCameraBackend(),
+        "opencv": _make_opencv,
     }
 
     spec = os.getenv("CAMERA_BACKENDS", "cam_1=fake")
     backends: Dict[str, ICameraBackend] = {}
     for entry in spec.split(","):
-        camera_id, _, backend_type = entry.strip().partition("=")
+        camera_id, _, backend_spec = entry.strip().partition("=")
+        backend_type, _, backend_arg = backend_spec.strip().partition(":")
         factory = backend_factories.get(backend_type.strip())
         if factory is None:
             raise ValueError(f"Unknown camera backend type: '{backend_type}'. Available: {list(backend_factories)}")
-        backends[camera_id.strip()] = factory()
+        backends[camera_id.strip()] = factory(backend_arg.strip())
 
     return backends
 
