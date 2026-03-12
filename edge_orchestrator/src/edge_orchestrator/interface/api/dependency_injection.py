@@ -7,6 +7,9 @@ from edge_orchestrator.domain.models.station_config import StationConfig
 from edge_orchestrator.domain.ports.binary_storage.i_binary_storage_manager import (
     IBinaryStorageManager,
 )
+from edge_orchestrator.domain.ports.inspection_queue.i_inspection_queue import (
+    IInspectionQueue,
+)
 from edge_orchestrator.domain.ports.metadata_storage.i_metadata_storage_manager import (
     IMetadataStorageManager,
 )
@@ -37,3 +40,7 @@ def get_binary_storage_manager(request: Request) -> IBinaryStorageManager:
 
 def get_metadata_storage_manager(request: Request) -> IMetadataStorageManager:
     return request.app.state.metadata_storage_manager
+
+
+def get_inspection_queue(request: Request) -> IInspectionQueue:
+    return request.app.state.inspection_queue

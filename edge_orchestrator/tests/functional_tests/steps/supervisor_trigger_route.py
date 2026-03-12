@@ -1,4 +1,5 @@
 import json
+import time
 
 from behave import given, then, use_step_matcher, when
 from behave.runner import Context
@@ -53,8 +54,16 @@ def client_triggers_visual_inspection(context: Context):
 
 @then("item metadata are like the following")
 def item_metadata_like_following_are_captured(context: Context):
-    response = context.test_client.get(f"/api/v1/items/{context.item_id}")
-    assert response.status_code == HTTP_200_OK
+    deadline = time.monotonic() + 15
+    response = None
+    while time.monotonic() < deadline:
+        response = context.test_client.get(f"/api/v1/items/{context.item_id}")
+        if response.status_code == HTTP_200_OK and response.json().get("state") == "DONE":
+            break
+        time.sleep(0.1)
+    assert (
+        response is not None and response.status_code == HTTP_200_OK
+    ), f"Item never reached DONE state. Last response: {response.text if response else 'None'}"
     actual_item_metadata = response.json()
     expected_item_metadata = json.loads(context.text)
     assert_metadata_almost_equal(actual_item_metadata, expected_item_metadata)

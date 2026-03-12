@@ -33,6 +33,7 @@ def before_all(context: Context):
 
     os.environ["CONFIG_DIR"] = tmp_config_dir.as_posix()
     os.environ["ACTIVE_CONFIG_NAME"] = "unknown_config"
+    os.environ["INSPECTION_QUEUE_DB_PATH"] = str(test_directory / "inspection_queue.db")
     (
         model_serving_url,
         context.tensorflow_serving_container,

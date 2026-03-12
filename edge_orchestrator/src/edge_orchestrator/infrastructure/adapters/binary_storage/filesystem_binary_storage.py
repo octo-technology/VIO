@@ -39,7 +39,7 @@ class FileSystemBinaryStorage(IBinaryStorage):
         path = self._storing_path_manager.get_storing_path()
         item_binaries = {}
         for extension in ImageExtension:
-            for binary_path in path.glob(f"*.{extension.value}"):
+            for binary_path in path.glob(f"{item_id}_*.{extension.value}"):
                 with binary_path.open("rb") as f:
                     item_binaries[binary_path.stem] = f.read()
         return item_binaries
@@ -48,7 +48,7 @@ class FileSystemBinaryStorage(IBinaryStorage):
         path = self._storing_path_manager.get_storing_path()
         item_binaries = []
         for extension in ImageExtension:
-            for binary_path in path.glob(f"*.{extension.value}"):
+            for binary_path in path.glob(f"{item_id}_*.{extension.value}"):
                 item_binaries.append(binary_path.name)
         return item_binaries
 

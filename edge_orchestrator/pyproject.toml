@@ -22,6 +22,7 @@ classifiers = [
 ]
 dependencies = [
     "aiohttp==3.11.11",
+    "aiosqlite==0.21.0",
     "fastapi[all]==0.115.6",
     "numpy==1.24.2",
     "opencv_python==4.11.0.86",
