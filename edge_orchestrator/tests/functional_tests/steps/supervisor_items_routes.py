@@ -1,4 +1,5 @@
 import json
+import time
 
 from behave import given, then, use_step_matcher, when
 from behave.runner import Context
@@ -13,6 +14,12 @@ def client_trigger_item_capture_and_storage(context: Context, item_id: str):
     response = context.test_client.post("/api/v1/trigger")
     assert response.status_code == 200
     context.item_id = response.json()["item_id"]
+    deadline = time.monotonic() + 15
+    while time.monotonic() < deadline:
+        r = context.test_client.get(f"/api/v1/items/{context.item_id}")
+        if r.status_code == 200 and r.json().get("state") == "DONE":
+            break
+        time.sleep(0.1)
 
 
 @when("the client requests the items metadata list")
