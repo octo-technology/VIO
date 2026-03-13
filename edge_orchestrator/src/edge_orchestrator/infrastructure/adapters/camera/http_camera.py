@@ -1,5 +1,4 @@
 import logging
-import os
 from pathlib import Path
 
 import httpx
@@ -8,13 +7,11 @@ from edge_orchestrator.domain.models.camera.camera_config import CameraConfig
 from edge_orchestrator.domain.models.item import Image
 from edge_orchestrator.domain.ports.camera.i_camera import ICamera
 
-_DEFAULT_CAMERA_SERVICE_URL = "http://localhost:8001"
-
 
 class HttpCamera(ICamera):
     """Pull-mode camera adapter: delegates capture to the edge_camera HTTP service.
 
-    Env var CAMERA_SERVICE_URL overrides the default base URL.
+    The service URL is taken from camera_config.service_url (default: http://localhost:8001).
     The service returns an ImageRef JSON with a uri field.  File URIs (file://)
     are resolved by reading the file directly (same-host deployment).
     HTTP URIs are fetched from the network.
@@ -23,7 +20,7 @@ class HttpCamera(ICamera):
     def __init__(self, camera_config: CameraConfig):
         self._camera_config = camera_config
         self._logger = logging.getLogger(__name__)
-        base_url = os.getenv("CAMERA_SERVICE_URL", _DEFAULT_CAMERA_SERVICE_URL).rstrip("/")
+        base_url = camera_config.service_url.rstrip("/")
         self._capture_url = f"{base_url}/capture"
 
     def capture(self) -> Image:
@@ -41,6 +38,3 @@ class HttpCamera(ICamera):
         if uri.startswith("file://"):
             return Path(uri[len("file://") :]).read_bytes()
         return httpx.get(uri, timeout=10.0).content
-
-    def release(self):
-        pass

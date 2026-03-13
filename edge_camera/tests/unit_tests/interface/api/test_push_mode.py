@@ -1,10 +1,7 @@
 """Unit tests for push mode (_run_push_task and lifespan integration)."""
 
 import asyncio
-from pathlib import Path
-from unittest.mock import AsyncMock, MagicMock, patch
-
-import pytest
+from unittest.mock import MagicMock, patch
 
 from edge_camera.infrastructure.backends.fake_camera_backend import FakeCameraBackend
 from edge_camera.interface.api.app import _run_push_task, create_app

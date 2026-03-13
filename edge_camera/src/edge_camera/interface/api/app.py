@@ -1,7 +1,6 @@
 import asyncio
 import contextlib
 import logging
-import os
 from contextlib import asynccontextmanager
 from pathlib import Path
 from typing import Dict, List
@@ -13,6 +12,7 @@ from starlette.middleware.cors import CORSMiddleware
 from edge_camera.domain.models.image_ref import ImageRef
 from edge_camera.domain.ports.i_camera_backend import ICameraBackend
 from edge_camera.interface.api._paths import output_dir as _output_dir
+from edge_camera.interface.api.config import CameraBackendConfig, CameraServiceConfig
 from edge_camera.interface.api.routers.capture import router as capture_router
 
 logger = logging.getLogger(__name__)
@@ -31,71 +31,60 @@ async def _run_push_task(backend: ICameraBackend, camera_id: str, push_url: str,
         await backend.start_listening(out_dir, camera_id, on_frame)
 
 
-def _load_backends_from_env() -> Dict[str, ICameraBackend]:
-    """Load camera backends from CAMERA_BACKENDS env var.
+def _build_backend(camera_id: str, cfg: CameraBackendConfig) -> ICameraBackend:
+    backend_type = cfg.backend
 
-    Format: "cam_1=fake,cam_2=opencv:0"
-      - camera_id=backend_type[:arg]
-      - For opencv, the optional arg is the device index (default: 0).
-    Defaults to a single fake camera named 'cam_1'.
-    """
-    from edge_camera.infrastructure.backends.fake_camera_backend import (
-        FakeCameraBackend,
-    )
+    if backend_type == "fake":
+        from edge_camera.infrastructure.backends.fake_camera_backend import (
+            FakeCameraBackend,
+        )
 
-    def _make_opencv(arg: str) -> "ICameraBackend":
+        return FakeCameraBackend()
+
+    if backend_type == "opencv":
         from edge_camera.infrastructure.backends.opencv_camera_backend import (
             OpenCvCameraBackend,
         )
 
-        return OpenCvCameraBackend(device_index=int(arg) if arg else 0)
+        return OpenCvCameraBackend(device_index=cfg.device_index)
 
-    def _make_picamera2(arg: str) -> "ICameraBackend":
+    if backend_type == "picamera2":
         from edge_camera.infrastructure.backends.picamera2_backend import (
             Picamera2Backend,
         )
 
-        return Picamera2Backend(camera_num=int(arg) if arg else 0)
+        return Picamera2Backend(camera_num=cfg.camera_num)
 
-    def _make_basler(arg: str) -> "ICameraBackend":
+    if backend_type == "basler":
         from edge_camera.infrastructure.backends.basler_camera_backend import (
             BaslerCameraBackend,
         )
 
-        return BaslerCameraBackend(serial_number=arg if arg else None)
+        return BaslerCameraBackend(serial_number=cfg.serial_number)
 
-    backend_factories = {
-        "fake": lambda arg: FakeCameraBackend(),
-        "opencv": _make_opencv,
-        "picamera2": _make_picamera2,
-        "basler": _make_basler,
-    }
+    raise ValueError(f"Unknown camera backend type: '{backend_type}'. Available: fake, opencv, picamera2, basler")
 
-    spec = os.getenv("CAMERA_BACKENDS", "cam_1=fake")
-    backends: Dict[str, ICameraBackend] = {}
-    for entry in spec.split(","):
-        camera_id, _, backend_spec = entry.strip().partition("=")
-        backend_type, _, backend_arg = backend_spec.strip().partition(":")
-        factory = backend_factories.get(backend_type.strip())
-        if factory is None:
-            raise ValueError(f"Unknown camera backend type: '{backend_type}'. Available: {list(backend_factories)}")
-        backends[camera_id.strip()] = factory(backend_arg.strip())
 
-    return backends
+def _build_backends(service_config: CameraServiceConfig) -> Dict[str, ICameraBackend]:
+    return {camera_id: _build_backend(camera_id, cfg) for camera_id, cfg in service_config.cameras.items()}
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    if not hasattr(app.state, "backends"):
-        app.state.backends = _load_backends_from_env()
+    service_config = CameraServiceConfig.load()
 
-    push_url = os.getenv("CAMERA_PUSH_URL", "")
+    if not hasattr(app.state, "backends"):
+        app.state.backends = _build_backends(service_config)
+
     push_tasks: List[asyncio.Task] = []
-    if push_url:
+    if service_config.push_url:
         for camera_id, backend in app.state.backends.items():
-            task = asyncio.create_task(_run_push_task(backend, camera_id, push_url, _output_dir(camera_id)))
+            out_dir = (
+                Path(service_config.output_dir) / camera_id if service_config.output_dir else _output_dir(camera_id)
+            )
+            task = asyncio.create_task(_run_push_task(backend, camera_id, service_config.push_url, out_dir))
             push_tasks.append(task)
-            logger.info("Push mode: camera %s → %s", camera_id, push_url)
+            logger.info("Push mode: camera %s → %s", camera_id, service_config.push_url)
 
     yield
 

@@ -49,9 +49,10 @@ def test_capture_reads_file_uri(camera, tmp_path):
     assert image.image_bytes == _FAKE_JPEG
 
 
-def test_capture_posts_to_correct_url_with_camera_id(camera, tmp_path, monkeypatch):
-    monkeypatch.setenv("CAMERA_SERVICE_URL", "http://edge-camera:8001")
-    cam = HttpCamera(CameraConfig(camera_id="cam_42", camera_type=CameraType.HTTP))
+def test_capture_posts_to_correct_url_with_camera_id(tmp_path):
+    cam = HttpCamera(
+        CameraConfig(camera_id="cam_42", camera_type=CameraType.HTTP, service_url="http://edge-camera:8001")
+    )
 
     jpeg_path = tmp_path / "frame.jpg"
     jpeg_path.write_bytes(_FAKE_JPEG)
@@ -102,7 +103,3 @@ def httpx_http_status_error():
         request=MagicMock(),
         response=MagicMock(status_code=404),
     )
-
-
-def test_release_is_noop(camera):
-    camera.release()  # must not raise

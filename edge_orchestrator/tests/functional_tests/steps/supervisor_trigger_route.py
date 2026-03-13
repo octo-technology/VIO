@@ -40,7 +40,6 @@ def following_cameras_are_registered_in_the_configuration(context: Context):
         cameras[row["camera_id"]] = current_camera_conf
         assert current_camera_conf["camera_type"] == row["camera_type"]
         assert current_camera_conf["position"] == row["position"]
-        assert current_camera_conf["source_directory"] == row["source_directory"]
     context.cameras = cameras
     assert len(response_content["camera_configs"].keys()) == len(context.table.rows)
 

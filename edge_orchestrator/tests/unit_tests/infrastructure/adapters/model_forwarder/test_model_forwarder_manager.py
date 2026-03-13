@@ -29,7 +29,7 @@ class TestModelForwarderManager:
         item = Item(
             binaries={"camera_#1": Image(image_bytes=b"fake_binary"), "camera_#2": Image(image_bytes=b"fake_binary")},
             cameras_metadata={
-                "camera_#1": CameraConfig(camera_id="camera_#1", camera_type=CameraType.FAKE, source_directory="fake"),
+                "camera_#1": CameraConfig(camera_id="camera_#1", camera_type=CameraType.HTTP),
                 "camera_#2": CameraConfig(camera_id="camera_#2", camera_type=CameraType.HTTP),
             },
         )

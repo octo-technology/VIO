@@ -51,10 +51,5 @@ class CameraManager(ICameraManager):
         item.state = ItemState.CAPTURE
 
     def reset(self):
-        for camera_id, camera in self._cameras.items():
-            try:
-                camera.release()
-            except Exception:
-                self._logger.exception(f"Error while releasing camera {camera_id}")
         self._cameras = {}
         self._camera_configs = {}

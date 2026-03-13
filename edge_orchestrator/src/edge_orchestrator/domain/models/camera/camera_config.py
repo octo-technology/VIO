@@ -1,7 +1,6 @@
-from pathlib import Path
 from typing import Optional
 
-from pydantic import BaseModel, model_validator
+from pydantic import BaseModel
 
 from edge_orchestrator.domain.models.camera.camera_type import CameraType
 from edge_orchestrator.domain.models.model_forwarder.image_resolution import (
@@ -12,12 +11,6 @@ from edge_orchestrator.domain.models.model_forwarder.image_resolution import (
 class CameraConfig(BaseModel):
     camera_id: str
     camera_type: CameraType
-    source_directory: Optional[Path] = None
     position: Optional[str] = "front"
     camera_resolution: Optional[ImageResolution] = None
-
-    @model_validator(mode="after")
-    def check_params(self):
-        if self.camera_type == CameraType.FAKE and self.source_directory is None:
-            raise ValueError("source_directory is required with camera_type FAKE")
-        return self
+    service_url: str = "http://localhost:8001"

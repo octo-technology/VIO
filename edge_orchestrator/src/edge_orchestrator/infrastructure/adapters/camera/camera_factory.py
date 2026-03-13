@@ -11,13 +11,7 @@ class CameraFactory(ICameraFactory):
         self._logger = logging.getLogger(__name__)
 
     def create_camera(self, camera_config: CameraConfig) -> ICamera:
-        if camera_config.camera_type == CameraType.FAKE:
-            from edge_orchestrator.infrastructure.adapters.camera.fake_camera import (
-                FakeCamera,
-            )
-
-            return FakeCamera(camera_config)
-        elif camera_config.camera_type == CameraType.HTTP:
+        if camera_config.camera_type == CameraType.HTTP:
             from edge_orchestrator.infrastructure.adapters.camera.http_camera import (
                 HttpCamera,
             )
