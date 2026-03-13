@@ -18,6 +18,6 @@ class CameraConfig(BaseModel):
 
     @model_validator(mode="after")
     def check_params(self):
-        if self.camera_type in [CameraType.FAKE, CameraType.USB, CameraType.WEBCAM] and self.source_directory is None:
-            raise ValueError("source_directory is required with camera_type FAKE, USB or WEBCAM")
+        if self.camera_type == CameraType.FAKE and self.source_directory is None:
+            raise ValueError("source_directory is required with camera_type FAKE")
         return self

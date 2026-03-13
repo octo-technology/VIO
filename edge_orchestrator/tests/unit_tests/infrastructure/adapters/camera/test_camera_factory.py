@@ -7,10 +7,7 @@ from edge_orchestrator.infrastructure.adapters.camera.camera_factory import (
     CameraFactory,
 )
 from edge_orchestrator.infrastructure.adapters.camera.fake_camera import FakeCamera
-from edge_orchestrator.infrastructure.adapters.camera.raspberry_pi_camera import (
-    RaspberryPiCamera,
-)
-from edge_orchestrator.infrastructure.adapters.camera.webcam_camera import WebcamCamera
+from edge_orchestrator.infrastructure.adapters.camera.http_camera import HttpCamera
 
 
 class TestCameraFactory:
@@ -19,8 +16,7 @@ class TestCameraFactory:
         "camera_id,camera_type,camera_class",
         [
             ("camera_#1", CameraType.FAKE, FakeCamera),
-            ("camera_#2", CameraType.USB, WebcamCamera),
-            ("camera_#3", CameraType.RASPBERRY, RaspberryPiCamera),
+            ("camera_#2", CameraType.HTTP, HttpCamera),
         ],
     )
     def test_should_return_the_specified_camera_instance(

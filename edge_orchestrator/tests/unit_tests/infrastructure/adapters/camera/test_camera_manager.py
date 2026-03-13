@@ -15,10 +15,7 @@ from edge_orchestrator.infrastructure.adapters.camera.camera_manager import (
     CameraManager,
 )
 from edge_orchestrator.infrastructure.adapters.camera.fake_camera import FakeCamera
-from edge_orchestrator.infrastructure.adapters.camera.raspberry_pi_camera import (
-    RaspberryPiCamera,
-)
-from edge_orchestrator.infrastructure.adapters.camera.webcam_camera import WebcamCamera
+from edge_orchestrator.infrastructure.adapters.camera.http_camera import HttpCamera
 
 
 class TestCameraManager:
@@ -29,8 +26,7 @@ class TestCameraManager:
         # Given
         camera_id_camera_classes = [
             ("camera_#1", FakeCamera),
-            ("camera_#2", WebcamCamera),
-            ("camera_#3", RaspberryPiCamera),
+            ("camera_#2", HttpCamera),
         ]
 
         camera_manager = CameraManager(CameraFactory())
@@ -38,12 +34,7 @@ class TestCameraManager:
             station_name="test_profile",
             camera_configs={
                 "camera_#1": CameraConfig(camera_id="camera_#1", camera_type=CameraType.FAKE, source_directory="fake"),
-                "camera_#2": CameraConfig(
-                    camera_id="camera_#2", camera_type=CameraType.WEBCAM, source_directory="fake"
-                ),
-                "camera_#3": CameraConfig(
-                    camera_id="camera_#3", camera_type=CameraType.RASPBERRY, source_directory="fake"
-                ),
+                "camera_#2": CameraConfig(camera_id="camera_#2", camera_type=CameraType.HTTP),
             },
             binary_storage_config=StorageConfig(),
             metadata_storage_config=StorageConfig(),
@@ -57,12 +48,11 @@ class TestCameraManager:
 
         # Then
         assert hasattr(camera_manager, "_cameras")
-        assert len(camera_manager._cameras) == 3
+        assert len(camera_manager._cameras) == 2
         assert hasattr(camera_manager, "take_pictures")
         for camera_id, camera_class in camera_id_camera_classes:
             assert isinstance(camera_manager._cameras[camera_id], camera_class)
-            if isinstance(camera_manager._cameras[camera_id], WebcamCamera):
-                camera_manager._cameras[camera_id].release()
+            camera_manager._cameras[camera_id].release()
 
     def test_should_raise_exception_without_creating_cameras_first(
         self,
@@ -94,10 +84,8 @@ class TestCameraManager:
         station_config = StationConfig(
             station_name="test_profile",
             camera_configs={
-                "camera_#1": CameraConfig(camera_id="camera_#1", camera_type=CameraType.USB, source_directory="fake"),
-                "camera_#2": CameraConfig(
-                    camera_id="camera_#2", camera_type=CameraType.RASPBERRY, source_directory="fake"
-                ),
+                "camera_#1": CameraConfig(camera_id="camera_#1", camera_type=CameraType.HTTP),
+                "camera_#2": CameraConfig(camera_id="camera_#2", camera_type=CameraType.HTTP),
             },
             binary_storage_config=StorageConfig(),
             metadata_storage_config=StorageConfig(),
