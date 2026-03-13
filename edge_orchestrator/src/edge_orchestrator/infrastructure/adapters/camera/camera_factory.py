@@ -11,23 +11,11 @@ class CameraFactory(ICameraFactory):
         self._logger = logging.getLogger(__name__)
 
     def create_camera(self, camera_config: CameraConfig) -> ICamera:
-        if camera_config.camera_type == CameraType.FAKE:
-            from edge_orchestrator.infrastructure.adapters.camera.fake_camera import (
-                FakeCamera,
+        if camera_config.camera_type == CameraType.HTTP:
+            from edge_orchestrator.infrastructure.adapters.camera.http_camera import (
+                HttpCamera,
             )
 
-            return FakeCamera(camera_config)
-        elif camera_config.camera_type == CameraType.RASPBERRY:
-            from edge_orchestrator.infrastructure.adapters.camera.raspberry_pi_camera import (
-                RaspberryPiCamera,
-            )
-
-            return RaspberryPiCamera(camera_config)
-        elif camera_config.camera_type in [CameraType.WEBCAM, CameraType.USB]:
-            from edge_orchestrator.infrastructure.adapters.camera.webcam_camera import (
-                WebcamCamera,
-            )
-
-            return WebcamCamera(camera_config)
+            return HttpCamera(camera_config)
         else:
             raise ValueError(f"Camera type ({camera_config.camera_type}) is not supported.")

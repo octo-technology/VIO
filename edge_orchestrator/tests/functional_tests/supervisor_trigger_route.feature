@@ -4,9 +4,9 @@ Feature: The client trigger a visual inspection and request the resulting metada
 		Given the app is up and running
 		And the config 'config_3' is activated
 		And the following cameras are registered in the configuration
-			| camera_id  | camera_type | position | source_directory                                      |
-			| camera_1   | fake        | front    | fake_images |
-			| camera_2   | fake        | front    | fake_images |
+			| camera_id  | camera_type | position |
+			| camera_1   | http        | front    |
+			| camera_2   | http        | front    |
 		When the client triggers a visual inspection
 		Then item metadata are like the following
 		"""
@@ -16,15 +16,15 @@ Feature: The client trigger a visual inspection and request the resulting metada
 		"cameras_metadata": {
 		"camera_1": {
 		"camera_id": "camera_1",
-		"camera_type": "fake",
-		"source_directory": "fake_images",
-		"position": "front"
+		"camera_type": "http",
+		"position": "front",
+		"service_url": "http://localhost:8001"
 		},
 		"camera_2": {
 		"camera_id": "camera_2",
-		"camera_type": "fake",
-		"source_directory": "fake_images",
-		"position": "front"
+		"camera_type": "http",
+		"position": "front",
+		"service_url": "http://localhost:8001"
 		}
 		},
 		"binaries": {

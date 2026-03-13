@@ -68,8 +68,8 @@ class TestFileSystemMetadataStorage:
             id=item_id,
             creation_date="2025-02-04T09:23:10.437614",
             cameras_metadata={
-                "camera_#1": CameraConfig(camera_id="camera_#1", camera_type=CameraType.FAKE, source_directory="fake"),
-                "camera_#2": CameraConfig(camera_id="camera_#2", camera_type=CameraType.USB, source_directory="fake"),
+                "camera_#1": CameraConfig(camera_id="camera_#1", camera_type=CameraType.HTTP),
+                "camera_#2": CameraConfig(camera_id="camera_#2", camera_type=CameraType.HTTP),
             },
             binaries={
                 "camera_#1": Image(
@@ -102,15 +102,15 @@ class TestFileSystemMetadataStorage:
             "cameras_metadata": {
                 "camera_#1": {
                     "camera_id": "camera_#1",
-                    "camera_type": "fake",
+                    "camera_type": "http",
                     "position": "front",
-                    "source_directory": "fake",
+                    "service_url": "http://localhost:8001",
                 },
                 "camera_#2": {
                     "camera_id": "camera_#2",
-                    "camera_type": "usb",
+                    "camera_type": "http",
                     "position": "front",
-                    "source_directory": "fake",
+                    "service_url": "http://localhost:8001",
                 },
             },
             "binaries": {
@@ -184,14 +184,12 @@ class TestFileSystemMetadataStorage:
             "cameras_metadata": {
                 "camera_#1": {
                     "camera_id": "camera_#1",
-                    "camera_type": "fake",
-                    "source_directory": "fake",
+                    "camera_type": "http",
                     "reacreate_me": False,
                 },
                 "camera_#2": {
                     "camera_id": "camera_#2",
-                    "camera_type": "usb",
-                    "source_directory": "fake",
+                    "camera_type": "http",
                     "reacreate_me": False,
                 },
             },
@@ -237,14 +235,12 @@ class TestFileSystemMetadataStorage:
                 "cameras_metadata": {
                     "camera_#1": {
                         "camera_id": "camera_#1",
-                        "camera_type": "fake",
-                        "source_directory": "fake",
+                        "camera_type": "http",
                         "reacreate_me": False,
                     },
                     "camera_#2": {
                         "camera_id": "camera_#2",
-                        "camera_type": "usb",
-                        "source_directory": "fake",
+                        "camera_type": "http",
                         "reacreate_me": False,
                     },
                 },

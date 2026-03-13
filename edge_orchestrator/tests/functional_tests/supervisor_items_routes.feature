@@ -19,15 +19,15 @@ Feature: The client request metadata and binaries
 	"cameras_metadata": {
 	"camera_1": {
 	"camera_id": "camera_1",
-	"camera_type": "fake",
-	"source_directory": "fake_images",
-	"position": "front"
+	"camera_type": "http",
+	"position": "front",
+	"service_url": "http://localhost:8001"
 	},
 	"camera_2": {
 	"camera_id": "camera_2",
-	"camera_type": "fake",
-	"source_directory": "fake_images",
-	"position": "front"
+	"camera_type": "http",
+	"position": "front",
+	"service_url": "http://localhost:8001"
 	}
 	},
 	"binaries": {

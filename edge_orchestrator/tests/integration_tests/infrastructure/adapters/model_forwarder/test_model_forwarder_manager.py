@@ -35,8 +35,7 @@ class TestModelForwarderManager:
             cameras_metadata={
                 "camera_#1": CameraConfig(
                     camera_id="camera_#1",
-                    camera_type=CameraType.FAKE,
-                    source_directory="fake",
+                    camera_type=CameraType.HTTP,
                 ),
             },
         )

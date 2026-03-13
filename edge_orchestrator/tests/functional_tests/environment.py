@@ -61,6 +61,15 @@ def before_all(context: Context):
         f"{model_serving_url}v1/models/{model_name}/versions/{model_version}:predict"
     )
 
+    from edge_orchestrator.domain.models.item import Image
+    from edge_orchestrator.infrastructure.adapters.camera.http_camera import HttpCamera
+
+    _fake_images_dir = ROOT_REPOSITORY_PATH / "edge_orchestrator" / "fake_images"
+    _fake_image_paths = list(_fake_images_dir.rglob("*.jpg")) + list(_fake_images_dir.rglob("*.png"))
+    _fake_image_bytes = _fake_image_paths[0].read_bytes() if _fake_image_paths else b"\xff\xd8\xff\xe0"
+
+    HttpCamera.capture = lambda self: Image(image_bytes=_fake_image_bytes)
+
 
 def after_scenario(context: Context, scenario):
     storing_path = Path(context.tmp_dir.name) / "data_storage"

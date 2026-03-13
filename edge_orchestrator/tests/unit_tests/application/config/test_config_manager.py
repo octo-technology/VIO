@@ -206,9 +206,7 @@ class TestConfigManager:
         os.environ["ACTIVE_CONFIG_NAME"] = station_config.station_name
 
         config_manager = ConfigManager()
-        new_camera_config = {
-            "camera_#1": CameraConfig(camera_id="camera_#1", camera_type=CameraType.FAKE, source_directory="fake")
-        }
+        new_camera_config = {"camera_#1": CameraConfig(camera_id="camera_#1", camera_type=CameraType.HTTP)}
 
         # When
         with caplog.at_level("WARNING"):
