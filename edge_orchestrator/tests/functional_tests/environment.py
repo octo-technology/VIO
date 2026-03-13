@@ -66,7 +66,7 @@ def before_all(context: Context):
 
     _fake_images_dir = ROOT_REPOSITORY_PATH / "edge_orchestrator" / "fake_images"
     _fake_image_paths = list(_fake_images_dir.rglob("*.jpg")) + list(_fake_images_dir.rglob("*.png"))
-    _fake_image_bytes = _fake_image_paths[0].read_bytes() if _fake_image_paths else b"ÿØÿà"
+    _fake_image_bytes = _fake_image_paths[0].read_bytes() if _fake_image_paths else b"\xff\xd8\xff\xe0"
 
     HttpCamera.capture = lambda self: Image(image_bytes=_fake_image_bytes)
 
