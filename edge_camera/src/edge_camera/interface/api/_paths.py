@@ -9,5 +9,6 @@ def output_dir(camera_id: str) -> Path:
     """
     shm = Path("/dev/shm")
     default = shm / "vio" if shm.is_dir() else Path("/tmp/vio")
-    base = Path(os.getenv("CAMERA_OUTPUT_DIR", "")) or default
+    env = os.getenv("CAMERA_OUTPUT_DIR")
+    base = Path(env) if env else default
     return base / camera_id
