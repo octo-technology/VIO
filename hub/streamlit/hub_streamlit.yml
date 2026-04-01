@@ -1,0 +1,14 @@
+services:
+  hub_streamlit:
+    container_name: hub_streamlit
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8500:8500
+    environment:
+      BUCKET_NAME: tf-vio-bucket
+      GOOGLE_APPLICATION_CREDENTIALS: /hub_streamlit/config/secrets/credentials.json
+    volumes:
+      - ./config:/hub_streamlit/config
+    profiles: [hub]
