@@ -1,0 +1,14 @@
+# Camera service configuration for local development.
+# Camera IDs must match the camera_id values in the orchestrator station config.
+#
+# Backend options: fake | opencv | picamera2 | basler
+# - fake:      returns a blank JPEG, no hardware required
+# - opencv:    USB/webcam via OpenCV (requires edge-camera[usb])
+# - picamera2: Raspberry Pi camera (requires edge-camera[pi])
+# - basler:    Basler GigE camera (requires edge-camera[basler])
+
+cameras:
+  camera_1:
+    backend: fake
+  camera_2:
+    backend: fake

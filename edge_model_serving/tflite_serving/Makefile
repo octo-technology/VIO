@@ -42,14 +42,6 @@ install:
 tflite_tests:
 	pytest -v --cov=src --junitxml=reports/tests-report.xml tests/
 
-.PHONY: run_tflite_serving  ## ✅ Launch the tflite serving app
-run_tflite_serving:
+.PHONY: serve  ## 🚀 Run the model server locally (port 8501)
+serve:
 	uvicorn tflite_serving.tflite_server:app --reload --port 8501 --host 0.0.0.0
-
-.PHONY: start_edge_model_serving ## 🕵 Start edge_model_serving service (Docker container)
-start_edge_model_serving:
-	BUILDOS=${BUILDOS} docker compose --file edge_model_serving.yml up edge_model_serving -d --build
-
-.PHONY: stop_edge_model_serving ## 🕵 Stop edge_model_serving service (Docker container)
-stop_edge_model_serving:
-	docker compose --file edge_model_serving.yml down edge_model_serving

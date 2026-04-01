@@ -68,6 +68,7 @@ async def test_lifespan_starts_push_tasks_when_env_set(tmp_path, monkeypatch):
         await asyncio.sleep(float("inf"))
 
     app = create_app()
+    app.state.backends = {"cam_1": FakeCameraBackend()}
 
     with patch("edge_camera.interface.api.app._run_push_task", side_effect=fake_run_push_task):
         async with app.router.lifespan_context(app):

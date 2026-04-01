@@ -81,10 +81,6 @@ pyramid:
 pyramid_and_badges:
 	python tests/tests_pyramid.py --badges-generation
 
-.PHONY: start_edge_orchestrator ## 🕵 Start edge_orchestrator service (Docker container)
-start_edge_orchestrator:
-	BUILDOS=${BUILDOS} docker compose --file edge_orchestrator.yml up edge_orchestrator -d --build
-
-.PHONY: stop_edge_orchestrator ## 🕵 Stop edge_orchestrator service (Docker container)
-stop_edge_orchestrator:
-	docker compose --file edge_orchestrator.yml down edge_orchestrator
+.PHONY: serve  ## 🚀 Run the orchestrator locally (port 8000)
+serve:
+	uvicorn edge_orchestrator.interface.api.main:app --host 0.0.0.0 --port 8000 --reload
