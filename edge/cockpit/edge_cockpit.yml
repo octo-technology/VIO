@@ -1,0 +1,9 @@
+services:
+  edge_cockpit:
+    container_name: edge_cockpit
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 80:80
+    profiles: [edge]

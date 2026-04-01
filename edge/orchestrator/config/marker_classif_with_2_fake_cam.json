@@ -19,7 +19,7 @@
             "camera_id": "camera_1",
             "model_forwarder_config": {
                 "model_name": "marker_quality_control",
-                "model_serving_url": "http://edge_model_serving:8501/",
+                "model_serving_url": "http://localhost:8501/",
                 "model_version": "1"
             },
             "camera_rule_config": {
@@ -31,7 +31,7 @@
             "camera_id": "camera_2",
             "model_forwarder_config": {
                 "model_name": "marker_quality_control",
-                "model_serving_url": "http://edge_model_serving:8501/",
+                "model_serving_url": "http://localhost:8501/",
                 "model_version": "1"
             },
             "camera_rule_config": {
