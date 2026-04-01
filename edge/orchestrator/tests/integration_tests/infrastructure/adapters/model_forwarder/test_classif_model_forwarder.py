@@ -13,7 +13,6 @@ from edge_orchestrator.infrastructure.adapters.model_forwarder.model_forwarder i
 
 
 class TestModelForwarderClassification:
-
     @pytest.mark.integration
     @pytest.mark.parametrize(
         "model_name",

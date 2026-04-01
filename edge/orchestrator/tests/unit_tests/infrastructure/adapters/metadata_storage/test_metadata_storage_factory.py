@@ -25,7 +25,6 @@ from edge_orchestrator.infrastructure.adapters.metadata_storage.metadata_storage
 
 
 class TestMetadataStorageFactory:
-
     @pytest.mark.parametrize(
         "storage_type,metadata_storage_class",
         [

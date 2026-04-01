@@ -57,9 +57,7 @@ class TestTfliteServing:
         self,
     ):
         # When
-        actual_response = self.test_client.get(
-            f"{self.base_url}/models/marker_quality_control/metadata"
-        )
+        actual_response = self.test_client.get(f"{self.base_url}/models/marker_quality_control/metadata")
 
         # Then
         assert actual_response.status_code == 200
@@ -71,9 +69,7 @@ class TestTfliteServing:
 
     def test_get_model_metadata_returns_shape_and_metadata_for_detection_model(self):
         # When
-        actual_response = self.test_client.get(
-            f"{self.base_url}/models/mobilenet_ssd_v2_coco/metadata"
-        )
+        actual_response = self.test_client.get(f"{self.base_url}/models/mobilenet_ssd_v2_coco/metadata")
 
         # Then
         assert actual_response.status_code == 200
@@ -84,9 +80,7 @@ class TestTfliteServing:
 
     def test_get_model_metadata_returns_404_for_unknown_model(self):
         # When
-        actual_response = self.test_client.get(
-            f"{self.base_url}/models/unknown_model/metadata"
-        )
+        actual_response = self.test_client.get(f"{self.base_url}/models/unknown_model/metadata")
 
         # Then
         assert actual_response.status_code == 404

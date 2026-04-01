@@ -18,6 +18,7 @@ from helpers.container_utils import (  # EDGE_MODEL_SERVING,  # noqa: E402
     stop_test_container,
 )
 
+
 def before_all(context: Context):
     config_directory = Path(__file__).parents[1] / "config"
 

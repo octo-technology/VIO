@@ -16,32 +16,24 @@ help:
 	grep -E '^\.PHONY: [a-zA-Z0-9_-]+ .*?## .*$$' $(MAKEFILE_LIST) | \
 		awk 'BEGIN {FS = "(: |##)"}; {printf "\033[36m%-30s\033[0m %s\n", $$2, $$3}'
 
-.PHONY: lint  ## 🐍 Lint Python files to conform to the PEP 8 style guide
+.PHONY: lint  ## 🐍 Lint and format Python files
 lint:
-	autoflake --in-place --remove-all-unused-imports --recursive --ignore-init-module-imports src tests convert_pb_to_tflite.py --exclude .venv
-	isort src tests convert_pb_to_tflite.py --skip-gitignore
-	black src tests convert_pb_to_tflite.py
+	uv run ruff check --fix src tests
+	uv run ruff format src tests
 
-.PHONY: check  ## 🐍 Check lint Python files to conform to the PEP 8 style guide
+.PHONY: check  ## 🐍 Check lint and format (no changes)
 check:
-	autoflake --in-place --remove-all-unused-imports --recursive --ignore-init-module-imports src tests convert_pb_to_tflite.py --exclude .venv --check
-	isort src tests convert_pb_to_tflite.py --skip-gitignore --check
-	black src tests convert_pb_to_tflite.py --check
-	flake8 --count --show-source --statistics
-
-.PHONY: tflite_serving  ## 🐍 Create a tflite conda environment
-tflite_serving:
-	conda create --name tflite_serving python=3.10 -y
+	uv run ruff check src tests
+	uv run ruff format --check src tests
 
 .PHONY: install  ## ⏬ Install development dependencies
 install:
-	python -m pip install --upgrade pip setuptools
-	pip install -e .[dev] && pip list --outdated
+	uv pip install -e ".[dev]"
 
-.PHONY: tflite_tests  ## ✅ Launch the unit tflite_tests
-tflite_tests:
-	pytest -v --cov=src --junitxml=reports/tests-report.xml tests/
+.PHONY: unit_tests  ## ✅ Launch the unit tests
+unit_tests:
+	uv run pytest -v --cov=src --junitxml=reports/tests-report.xml tests/
 
 .PHONY: serve  ## 🚀 Run the model server locally (port 8501)
 serve:
-	uvicorn tflite_serving.tflite_server:app --reload --port 8501 --host 0.0.0.0
+	uv run uvicorn tflite_serving.tflite_server:app --host 0.0.0.0 --port 8501 --reload

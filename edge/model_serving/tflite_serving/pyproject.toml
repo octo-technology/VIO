@@ -3,7 +3,7 @@ requires = ["setuptools>=66", "setuptools_scm[toml]>=6.2"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "tflite_serving"
+name = "edge-model-server"
 version = "1.0.0"
 dependencies = [
     "ai-edge-litert==1.1.0",
@@ -22,13 +22,10 @@ edge_model_serving = "tflite_serving.__main__:run_for_debug"
 
 [project.optional-dependencies]
 dev = [
-    "autoflake==2.3.1",
-    "black==25.1.0",
-    "flake8==7.1.1",
-    "isort==6.0.0",
+    "ruff>=0.9.0",
     "pytest==8.3.4",
     "pytest-cov==6.0.0",
-    "requests==2.32.3"
+    "requests==2.32.3",
 ]
 
 [tool.setuptools.packages.find]
@@ -39,11 +36,9 @@ exclude = ["tests*", "data"]
 min_version = "6.0"
 testpaths = "tests/"
 
-[tool.flake8]
-exclude = "venv*"
-max-complexity = 10
-max-line-length = 120
+[tool.ruff]
+line-length = 120
+target-version = "py311"
 
-
-[tool.isort]
-profile = "black"
+[tool.ruff.lint]
+select = ["E", "F", "I"]

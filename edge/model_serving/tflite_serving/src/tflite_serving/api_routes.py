@@ -47,9 +47,7 @@ def _preprocess(
     return arr
 
 
-def _postprocess_classification(
-    outputs: List[np.ndarray], class_names: List[str]
-) -> ClassificationPrediction:
+def _postprocess_classification(outputs: List[np.ndarray], class_names: List[str]) -> ClassificationPrediction:
     scores = outputs[0][0]
     best_idx = int(np.argmax(scores))
     return ClassificationPrediction(
@@ -59,9 +57,7 @@ def _postprocess_classification(
     )
 
 
-def _postprocess_object_detection(
-    outputs: List[np.ndarray], class_names: List[str]
-) -> DetectionPrediction:
+def _postprocess_object_detection(outputs: List[np.ndarray], class_names: List[str]) -> DetectionPrediction:
     boxes = outputs[0]
     classes = outputs[1].astype(int)
     scores = outputs[2]
@@ -74,9 +70,7 @@ def _postprocess_object_detection(
             objectness=round(float(score), 5),
             label=label,
         )
-    return DetectionPrediction(
-        prediction_type="objects", detected_objects=detected_objects
-    )
+    return DetectionPrediction(prediction_type="objects", detected_objects=detected_objects)
 
 
 def _postprocess_yolo(
@@ -94,23 +88,15 @@ def _postprocess_yolo(
     severities = compute_severities(input_array[0], boxes)
 
     detected_objects: Dict[str, DetectedObject] = {}
-    for i, (box, score, cls_id, severity) in enumerate(
-        zip(boxes, scores, class_ids, severities)
-    ):
-        label = (
-            class_names[int(cls_id)]
-            if int(cls_id) < len(class_names)
-            else str(int(cls_id))
-        )
+    for i, (box, score, cls_id, severity) in enumerate(zip(boxes, scores, class_ids, severities)):
+        label = class_names[int(cls_id)] if int(cls_id) < len(class_names) else str(int(cls_id))
         detected_objects[f"object_{i + 1}"] = DetectedObject(
             location=[round(c, 4) for c in box],
             objectness=round(float(score), 5),
             label=label,
             severity=severity,
         )
-    return DetectionPrediction(
-        prediction_type="objects", detected_objects=detected_objects
-    )
+    return DetectionPrediction(prediction_type="objects", detected_objects=detected_objects)
 
 
 def _get_state(request: Any) -> tuple[Dict[str, Any], Dict[str, Dict[str, Any]]]:
@@ -121,9 +107,7 @@ def _get_state(request: Any) -> tuple[Dict[str, Any], Dict[str, Dict[str, Any]]]
     Starlette limitation with no clean typing solution at call-site level.
     """
     interpreters = cast(Dict[str, Any], request.app.state.model_interpreters)
-    metadata_registry = cast(
-        Dict[str, Dict[str, Any]], request.app.state.model_metadata
-    )
+    metadata_registry = cast(Dict[str, Dict[str, Any]], request.app.state.model_metadata)
     return interpreters, metadata_registry
 
 
@@ -147,9 +131,7 @@ async def get_models(request: Request) -> List[str]:
     "/models/{model_name}/metadata",
     response_model=ModelMetadataResponse,
 )
-async def get_model_metadata(
-    model_name: str, request: Request
-) -> ModelMetadataResponse:
+async def get_model_metadata(model_name: str, request: Request) -> ModelMetadataResponse:
     interpreters, metadata_registry = _get_state(request)
     if model_name not in interpreters:
         raise HTTPException(status_code=404, detail=f"Model '{model_name}' not found")
@@ -171,7 +153,9 @@ async def get_model_metadata(
     response_model_exclude_none=True,
 )
 async def predict(
-    model_name: str, model_version: str, request: Request  # noqa: ARG001
+    model_name: str,
+    model_version: str,
+    request: Request,  # noqa: ARG001
 ) -> PredictionResponse:
     interpreters, metadata_registry = _get_state(request)
     if model_name not in interpreters:
@@ -197,25 +181,19 @@ async def predict(
     input_shape: List[int] = input_details[0]["shape"].tolist()
     input_dtype: Any = input_details[0]["dtype"]
 
-    logging.info(
-        f"Predicting with '{model_name}' | shape={input_shape} | output_type={output_type}"
-    )
+    logging.info(f"Predicting with '{model_name}' | shape={input_shape} | output_type={output_type}")
 
     try:
         body: bytes = await request.body()
         if not body:
-            raise HTTPException(
-                status_code=400, detail="Empty request body — expected raw image bytes"
-            )
+            raise HTTPException(status_code=400, detail="Empty request body — expected raw image bytes")
 
         image = Image.open(io.BytesIO(body))
         input_array = _preprocess(image, input_shape, input_dtype, normalization)
 
         interpreter.set_tensor(input_details[0]["index"], input_array)
         interpreter.invoke()
-        outputs: List[np.ndarray] = [
-            interpreter.get_tensor(d["index"]) for d in output_details
-        ]
+        outputs: List[np.ndarray] = [interpreter.get_tensor(d["index"]) for d in output_details]
 
         if output_type == "classification":
             return _postprocess_classification(outputs, class_names)

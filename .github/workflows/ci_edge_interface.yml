@@ -1,14 +1,10 @@
 name: CI edge_interface
 run-name: edge_interface CI on branch >> ${{ github.ref_name }} <<
 
+# edge_interface is archived — replaced by edge/cockpit (Vue 3, pending).
+# This workflow is disabled until edge/cockpit CI is set up.
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - main
-  pull_request:
-    paths:
-      - 'edge_interface/**'
 
 
 jobs:

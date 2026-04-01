@@ -1,5 +1,5 @@
-name: CI edge_camera
-run-name: edge_camera CI on branch >> ${{ github.ref_name }} <<
+name: CI edge-camera
+run-name: edge-camera CI on branch >> ${{ github.ref_name }} <<
 
 on:
   workflow_dispatch:
@@ -8,7 +8,7 @@ on:
       - main
   pull_request:
     paths:
-      - "edge_camera/**"
+      - "edge/camera/**"
 
 jobs:
   lint_and_test_on_edge_camera:
@@ -19,32 +19,32 @@ jobs:
       contents: read
     strategy:
       matrix:
-        python-version: ["3.9", "3.10", "3.11"]
+        python-version: ["3.11"]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v5
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3
         with:
-          python-version: ${{ matrix.python-version }}
+          version: "latest"
 
       - name: Install dependencies
         run: make install
-        working-directory: ./edge_camera
+        working-directory: ./edge/camera
 
-      - name: Lint with flake8 and black
+      - name: Lint with ruff
         run: make check
-        working-directory: ./edge_camera
+        working-directory: ./edge/camera
 
       - name: Run unit tests
         run: make unit_tests
-        working-directory: ./edge_camera
+        working-directory: ./edge/camera
 
       - name: Upload unit test report
         uses: dorny/test-reporter@v1
         if: ${{ always() }}
         with:
           name: Unit tests report in Python ${{ matrix.python-version }}
-          path: edge_camera/reports/pytest/unit-tests-report.xml
+          path: edge/camera/reports/pytest/unit-tests-report.xml
           reporter: java-junit

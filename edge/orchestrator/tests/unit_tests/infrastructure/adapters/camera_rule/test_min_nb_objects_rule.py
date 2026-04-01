@@ -16,7 +16,6 @@ from edge_orchestrator.infrastructure.adapters.camera_rule.min_nb_objects_rule i
 
 
 class TestMinNbObjectsRule:
-
     def test_min_nb_objects_rule(self):
         # Given
         min_nb_objects_rule = MinNbObjectsRule(

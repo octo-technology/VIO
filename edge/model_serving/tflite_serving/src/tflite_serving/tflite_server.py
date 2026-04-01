@@ -11,9 +11,7 @@ from tflite_serving.tflite_interpreter import (
 
 
 def server() -> FastAPI:
-    logging.basicConfig(
-        level=logging.INFO, format="%(levelname)s - %(asctime)s - %(message)s"
-    )
+    logging.basicConfig(level=logging.INFO, format="%(levelname)s - %(asctime)s - %(message)s")
     app = FastAPI(title="tflite_server")
     app.include_router(api_router, prefix="/v1")
     app.add_middleware(

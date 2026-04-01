@@ -11,7 +11,6 @@ from edge_orchestrator.infrastructure.adapters.item_rule.item_rule_manager impor
 
 
 class TestItemRuleManager:
-
     def test_camera_rule_manager(
         self,
     ):

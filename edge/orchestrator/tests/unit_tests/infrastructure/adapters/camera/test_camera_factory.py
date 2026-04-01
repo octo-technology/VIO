@@ -8,7 +8,6 @@ from edge_orchestrator.infrastructure.adapters.camera.http_camera import HttpCam
 
 
 class TestCameraFactory:
-
     def test_should_return_http_camera_instance(self):
         # Given
         camera_factory = CameraFactory()

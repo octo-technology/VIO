@@ -4,7 +4,6 @@ from edge_orchestrator.domain.models.model_forwarder.model_forwarder_config impo
 
 
 class TestModelForwarderConfig:
-
     def test_model_forwarder_config_minimal_fields_are_sufficient(self):
         # Given / When
         config = ModelForwarderConfig(

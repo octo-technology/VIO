@@ -22,9 +22,7 @@ def config_is_activated(context: Context, config_name: str):
             \"\"\"
             {config}
             \"\"\"
-        """.format(
-            config_name=config_name, config=json.dumps(config)
-        )
+        """.format(config_name=config_name, config=json.dumps(config))
     )
 
 
@@ -60,9 +58,9 @@ def item_metadata_like_following_are_captured(context: Context):
         if response.status_code == HTTP_200_OK and response.json().get("state") == "DONE":
             break
         time.sleep(0.1)
-    assert (
-        response is not None and response.status_code == HTTP_200_OK
-    ), f"Item never reached DONE state. Last response: {response.text if response else 'None'}"
+    assert response is not None and response.status_code == HTTP_200_OK, (
+        f"Item never reached DONE state. Last response: {response.text if response else 'None'}"
+    )
     actual_item_metadata = response.json()
     expected_item_metadata = json.loads(context.text)
     assert_metadata_almost_equal(actual_item_metadata, expected_item_metadata)
@@ -75,7 +73,7 @@ def check_item_binaries_are_stored(context: Context):
 
     response_1_content = response_1.json()
     for row in context.table:
-        image_name = f'{context.item_id}_{row["binary_name"]}.{row["binary_extension"]}'
+        image_name = f"{context.item_id}_{row['binary_name']}.{row['binary_extension']}"
         assert image_name in response_1_content
 
         path_to_image = context.test_directory / "data_storage" / image_name
@@ -83,7 +81,7 @@ def check_item_binaries_are_stored(context: Context):
         with path_to_image.open("rb") as f:
             image_binary = f.read()
 
-        response_2 = context.test_client.get(f'/api/v1/items/{context.item_id}/binaries/{row["binary_name"]}')
+        response_2 = context.test_client.get(f"/api/v1/items/{context.item_id}/binaries/{row['binary_name']}")
         assert response_2.status_code == HTTP_200_OK
         assert response_2.content == image_binary
     assert len(response_1_content) == len(context.table.rows)
