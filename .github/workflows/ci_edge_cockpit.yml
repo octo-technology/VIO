@@ -1,0 +1,42 @@
+name: CI edge-cockpit
+run-name: edge-cockpit CI on branch >> ${{ github.ref_name }} <<
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+  pull_request:
+    paths:
+      - "edge/cockpit/**"
+
+jobs:
+  lint_and_test_on_edge_cockpit:
+    name: Run JS linter and unit tests
+    runs-on: ubuntu-latest
+    permissions:
+      checks: write
+      contents: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: edge/cockpit/package-lock.json
+
+      - name: Install dependencies
+        run: make install
+        working-directory: ./edge/cockpit
+
+      - name: Lint with ESLint
+        run: make lint
+        working-directory: ./edge/cockpit
+
+      - name: Run unit tests
+        run: make unit_tests
+        working-directory: ./edge/cockpit

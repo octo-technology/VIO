@@ -25,3 +25,7 @@ build:
 .PHONY: lint  ## 🐍 Lint Vue/JS files
 lint:
 	npm run lint
+
+.PHONY: unit_tests  ## ✅ Launch unit tests
+unit_tests:
+	npm test
