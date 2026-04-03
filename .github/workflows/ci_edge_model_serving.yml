@@ -35,7 +35,7 @@ jobs:
         working-directory: ./edge/model_serving/tflite_serving
 
       - name: Run unit tests
-        run: make tflite_tests
+        run: make unit_tests
         working-directory: ./edge/model_serving/tflite_serving
 
       - name: Upload unit test report
