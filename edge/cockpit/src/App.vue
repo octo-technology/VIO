@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <StatusBar />
-    <v-navigation-drawer permanent>
+    <v-navigation-drawer :rail="rail" permanent>
       <v-list nav>
         <v-list-item
           v-for="item in navItems"
@@ -11,6 +11,15 @@
           :title="item.title"
         />
       </v-list>
+      <template #append>
+        <v-list nav>
+          <v-list-item
+            :prepend-icon="rail ? 'mdi-chevron-right' : 'mdi-chevron-left'"
+            :title="rail ? '' : 'Collapse'"
+            @click="rail = !rail"
+          />
+        </v-list>
+      </template>
     </v-navigation-drawer>
     <v-main>
       <router-view />
@@ -19,7 +28,10 @@
 </template>
 
 <script setup>
+import { ref } from 'vue'
 import StatusBar from './components/StatusBar.vue'
+
+const rail = ref(false)
 
 const navItems = [
   { to: '/operator', icon: 'mdi-monitor-eye', title: 'Live Inspection' },
