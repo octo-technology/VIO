@@ -40,8 +40,11 @@ export default {
   getActiveConfig() {
     return apiClient.get('/configs/active')
   },
-  setActiveConfig(stationName) {
-    return apiClient.post(`/configs/active?station_name=${stationName}`)
+  setActiveConfig(stationConfigOrName) {
+    if (typeof stationConfigOrName === 'string') {
+      return apiClient.post(`/configs/active?station_name=${stationConfigOrName}`)
+    }
+    return apiClient.post('/configs/active', stationConfigOrName)
   },
 
   // Health
