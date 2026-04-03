@@ -19,7 +19,6 @@ from edge_orchestrator.infrastructure.adapters.model_forwarder.fake_model_forwar
 
 
 class TestFakeModelForwarder:
-
     @pytest.mark.parametrize(
         "model_type",
         [

@@ -18,7 +18,6 @@ from edge_orchestrator.infrastructure.adapters.camera.http_camera import HttpCam
 
 
 class TestCameraManager:
-
     def test_should_create_expected_cameras_and_store_them(
         self,
     ):

@@ -12,7 +12,6 @@ from edge_orchestrator.domain.models.storage.storage_config import StorageConfig
 
 
 class TestConfigManager:
-
     def test_config_manager_should_load_existing_active_config_from_env_variable_and_log(
         self, tmp_path: Path, cleanup_singleton, caplog
     ):
@@ -85,7 +84,7 @@ class TestConfigManager:
         active_station_config = config_manager.get_config()
         assert active_station_config is None
         assert (
-            f"No active json station config found at {(config_dir/'config_1').with_suffix('.json').as_posix()}",
+            f"No active json station config found at {(config_dir / 'config_1').with_suffix('.json').as_posix()}",
             "WARNING",
         ) in log_messages
 

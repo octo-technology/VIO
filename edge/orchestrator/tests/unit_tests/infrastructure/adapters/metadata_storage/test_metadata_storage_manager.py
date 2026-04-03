@@ -23,7 +23,6 @@ from edge_orchestrator.infrastructure.adapters.metadata_storage.metadata_storage
 
 
 class TestMetadataStorageManager:
-
     @patch("edge_orchestrator.infrastructure.adapters.metadata_storage.gcp_metadata_storage.storage.Client")
     def test_should_return_expected_metadata_storage_and_store_it_as_attribute(
         self, mock_storage_client, station_config: StationConfig

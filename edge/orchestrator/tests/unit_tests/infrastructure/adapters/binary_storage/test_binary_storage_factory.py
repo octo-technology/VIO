@@ -25,7 +25,6 @@ from edge_orchestrator.infrastructure.adapters.binary_storage.gcp_binary_storage
 
 
 class TestBinaryStorageFactory:
-
     @pytest.mark.parametrize(
         "storage_type,binary_storage_class",
         [

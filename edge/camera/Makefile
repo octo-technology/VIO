@@ -15,35 +15,30 @@ help:
 	grep -E '^\.PHONY: [a-zA-Z0-9_-]+ .*?## .*$$' $(MAKEFILE_LIST) | \
 		awk 'BEGIN {FS = "(: |##)"}; {printf "\033[36m%-30s\033[0m %s\n", $$2, $$3}'
 
-.PHONY: lint  ## 🐍 Lint Python files to conform to the PEP 8 style guide
+.PHONY: lint  ## 🐍 Lint and format Python files
 lint:
-	autoflake --in-place --remove-all-unused-imports --recursive --ignore-init-module-imports src tests --exclude .venv
-	isort src tests --skip-gitignore
-	black src tests
+	uv run --no-project ruff check --fix src tests
+	uv run --no-project ruff format src tests
 
-.PHONY: check  ## 🐍 Check lint Python files to conform to the PEP 8 style guide
+.PHONY: check  ## 🐍 Check lint and format (no changes)
 check:
-	autoflake --in-place --remove-all-unused-imports --recursive --ignore-init-module-imports src tests --exclude .venv --check
-	isort src tests --skip-gitignore --check
-	black src tests --check
-	flake8 --count --show-source --statistics src tests
+	uv run --no-project ruff check src tests
+	uv run --no-project ruff format --check src tests
 
 .PHONY: install  ## ⏬ Install development dependencies
 install:
-	python -m pip install --upgrade pip setuptools
-	pip install -e .[dev]
-	pip list --outdated
+	uv venv && uv pip install -e ".[dev]"
 
 .PHONY: serve  ## 🚀 Run the camera service locally (CAMERA_BACKENDS=cam_1=fake by default)
 serve:
-	uvicorn edge_camera.interface.api.app:create_app --factory \
+	uv run --no-project uvicorn edge_camera.interface.api.app:create_app --factory \
 		--host 0.0.0.0 --port 8001 --reload
 
 .PHONY: unit_tests  ## ✅ Launch the unit tests
 unit_tests: REPORTS_PATH:=reports/pytest
 unit_tests:
 	echo "[*] Running unit tests and computing code coverage..."
-	pytest -v --cov=src --cov-report=html:${REPORTS_PATH}/unit-tests-coverage \
+	uv run --no-project pytest -v --cov=src --cov-report=html:${REPORTS_PATH}/unit-tests-coverage \
 		--junitxml=${REPORTS_PATH}/unit-tests-report.xml \
 		tests/unit_tests
 	echo "[*] Reports available in:"

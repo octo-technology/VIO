@@ -15,7 +15,6 @@ from edge_orchestrator.infrastructure.adapters.camera_rule.expected_label_rule i
 
 
 class TestExpectedLabelRule:
-
     def test_expected_label_rule(self):
         # Given
         expected_label_rule = ExpectedLabelRule(

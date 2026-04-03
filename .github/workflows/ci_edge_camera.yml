@@ -1,5 +1,5 @@
-name: CI edge_camera
-run-name: edge_camera CI on branch >> ${{ github.ref_name }} <<
+name: CI edge-camera
+run-name: edge-camera CI on branch >> ${{ github.ref_name }} <<
 
 on:
   workflow_dispatch:
@@ -19,21 +19,21 @@ jobs:
       contents: read
     strategy:
       matrix:
-        python-version: ["3.9", "3.10", "3.11"]
+        python-version: ["3.11"]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v5
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3
         with:
-          python-version: ${{ matrix.python-version }}
+          version: "latest"
 
       - name: Install dependencies
         run: make install
         working-directory: ./edge/camera
 
-      - name: Lint with flake8 and black
+      - name: Lint with ruff
         run: make check
         working-directory: ./edge/camera
 

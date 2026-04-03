@@ -10,7 +10,6 @@ from edge_orchestrator.infrastructure.adapters.item_rule.min_threshold_ratio_rul
 
 
 class TestMinThresholdRatioRule:
-
     def test_min_threshold_ratio_rule(
         self,
     ):

@@ -1,0 +1,9 @@
+services:
+  edge_camera:
+    container_name: edge_camera
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8001:8001
+    profiles: [edge]

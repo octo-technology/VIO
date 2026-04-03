@@ -25,7 +25,6 @@ from edge_orchestrator.infrastructure.adapters.camera_rule.unexpected_label_rule
 
 
 class TestCameraRuleFactory:
-
     @pytest.mark.parametrize(
         "camera_rule_type,camera_rule_class,config_param",
         [

@@ -22,29 +22,11 @@ services:
       - edge_orchestrator
 
   hub_labelizer:
-    container_name: hub_labelizer
-    build:
-      context: hub/labelizer
-      dockerfile: Dockerfile
-    volumes:
-      - ./edge/orchestrator/data:/edge_orchestrator/data
-    ports:
-      - 8100:8100
-    environment:
-      API_CONFIG: docker
-      EDGE_ORCHESTRATOR_URL: http://edge_orchestrator:8000
-    profiles: [hub]
+    extends:
+      file: hub/labelizer/hub_labelizer.yml
+      service: hub_labelizer
 
   hub_streamlit:
-    container_name: hub_streamlit
-    build:
-      context: hub/streamlit
-      dockerfile: Dockerfile
-    ports:
-      - 8500:8500
-    environment:
-      BUCKET_NAME: tf-vio-bucket
-      GOOGLE_APPLICATION_CREDENTIALS: /hub_streamlit/config/secrets/credentials.json
-    volumes:
-      - ./hub/streamlit/config:/hub_streamlit/config
-    profiles: [hub]
+    extends:
+      file: hub/streamlit/hub_streamlit.yml
+      service: hub_streamlit

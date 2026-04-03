@@ -26,9 +26,7 @@ class TestYoloPostprocessing:
         expected_classes = [0, 1, 0]
 
         # When
-        actual_boxes, actual_scores, actual_classes = yolo_extract_boxes_information(
-            model_outputs
-        )
+        actual_boxes, actual_scores, actual_classes = yolo_extract_boxes_information(model_outputs)
 
         # Then
         assert actual_boxes == expected_boxes

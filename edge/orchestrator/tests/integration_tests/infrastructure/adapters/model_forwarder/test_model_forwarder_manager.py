@@ -20,7 +20,6 @@ from edge_orchestrator.infrastructure.adapters.model_forwarder.model_forwarder_m
 
 
 class TestModelForwarderManager:
-
     @pytest.mark.integration
     async def test_model_forwarder_manager_should_return_no_prediction_with_bad_url(
         self,

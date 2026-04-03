@@ -18,7 +18,6 @@ from edge_orchestrator.infrastructure.adapters.model_forwarder.model_forwarder_f
 
 
 class TestModelForwarderFactory:
-
     @pytest.mark.parametrize(
         "model_name,model_class",
         [

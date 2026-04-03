@@ -8,7 +8,6 @@ from edge_orchestrator.domain.models.camera_rule.camera_rule_type import CameraR
 
 
 class TestCameraRuleConfig:
-
     @pytest.mark.parametrize(
         "camera_rule_type",
         [

@@ -228,7 +228,7 @@ class TestFileSystemMetadataStorage:
         metadata_storage = FileSystemMetadataStorage(station_config, storing_path_manager)
 
         for i in range(5):
-            uid = f"00000000-0000-0000-0000-00000000000{i+1}"
+            uid = f"00000000-0000-0000-0000-00000000000{i + 1}"
             expected_metadata = {
                 "id": uid,
                 "creation_date": "2025-02-04T09:18:09.433619",

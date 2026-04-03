@@ -29,7 +29,6 @@ from edge_orchestrator.infrastructure.adapters.camera_rule.camera_rule_manager i
 
 
 class TestCameraRuleManager:
-
     def test_camera_rule_manager(
         self,
     ):

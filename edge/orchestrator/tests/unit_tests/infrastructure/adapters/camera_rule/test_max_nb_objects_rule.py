@@ -16,7 +16,6 @@ from edge_orchestrator.infrastructure.adapters.camera_rule.max_nb_objects_rule i
 
 
 class TestMaxNbObjectsRule:
-
     def test_max_nb_objects_rule(self):
         # Given
         max_nb_objects_rule = MaxNbObjectsRule(
