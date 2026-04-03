@@ -13,4 +13,14 @@ export default defineConfig({
       '/api': { target: 'http://localhost:8000', changeOrigin: true },
     },
   },
+  test: {
+    environment: 'happy-dom',
+    globals: true,
+    setupFiles: ['src/test-setup.js'],
+    server: {
+      deps: {
+        inline: ['vuetify'],
+      },
+    },
+  },
 })
