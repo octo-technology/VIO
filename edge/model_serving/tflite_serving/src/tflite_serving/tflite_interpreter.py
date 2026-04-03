@@ -17,20 +17,14 @@ def create_interpreter(model_path: Path) -> Interpreter:
 def load_model_metadata(model_dir: Path) -> dict:
     metadata_path = model_dir / "metadata.json"
     if not metadata_path.exists():
-        logging.warning(
-            f"No metadata.json found for model at {model_dir}. Serving will use heuristics."
-        )
+        logging.warning(f"No metadata.json found for model at {model_dir}. Serving will use heuristics.")
         return {}
     with metadata_path.open() as f:
         return json.load(f)
 
 
 def _get_tflite_model_path() -> Path:
-    models_path = (
-        Path(os.getenv("MODELS_PATH"))
-        if os.getenv("MODELS_PATH")
-        else Path.cwd().parent / "models"
-    )
+    models_path = Path(os.getenv("MODELS_PATH")) if os.getenv("MODELS_PATH") else Path.cwd().parent / "models"
     return models_path / "tflite"
 
 

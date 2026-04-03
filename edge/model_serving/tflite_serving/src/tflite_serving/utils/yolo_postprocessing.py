@@ -41,9 +41,7 @@ def compute_box_severity(image: np.array, box: List):
     y2_pixel_index = int(box[3] * len(image[0]))
 
     # Reshape to only the pixels in the detection box & as a list of pixels instead of a 2D array of them
-    image_detection = image[
-        x1_pixel_index:x2_pixel_index, y1_pixel_index:y2_pixel_index, :
-    ]
+    image_detection = image[x1_pixel_index:x2_pixel_index, y1_pixel_index:y2_pixel_index, :]
     image_detection = image_detection.reshape(-1, 3)
 
     # Filtering out light pixels
@@ -57,9 +55,7 @@ def compute_box_severity(image: np.array, box: List):
         return severity
 
 
-def non_max_suppression(
-    boxes, scores, class_ids, score_threshold=0.4, iou_threshold=0.45
-):
+def non_max_suppression(boxes, scores, class_ids, score_threshold=0.4, iou_threshold=0.45):
     non_max_suppression_parameters_checks(score_threshold, iou_threshold)
 
     nms_result_boxes = []
@@ -93,32 +89,16 @@ def non_max_suppression(
                 delete_index_list.append(index_box)
 
         # Rebuild the box list to remove the boxes that were close to the last max score
-        boxes = [
-            box
-            for index_box, box in enumerate(boxes)
-            if index_box not in delete_index_list
-        ]
-        scores = [
-            score
-            for index_score, score in enumerate(scores)
-            if index_score not in delete_index_list
-        ]
-        class_ids = [
-            class_id
-            for index_class, class_id in enumerate(class_ids)
-            if index_class not in delete_index_list
-        ]
+        boxes = [box for index_box, box in enumerate(boxes) if index_box not in delete_index_list]
+        scores = [score for index_score, score in enumerate(scores) if index_score not in delete_index_list]
+        class_ids = [class_id for index_class, class_id in enumerate(class_ids) if index_class not in delete_index_list]
 
     return nms_result_boxes, nms_result_scores, nms_result_classes
 
 
 def non_max_suppression_parameters_checks(conf_thres, iou_thres):
-    assert (
-        0 <= conf_thres <= 1
-    ), f"Invalid Confidence threshold {conf_thres}, valid values are between 0.0 and 1.0"
-    assert (
-        0 <= iou_thres <= 1
-    ), f"Invalid IoU {iou_thres}, valid values are between 0.0 and 1.0"
+    assert 0 <= conf_thres <= 1, f"Invalid Confidence threshold {conf_thres}, valid values are between 0.0 and 1.0"
+    assert 0 <= iou_thres <= 1, f"Invalid IoU {iou_thres}, valid values are between 0.0 and 1.0"
 
 
 def compute_iou(box1, box2):
@@ -128,18 +108,12 @@ def compute_iou(box1, box2):
     box2_height = box2[3] - box2[1]
 
     # Check if centers of boxes are close enough to be intersected
-    if (
-        abs((box1[0] + box1_width / 2) - (box2[0] + box2_width / 2))
-        < 0.5 * (box2_width + box1_width)
-    ) & (
-        abs((box1[1] + box1_height / 2) - (box2[1] + box2_height / 2))
-        < 0.5 * (box2_height + box1_height)
+    if (abs((box1[0] + box1_width / 2) - (box2[0] + box2_width / 2)) < 0.5 * (box2_width + box1_width)) & (
+        abs((box1[1] + box1_height / 2) - (box2[1] + box2_height / 2)) < 0.5 * (box2_height + box1_height)
     ):
         intersection_area = (max(box1[2], box2[2]) - min(box1[0], box2[0])) * (
             max(box1[3], box2[3]) - min(box1[1], box2[1])
         )
-        union_area = (
-            box1_width * box1_height + box2_width * box2_height - intersection_area
-        )
+        union_area = box1_width * box1_height + box2_width * box2_height - intersection_area
         return intersection_area / union_area
     return 0

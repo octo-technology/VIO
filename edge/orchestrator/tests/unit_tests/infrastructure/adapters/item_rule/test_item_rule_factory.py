@@ -16,7 +16,6 @@ from edge_orchestrator.infrastructure.adapters.item_rule.min_threshold_rule impo
 
 
 class TestItemRuleFactory:
-
     @pytest.mark.parametrize(
         "item_rule_type,item_rule_class,decision",
         [

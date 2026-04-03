@@ -15,7 +15,6 @@ from edge_orchestrator.infrastructure.adapters.camera_rule.unexpected_label_rule
 
 
 class TestUnexpectedLabelRule:
-
     def test_unexpected_label_rule(self):
         # Given
         unexpected_label_rule = UnexpectedLabelRule(

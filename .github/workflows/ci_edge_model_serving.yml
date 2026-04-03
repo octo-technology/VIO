@@ -1,5 +1,5 @@
-name: CI edge_model_serving
-run-name: edge_model_serving CI on branch >> ${{ github.ref_name }} <<
+name: CI edge-model-server
+run-name: edge-model-server CI on branch >> ${{ github.ref_name }} <<
 
 on:
   workflow_dispatch:
@@ -12,30 +12,30 @@ on:
 
 jobs:
   lint_and_test_on_edge_model_serving:
-    name: Run Python linter and tests (unit > integration > functional)
+    name: Run Python linter and tests
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.10", "3.11"]
+        python-version: ["3.11"]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v5
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3
         with:
-          python-version: ${{ matrix.python-version }}
+          version: "latest"
 
       - name: Install dependencies
         run: make install
         working-directory: ./edge/model_serving/tflite_serving
 
-      - name: Lint with flake8 and black
+      - name: Lint with ruff
         run: make check
         working-directory: ./edge/model_serving/tflite_serving
 
       - name: Run unit tests
-        run: make tflite_tests
+        run: make unit_tests
         working-directory: ./edge/model_serving/tflite_serving
 
       - name: Upload unit test report
