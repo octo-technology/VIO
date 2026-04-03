@@ -8,7 +8,7 @@ on:
       - main
   pull_request:
     paths:
-      - "edge_camera/**"
+      - "edge/camera/**"
 
 jobs:
   lint_and_test_on_edge_camera:
@@ -31,20 +31,20 @@ jobs:
 
       - name: Install dependencies
         run: make install
-        working-directory: ./edge_camera
+        working-directory: ./edge/camera
 
       - name: Lint with flake8 and black
         run: make check
-        working-directory: ./edge_camera
+        working-directory: ./edge/camera
 
       - name: Run unit tests
         run: make unit_tests
-        working-directory: ./edge_camera
+        working-directory: ./edge/camera
 
       - name: Upload unit test report
         uses: dorny/test-reporter@v1
         if: ${{ always() }}
         with:
           name: Unit tests report in Python ${{ matrix.python-version }}
-          path: edge_camera/reports/pytest/unit-tests-report.xml
+          path: edge/camera/reports/pytest/unit-tests-report.xml
           reporter: java-junit

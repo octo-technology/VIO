@@ -8,7 +8,7 @@ on:
       - main
   pull_request:
     paths:
-      - "edge_orchestrator/**"
+      - "edge/orchestrator/**"
 
 jobs:
   lint_and_test_on_edge_orchestrator:
@@ -41,21 +41,21 @@ jobs:
 
       - name: Install dependencies
         run: make install
-        working-directory: ./edge_orchestrator
+        working-directory: ./edge/orchestrator
 
       - name: Lint with flake8 and black
         run: make check
-        working-directory: ./edge_orchestrator
+        working-directory: ./edge/orchestrator
       - name: Run unit tests
         run: make unit_tests
-        working-directory: ./edge_orchestrator
+        working-directory: ./edge/orchestrator
 
       - name: Upload unit test report
         uses: dorny/test-reporter@v1
         if: ${{ always() }}
         with:
           name: Unit tests report in Python ${{ matrix.python-version }}
-          path: edge_orchestrator/reports/pytest/unit-tests-report.xml
+          path: edge/orchestrator/reports/pytest/unit-tests-report.xml
           reporter: java-junit
 
       - name: Wait for edge_tflite_serving to be ready
@@ -77,26 +77,26 @@ jobs:
 
       - name: Run integration tests
         run: make integration_tests
-        working-directory: ./edge_orchestrator
+        working-directory: ./edge/orchestrator
 
       - name: Upload integration test report
         uses: dorny/test-reporter@v1
         if: ${{ always() }}
         with:
           name: Integration tests report in Python ${{ matrix.python-version }}
-          path: edge_orchestrator/reports/pytest/integration-tests-report.xml
+          path: edge/orchestrator/reports/pytest/integration-tests-report.xml
           reporter: java-junit
 
       - name: Run functional tests
         run: make functional_tests
-        working-directory: ./edge_orchestrator
+        working-directory: ./edge/orchestrator
 
       - name: Upload functional test report
         uses: dorny/test-reporter@v1
         if: ${{ always() }}
         with:
           name: Functional tests report in Python ${{ matrix.python-version }}
-          path: edge_orchestrator/reports/behave/*.xml
+          path: edge/orchestrator/reports/behave/*.xml
           reporter: java-junit
 
   build_and_push_images:
@@ -105,9 +105,9 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - dockerfile: ./edge_orchestrator/Dockerfile
+          - dockerfile: ./edge/orchestrator/Dockerfile
             image: ghcr.io/${{ github.repository }}/edge_orchestrator
-            context: ./edge_orchestrator
+            context: ./edge/orchestrator
     uses: ./.github/workflows/template_build_and_push_docker_images.yml
     with:
       context: ${{ matrix.context }}
