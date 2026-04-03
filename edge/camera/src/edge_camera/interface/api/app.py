@@ -73,7 +73,7 @@ def _build_backends(service_config: CameraServiceConfig) -> Dict[str, ICameraBac
 async def lifespan(app: FastAPI):
     service_config = CameraServiceConfig.load()
 
-    if not hasattr(app.state, "backends"):
+    if not getattr(app.state, "backends", None):
         app.state.backends = _build_backends(service_config)
 
     push_tasks: List[asyncio.Task] = []
