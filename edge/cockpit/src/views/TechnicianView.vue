@@ -114,6 +114,8 @@
                   <th>Model</th>
                   <th>Version</th>
                   <th>Model server URL</th>
+                  <th>Camera rule</th>
+                  <th>Rule param</th>
                   <th />
                 </tr>
               </thead>
@@ -161,6 +163,53 @@
                       hide-details
                     />
                   </td>
+                  <td style="width:160px">
+                    <v-select
+                      :model-value="step.camera_rule_config?.camera_rule_type ?? 'none'"
+                      :items="CAMERA_RULE_TYPES"
+                      density="compact"
+                      variant="underlined"
+                      hide-details
+                      @update:model-value="(v) => setCameraRuleType(stepId, v)"
+                    />
+                  </td>
+                  <td style="min-width:160px">
+                    <template v-if="step.camera_rule_config">
+                      <v-text-field
+                        v-if="step.camera_rule_config.camera_rule_type === 'expected_label_rule'"
+                        v-model="step.camera_rule_config.expected_class"
+                        placeholder="expected class"
+                        density="compact"
+                        variant="underlined"
+                        hide-details
+                      />
+                      <v-text-field
+                        v-else-if="step.camera_rule_config.camera_rule_type === 'unexpected_label_rule'"
+                        v-model="step.camera_rule_config.unexpected_class"
+                        placeholder="unexpected class"
+                        density="compact"
+                        variant="underlined"
+                        hide-details
+                      />
+                      <template v-else>
+                        <v-text-field
+                          v-model="step.camera_rule_config.class_to_detect"
+                          placeholder="class to detect"
+                          density="compact"
+                          variant="underlined"
+                          hide-details
+                        />
+                        <v-text-field
+                          v-model.number="step.camera_rule_config.threshold"
+                          placeholder="threshold (n)"
+                          type="number"
+                          density="compact"
+                          variant="underlined"
+                          hide-details
+                        />
+                      </template>
+                    </template>
+                  </td>
                   <td style="width:40px">
                     <v-btn
                       icon="mdi-delete-outline"
@@ -174,6 +223,44 @@
                 </tr>
               </tbody>
             </v-table>
+
+            <!-- Item rule -->
+            <div class="text-subtitle-1 mb-2">Item rule</div>
+            <v-row class="mb-4" align="center">
+              <v-col cols="12" sm="4" md="3">
+                <v-select
+                  :model-value="draft.item_rule_config?.item_rule_type ?? 'none'"
+                  :items="ITEM_RULE_TYPES"
+                  label="Rule type"
+                  density="compact"
+                  variant="outlined"
+                  hide-details
+                  @update:model-value="setItemRuleType"
+                />
+              </v-col>
+              <template v-if="draft.item_rule_config">
+                <v-col cols="12" sm="3" md="2">
+                  <v-select
+                    v-model="draft.item_rule_config.expected_decision"
+                    :items="['OK', 'KO']"
+                    label="Expected decision"
+                    density="compact"
+                    variant="outlined"
+                    hide-details
+                  />
+                </v-col>
+                <v-col cols="12" sm="3" md="2">
+                  <v-text-field
+                    v-model.number="draft.item_rule_config.threshold"
+                    :label="draft.item_rule_config.item_rule_type === 'min_threshold_ratio_rule' ? 'Ratio (0–1)' : 'Min count'"
+                    type="number"
+                    density="compact"
+                    variant="outlined"
+                    hide-details
+                  />
+                </v-col>
+              </template>
+            </v-row>
 
             <!-- Storage -->
             <div class="text-subtitle-1 mb-2">Storage</div>
@@ -267,6 +354,37 @@ async function applyConfig() {
   } finally {
     saving.value = false
   }
+}
+
+const CAMERA_RULE_TYPES = [
+  { title: 'None', value: 'none' },
+  { title: 'Expected label', value: 'expected_label_rule' },
+  { title: 'Unexpected label', value: 'unexpected_label_rule' },
+  { title: 'Min nb objects', value: 'min_nb_objects_rule' },
+  { title: 'Max nb objects', value: 'max_nb_objects_rule' },
+]
+
+const CAMERA_RULE_DEFAULTS = {
+  expected_label_rule: { camera_rule_type: 'expected_label_rule', expected_class: '' },
+  unexpected_label_rule: { camera_rule_type: 'unexpected_label_rule', unexpected_class: '' },
+  min_nb_objects_rule: { camera_rule_type: 'min_nb_objects_rule', class_to_detect: '', threshold: 1 },
+  max_nb_objects_rule: { camera_rule_type: 'max_nb_objects_rule', class_to_detect: '', threshold: 1 },
+}
+
+const ITEM_RULE_TYPES = [
+  { title: 'None', value: 'none' },
+  { title: 'Min count', value: 'min_threshold_rule' },
+  { title: 'Min ratio (%)', value: 'min_threshold_ratio_rule' },
+]
+
+function setCameraRuleType(stepId, type) {
+  draft.value.pipeline_steps[stepId].camera_rule_config =
+    type === 'none' ? null : { ...CAMERA_RULE_DEFAULTS[type] }
+}
+
+function setItemRuleType(type) {
+  draft.value.item_rule_config =
+    type === 'none' ? null : { item_rule_type: type, expected_decision: 'OK', threshold: 1 }
 }
 
 function addStep() {

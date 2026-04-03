@@ -33,10 +33,12 @@ const CONFIG_1 = {
     step_1: {
       camera_id: 'camera_1',
       model_forwarder_config: { model_name: 'pin_detection', model_version: '1', model_serving_url: 'http://localhost:8501/', model_id: 'pin_detection_1' },
+      camera_rule_config: { camera_rule_type: 'expected_label_rule', expected_class: 'OK' },
     },
   },
   binary_storage_config: { storage_type: 'filesystem', target_directory: 'data_storage' },
   metadata_storage_config: { storage_type: 'filesystem', target_directory: 'data_storage' },
+  item_rule_config: { item_rule_type: 'min_threshold_ratio_rule', expected_decision: 'OK', threshold: 0.8 },
 }
 
 const CONFIGS_RESPONSE = { config_1: CONFIG_1 }
@@ -204,6 +206,108 @@ describe('TechnicianView', () => {
       const btn = row.find('button')
       expect(btn.attributes('disabled')).toBeUndefined()
     }
+  })
+
+  // ── Camera rules ──────────────────────────────────────────────────────────
+
+  it('shows camera rule type in pipeline step row', async () => {
+    const wrapper = mountView()
+    await flushPromises()
+    const inputValues = wrapper.findAll('input').map((i) => i.element.value)
+    expect(inputValues.some((v) => v === 'OK')).toBe(true)
+  })
+
+  it('shows expected_class field for expected_label_rule', async () => {
+    const wrapper = mountView()
+    await flushPromises()
+    const inputValues = wrapper.findAll('input').map((i) => i.element.value)
+    expect(inputValues.some((v) => v === 'OK')).toBe(true)
+  })
+
+  it('shows class_to_detect and threshold fields for min_nb_objects_rule', async () => {
+    api.getConfigs.mockResolvedValue({
+      data: {
+        config_1: {
+          ...CONFIG_1,
+          pipeline_steps: {
+            step_1: {
+              camera_id: 'camera_1',
+              model_forwarder_config: CONFIG_1.pipeline_steps.step_1.model_forwarder_config,
+              camera_rule_config: { camera_rule_type: 'min_nb_objects_rule', class_to_detect: 'pin', threshold: 3 },
+            },
+          },
+        },
+      },
+    })
+    const wrapper = mountView()
+    await flushPromises()
+    const inputValues = wrapper.findAll('input').map((i) => i.element.value)
+    expect(inputValues.some((v) => v === 'pin')).toBe(true)
+    expect(inputValues.some((v) => v === '3')).toBe(true)
+  })
+
+  it('clears camera rule when type set to none', async () => {
+    const wrapper = mountView()
+    await flushPromises()
+    const countOkBefore = wrapper.findAll('input').filter((i) => i.element.value === 'OK').length
+    const selects = wrapper.findAllComponents({ name: 'VSelect' })
+    const ruleSelect = selects.find((s) => s.props('modelValue') === 'expected_label_rule')
+    await ruleSelect.vm.$emit('update:modelValue', 'none')
+    await flushPromises()
+    const countOkAfter = wrapper.findAll('input').filter((i) => i.element.value === 'OK').length
+    expect(countOkAfter).toBe(countOkBefore - 1)
+  })
+
+  it('sets default params when switching camera rule type', async () => {
+    const wrapper = mountView()
+    await flushPromises()
+    const selects = wrapper.findAllComponents({ name: 'VSelect' })
+    const ruleSelect = selects.find((s) => s.props('modelValue') === 'expected_label_rule')
+    await ruleSelect.vm.$emit('update:modelValue', 'min_nb_objects_rule')
+    await flushPromises()
+    const inputValues = wrapper.findAll('input').map((i) => i.element.value)
+    expect(inputValues.some((v) => v === '1')).toBe(true)
+  })
+
+  // ── Item rule ─────────────────────────────────────────────────────────────
+
+  it('shows item rule section', async () => {
+    const wrapper = mountView()
+    await flushPromises()
+    expect(wrapper.text()).toContain('Item rule')
+  })
+
+  it('shows item rule fields when item_rule_config is set', async () => {
+    const wrapper = mountView()
+    await flushPromises()
+    const inputValues = wrapper.findAll('input').map((i) => i.element.value)
+    expect(inputValues.some((v) => v === '0.8')).toBe(true)
+  })
+
+  it('clears item rule when type set to none', async () => {
+    const wrapper = mountView()
+    await flushPromises()
+    const selects = wrapper.findAllComponents({ name: 'VSelect' })
+    const itemRuleSelect = selects.find((s) => s.props('modelValue') === 'min_threshold_ratio_rule')
+    await itemRuleSelect.vm.$emit('update:modelValue', 'none')
+    await flushPromises()
+    const inputValues = wrapper.findAll('input').map((i) => i.element.value)
+    expect(inputValues.some((v) => v === '0.8')).toBe(false)
+  })
+
+  it('creates item rule with defaults when type is selected', async () => {
+    api.getConfigs.mockResolvedValue({
+      data: { config_1: { ...CONFIG_1, item_rule_config: null } },
+    })
+    const wrapper = mountView()
+    await flushPromises()
+    const selects = wrapper.findAllComponents({ name: 'VSelect' })
+    const itemRuleSelect = selects.find((s) => s.props('modelValue') === 'none' &&
+      selects.indexOf(s) === selects.map((s2) => s2.props('modelValue')).lastIndexOf('none'))
+    await itemRuleSelect.vm.$emit('update:modelValue', 'min_threshold_rule')
+    await flushPromises()
+    const inputValues = wrapper.findAll('input').map((i) => i.element.value)
+    expect(inputValues.some((v) => v === '1')).toBe(true)
   })
 
   it('remove button is disabled when only one camera remains', async () => {
