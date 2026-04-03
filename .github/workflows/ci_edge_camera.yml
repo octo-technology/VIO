@@ -48,3 +48,21 @@ jobs:
           name: Unit tests report in Python ${{ matrix.python-version }}
           path: edge/camera/reports/pytest/unit-tests-report.xml
           reporter: java-junit
+
+  build_and_push_images:
+    needs: lint_and_test_on_edge_camera
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - dockerfile: ./edge/camera/Dockerfile
+            image: ghcr.io/${{ github.repository }}/edge_camera
+            context: ./edge/camera
+    uses: ./.github/workflows/template_build_and_push_docker_images.yml
+    with:
+      context: ${{ matrix.context }}
+      dockerfile: ${{ matrix.dockerfile }}
+      image: ${{ matrix.image }}
+    secrets:
+      username: ${{ github.actor }}
+      password: ${{ secrets.GITHUB_TOKEN }}
