@@ -18,8 +18,6 @@ from helpers.container_utils import (  # EDGE_MODEL_SERVING,  # noqa: E402
     stop_test_container,
 )
 
-ROOT_REPOSITORY_PATH = Path(__file__).parents[3]
-
 
 def before_all(context: Context):
     config_directory = Path(__file__).parents[1] / "config"
@@ -64,7 +62,7 @@ def before_all(context: Context):
     from edge_orchestrator.domain.models.item import Image
     from edge_orchestrator.infrastructure.adapters.camera.http_camera import HttpCamera
 
-    _fake_images_dir = ROOT_REPOSITORY_PATH / "edge_orchestrator" / "fake_images"
+    _fake_images_dir = Path(__file__).parents[2] / "fake_images"
     _fake_image_paths = list(_fake_images_dir.rglob("*.jpg")) + list(_fake_images_dir.rglob("*.png"))
     _fake_image_bytes = _fake_image_paths[0].read_bytes() if _fake_image_paths else b"\xff\xd8\xff\xe0"
 

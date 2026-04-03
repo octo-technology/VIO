@@ -19,9 +19,9 @@ edge_model_serving:
 edge_orchestrator:
 	BUILDOS=${BUILDOS} docker compose up -d --build edge_orchestrator
 
-.PHONY: edge_interface ## 📸 Start edge_interface inside a docker container
-edge_interface:
-	BUILDOS=${BUILDOS} docker compose up -d --build edge_interface
+.PHONY: edge_cockpit ## 🖥 Start edge_cockpit inside a docker container
+edge_cockpit:
+	BUILDOS=${BUILDOS} docker compose up -d --build edge_cockpit
 
 .PHONY: hub_streamlit ## 🚀 Start hub_streamlit inside a docker container
 hub_streamlit:

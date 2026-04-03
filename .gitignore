@@ -197,12 +197,12 @@ grafvio_id_rsa
 *.tfstate
 *.tfstate.*
 
-edge_model_serving/models/**/*.tflite
-edge_orchestrator/data_storage/*
-edge_orchestrator/data/storage/*
-edge_orchestrator/config/secrets
-edge_orchestrator/fake_images/*
-/deployment/edge/images/
+edge/model_serving/models/**/*.tflite
+edge/orchestrator/data_storage/*
+edge/orchestrator/data/storage/*
+edge/orchestrator/config/secrets
+edge/orchestrator/fake_images/*
+hub/deployment/edge/images/
 *package-lock.json
 
-hub_streamlit/config/secrets
+hub/streamlit/config/secrets
