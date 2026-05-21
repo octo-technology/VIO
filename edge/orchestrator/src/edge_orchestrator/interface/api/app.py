@@ -13,6 +13,7 @@ from edge_orchestrator.application.use_cases.supervisor import Supervisor
 from edge_orchestrator.application.workers.inspection_worker import (
     run_inspection_worker,
 )
+from edge_orchestrator.domain.exceptions import ConfigNotFoundError, InvalidConfigNameError
 from edge_orchestrator.infrastructure.adapters.binary_storage.binary_storage_factory import (
     BinaryStorageFactory,
 )
@@ -52,6 +53,7 @@ from edge_orchestrator.infrastructure.adapters.model_forwarder.model_forwarder_f
 from edge_orchestrator.infrastructure.adapters.model_forwarder.model_forwarder_manager import (
     ModelForwarderManager,
 )
+from edge_orchestrator.interface.api.exception_handlers import config_not_found_handler, invalid_config_name_handler
 from edge_orchestrator.interface.api.routers.v1.router import router
 
 
@@ -104,6 +106,8 @@ def create_app() -> FastAPI:
     logging.basicConfig(level=logging.INFO, format="%(levelname)s - %(asctime)s - %(name)s - %(message)s")
     app = FastAPI(title="edge_orchestrator", lifespan=lifespan)
     app.include_router(router)
+    app.add_exception_handler(ConfigNotFoundError, config_not_found_handler)
+    app.add_exception_handler(InvalidConfigNameError, invalid_config_name_handler)
     app.add_middleware(
         CORSMiddleware,
         allow_origins=["*"],
