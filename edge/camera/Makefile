@@ -25,9 +25,9 @@ check:
 	uv run --no-project ruff check src tests
 	uv run --no-project ruff format --check src tests
 
-.PHONY: docker-build  ## 🐳 Build the Docker image for the current platform
+.PHONY: docker-build  ## 🐳 Build a multiplatform Docker image
 docker-build:
-	docker build -t ghcr.io/octo-technology/vio/edge_camera:latest .
+	docker buildx build --platform linux/amd64,linux/arm64 -t ghcr.io/octo-technology/vio/edge_camera:latest .
 
 .PHONY: docker-push  ## 📤 Build and push a multiplatform image to the registry
 docker-push:

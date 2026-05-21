@@ -38,9 +38,9 @@ install:
 update:
 	uv sync --group dev
 
-.PHONY: docker-build  ## 🐳 Build the Docker image for the current platform
+.PHONY: docker-build  ## 🐳 Build a multiplatform Docker image
 docker-build:
-	docker build -t ghcr.io/octo-technology/vio/edge_orchestrator:latest .
+	docker buildx build --platform linux/amd64,linux/arm64 -t ghcr.io/octo-technology/vio/edge_orchestrator:latest .
 
 .PHONY: docker-push  ## 📤 Build and push a multiplatform image to the registry
 docker-push:
