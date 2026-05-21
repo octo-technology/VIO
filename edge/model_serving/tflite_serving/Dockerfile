@@ -25,7 +25,7 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 
 COPY src/ ./src/
 RUN --mount=type=cache,target=/root/.cache/uv \
-    uv sync --frozen --no-dev \
+    uv sync --frozen --no-dev --no-editable \
     && find /app/.venv -name "*.so" -exec patchelf --clear-execstack {} \; 2>/dev/null || true
 
 # ── runtime ───────────────────────────────────────────────────────────────────
