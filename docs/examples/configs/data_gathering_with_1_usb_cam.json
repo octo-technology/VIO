@@ -5,7 +5,7 @@
             "camera_id": "camera_1",
             "camera_type": "http",
             "position": "front",
-            "service_url": "http://localhost:8001"
+            "service_url": "${CAMERA_SERVICE_URL:-http://localhost:8001}"
         }
     },
     "binary_storage_config": {

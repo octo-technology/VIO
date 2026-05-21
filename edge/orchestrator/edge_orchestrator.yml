@@ -15,6 +15,6 @@ services:
       - 8000:8000
     environment:
       SERVING_MODEL_URL: http://edge_model_serving:8501
-      CAMERA_SERVICE_URL: ${CAMERA_SERVICE_URL:-http://edge_camera:8001}
+      CAMERA_SERVICE_URL: http://edge_camera:8001
     privileged: true
     profiles: [edge]

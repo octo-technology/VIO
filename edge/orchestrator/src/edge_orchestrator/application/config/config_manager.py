@@ -1,6 +1,7 @@
 import json
 import logging
 import os
+import re
 from pathlib import Path
 from typing import Dict, Optional
 
@@ -26,22 +27,12 @@ class ConfigManager(metaclass=SingletonMeta):
             self._config_dir.mkdir(parents=True)
             return
 
-        camera_service_url = os.getenv("CAMERA_SERVICE_URL")
-        serving_model_url = os.getenv("SERVING_MODEL_URL")
-
         found_active_station_config = False
         for json_config_path in self._config_dir.iterdir():
             try:
                 if json_config_path.is_file():
-                    with json_config_path.open() as f:
-                        station_config = StationConfig(**json.load(f))
-                    if camera_service_url:
-                        for cam_config in station_config.camera_configs.values():
-                            cam_config.service_url = camera_service_url
-                    if serving_model_url:
-                        for step in station_config.pipeline_steps.values():
-                            if step.model_forwarder_config:
-                                step.model_forwarder_config.model_serving_url = serving_model_url
+                    raw = json_config_path.read_text()
+                    station_config = StationConfig(**json.loads(self._interpolate(raw)))
                     self._station_configs[station_config.station_name] = station_config
                     if station_config.station_name == self._active_station_name:
                         self._active_station_name = station_config.station_name
@@ -55,6 +46,17 @@ class ConfigManager(metaclass=SingletonMeta):
             self._logger.warning(f"No active json station config found at {config_path.as_posix()}")
         else:
             self._logger.info(f"Active station config found and set: {self._active_station_name}")
+
+    @staticmethod
+    def _interpolate(raw: str) -> str:
+        def _resolve(match: re.Match) -> str:
+            expr = match.group(1)
+            if ":-" in expr:
+                var, default = expr.split(":-", 1)
+                return os.getenv(var, default)
+            return os.getenv(expr, match.group(0))
+
+        return re.sub(r"\$\{([^}]+)\}", _resolve, raw)
 
     def _save_config_as_json(self, station_config: StationConfig):
         with (self._config_dir / f"{station_config.station_name}.json").open("w") as f:
