@@ -86,4 +86,4 @@ pyramid_and_badges:
 
 .PHONY: serve  ## 🚀 Run the orchestrator locally (port 8000)
 serve:
-	uv run --no-project uvicorn edge_orchestrator.interface.api.main:app --host 0.0.0.0 --port 8000 --reload
+	uv run --no-project uvicorn edge_orchestrator.interface.api.main:app --host 0.0.0.0 --port 8000 --reload --reload-include '*.json'
