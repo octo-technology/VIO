@@ -26,16 +26,26 @@ class ConfigManager(metaclass=SingletonMeta):
             self._config_dir.mkdir(parents=True)
             return
 
+        camera_service_url = os.getenv("CAMERA_SERVICE_URL")
+        serving_model_url = os.getenv("SERVING_MODEL_URL")
+
         found_active_station_config = False
         for json_config_path in self._config_dir.iterdir():
             try:
                 if json_config_path.is_file():
                     with json_config_path.open() as f:
                         station_config = StationConfig(**json.load(f))
-                        self._station_configs[station_config.station_name] = station_config
-                        if station_config.station_name == self._active_station_name:
-                            self._active_station_name = station_config.station_name
-                            found_active_station_config = True
+                    if camera_service_url:
+                        for cam_config in station_config.camera_configs.values():
+                            cam_config.service_url = camera_service_url
+                    if serving_model_url:
+                        for step in station_config.pipeline_steps.values():
+                            if step.model_forwarder_config:
+                                step.model_forwarder_config.model_serving_url = serving_model_url
+                    self._station_configs[station_config.station_name] = station_config
+                    if station_config.station_name == self._active_station_name:
+                        self._active_station_name = station_config.station_name
+                        found_active_station_config = True
             except (ValidationError, Exception):
                 self._logger.exception(
                     f"The json station config file is invalid. Fix it or delete it: {json_config_path.as_posix()}"
@@ -83,3 +93,17 @@ class ConfigManager(metaclass=SingletonMeta):
 
     def get_all_config_names(self):
         return list(self._station_configs.keys())
+
+    def save_config_only(self, station_config: StationConfig):
+        self._station_configs[station_config.station_name] = station_config
+        self._save_config_as_json(station_config)
+
+    def delete_config(self, station_name: str):
+        if station_name not in self._station_configs:
+            raise HTTPException(status_code=404, detail=f"Config '{station_name}' not found")
+        del self._station_configs[station_name]
+        if station_name == self._active_station_name:
+            self._active_station_name = None
+        config_file = (self._config_dir / station_name).with_suffix(".json")
+        if config_file.exists():
+            config_file.unlink()

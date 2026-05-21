@@ -9,3 +9,4 @@ class ItemState(str, Enum):
     CAMERA_RULE = "CAMERA RULE"
     ITEM_RULE = "ITEM RULE"
     DONE = "DONE"
+    ERROR = "ERROR"

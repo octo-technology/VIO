@@ -9,10 +9,12 @@ services:
     volumes:
       - ./config:/edge_orchestrator/config
       - ./data_storage:/edge_orchestrator/data_storage
+      - ../camera/vio_frames:/vio_frames
       - /run/udev:/run/udev:ro # udev is the device manager for the Linux kernel, responsible for managing device nodes in the /dev directory dynamically
     ports:
       - 8000:8000
     environment:
       SERVING_MODEL_URL: http://edge_model_serving:8501
+      CAMERA_SERVICE_URL: ${CAMERA_SERVICE_URL:-http://edge_camera:8001}
     privileged: true
     profiles: [edge]
