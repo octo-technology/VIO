@@ -28,11 +28,11 @@ check:
 
 .PHONY: install  ## ⏬ Install development dependencies
 install:
-	uv venv && uv pip install -e ".[dev]"
+	uv venv && uv sync --group dev
 
 .PHONY: update  ## ⬆️  Upgrade all dependencies to their latest allowed versions
 update:
-	uv pip install -e ".[dev]" --upgrade
+	uv sync --group dev
 
 .PHONY: docker-build  ## 🐳 Build the Docker image (context: parent directory)
 docker-build:
