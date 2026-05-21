@@ -32,11 +32,11 @@ check:
 
 .PHONY: install  ## ⏬ Create venv and install development dependencies
 install:
-	uv venv && uv sync --extra dev
+	uv venv && uv sync --group dev
 
 .PHONY: update  ## 🔄 Update dependencies in existing venv (no venv recreation)
 update:
-	uv sync --extra dev
+	uv sync --group dev
 
 .PHONY: docker-build  ## 🐳 Build the Docker image
 docker-build:
