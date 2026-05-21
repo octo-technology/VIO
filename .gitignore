@@ -23,6 +23,7 @@ eggs/
 .eggs/
 lib/
 lib64/
+!edge/cockpit/src/**/lib/
 parts/
 sdist/
 var/
