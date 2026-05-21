@@ -13,20 +13,26 @@
   },
   "dependencies": {
     "@mdi/font": "^7.4.47",
+    "@tanstack/vue-query": "^5.100.11",
     "axios": "^1.7.9",
+    "pinia": "^3.0.4",
     "vue": "^3.5.13",
     "vue-router": "^4.5.0",
-    "vuetify": "^3.7.15"
+    "vuetify": "^3.7.15",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.2.1",
     "@vue/test-utils": "^2.4.6",
+    "@vue/tsconfig": "^0.9.1",
     "eslint": "^9.18.0",
     "eslint-plugin-vue": "^9.32.0",
     "happy-dom": "^20.8.9",
     "sass": "^1.85.0",
+    "typescript": "^6.0.3",
     "vite": "^6.1.0",
     "vite-plugin-vuetify": "^2.1.0",
-    "vitest": "^4.1.2"
+    "vitest": "^4.1.2",
+    "vue-tsc": "^3.3.1"
   }
 }

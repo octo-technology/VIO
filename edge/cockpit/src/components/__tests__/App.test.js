@@ -3,6 +3,7 @@ import { mount, flushPromises } from '@vue/test-utils'
 import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
+import { createPinia } from 'pinia'
 import App from '../../App.vue'
 
 vi.mock('vue-router', () => ({
@@ -12,20 +13,18 @@ vi.mock('vue-router', () => ({
   RouterLink: { template: '<a><slot /></a>' },
 }))
 
-vi.mock('../../services/api', () => ({
-  default: {
-    getHealth: vi.fn().mockResolvedValue({ data: { status: 'ok' } }),
-    getServicesHealth: vi.fn().mockResolvedValue({ data: { services: {} } }),
-    getActiveConfig: vi.fn().mockResolvedValue({ data: { station_name: 'test' } }),
-  },
+vi.mock('../../features/station-config/api/discoveryRepository', () => ({
+  getCamerasAvailable: vi.fn().mockResolvedValue({ cameras: {} }),
+  getModelsAvailable: vi.fn().mockResolvedValue({ models: {} }),
 }))
 
 const vuetify = createVuetify({ components, directives })
+const pinia = createPinia()
 
 function mountApp() {
   return mount(App, {
     global: {
-      plugins: [vuetify],
+      plugins: [vuetify, pinia],
       stubs: {
         'v-app-bar': { template: '<div><slot /><slot name="append" /></div>' },
         'v-navigation-drawer': {
