@@ -198,11 +198,21 @@ grafvio_id_rsa
 *.tfstate.*
 
 edge/model_serving/models/**/*.tflite
-edge/orchestrator/data_storage/*
 edge/orchestrator/data/storage/*
 edge/orchestrator/config/secrets
-edge/orchestrator/fake_images/*
 hub/deployment/edge/images/
 *package-lock.json
 
 hub/streamlit/config/secrets
+
+# Claude Code local config
+.claude/
+skills/
+
+# AI working directories
+_bmad/
+_bmad-output/
+
+# Runtime data
+data_storage/
+edge/camera/vio_frames/
