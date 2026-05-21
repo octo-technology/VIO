@@ -31,9 +31,11 @@ logger = logging.getLogger(__name__)
 
 class CameraBackendConfig(BaseModel):
     backend: str = "fake"
+    position: Optional[str] = None
     device_index: int = 0
     camera_num: int = 0
     serial_number: Optional[str] = None
+    images_dir: Optional[str] = None
 
 
 class CameraServiceConfig(BaseModel):

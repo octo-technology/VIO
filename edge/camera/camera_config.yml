@@ -10,5 +10,13 @@
 cameras:
   camera_1:
     backend: fake
+    position: front
+    images_dir: /edge_camera/fake_images
   camera_2:
     backend: fake
+    position: back
+    images_dir: /edge_camera/fake_images
+  webcam:
+    backend: opencv
+    position: top
+    device_index: 0

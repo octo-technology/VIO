@@ -4,6 +4,11 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    environment:
+      CAMERA_OUTPUT_DIR: /vio_frames
+    volumes:
+      - ./camera_config.yml:/edge_camera/camera_config.yml:ro
+      - ./vio_frames:/vio_frames
     ports:
       - 8001:8001
     profiles: [edge]

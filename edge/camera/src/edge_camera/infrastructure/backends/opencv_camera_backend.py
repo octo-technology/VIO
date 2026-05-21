@@ -1,7 +1,7 @@
 import asyncio
 from datetime import datetime
 from pathlib import Path
-from typing import Awaitable, Callable, Dict
+from typing import Any, Awaitable, Callable, Dict
 
 try:
     import cv2
@@ -20,26 +20,28 @@ class OpenCvCameraBackend(ICameraBackend):
 
     def __init__(self, device_index: int = 0) -> None:
         if not _CV2_AVAILABLE:
-            raise RuntimeError("opencv-python-headless is required: pip install 'edge_camera[opencv]'")
-        self._device_index = device_index
+            raise RuntimeError("opencv-python-headless is required: pip install 'edge_camera[usb]'")
         self._frame_interval: float = 1 / 30  # ~30 fps in push mode
+        self._cap: Any = cv2.VideoCapture(device_index)  # type: ignore[union-attr]
+        if not self._cap.isOpened():
+            raise RuntimeError(f"Cannot open camera device {device_index}")
+
+    def __del__(self) -> None:
+        if hasattr(self, "_cap") and self._cap.isOpened():
+            self._cap.release()
 
     async def capture(self, output_dir: Path, camera_id: str) -> ImageRef:
         loop = asyncio.get_event_loop()
         return await loop.run_in_executor(None, self._capture_sync, output_dir, camera_id)
 
     def _capture_sync(self, output_dir: Path, camera_id: str) -> ImageRef:
-        cap = cv2.VideoCapture(self._device_index)
-        try:
-            ret, frame = cap.read()
-            if not ret:
-                raise RuntimeError(f"Failed to read frame from device {self._device_index}")
-            output_dir.mkdir(parents=True, exist_ok=True)
-            filename = output_dir / f"{camera_id}_{datetime.now().strftime('%Y%m%d_%H%M%S_%f')}.jpg"
-            cv2.imwrite(str(filename), frame)
-            return ImageRef.from_path(filename, camera_id)
-        finally:
-            cap.release()
+        ret, frame = self._cap.read()
+        if not ret:
+            raise RuntimeError(f"Failed to read frame from camera {camera_id}")
+        output_dir.mkdir(parents=True, exist_ok=True)
+        filename = output_dir / f"{camera_id}_{datetime.now().strftime('%Y%m%d_%H%M%S_%f')}.jpg"
+        cv2.imwrite(str(filename), frame)
+        return ImageRef.from_path(filename, camera_id)
 
     async def start_listening(
         self,
@@ -47,39 +49,22 @@ class OpenCvCameraBackend(ICameraBackend):
         camera_id: str,
         on_frame: Callable[[ImageRef], Awaitable[None]],
     ) -> None:
-        cap = cv2.VideoCapture(self._device_index)
-        try:
-            while True:
-                ret, frame = cap.read()
-                if ret:
-                    output_dir.mkdir(parents=True, exist_ok=True)
-                    filename = output_dir / f"{camera_id}_{datetime.now().strftime('%Y%m%d_%H%M%S_%f')}.jpg"
-                    cv2.imwrite(str(filename), frame)
-                    ref = ImageRef.from_path(filename, camera_id)
-                    await on_frame(ref)
-                await asyncio.sleep(self._frame_interval)
-        finally:
-            cap.release()
+        while True:
+            ret, frame = self._cap.read()
+            if ret:
+                output_dir.mkdir(parents=True, exist_ok=True)
+                filename = output_dir / f"{camera_id}_{datetime.now().strftime('%Y%m%d_%H%M%S_%f')}.jpg"
+                cv2.imwrite(str(filename), frame)
+                ref = ImageRef.from_path(filename, camera_id)
+                await on_frame(ref)
+            await asyncio.sleep(self._frame_interval)
 
     def health(self) -> Dict:
-        cap = cv2.VideoCapture(self._device_index)
-        try:
-            ok = cap.isOpened()
-        finally:
-            cap.release()
-        return {"status": "ok" if ok else "error", "type": "opencv", "device_index": self._device_index}
+        return {"status": "ok" if self._cap.isOpened() else "error", "type": "opencv"}
 
     def metadata(self) -> Dict:
-        cap = cv2.VideoCapture(self._device_index)
-        try:
-            width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
-            height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
-            fps = cap.get(cv2.CAP_PROP_FPS)
-        finally:
-            cap.release()
         return {
             "type": "opencv",
-            "device_index": self._device_index,
-            "resolution": f"{width}x{height}",
-            "fps": fps,
+            "resolution": f"{int(self._cap.get(cv2.CAP_PROP_FRAME_WIDTH))}x{int(self._cap.get(cv2.CAP_PROP_FRAME_HEIGHT))}",
+            "fps": self._cap.get(cv2.CAP_PROP_FPS),
         }
