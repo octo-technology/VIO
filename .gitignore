@@ -201,8 +201,6 @@ edge/model_serving/models/**/*.tflite
 edge/orchestrator/data/storage/*
 edge/orchestrator/config/secrets
 hub/deployment/edge/images/
-*package-lock.json
-
 hub/streamlit/config/secrets
 
 # Claude Code local config
