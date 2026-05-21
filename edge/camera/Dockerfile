@@ -6,6 +6,7 @@ WORKDIR /edge_camera
 
 COPY pyproject.toml ./
 COPY src/ ./src/
+COPY fake_images ./fake_images
 
 RUN pip install --no-cache-dir uv && uv pip install --system -e "."
 

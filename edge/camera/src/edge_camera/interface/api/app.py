@@ -39,7 +39,7 @@ def _build_backend(camera_id: str, cfg: CameraBackendConfig) -> ICameraBackend:
             FakeCameraBackend,
         )
 
-        return FakeCameraBackend()
+        return FakeCameraBackend(images_dir=Path(cfg.images_dir) if cfg.images_dir else None)
 
     if backend_type == "opencv":
         from edge_camera.infrastructure.backends.opencv_camera_backend import (
@@ -66,7 +66,13 @@ def _build_backend(camera_id: str, cfg: CameraBackendConfig) -> ICameraBackend:
 
 
 def _build_backends(service_config: CameraServiceConfig) -> Dict[str, ICameraBackend]:
-    return {camera_id: _build_backend(camera_id, cfg) for camera_id, cfg in service_config.cameras.items()}
+    backends = {}
+    for camera_id, cfg in service_config.cameras.items():
+        try:
+            backends[camera_id] = _build_backend(camera_id, cfg)
+        except Exception as e:
+            logger.warning("Camera '%s' backend '%s' unavailable, skipping: %s", camera_id, cfg.backend, e)
+    return backends
 
 
 @asynccontextmanager
@@ -75,6 +81,8 @@ async def lifespan(app: FastAPI):
 
     if not getattr(app.state, "backends", None):
         app.state.backends = _build_backends(service_config)
+
+    app.state.camera_configs = service_config.cameras
 
     push_tasks: List[asyncio.Task] = []
     if service_config.push_url:

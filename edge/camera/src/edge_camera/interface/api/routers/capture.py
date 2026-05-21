@@ -27,13 +27,27 @@ async def capture(request: Request, camera_id: Optional[str] = None) -> ImageRef
     return await backend.capture(_output_dir(camera_id), camera_id)
 
 
-@router.get("/health", summary="Camera service health")
+@router.get("/health", summary="Camera service liveness")
 async def health(request: Request) -> dict:
     backends = request.app.state.backends
     return {
         "status": "ok",
-        "cameras": {camera_id: backend.health() for camera_id, backend in backends.items()},
+        "cameras": {cam_id: backend.health() for cam_id, backend in backends.items()},
     }
+
+
+@router.get("/capabilities", summary="Camera service capabilities — available cameras with backend and position")
+async def capabilities(request: Request) -> dict:
+    backends = request.app.state.backends
+    configs = getattr(request.app.state, "camera_configs", {})
+    cameras = {}
+    for cam_id, backend in backends.items():
+        cam_info: dict = {"backend": backend.health().get("type", "unknown")}
+        cfg = configs.get(cam_id)
+        if cfg and cfg.position:
+            cam_info["position"] = cfg.position
+        cameras[cam_id] = cam_info
+    return {"cameras": cameras}
 
 
 @router.get("/metadata", summary="Camera service metadata")
