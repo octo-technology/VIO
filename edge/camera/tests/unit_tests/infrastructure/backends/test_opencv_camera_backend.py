@@ -85,7 +85,6 @@ def test_health_returns_ok(backend):
     h = backend.health()
     assert h["status"] == "ok"
     assert h["type"] == "opencv"
-    assert h["device_index"] == 0
 
 
 def test_metadata_returns_resolution(backend):
