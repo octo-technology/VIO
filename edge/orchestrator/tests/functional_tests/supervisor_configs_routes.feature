@@ -5,7 +5,7 @@ Feature: The client set an active configuration
 		When the client requests the active configuration
 		Then the active configuration is
 	"""
-	{"detail": "No active configuration set"}
+	{"detail": "No active configuration"}
 	"""
 
 	Scenario: The client request all available configurations

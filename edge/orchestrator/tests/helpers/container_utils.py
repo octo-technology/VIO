@@ -1,22 +1,12 @@
 import logging
 import os
-import platform
-from pathlib import Path
 from typing import Dict, Optional, Tuple, Union
 
 import docker
 from helpers.tf_serving_container import TfServingContainer
 from testcontainers.core.container import DockerContainer
 
-EDGE_MODEL_SERVING = {
-    "image_name": "ghcr.io/octo-technology/vio/edge_model_serving:main",
-    "container_volume_path": "/tf_serving",
-    "host_volume_path_suffix": "edge_model_serving",
-}
 EDGE_TFLITE_SERVING_IMG = "ghcr.io/octo-technology/vio/edge_tflite_serving:main"
-
-if platform.uname().system == "Darwin" and not os.getenv("DOCKER_HOST"):
-    os.environ["DOCKER_HOST"] = f"unix://{(Path.home() / '.colima/docker.sock').as_posix()}"
 
 
 def check_image_presence_or_pull_it_from_registry(image_name: str):
