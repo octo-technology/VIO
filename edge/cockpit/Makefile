@@ -18,9 +18,10 @@ install:
 docker-build:
 	docker build -t ghcr.io/octo-technology/vio/edge_cockpit:latest .
 
-.PHONY: docker-push  ## 📤 Push the Docker image to the registry
+.PHONY: docker-push  ## 📤 Build and push a multiplatform image to the registry
 docker-push:
-	docker push ghcr.io/octo-technology/vio/edge_cockpit:latest
+	docker buildx build --platform linux/amd64,linux/arm64 --push \
+		-t ghcr.io/octo-technology/vio/edge_cockpit:latest .
 
 .PHONY: serve  ## 🚀 Start dev server (proxies /api → localhost:8000)
 serve:

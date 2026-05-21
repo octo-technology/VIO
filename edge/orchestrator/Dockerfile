@@ -1,61 +1,47 @@
 ARG PYTHON_VERSION="3.11"
 
-FROM --platform=$TARGETPLATFORM python:${PYTHON_VERSION}-slim-bookworm
-ARG TARGETPLATFORM
-ARG BUILDOS
+FROM ghcr.io/astral-sh/uv:latest AS uv
 
-RUN if [ "$TARGETPLATFORM" = "linux/arm64" ] && [ "$BUILDOS" = "linux" ]; then \
-        echo "deb [trusted=yes] http://archive.raspberrypi.org/debian/ bookworm main" \
-            > /etc/apt/sources.list.d/raspi.list; \
-    fi
+# ── builder ───────────────────────────────────────────────────────────────────
+FROM python:${PYTHON_VERSION}-slim-bookworm AS builder
 
-RUN if [ "$TARGETPLATFORM" = "linux/arm64" ] && [ "$BUILDOS" = "linux" ]; then \
-        apt update && apt install -y \
-            python3-pip \
-            python3-venv \
-            python3-picamera2 \
-            gcc \
-        && apt clean \
-        && apt autoremove \
-        && rm -rf /var/cache/apt/archives/* \
-        && rm -rf /var/lib/apt/lists/*; \
-    else \
-        apt update && apt install -y --no-install-recommends \
-            build-essential \
-            gcc \
-            fswebcam \
-            ffmpeg \
-            libsm6 \
-            libxext6 \
-        && apt clean \
-        && apt autoremove \
-        && rm -rf /var/cache/apt/archives/* \
-        && rm -rf /var/lib/apt/lists/*; \
-    fi
+COPY --from=uv /uv /bin/uv
 
-WORKDIR /edge_orchestrator
+ENV UV_LINK_MODE=copy \
+    UV_PYTHON_DOWNLOADS=never \
+    UV_COMPILE_BYTECODE=1
 
-RUN if [ "$TARGETPLATFORM" = "linux/arm64" ] && [ "$BUILDOS" = "linux" ]; then \
-        /usr/bin/python3 -m venv --system-site-packages /opt/venv; \
-    else \
-        python -m venv /opt/venv; \
-    fi
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        build-essential \
+        gcc \
+        libsm6 \
+        libxext6 \
+    && rm -rf /var/lib/apt/lists/*
 
-ENV PATH="/opt/venv/bin:$PATH"
+WORKDIR /app
 
-RUN pip install --no-cache-dir --upgrade pip setuptools
+COPY pyproject.toml uv.lock ./
+RUN --mount=type=cache,target=/root/.cache/uv \
+    uv sync --frozen --no-dev --no-install-project
 
-COPY pip.conf /opt/venv/pip.conf
-COPY pyproject.toml ./
-COPY config ./config
-COPY model_labels ./model_labels
-COPY src/ ./src
+COPY src/ ./src/
+RUN --mount=type=cache,target=/root/.cache/uv \
+    uv sync --frozen --no-dev
 
-RUN if [ "$TARGETPLATFORM" = "linux/arm64" ] && [ "$BUILDOS" = "linux" ]; then \
-        pip install --no-cache-dir ".[raspberry]"; \
-    else \
-        pip install --no-cache-dir "."; \
-    fi
+# ── runtime ───────────────────────────────────────────────────────────────────
+FROM python:${PYTHON_VERSION}-slim-bookworm AS runtime
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        libsm6 \
+        libxext6 \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+COPY --from=builder /app/.venv /app/.venv
+
+ENV PATH="/app/.venv/bin:$PATH" \
+    CONFIG_DIR=/app/config
 
 EXPOSE 8000
 ENTRYPOINT ["uvicorn", "edge_orchestrator.interface.api.main:app"]

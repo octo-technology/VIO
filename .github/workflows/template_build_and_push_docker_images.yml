@@ -50,6 +50,9 @@ jobs:
             type=semver,pattern={{major}}.{{minor}}.{{patch}}
           flavor: latest=auto
 
+      - name: Set up QEMU (ARM64 emulation)
+        uses: docker/setup-qemu-action@v3
+
       - name: Set up Docker Buildx (multi-platform build)
         uses: docker/setup-buildx-action@v3
 

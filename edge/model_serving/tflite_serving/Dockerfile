@@ -1,35 +1,42 @@
-FROM --platform=$TARGETPLATFORM python:3.10-slim AS builder
-ARG TARGETPLATFORM
-ARG BUILDOS
+ARG PYTHON_VERSION="3.11"
 
-ENV MODELS_PATH=/models
+FROM ghcr.io/astral-sh/uv:latest AS uv
 
-WORKDIR /tflite_serving
+# ── builder ───────────────────────────────────────────────────────────────────
+FROM python:${PYTHON_VERSION}-slim-bookworm AS builder
 
-RUN apt-get update && apt-get upgrade -y && \
-    apt-get install -y --no-install-recommends \
-    build-essential \
-    gcc \
-    patchelf \
-    && apt clean \
-    && apt autoremove \
-    && rm -rf /var/cache/apt/archives/* \
+COPY --from=uv /uv /bin/uv
+
+ENV UV_LINK_MODE=copy \
+    UV_PYTHON_DOWNLOADS=never \
+    UV_COMPILE_BYTECODE=1
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        build-essential \
+        gcc \
+        patchelf \
     && rm -rf /var/lib/apt/lists/*
 
-RUN python -m venv /opt/venv
+WORKDIR /app
 
-ENV PATH="/opt/venv/bin:$PATH"
+COPY pyproject.toml uv.lock ./
+RUN --mount=type=cache,target=/root/.cache/uv \
+    uv sync --frozen --no-dev --no-install-project
 
-RUN pip install --no-cache-dir --upgrade pip setuptools
+COPY src/ ./src/
+RUN --mount=type=cache,target=/root/.cache/uv \
+    uv sync --frozen --no-dev \
+    && find /app/.venv -name "*.so" -exec patchelf --clear-execstack {} \; 2>/dev/null || true
 
+# ── runtime ───────────────────────────────────────────────────────────────────
+FROM python:${PYTHON_VERSION}-slim-bookworm AS runtime
 
-COPY tflite_serving/pyproject.toml ./
-COPY tflite_serving/src/ ./src
-COPY tflite_serving/pip.conf /opt/venv/pip.conf
-COPY models/tflite/ $MODELS_PATH/tflite/
+WORKDIR /app
 
-RUN pip install --no-cache-dir . && \
-    find /opt/venv -name "*.so" -exec patchelf --clear-execstack {} \; 2>/dev/null || true
+COPY --from=builder /app/.venv /app/.venv
+
+ENV PATH="/app/.venv/bin:$PATH" \
+    MODELS_PATH=/models
 
 EXPOSE 8501
 ENTRYPOINT ["uvicorn", "tflite_serving.tflite_server:app"]
