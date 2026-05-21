@@ -36,7 +36,7 @@ install:
 
 .PHONY: update  ## 🔄 Update dependencies in existing venv (no venv recreation)
 update:
-	uv pip install --upgrade -e ".[dev]"
+	uv sync --extra dev
 
 .PHONY: docker-build  ## 🐳 Build the Docker image
 docker-build:
