@@ -37,6 +37,10 @@ jobs:
         run: make lint
         working-directory: ./edge/cockpit
 
+      - name: TypeScript type check
+        run: make type_check
+        working-directory: ./edge/cockpit
+
       - name: Run unit tests
         run: make unit_tests
         working-directory: ./edge/cockpit
