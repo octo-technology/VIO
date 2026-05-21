@@ -14,18 +14,18 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - dockerfile: ./edge_interface/Dockerfile
-            image: ghcr.io/${{ github.repository }}/edge_interface
-            context: ./edge_interface
-          - dockerfile: ./edge_streamlit/Dockerfile
-            image: ghcr.io/${{ github.repository }}/edge_streamlit
-            context: ./edge_streamlit
-          - dockerfile: ./edge_orchestrator/Dockerfile
+          - dockerfile: ./edge/cockpit/Dockerfile
+            image: ghcr.io/${{ github.repository }}/edge_cockpit
+            context: ./edge/cockpit
+          - dockerfile: ./edge/orchestrator/Dockerfile
             image: ghcr.io/${{ github.repository }}/edge_orchestrator
-            context: ./edge_orchestrator
-          - dockerfile: ./edge_model_serving/tflite_serving/Dockerfile
+            context: ./edge/orchestrator
+          - dockerfile: ./edge/camera/Dockerfile
+            image: ghcr.io/${{ github.repository }}/edge_camera
+            context: ./edge/camera
+          - dockerfile: ./edge/model_serving/tflite_serving/Dockerfile
             image: ghcr.io/${{ github.repository }}/edge_tflite_serving
-            context: ./edge_model_serving
+            context: ./edge/model_serving/tflite_serving
 
     uses: ./.github/workflows/template_build_and_push_docker_images.yml
     with:

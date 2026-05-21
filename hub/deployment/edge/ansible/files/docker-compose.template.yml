@@ -26,9 +26,9 @@ services:
       ACTIVE_CONFIG_NAME: marker_classification_with_1_fake_camera
     privileged: true
 
-  edge_interface:
-    container_name: edge_interface
-    image: ghcr.io/octo-technology/vio/edge_interface:latest
+  edge_cockpit:
+    container_name: edge_cockpit
+    image: ghcr.io/octo-technology/vio/edge_cockpit:latest
     ports:
       - 8080:80
 
