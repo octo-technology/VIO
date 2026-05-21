@@ -30,9 +30,21 @@ check:
 	uv run --no-project ruff check src tests
 	uv run --no-project ruff format --check src tests
 
-.PHONY: install  ## ⏬ Install development dependencies
+.PHONY: install  ## ⏬ Create venv and install development dependencies
 install:
-	uv venv && uv pip install -e ".[dev]"
+	uv venv && uv sync --extra dev
+
+.PHONY: update  ## 🔄 Update dependencies in existing venv (no venv recreation)
+update:
+	uv pip install --upgrade -e ".[dev]"
+
+.PHONY: docker-build  ## 🐳 Build the Docker image
+docker-build:
+	docker build --build-arg BUILDOS=${BUILDOS} -t ghcr.io/octo-technology/vio/edge_orchestrator:latest .
+
+.PHONY: docker-push  ## 📤 Push the Docker image to the registry
+docker-push:
+	docker push ghcr.io/octo-technology/vio/edge_orchestrator:latest
 
 .PHONY: tests  ## ✅ Launch all the tests
 tests: unit_tests integration_tests functional_tests
