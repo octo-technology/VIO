@@ -63,8 +63,10 @@ class OpenCvCameraBackend(ICameraBackend):
         return {"status": "ok" if self._cap.isOpened() else "error", "type": "opencv"}
 
     def metadata(self) -> Dict:
+        cam_width = int(self._cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+        cam_height = int(self._cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
         return {
             "type": "opencv",
-            "resolution": f"{int(self._cap.get(cv2.CAP_PROP_FRAME_WIDTH))}x{int(self._cap.get(cv2.CAP_PROP_FRAME_HEIGHT))}",
+            "resolution": f"{cam_width}x{cam_height}",
             "fps": self._cap.get(cv2.CAP_PROP_FPS),
         }
