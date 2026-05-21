@@ -17,6 +17,8 @@ dependencies = [
 pi     = ["picamera2==0.3.25; sys_platform == 'linux'"]
 usb    = ["opencv-python-headless>=4.8.0"]
 basler = ["pypylon==4.0.0"]
+
+[dependency-groups]
 dev = [
     "ruff>=0.9.0",
     "numpy>=1.24.0",
@@ -28,6 +30,12 @@ dev = [
 
 [project.scripts]
 edge_camera = "edge_camera.__main__:run"
+
+[tool.uv]
+override-dependencies = [
+    "python-prctl; sys_platform == 'linux'",
+    "pypylon; sys_platform == 'linux'",
+]
 
 [tool.setuptools.packages.find]
 where = ["src/"]

@@ -35,7 +35,11 @@ docker-push:
 
 .PHONY: install  ## ⏬ Install development dependencies
 install:
-	uv venv && uv pip install -e ".[dev]"
+	uv venv && uv sync --group dev
+
+.PHONY: update  ## 🔄 Update dependencies in existing venv (no venv recreation)
+update:
+	uv sync --group dev
 
 .PHONY: serve  ## 🚀 Run the camera service locally (fake backends)
 serve:

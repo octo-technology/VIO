@@ -17,7 +17,7 @@ _IMAGE_EXTENSIONS = {".jpg", ".jpeg", ".png"}
 
 
 class FakeCameraBackend(ICameraBackend):
-    """Fake camera for testing. Cycles through images from a directory if provided, otherwise generates solid-colour frames."""
+    """Fake camera for testing. Generates solid color images or reads from a directory if provided."""
 
     def __init__(
         self,
