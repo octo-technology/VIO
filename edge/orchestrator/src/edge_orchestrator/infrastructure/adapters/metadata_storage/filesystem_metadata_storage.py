@@ -7,7 +7,6 @@ from fastapi import HTTPException
 from pydantic import ValidationError
 
 from edge_orchestrator.domain.models.item import Item
-from edge_orchestrator.domain.models.item_state import ItemState
 from edge_orchestrator.domain.models.station_config import StationConfig
 from edge_orchestrator.domain.ports.metadata_storage.i_metadata_storage import (
     IMetadataStorage,
@@ -25,7 +24,6 @@ class FileSystemMetadataStorage(IMetadataStorage):
 
     def save_item_metadata(self, item: Item):
         self._logger.info(f"Saving item metadata for item {item.id}")
-        item.state = ItemState.DONE
         filepath = self._storing_path_manager.get_file_path(item.id, "json")
 
         filepath.parent.mkdir(parents=True, exist_ok=True)
@@ -37,7 +35,7 @@ class FileSystemMetadataStorage(IMetadataStorage):
         filepath = self._storing_path_manager.get_file_path(item_id, "json")
         # TODO: test with non existing item metadata
         if not filepath.exists():
-            raise HTTPException(status_code=400, detail=f"The item {item_id} has no metadata")
+            raise HTTPException(status_code=404, detail=f"The item {item_id} has no metadata")
         with filepath.open("r") as f:
             metadata = json.load(f)
         return Item(**metadata)

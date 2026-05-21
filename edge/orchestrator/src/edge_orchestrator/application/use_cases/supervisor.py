@@ -1,6 +1,7 @@
 import logging
 
 from edge_orchestrator.domain.models.item import Item
+from edge_orchestrator.domain.models.item_state import ItemState
 from edge_orchestrator.domain.models.station_config import StationConfig
 from edge_orchestrator.domain.ports.binary_storage.i_binary_storage_manager import (
     IBinaryStorageManager,
@@ -50,7 +51,15 @@ class Supervisor:
 
         self._item_rule_manager.get_item_rule(station_config.item_rule_config).apply_item_rules(item)
 
+        item.state = ItemState.DONE
         self._metadata_storage_manager.get_metadata_storage(station_config).save_item_metadata(item)
+
+    def save_item_error(self, item: Item, station_config: StationConfig) -> None:
+        item.state = ItemState.ERROR
+        try:
+            self._metadata_storage_manager.get_metadata_storage(station_config).save_item_metadata(item)
+        except Exception:
+            self._logger.exception("Failed to persist error state for item %s", item.id)
 
     def reset_managers(self):
         self._logger.info("Resetting all managers after configuration update...")

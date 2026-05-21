@@ -7,7 +7,6 @@ from uuid import UUID
 from google.cloud import storage
 
 from edge_orchestrator.domain.models.item import Item
-from edge_orchestrator.domain.models.item_state import ItemState
 from edge_orchestrator.domain.models.station_config import StationConfig
 from edge_orchestrator.domain.ports.metadata_storage.i_metadata_storage import (
     IMetadataStorage,
@@ -25,7 +24,6 @@ class GCPMetadataStorage(IMetadataStorage):
 
     def save_item_metadata(self, item: Item):
         self._logger.info(f"Saving item metadata for item {item.id}")
-        item.state = ItemState.DONE
         item_metadata = item.model_dump_json(exclude_none=True)
         blob = self._bucket.blob(self._storing_path_manager.get_file_path(item.id, "json").as_posix())
         blob.upload_from_string(item_metadata, content_type="application/json")
@@ -35,7 +33,7 @@ class GCPMetadataStorage(IMetadataStorage):
         filename = self._storing_path_manager.get_file_path(item_id, "json").as_posix()
         blob = self._bucket.get_blob(filename)
         if blob is None:
-            raise HTTPException(status_code=400, detail=f"The item {item_id} has no metadata")
+            raise HTTPException(status_code=404, detail=f"The item {item_id} has no metadata")
         metadata = json.loads(blob.download_as_string())
         return Item(**metadata)
 

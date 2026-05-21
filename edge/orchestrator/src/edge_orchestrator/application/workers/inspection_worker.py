@@ -39,4 +39,5 @@ async def run_inspection_worker(
             await queue.mark_done(event.id)
         except Exception as exc:
             logger.exception("Inspection failed for event %s", event.id)
+            supervisor.save_item_error(item, station_config)
             await queue.mark_failed(event.id, str(exc))
