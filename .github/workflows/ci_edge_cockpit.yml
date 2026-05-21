@@ -40,3 +40,21 @@ jobs:
       - name: Run unit tests
         run: make unit_tests
         working-directory: ./edge/cockpit
+
+  build_and_push_images:
+    needs: lint_and_test_on_edge_cockpit
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - dockerfile: ./edge/cockpit/Dockerfile
+            image: ghcr.io/${{ github.repository }}/edge_cockpit
+            context: ./edge/cockpit
+    uses: ./.github/workflows/template_build_and_push_docker_images.yml
+    with:
+      context: ${{ matrix.context }}
+      dockerfile: ${{ matrix.dockerfile }}
+      image: ${{ matrix.image }}
+    secrets:
+      username: ${{ github.actor }}
+      password: ${{ secrets.GITHUB_TOKEN }}
