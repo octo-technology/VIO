@@ -7,10 +7,19 @@ from fastapi.testclient import TestClient
 class TestTfliteServing:
     base_url = "http://localhost:8501/v1"
     image_test_path = "tests/data/mask_people_dataset/person_without_mask.jpg"
-    os.environ["MODELS_PATH"] = (Path.cwd().parent / "models").as_posix()
-    from tflite_serving.tflite_server import app
 
-    test_client = TestClient(app)
+    @classmethod
+    def setup_class(cls):
+        os.environ["MODELS_PATH"] = (Path.cwd().parent / "models").as_posix()
+        from tflite_serving.tflite_server import app
+
+        cls._client = TestClient(app)
+        cls._client.__enter__()
+        cls.test_client = cls._client
+
+    @classmethod
+    def teardown_class(cls):
+        cls._client.__exit__(None, None, None)
 
     def _image_bytes(self) -> bytes:
         with open(self.image_test_path, "rb") as f:

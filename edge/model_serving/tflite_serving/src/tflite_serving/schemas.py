@@ -25,6 +25,7 @@ PredictionResponse = Union[ClassificationPrediction, DetectionPrediction]
 
 
 class ModelMetadataResponse(BaseModel):
+    version: str = "1"
     input_shape: List[int]
     input_dtype: str
     output_type: Optional[str] = None
