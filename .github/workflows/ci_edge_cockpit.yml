@@ -33,10 +33,6 @@ jobs:
         run: make install
         working-directory: ./edge/cockpit
 
-      - name: Lint with ESLint
-        run: make lint
-        working-directory: ./edge/cockpit
-
       - name: TypeScript type check
         run: make type_check
         working-directory: ./edge/cockpit

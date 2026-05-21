@@ -54,10 +54,10 @@ install-tools:
 vio-edge-local-up:
 	lsof -ti :8000 -ti :8001 -ti :8501 -ti :3000 | xargs kill -9 2>/dev/null || true
 	trap 'kill 0' SIGINT SIGTERM
-	CAMERA_CONFIG_FILE=$(PWD)/edge/camera/camera_config.yml uv run --project edge/camera edge_camera &
-	MODELS_PATH=$(PWD)/edge/model_serving/models uv run --project edge/model_serving/tflite_serving edge_model_serving &
-	CONFIG_DIR=$(PWD)/edge/orchestrator/config CAMERA_SERVICE_URL=http://localhost:8001 SERVING_MODEL_URL=http://localhost:8501 uv run --project edge/orchestrator edge_orchestrator &
-	cd edge/cockpit && npm run dev &
+	CAMERA_CONFIG_FILE=$(PWD)/edge/camera/camera_config.yml $(MAKE) -C edge/camera serve &
+	MODELS_PATH=$(PWD)/edge/model_serving/models $(MAKE) -C edge/model_serving/tflite_serving serve &
+	CAMERA_SERVICE_URL=http://localhost:8001 SERVING_MODEL_URL=http://localhost:8501 CONFIG_DIR=$(PWD)/edge/orchestrator/config $(MAKE) -C edge/orchestrator serve &
+	$(MAKE) -C edge/cockpit serve &
 	wait
 
 .PHONY: vio-down ## ❌ Stop all services (model_serving, edge_orchestrator, ui)
