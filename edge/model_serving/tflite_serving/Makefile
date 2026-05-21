@@ -30,6 +30,18 @@ check:
 install:
 	uv venv && uv pip install -e ".[dev]"
 
+.PHONY: update  ## ⬆️  Upgrade all dependencies to their latest allowed versions
+update:
+	uv pip install -e ".[dev]" --upgrade
+
+.PHONY: docker-build  ## 🐳 Build the Docker image (context: parent directory)
+docker-build:
+	docker build --build-arg BUILDOS=${BUILDOS} -f Dockerfile -t ghcr.io/octo-technology/vio/edge_tflite_serving:latest ..
+
+.PHONY: docker-push  ## 📤 Push the Docker image to the registry
+docker-push:
+	docker push ghcr.io/octo-technology/vio/edge_tflite_serving:latest
+
 .PHONY: unit_tests  ## ✅ Launch the unit tests
 unit_tests:
 	uv run --no-project pytest -v --cov=src --junitxml=reports/tests-report.xml tests/
