@@ -25,12 +25,27 @@ check:
 	uv run --no-project ruff check src tests
 	uv run --no-project ruff format --check src tests
 
+.PHONY: docker-build  ## 🐳 Build the Docker image
+docker-build:
+	docker build -t ghcr.io/octo-technology/vio/edge_camera:latest .
+
+.PHONY: docker-push  ## 📤 Push the Docker image to the registry
+docker-push:
+	docker push ghcr.io/octo-technology/vio/edge_camera:latest
+
 .PHONY: install  ## ⏬ Install development dependencies
 install:
 	uv venv && uv pip install -e ".[dev]"
 
-.PHONY: serve  ## 🚀 Run the camera service locally (CAMERA_BACKENDS=cam_1=fake by default)
+.PHONY: serve  ## 🚀 Run the camera service locally (fake backends)
 serve:
+	uv run --no-project uvicorn edge_camera.interface.api.app:create_app --factory \
+		--host 0.0.0.0 --port 8001 --reload
+
+.PHONY: serve-webcam  ## 📷 Run the camera service locally with Mac webcam (CAMERA_OUTPUT_DIR=/tmp/vio)
+serve-webcam:
+	mkdir -p /tmp/vio
+	CAMERA_OUTPUT_DIR=/tmp/vio \
 	uv run --no-project uvicorn edge_camera.interface.api.app:create_app --factory \
 		--host 0.0.0.0 --port 8001 --reload
 
