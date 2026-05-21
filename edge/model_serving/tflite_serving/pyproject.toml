@@ -7,8 +7,7 @@ name = "edge-model-server"
 version = "1.0.0"
 dependencies = [
     "ai-edge-litert==1.1.0",
-    "anyio==3.7.1",
-    "fastapi==0.80.0",
+    "fastapi>=0.115.0",
     "httpx==0.28.1",
     "numpy~=1.26",
     "pillow==11.1.0",

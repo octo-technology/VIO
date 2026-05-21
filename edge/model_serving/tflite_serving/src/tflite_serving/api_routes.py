@@ -106,9 +106,11 @@ def _get_state(request: Any) -> tuple[Dict[str, Any], Dict[str, Dict[str, Any]]]
     Starlette's stubs and does not expose ``.state`` — this is a known
     Starlette limitation with no clean typing solution at call-site level.
     """
-    interpreters = cast(Dict[str, Any], request.app.state.model_interpreters)
-    metadata_registry = cast(Dict[str, Dict[str, Any]], request.app.state.model_metadata)
-    return interpreters, metadata_registry
+    interpreters = getattr(request.app.state, "model_interpreters", None)
+    metadata_registry = getattr(request.app.state, "model_metadata", None)
+    if interpreters is None or metadata_registry is None:
+        raise HTTPException(status_code=503, detail="Server is starting up — model registry not ready yet")
+    return cast(Dict[str, Any], interpreters), cast(Dict[str, Dict[str, Any]], metadata_registry)
 
 
 # ---------------------------------------------------------------------------
@@ -127,6 +129,20 @@ async def get_models(request: Request) -> List[str]:
     return list(interpreters.keys())
 
 
+@api_router.get("/capabilities")
+async def get_capabilities(request: Request) -> Dict[str, Any]:
+    interpreters, metadata_registry = _get_state(request)
+    models = {}
+    for model_name in interpreters:
+        metadata = metadata_registry.get(model_name, {})
+        models[model_name] = {
+            "version": str(metadata.get("version", "1")),
+            "output_type": metadata.get("output_type"),
+            "class_names": metadata.get("class_names"),
+        }
+    return {"models": models}
+
+
 @api_router.get(
     "/models/{model_name}/metadata",
     response_model=ModelMetadataResponse,
@@ -139,6 +155,7 @@ async def get_model_metadata(model_name: str, request: Request) -> ModelMetadata
     input_details: List[Dict[str, Any]] = interpreter.get_input_details()
     metadata: Dict[str, Any] = metadata_registry.get(model_name, {})
     return ModelMetadataResponse(
+        version=str(metadata.get("version", "1")),
         input_shape=input_details[0]["shape"].tolist(),
         input_dtype=np.dtype(input_details[0]["dtype"]).name,
         output_type=metadata.get("output_type"),

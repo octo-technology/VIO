@@ -33,4 +33,4 @@ RUN pip install --no-cache-dir . && \
 
 EXPOSE 8501
 ENTRYPOINT ["uvicorn", "tflite_serving.tflite_server:app"]
-CMD ["--reload", "--port", "8501", "--host", "0.0.0.0" ]
+CMD ["--port", "8501", "--host", "0.0.0.0"]
