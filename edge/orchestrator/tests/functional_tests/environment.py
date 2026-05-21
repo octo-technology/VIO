@@ -12,7 +12,7 @@ from fastapi.testclient import TestClient
 sys.path.append((Path(__file__).parents[1]).resolve().as_posix())
 os.environ["TESTCONTAINERS_RYUK_DISABLED"] = "true"
 
-from helpers.container_utils import (  # EDGE_MODEL_SERVING,  # noqa: E402
+from helpers.container_utils import (  # noqa: E402
     EDGE_TFLITE_SERVING_IMG,
     start_test_tf_serving,
     stop_test_container,
@@ -62,7 +62,7 @@ def before_all(context: Context):
     from edge_orchestrator.domain.models.item import Image
     from edge_orchestrator.infrastructure.adapters.camera.http_camera import HttpCamera
 
-    _fake_images_dir = Path(__file__).parents[2] / "fake_images"
+    _fake_images_dir = Path(__file__).parents[3] / "camera" / "fake_images"
     _fake_image_paths = list(_fake_images_dir.rglob("*.jpg")) + list(_fake_images_dir.rglob("*.png"))
     _fake_image_bytes = _fake_image_paths[0].read_bytes() if _fake_image_paths else b"\xff\xd8\xff\xe0"
 
