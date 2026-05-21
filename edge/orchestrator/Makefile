@@ -38,13 +38,14 @@ install:
 update:
 	uv sync --group dev
 
-.PHONY: docker-build  ## 🐳 Build the Docker image
+.PHONY: docker-build  ## 🐳 Build the Docker image for the current platform
 docker-build:
-	docker build --build-arg BUILDOS=${BUILDOS} -t ghcr.io/octo-technology/vio/edge_orchestrator:latest .
+	docker build -t ghcr.io/octo-technology/vio/edge_orchestrator:latest .
 
-.PHONY: docker-push  ## 📤 Push the Docker image to the registry
+.PHONY: docker-push  ## 📤 Build and push a multiplatform image to the registry
 docker-push:
-	docker push ghcr.io/octo-technology/vio/edge_orchestrator:latest
+	docker buildx build --platform linux/amd64,linux/arm64 --push \
+		-t ghcr.io/octo-technology/vio/edge_orchestrator:latest .
 
 .PHONY: tests  ## ✅ Launch all the tests
 tests: unit_tests integration_tests functional_tests

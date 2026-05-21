@@ -34,13 +34,14 @@ install:
 update:
 	uv sync --group dev
 
-.PHONY: docker-build  ## 🐳 Build the Docker image (context: parent directory)
+.PHONY: docker-build  ## 🐳 Build the Docker image for the current platform
 docker-build:
-	docker build --build-arg BUILDOS=${BUILDOS} -f Dockerfile -t ghcr.io/octo-technology/vio/edge_tflite_serving:latest ..
+	docker build -t ghcr.io/octo-technology/vio/edge_tflite_serving:latest .
 
-.PHONY: docker-push  ## 📤 Push the Docker image to the registry
+.PHONY: docker-push  ## 📤 Build and push a multiplatform image to the registry
 docker-push:
-	docker push ghcr.io/octo-technology/vio/edge_tflite_serving:latest
+	docker buildx build --platform linux/amd64,linux/arm64 --push \
+		-t ghcr.io/octo-technology/vio/edge_tflite_serving:latest .
 
 .PHONY: unit_tests  ## ✅ Launch the unit tests
 unit_tests:
