@@ -16,12 +16,12 @@ install:
 
 .PHONY: docker-build  ## 🐳 Build a multiplatform Docker image
 docker-build:
-	podman manifest rm vio-cockpit 2>/dev/null || true
-	podman build --platform linux/amd64,linux/arm64 --manifest vio-cockpit .
+	podman manifest rm edge-cockpit 2>/dev/null || true
+	podman build --platform linux/amd64,linux/arm64 --manifest edge-cockpit .
 
 .PHONY: docker-push  ## 📤 Build and push a multiplatform image to the registry
 docker-push: docker-build
-	podman manifest push --all vio-cockpit docker://ghcr.io/octo-technology/vio/edge_cockpit:latest
+	podman manifest push --all edge-cockpit docker://ghcr.io/octo-technology/vio/edge_cockpit:latest
 
 .PHONY: serve  ## 🚀 Start dev server (proxies /api → localhost:8000)
 serve:
