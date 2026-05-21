@@ -40,12 +40,12 @@ update:
 
 .PHONY: docker-build  ## 🐳 Build a multiplatform Docker image
 docker-build:
-	docker buildx build --platform linux/amd64,linux/arm64 -t ghcr.io/octo-technology/vio/edge_orchestrator:latest .
+	podman manifest rm vio-orchestrator 2>/dev/null || true
+	podman build --platform linux/amd64,linux/arm64 --manifest vio-orchestrator .
 
 .PHONY: docker-push  ## 📤 Build and push a multiplatform image to the registry
-docker-push:
-	docker buildx build --platform linux/amd64,linux/arm64 --push \
-		-t ghcr.io/octo-technology/vio/edge_orchestrator:latest .
+docker-push: docker-build
+	podman manifest push --all vio-orchestrator docker://ghcr.io/octo-technology/vio/edge_orchestrator:latest
 
 .PHONY: tests  ## ✅ Launch all the tests
 tests: unit_tests integration_tests functional_tests
