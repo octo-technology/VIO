@@ -43,6 +43,23 @@ vio-edge-up:
 vio-up:
 	BUILDOS=${BUILDOS} docker compose --profile hub --profile edge up -d --build
 
+.PHONY: install-tools ## 🔧 Install all edge services as uv tools (run once before vio-edge-local-up)
+install-tools:
+	uv tool install --editable edge/camera
+	uv tool install --editable edge/model_serving/tflite_serving
+	uv tool install --editable edge/orchestrator
+	cd edge/cockpit && npm install
+
+.PHONY: vio-edge-local-up ## 💻 Start all edge services locally (no Docker, fake cameras)
+vio-edge-local-up:
+	lsof -ti :8000 -ti :8001 -ti :8501 -ti :3000 | xargs kill -9 2>/dev/null || true
+	trap 'kill 0' SIGINT SIGTERM
+	CAMERA_CONFIG_FILE=$(PWD)/edge/camera/camera_config.yml uv run --project edge/camera edge_camera &
+	MODELS_PATH=$(PWD)/edge/model_serving/models uv run --project edge/model_serving/tflite_serving edge_model_serving &
+	CONFIG_DIR=$(PWD)/edge/orchestrator/config CAMERA_SERVICE_URL=http://localhost:8001 SERVING_MODEL_URL=http://localhost:8501 uv run --project edge/orchestrator edge_orchestrator &
+	cd edge/cockpit && npm run dev &
+	wait
+
 .PHONY: vio-down ## ❌ Stop all services (model_serving, edge_orchestrator, ui)
 vio-down:
 	docker compose --profile hub --profile edge down
