@@ -1,1 +1,58 @@
-{"station_name":"config1","camera_configs":{"camera_1":{"camera_id":"camera_1","camera_type":"http","position":"front","service_url":"http://localhost:8001"},"camera_2":{"camera_id":"camera_2","camera_type":"http","position":"front","service_url":"http://localhost:8001"}},"pipeline_steps":{"step_2":{"camera_id":"camera_1","model_forwarder_config":{"model_name":"marker_quality_control","model_version":"1","model_serving_url":"http://localhost:8501/","model_id":"marker_quality_control_1"},"camera_rule_config":{"camera_rule_type":"expected_label_rule","expected_class":"KO"}},"step_3":{"camera_id":"camera_2","model_forwarder_config":{"model_name":"pin_detection","model_version":"1","model_serving_url":"http://localhost:8501/","model_id":"pin_detection_1"},"camera_rule_config":{"camera_rule_type":"expected_label_rule","expected_class":"KO"}}},"binary_storage_config":{"storage_type":"filesystem","target_directory":"data_storage"},"metadata_storage_config":{"storage_type":"filesystem","target_directory":"data_storage"},"item_rule_config":{"item_rule_type":"min_threshold_rule","expected_decision":"OK","threshold":1}}
+{
+    "station_name": "config1",
+    "camera_configs": {
+        "camera_1": {
+            "camera_id": "camera_1",
+            "camera_type": "http",
+            "position": "front",
+            "service_url": "${CAMERA_SERVICE_URL:-http://localhost:8001}"
+        },
+        "camera_2": {
+            "camera_id": "camera_2",
+            "camera_type": "http",
+            "position": "front",
+            "service_url": "${CAMERA_SERVICE_URL:-http://localhost:8001}"
+        }
+    },
+    "pipeline_steps": {
+        "step_2": {
+            "camera_id": "camera_1",
+            "model_forwarder_config": {
+                "model_name": "marker_quality_control",
+                "model_version": "1",
+                "model_serving_url": "${SERVING_MODEL_URL:-http://localhost:8501}/",
+                "model_id": "marker_quality_control_1"
+            },
+            "camera_rule_config": {
+                "camera_rule_type": "expected_label_rule",
+                "expected_class": "KO"
+            }
+        },
+        "step_3": {
+            "camera_id": "camera_2",
+            "model_forwarder_config": {
+                "model_name": "pin_detection",
+                "model_version": "1",
+                "model_serving_url": "${SERVING_MODEL_URL:-http://localhost:8501}/",
+                "model_id": "pin_detection_1"
+            },
+            "camera_rule_config": {
+                "camera_rule_type": "expected_label_rule",
+                "expected_class": "KO"
+            }
+        }
+    },
+    "binary_storage_config": {
+        "storage_type": "filesystem",
+        "target_directory": "data_storage"
+    },
+    "metadata_storage_config": {
+        "storage_type": "filesystem",
+        "target_directory": "data_storage"
+    },
+    "item_rule_config": {
+        "item_rule_type": "min_threshold_rule",
+        "expected_decision": "OK",
+        "threshold": 1
+    }
+}
