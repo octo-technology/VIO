@@ -4,8 +4,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-      args:
-        BUILDOS: ${BUILDOS:-linux}
     volumes:
       - ./config:/edge_orchestrator/config
       - ./data_storage:/edge_orchestrator/data_storage
