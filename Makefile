@@ -31,17 +31,17 @@ hub_streamlit:
 hub_labelizer:
 	BUILDOS=${BUILDOS} docker compose up -d --build hub_labelizer
 
-.PHONY: vio-hub-up ## 🐳 Start all hub services (monitoring, monitoring_db, labelizer)
+.PHONY: vio-hub-up ## 🐳 Build (if changed) and start all hub services
 vio-hub-up:
-	BUILDOS=${BUILDOS} docker compose --profile hub up -d --build
+	docker compose --profile hub up -d --build
 
-.PHONY: vio-edge-up ## 🐳 Start all edge services (db, model_serving, orchestrator, interface)
+.PHONY: vio-edge-up ## 🐳 Build (if changed) and start all edge services
 vio-edge-up:
-	BUILDOS=${BUILDOS} docker compose --profile edge up -d --build
+	docker compose --profile edge up -d --build
 
-.PHONY: vio-up ## 🐳 Start all edge services (db, model_serving, orchestrator, interface) and hubs (monitoring, monitoring_db, labelizer)
+.PHONY: vio-up ## 🐳 Build (if changed) and start all services (edge + hub)
 vio-up:
-	BUILDOS=${BUILDOS} docker compose --profile hub --profile edge up -d --build
+	docker compose --profile hub --profile edge up -d --build
 
 .PHONY: install-tools ## 🔧 Install all edge services as uv tools (run once before vio-edge-local-up)
 install-tools:
