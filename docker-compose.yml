@@ -3,11 +3,6 @@ services:
     extends:
       file: edge/tflite_serving/edge_model_serving.yml
       service: edge_model_serving
-    build:
-      context: edge/tflite_serving
-      dockerfile: Dockerfile
-      args:
-        BUILDOS: ${BUILDOS:-linux}
 
   edge_orchestrator:
     extends:

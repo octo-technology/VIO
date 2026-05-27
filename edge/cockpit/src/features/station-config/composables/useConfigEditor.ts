@@ -196,7 +196,7 @@ export function useConfigEditor({
     activating.value = name
     try {
       await configRepository.activateConfig(name)
-      healthStore.setActiveConfigName(name)
+      await healthStore.poll()
       notify(`Config "${name}" activated`)
     } catch (e: any) {
       const detail = e?.response?.data?.detail
