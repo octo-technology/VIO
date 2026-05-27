@@ -34,6 +34,7 @@ FROM python:${PYTHON_VERSION}-slim-bookworm AS runtime
 WORKDIR /app
 
 COPY --from=builder /app/.venv /app/.venv
+COPY models /models
 
 ENV PATH="/app/.venv/bin:$PATH" \
     MODELS_PATH=/models
