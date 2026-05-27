@@ -46,9 +46,9 @@ export const useHealthStore = defineStore('health', () => {
     if (timer !== null) { clearInterval(timer); timer = null }
   }
 
-  function setActiveConfigName(name: string | null, config: StationConfig | null = null) {
+  function setActiveConfigName(name: string | null) {
     activeConfigName.value = name
-    activeConfig.value = name === null ? null : config
+    if (name === null) activeConfig.value = null
   }
 
   return {
