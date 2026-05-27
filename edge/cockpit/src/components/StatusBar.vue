@@ -81,13 +81,14 @@
       <v-card-title class="text-subtitle-1 font-weight-bold pt-4 px-4">Camera Service</v-card-title>
       <v-card-text class="px-2 pb-2">
         <v-list density="compact">
-          <template v-for="(cameraIds, url) in dialogCameras" :key="url">
+          <template v-for="(cameras, url) in dialogCameras" :key="url">
             <v-list-subheader>{{ url }}</v-list-subheader>
-            <v-list-item v-for="id in cameraIds" :key="id">
+            <v-list-item v-for="(info, id) in cameras" :key="id">
               <template #prepend>
                 <v-icon color="success" class="mr-2">mdi-camera</v-icon>
               </template>
               <v-list-item-title>{{ id }}</v-list-item-title>
+              <v-list-item-subtitle v-if="info.backend">{{ info.backend }}</v-list-item-subtitle>
             </v-list-item>
           </template>
           <v-list-item v-if="Object.keys(dialogCameras).length === 0">

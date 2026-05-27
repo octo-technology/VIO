@@ -5,7 +5,7 @@ services:
       context: .
       dockerfile: Dockerfile
     volumes:
-      - ../models:/models
+      - ./models:/models
     ports:
       - 8501:8501
     environment:

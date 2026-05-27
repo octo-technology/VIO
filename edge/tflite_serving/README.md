@@ -14,7 +14,7 @@ pip3 install -r requirements.txt
 Or using the makefiles to set up a conda env :
 
 ```
-cd edge_model_serving/tflite_serving
+cd edge/tflite_serving
 
 make tflite_serving
 conda activate tflite_serving

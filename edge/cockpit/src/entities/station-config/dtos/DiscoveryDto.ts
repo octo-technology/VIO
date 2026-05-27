@@ -2,7 +2,7 @@ import { z } from 'zod'
 
 const CameraInfoSchema = z.object({
   backend: z.string().optional(),
-  position: z.string().optional(),
+  position: z.string().nullish(),
 })
 
 export const CamerasAvailableSchema = z.object({

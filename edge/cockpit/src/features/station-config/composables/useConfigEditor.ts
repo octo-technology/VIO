@@ -254,12 +254,12 @@ export function useConfigEditor({
     }
   }
 
-  async function saveConfig() {
+  async function saveConfig(): Promise<boolean> {
     const nameErrors = await (nameField.value?.validate() ?? Promise.resolve([]))
     const { valid: formValid } = await form.value.validate()
     if (nameErrors.length > 0 || !formValid) {
       notify('Please fix the errors before saving', 'error')
-      return
+      return false
     }
     saving.value = true
     const newName = draft.value.station_name
@@ -282,15 +282,22 @@ export function useConfigEditor({
       originalConfig.value = JSON.parse(JSON.stringify(draft.value))
       await invalidateConfigs()
       notify(`Config "${newName}" saved`)
+      return true
     } catch (e: any) {
       const detail = e?.response?.data?.detail
       const message = Array.isArray(detail)
         ? detail.map((err: any) => err.msg ?? JSON.stringify(err)).join(' · ')
         : (detail ?? 'Failed to save config')
       notify(message, 'error')
+      return false
     } finally {
       saving.value = false
     }
+  }
+
+  async function saveAndActivate() {
+    const saved = await saveConfig()
+    if (saved) await activateConfig(draft.value.station_name)
   }
 
   function onStorageTypeChange(storageConfig: any, newType: string) {
@@ -399,6 +406,7 @@ export function useConfigEditor({
     deleteConfig,
     createNewConfig,
     saveConfig,
+    saveAndActivate,
     onStorageTypeChange,
     setCameraRuleType,
     setItemRuleType,

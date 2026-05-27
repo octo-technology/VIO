@@ -132,7 +132,7 @@ After modifying any file in a service, always run that service's quality gates b
 |---|---|
 | `edge/orchestrator/` | `cd edge/orchestrator && make lint check tests` |
 | `edge/camera/` | `cd edge/camera && make lint check unit_tests` |
-| `edge/model_serving/tflite_serving/` | `cd edge/model_serving/tflite_serving && make lint check unit_tests` |
+| `edge/tflite_serving/` | `cd edge/tflite_serving && make lint check unit_tests` |
 | `edge/cockpit/` | `cd edge/cockpit && make lint type_check unit_tests` |
 
 Run from the repo root. If a quality gate fails, fix it before considering the task complete.

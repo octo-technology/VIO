@@ -97,14 +97,23 @@
         <v-card-actions class="pa-4" style="position:sticky; bottom:0; background:rgb(var(--v-theme-surface)); border-top: 1px solid rgba(var(--v-border-color), var(--v-border-opacity));">
           <v-spacer />
           <v-btn
-            color="primary"
-            :variant="isDirty ? 'flat' : 'tonal'"
+            :variant="isDirty ? 'tonal' : 'plain'"
             :disabled="!isDirty"
             prepend-icon="mdi-check"
             :loading="saving"
             @click="saveConfig"
           >
             Save
+          </v-btn>
+          <v-btn
+            color="primary"
+            :variant="isDirty ? 'flat' : 'tonal'"
+            :disabled="!isDirty"
+            prepend-icon="mdi-lightning-bolt"
+            :loading="saving || activating"
+            @click="saveAndActivate"
+          >
+            Save & Activate
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -194,7 +203,7 @@ const {
   rules, uniqueCameraId, uniqueStepId, uniqueNewConfigName, uniqueEditableName,
   startEdit, closeDraft, resetDraft,
   activateConfig, confirmDelete, deleteConfig,
-  createNewConfig, saveConfig,
+  createNewConfig, saveConfig, saveAndActivate,
   onStorageTypeChange, setCameraRuleType, setItemRuleType,
   addStep, removeStep, renameStepId,
   addCamera, removeCamera, renameCameraId,
