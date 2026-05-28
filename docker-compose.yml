@@ -1,7 +1,7 @@
 services:
   edge_model_serving:
     extends:
-      file: edge/model_serving/tflite_serving/edge_model_serving.yml
+      file: edge/tflite_serving/edge_model_serving.yml
       service: edge_model_serving
 
   edge_orchestrator:

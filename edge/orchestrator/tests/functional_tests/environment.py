@@ -56,7 +56,7 @@ def before_all(context: Context):
     )
 
     IModelForwarder._build_model_url = lambda self, base_url, model_name, model_version: (
-        f"{model_serving_url}v1/models/{model_name}/versions/{model_version}:predict"
+        f"{model_serving_url.rstrip('/')}/v1/models/{model_name}/versions/{model_version}:predict"
     )
 
     from edge_orchestrator.domain.models.item import Image

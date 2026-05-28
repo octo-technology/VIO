@@ -14,6 +14,12 @@ vi.mock('../../features/station-config/api/configRepository', () => ({
   createConfig: vi.fn(),
   saveConfig: vi.fn(),
   deleteConfig: vi.fn(),
+  getActiveConfig: vi.fn(),
+}))
+
+vi.mock('../../features/system-health/api/healthRepository', () => ({
+  getLiveness: vi.fn(),
+  getServicesHealth: vi.fn(),
 }))
 
 vi.mock('../../features/station-config/api/discoveryRepository', () => ({
@@ -25,6 +31,7 @@ vi.mock('../../features/station-config/api/discoveryRepository', () => ({
 
 import * as configRepository from '../../features/station-config/api/configRepository'
 import * as discoveryRepository from '../../features/station-config/api/discoveryRepository'
+import * as healthRepository from '../../features/system-health/api/healthRepository'
 
 const vuetify = createVuetify({ components, directives })
 
@@ -81,6 +88,9 @@ beforeEach(() => {
   configRepository.createConfig.mockResolvedValue(undefined)
   configRepository.saveConfig.mockResolvedValue(undefined)
   configRepository.deleteConfig.mockResolvedValue(undefined)
+  configRepository.getActiveConfig.mockResolvedValue(null)
+  healthRepository.getLiveness.mockResolvedValue(true)
+  healthRepository.getServicesHealth.mockResolvedValue({ services: {} })
   discoveryRepository.getCamerasAvailable.mockResolvedValue({ cameras: DISCOVERY_DEFAULTS.cameras })
   discoveryRepository.getModelsAvailable.mockResolvedValue({ models: DISCOVERY_DEFAULTS.models })
   discoveryRepository.getConfigOptions.mockResolvedValue(DISCOVERY_DEFAULTS.options)
@@ -157,6 +167,7 @@ describe('TechnicianView', () => {
   it('calls activateConfig on Activate button click for non-active config', async () => {
     const CONFIG_2 = { ...CONFIG_1, station_name: 'config_2' }
     configRepository.getConfigs.mockResolvedValue([CONFIG_1, CONFIG_2])
+    configRepository.getActiveConfig.mockResolvedValue(CONFIG_2)
     // config_1 is active, config_2 is not
 
     const wrapper = mountView()

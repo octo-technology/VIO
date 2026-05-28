@@ -13,7 +13,7 @@
             "model_forwarder_config": {
                 "model_name": "mobilenet_ssd_v2_coco",
                 "model_version": "1",
-                "model_serving_url": "${SERVING_MODEL_URL:-http://localhost:8501/}",
+                "model_serving_url": "${SERVING_MODEL_URL:-http://localhost:8501}/",
                 "model_id": "mobilenet_ssd_v2_coco_1"
             },
             "camera_rule_config": {

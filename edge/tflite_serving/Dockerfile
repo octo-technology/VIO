@@ -25,7 +25,7 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 
 COPY src/ ./src/
 RUN --mount=type=cache,target=/root/.cache/uv \
-    uv sync --frozen --no-dev \
+    uv sync --frozen --no-dev --no-editable \
     && find /app/.venv -name "*.so" -exec patchelf --clear-execstack {} \; 2>/dev/null || true
 
 # ── runtime ───────────────────────────────────────────────────────────────────
@@ -34,6 +34,7 @@ FROM python:${PYTHON_VERSION}-slim-bookworm AS runtime
 WORKDIR /app
 
 COPY --from=builder /app/.venv /app/.venv
+COPY models /models
 
 ENV PATH="/app/.venv/bin:$PATH" \
     MODELS_PATH=/models

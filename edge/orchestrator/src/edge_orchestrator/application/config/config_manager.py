@@ -5,9 +5,9 @@ import re
 from pathlib import Path
 from typing import Dict, Optional
 
-from fastapi import HTTPException
 from pydantic import ValidationError
 
+from edge_orchestrator.domain.exceptions import ConfigNotFoundError, InvalidConfigNameError
 from edge_orchestrator.domain.models.station_config import StationConfig
 from edge_orchestrator.utils.singleton import SingletonMeta
 
@@ -87,9 +87,8 @@ class ConfigManager(metaclass=SingletonMeta):
 
     def set_config_by_name(self, station_name: str):
         if not self._is_an_existing_config_name(station_name):
-            raise HTTPException(
-                status_code=422,
-                detail=f"{station_name} is not one of existing station names: {self.get_all_config_names()}",
+            raise InvalidConfigNameError(
+                f"{station_name} is not one of existing station names: {self.get_all_config_names()}"
             )
         self._active_station_name = station_name
 
@@ -102,7 +101,7 @@ class ConfigManager(metaclass=SingletonMeta):
 
     def delete_config(self, station_name: str):
         if station_name not in self._station_configs:
-            raise HTTPException(status_code=404, detail=f"Config '{station_name}' not found")
+            raise ConfigNotFoundError(f"Config '{station_name}' not found")
         del self._station_configs[station_name]
         if station_name == self._active_station_name:
             self._active_station_name = None

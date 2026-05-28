@@ -21,6 +21,7 @@ vi.mock('../../../system-health/api/healthRepository', () => ({
 }))
 
 import * as configRepository from '../../api/configRepository'
+import * as healthRepository from '../../../system-health/api/healthRepository'
 
 const STORAGE = { storage_type: 'filesystem', target_directory: 'data' }
 
@@ -69,6 +70,8 @@ beforeEach(() => {
   ;(configRepository.saveConfig as ReturnType<typeof vi.fn>).mockResolvedValue(undefined)
   ;(configRepository.deleteConfig as ReturnType<typeof vi.fn>).mockResolvedValue(undefined)
   ;(configRepository.getActiveConfig as ReturnType<typeof vi.fn>).mockResolvedValue(null)
+  ;(healthRepository.getLiveness as ReturnType<typeof vi.fn>).mockResolvedValue(true)
+  ;(healthRepository.getServicesHealth as ReturnType<typeof vi.fn>).mockResolvedValue({ services: {} })
 })
 
 // ─── isDirty ────────────────────────────────────────────────────────────────

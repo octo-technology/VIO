@@ -10,7 +10,7 @@ class TestTfliteServing:
 
     @classmethod
     def setup_class(cls):
-        os.environ["MODELS_PATH"] = (Path.cwd().parent / "models").as_posix()
+        os.environ["MODELS_PATH"] = (Path.cwd() / "models").as_posix()
         from tflite_serving.tflite_server import app
 
         cls._client = TestClient(app)

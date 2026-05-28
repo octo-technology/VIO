@@ -17,10 +17,8 @@ class IModelForwarder(ABC):
 
     @staticmethod
     def _build_model_url(base_url: str, model_name: str, model_version: str) -> str:
-        if base_url.endswith("/"):
-            return f"{base_url}v1/models/{model_name}/versions/{model_version}:predict"
-        else:
-            return f"{base_url}/v1/models/{model_name}/versions/{model_version}:predict"
+        base = base_url.rstrip("/")
+        return f"{base}/v1/models/{model_name}/versions/{model_version}:predict"
 
     def _get_model_url(self) -> str:
         return self._build_model_url(

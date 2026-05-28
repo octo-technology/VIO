@@ -24,8 +24,8 @@ def load_model_metadata(model_dir: Path) -> dict:
 
 
 def _get_tflite_model_path() -> Path:
-    models_path = Path(os.getenv("MODELS_PATH")) if os.getenv("MODELS_PATH") else Path.cwd().parent / "models"
-    return models_path / "tflite"
+    models_path = Path(os.getenv("MODELS_PATH")) if os.getenv("MODELS_PATH") else Path.cwd() / "models"
+    return models_path
 
 
 def create_model_interpreters() -> Dict[str, Interpreter]:

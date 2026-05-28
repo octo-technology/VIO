@@ -2,12 +2,10 @@ services:
   edge_model_serving:
     container_name: edge_model_serving
     build:
-      context: ..
-      dockerfile: tflite_serving/Dockerfile
-      args:
-        BUILDOS: ${BUILDOS:-linux}
+      context: .
+      dockerfile: Dockerfile
     volumes:
-      - ../models:/models
+      - ./models:/models
     ports:
       - 8501:8501
     environment:

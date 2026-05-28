@@ -23,9 +23,9 @@ jobs:
           - dockerfile: ./edge/camera/Dockerfile
             image: ghcr.io/${{ github.repository }}/edge_camera
             context: ./edge/camera
-          - dockerfile: ./edge/model_serving/tflite_serving/Dockerfile
+          - dockerfile: ./edge/tflite_serving/Dockerfile
             image: ghcr.io/${{ github.repository }}/edge_tflite_serving
-            context: ./edge/model_serving/tflite_serving
+            context: ./edge/tflite_serving
 
     uses: ./.github/workflows/template_build_and_push_docker_images.yml
     with:

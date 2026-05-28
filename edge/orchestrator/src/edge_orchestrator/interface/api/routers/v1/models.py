@@ -15,7 +15,7 @@ async def get_models_available(config_manager: ConfigManager = Depends(get_confi
     for url in model_urls:
         try:
             async with aiohttp.ClientSession(timeout=aiohttp.ClientTimeout(total=2)) as session:
-                async with session.get(f"{url}/v1/capabilities") as r:
+                async with session.get(f"{url.rstrip('/')}/v1/capabilities") as r:
                     if r.status == 200:
                         body = await r.json(content_type=None)
                         result[url] = list((body.get("models") or {}).keys())
