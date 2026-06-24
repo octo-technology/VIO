@@ -1,0 +1,43 @@
+[build-system]
+requires = ["setuptools>=66", "setuptools_scm[toml]>=6.2"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "onnx_serving"
+version = "1.0.0"
+dependencies = [
+    "fastapi==0.92.0",
+    "numpy==1.24.2",
+    "Pillow==9.4.0",
+    "uvicorn==0.20.0",
+    "onnxruntime==1.16.0",
+    "opencv-python-headless==4.7.0.72",
+    "anyio==3.7.1"
+]
+requires-python = ">=3.8"
+
+[tool.setuptools.packages.find]
+where = ["src/"]
+
+[project.optional-dependencies]
+dev = [
+    "black==23.3.0",
+    "isort==5.13.2",
+    "flake8==7.1.1",
+    "autoflake==2.3.1",
+    "pytest==7.2.2",
+    "pytest-cov==4.0.0",
+    "requests==2.26.0"
+]
+
+[tool.pytest.ini_options]
+min_version = "6.0"
+testpaths = "tests/"
+
+[tool.flake8]
+exclude = "venv*"
+max-complexity = 10
+max-line-length = 120
+
+[tool.isort]
+profile = "black"
