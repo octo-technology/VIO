@@ -61,6 +61,7 @@ def activate_config(
     config_manager.set_config_by_name(body.station_name)
     request.app.state.supervisor.reset_managers()
     request.app.state.data_gathering.reset_managers()
+    request.app.state.model_trainer_manager.reset()
     return config_manager.get_config()
 
 
@@ -104,6 +105,7 @@ def save_config(
     if active and active.station_name == station_name:
         request.app.state.supervisor.reset_managers()
         request.app.state.data_gathering.reset_managers()
+        request.app.state.model_trainer_manager.reset()
     return station_config
 
 

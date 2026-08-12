@@ -13,6 +13,9 @@ from edge_orchestrator.domain.ports.inspection_queue.i_inspection_queue import (
 from edge_orchestrator.domain.ports.metadata_storage.i_metadata_storage_manager import (
     IMetadataStorageManager,
 )
+from edge_orchestrator.domain.ports.model_trainer.i_model_trainer_manager import (
+    IModelTrainerManager,
+)
 
 
 def get_config_manager(request: Request) -> ConfigManager:
@@ -44,3 +47,7 @@ def get_metadata_storage_manager(request: Request) -> IMetadataStorageManager:
 
 def get_inspection_queue(request: Request) -> IInspectionQueue:
     return request.app.state.inspection_queue
+
+
+def get_model_trainer_manager(request: Request) -> IModelTrainerManager:
+    return request.app.state.model_trainer_manager

@@ -4,6 +4,11 @@ services:
       file: edge/tflite_serving/edge_model_serving.yml
       service: edge_model_serving
 
+  edge_anomaly_serving:
+    extends:
+      file: edge/anomaly_serving/anomaly_serving.yml
+      service: edge_anomaly_serving
+
   edge_orchestrator:
     extends:
       file: edge/orchestrator/edge_orchestrator.yml
@@ -30,3 +35,9 @@ services:
     extends:
       file: hub/streamlit/hub_streamlit.yml
       service: hub_streamlit
+
+# `extends` does not inherit top-level keys, so edge_anomaly_serving's
+# backbone-weight cache volume must be declared here, at the root of the
+# composed project, rather than in the service's own compose file.
+volumes:
+  hf_cache:

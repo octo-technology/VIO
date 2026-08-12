@@ -15,6 +15,10 @@ help:
 edge_model_serving:
 	BUILDOS=${BUILDOS} docker compose up -d --build edge_model_serving
 
+.PHONY: edge_anomaly_serving ## 🔎 Start anomaly_serving anomaly detection service (Docker container)
+edge_anomaly_serving:
+	BUILDOS=${BUILDOS} docker compose up -d --build edge_anomaly_serving
+
 .PHONY: edge_orchestrator ## 🕵 Start edge_orchestrator service (Docker container)
 edge_orchestrator:
 	BUILDOS=${BUILDOS} docker compose up -d --build edge_orchestrator

@@ -53,6 +53,12 @@ from edge_orchestrator.infrastructure.adapters.model_forwarder.model_forwarder_f
 from edge_orchestrator.infrastructure.adapters.model_forwarder.model_forwarder_manager import (
     ModelForwarderManager,
 )
+from edge_orchestrator.infrastructure.adapters.model_trainer.model_trainer_factory import (
+    ModelTrainerFactory,
+)
+from edge_orchestrator.infrastructure.adapters.model_trainer.model_trainer_manager import (
+    ModelTrainerManager,
+)
 from edge_orchestrator.interface.api.exception_handlers import config_not_found_handler, invalid_config_name_handler
 from edge_orchestrator.interface.api.routers.v1.router import router
 
@@ -81,6 +87,7 @@ async def lifespan(app: FastAPI):
         binary_storage_manager,
         camera_manager,
     )
+    app.state.model_trainer_manager = ModelTrainerManager(ModelTrainerFactory())
     app.state.config_manager = ConfigManager()
 
     db_path = Path(os.getenv("INSPECTION_QUEUE_DB_PATH", "/tmp/vio_inspection_queue.db"))

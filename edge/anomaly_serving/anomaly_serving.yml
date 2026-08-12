@@ -1,0 +1,18 @@
+services:
+  edge_anomaly_serving:
+    container_name: edge_anomaly_serving
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./models:/models
+      # Backbone weights (DINOv3 from HuggingFace, EUPE ONNX from the hub) are
+      # downloaded on first use; persisting the cache avoids re-downloading them
+      # on every container restart.
+      - hf_cache:/root/.cache/huggingface
+    ports:
+      - 8502:8502
+    profiles: [edge]
+    # The named `hf_cache` volume this mount needs is declared at the top level
+    # of the root docker-compose.yml. `extends` does not inherit a top-level
+    # `volumes:` key from this file, so declaring it here as well would be dead.
