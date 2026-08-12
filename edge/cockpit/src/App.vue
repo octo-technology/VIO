@@ -36,6 +36,7 @@ const rail = ref(false)
 const navItems = [
   { to: '/operator', icon: 'mdi-monitor-eye', title: 'Live Inspection' },
   { to: '/technician', icon: 'mdi-wrench', title: 'Configuration' },
+  { to: '/teach', icon: 'mdi-brain', title: 'Reference Bank' },
   { to: '/admin', icon: 'mdi-shield-account', title: 'Administration' },
 ]
 </script>

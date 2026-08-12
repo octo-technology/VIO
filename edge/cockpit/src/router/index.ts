@@ -25,6 +25,12 @@ const routes = [
     meta: { role: 'technician' as const, title: 'Configuration' },
   },
   {
+    path: '/teach',
+    name: 'teach',
+    component: () => import('../pages/TeachPage.vue'),
+    meta: { role: 'technician' as const, title: 'Reference Bank' },
+  },
+  {
     path: '/admin',
     name: 'admin',
     component: () => import('../pages/AdminPage.vue'),
