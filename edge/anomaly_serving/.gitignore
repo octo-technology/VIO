@@ -1,0 +1,12 @@
+# Fitted memory banks are large and deployment-specific — export them with
+# scripts/export_rad_bank.py rather than committing them.
+models/**/model.ckpt
+
+.venv/
+__pycache__/
+*.pyc
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+reports/

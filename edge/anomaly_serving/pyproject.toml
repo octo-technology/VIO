@@ -1,0 +1,68 @@
+[build-system]
+requires = ["setuptools>=66", "setuptools_scm[toml]>=6.2"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "edge-anomaly-serving"
+version = "1.0.0"
+dependencies = [
+    "fastapi>=0.115.0",
+    "httpx==0.28.1",
+    "huggingface-hub>=0.25",
+    "numpy~=1.26",
+    "onnxruntime>=1.19",
+    "openvino>=2024.4",
+    "pillow==11.1.0",
+    # Required by FastAPI to parse multipart uploads (reference-image fit).
+    "python-multipart>=0.0.9",
+    "setuptools==75.8.0",
+    "torch>=2.4,<3",
+    "transformers>=4.45",
+    "uvicorn==0.34.0",
+]
+# onnxruntime ships no wheels for cp310, and the Dockerfile builds on 3.11.
+requires-python = ">=3.11"
+
+[project.scripts]
+edge_anomaly_serving = "anomaly_serving.__main__:run_for_debug"
+
+[dependency-groups]
+dev = [
+    "ruff>=0.9.0",
+    "pytest==8.3.4",
+    "pytest-cov==6.0.0",
+    "requests==2.32.3",
+]
+
+# The CPU-only torch build keeps the edge image from pulling ~2 GB of CUDA
+# wheels; this service runs inference on CPU (or an OpenVINO device for EUPE).
+[tool.uv.sources]
+torch = { index = "pytorch-cpu" }
+
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true
+
+[tool.setuptools.packages.find]
+where = ["src/"]
+exclude = ["tests*", "data"]
+
+[tool.pytest.ini_options]
+min_version = "6.0"
+testpaths = "tests/"
+
+[tool.ruff]
+line-length = 120
+target-version = "py311"
+# Vendored from the research repo — kept byte-identical apart from documented
+# import fixes, so it is not held to this service's lint rules.
+extend-exclude = [
+    "src/anomaly_serving/rad_model/rad.py",
+    "src/anomaly_serving/rad_model/eupe_onnx.py",
+    "src/anomaly_serving/rad_model/constants.py",
+    "src/anomaly_serving/rad_model/backbones/",
+]
+
+[tool.ruff.lint]
+select = ["E", "F", "I"]
